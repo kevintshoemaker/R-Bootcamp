@@ -1,0 +1,419 @@
+---
+title: "Vector data in *R* with **sf**"
+author: "Kyle Bocinsky"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  bookdown::html_document2:
+    code_folding: hide
+    df_print: paged
+    fig_caption: yes
+    toc: true
+    toc_float: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# install.packages("devtools")
+# library(devtools)
+# 
+# install_cran(c("sf",
+#                "sp",
+#                "raster",
+#                "fasterize",
+#                "velox",
+#                "FedData",
+#                "mapview",
+#                "mapedit"))
+# 
+# install_bioc("rhdf5")
+# 
+# install_github(c("mt-climate-office/mcor",
+#                  "mt-climate-office/thredds",
+#                  "tidyverse/ggplot2"))
+
+library(sf)
+library(tidyverse)
+library(magrittr)
+library(mcor)
+library(mapview)
+library(FedData)
+
+```
+
+In this tutorial we will explore how to read, process, manipulate, plot, and output vecotr data in R. This tutorial focuses on the **sf** package, a new spatial data library for **R** that supercedes the **sp** package. We don't cover everything having to do with **sf** here... but there is a great website with helpful articles to get you started: [https://r-spatial.github.io/sf/](https://r-spatial.github.io/sf/).
+
+# Learning goals
+
+- Become familiar with the ["Simple Features"](https://en.wikipedia.org/wiki/Simple_Features) package in *R*, **sf**
+- List the driver capabilities of your local **sf** install
+- List the layers of a vector object
+- Import and export vector data
+- Transform/reproject vector data
+- Manipulate **sf** objects using the **dplyr** verbs
+- Become familier with geometrical objects in *R*
+- Generate basic plots with **sf**
+- Generate plots with **ggplot2** and `geom_sf()`
+- Generate interactive plots with **mapview**
+
+# Reading vector data: `st_read()`
+## Drivers (OGR)
+```{r}
+st_drivers()
+
+# st_drivers() %>%
+#   View()
+```
+
+## Listing layers
+Modern vector datasets often have multiple layers present in them. Let's have a look at the layers in the Montana Geographic Names Database, available from the Montana State Library's *Montana Spatial Data Infrastructure*. 
+
+```{r}
+
+st_layers("data/MT_Names.gdb")
+
+```
+
+## Reading vector data: `read_sf()`
+We read spatial data using `read_sf()`. By default, this will read the first layer in a dataset; if you want other layers, set the `layer` parameter to the layer name. Let's get the "MT_Names" layer from the Montana Geographic Names database.
+
+```{r}
+
+mt_names <- 
+  read_sf("data/MT_Names.gdb", 
+          layer = "MT_Names")
+
+# We can load non-spatial layers, but they'll just load as a data frame
+mt_all_names <- 
+  read_sf("data/MT_Names.gdb", 
+          layer = "All_Names")
+
+```
+
+# Interactive web maps with **mapview**
+We can make nifty interactive web maps in one line using the **mapview** package. Let's plot the Montana counties, available at the `mt_counties` dataset through the **mcor** package from the Montana Climate Office. You can view the other datasets available in the **mcor** package by running `help(package="mcor")`. This package is under active development, so update regularly!
+
+```{r}
+# Look at the mt_counties
+mt_counties
+
+# Plot with mapview
+mapview(mt_counties)
+
+# color the counties by name with the zcol option
+mapview(mt_counties, 
+        zcol = "County")
+
+# Labels change automatically
+mapview(mt_counties, 
+        zcol = "Division")
+
+# Control the hover label with "label"
+mapview(mt_counties, 
+        zcol = "Division", 
+        label = mt_counties$County)
+
+```
+
+# Writing vector data: `write_sf()`
+We write vector data in much the same way we read it: using the `write_sf()` function. The file format for the output can either be derived from the file extension, or you can set the `drivers` parameter explicitly. There are *lots* of options to control file writing... see `?write_sf` for details.
+
+```{r}
+# write as a shapefile
+write_sf(mt_counties, "data/mt_counties.shp",
+         driver = "ESRI Shapefile")
+
+# noties that shapefiles ruin column headers by truncating. Shapefiles are the worst.
+mt_counties.shp <- 
+  read_sf("data/mt_counties.shp")
+mt_counties.shp
+
+# Write a geopackage for better portability
+write_sf(mt_counties, 
+         "data/mt_counties.gpkg",
+         driver = "GPKG") # You have to specify the driver for geopackages
+mt_counties.gpkg <- 
+  read_sf("data/mt_counties.gpkg")
+
+# Names are still changed as spaces are removed, 
+# but this behavior will hopefully change soon.
+mt_counties.gpkg
+
+```
+
+# Manipulating simple features
+
+## Coordinate reference systems conversion and transformation
+The most quotidian task in spatial analysis is translating between coordinate reference systems; it is also the task where most errors creep in to GIS mapping and analysis. **sf** makes keeping track of and changing ("transforming") coordinate reference systems really easy with the `st_transform()` function. You can get the current coordinate reference system of an object using the `st_crs()` function. Find information about different systems using [epsg.io](epsg.io). All of the datasets available through **mcor** are automatically set to the current Montana State Plane, 
+[EPSG 102300](https://epsg.io/102300).
+```{r}
+?st_transform
+
+# View the projection info for the mt_counties dataset
+st_crs(mt_counties)
+
+# Transform mt_counties into WGS84 geographic coordinates, EPSG 4326
+st_transform(mt_counties, 4326)
+
+# you can also use a proj4string directly
+st_transform(mt_counties, "+proj=longlat +datum=WGS84")
+
+# For convenience, mcor has the MT state plane CRS as an object
+mt_state_plane
+
+```
+
+**Exercise: Load the Montana 2010 county-level census data `"mt_census.gpkg"` dataset and transform it to the Montana state plane coordinate reference system**
+
+```{r}
+mt_census <- 
+  read_sf("data/mt_census.gpkg") %>%
+  st_transform(102300)
+
+## OR ##
+
+mt_census <- 
+  read_sf("data/mt_census.gpkg") %>%
+  st_transform(mt_state_plane)
+```
+
+
+## **dplyr** verbs
+**sf** objects *are* tibbles (which have a class of `"tbl_df"`). Check it out:
+```{r}
+class(mt_counties)
+```
+
+Notice that the `mt_counties` object actually belongs to four classes: `"sf"`, `"tbl_df"`, `"tbl"`, and `"data.frame"`. This means that many of the *dplyr* verbs like `mutate()`, `filter()`, `select()`, and `summarize()`.
+
+```{r}
+
+# mutate, filter, select
+mt_census %>%
+  # Calculate the population density
+  mutate(PopDensity = PopTotal / ALANDsqMi) %>%
+  # Get Lake County
+  filter(County == "Lake") %>%
+  # Notice that select doesn't drop the geometry column
+  select(County,
+         PopTotal,
+         ALANDsqMi,
+         PopDensity)
+
+```
+
+### `summarize()`
+`summarize()` is a little different. Summarizing certain types of **sf** objects---namely, polygons---returns the spatial union of those objects.
+```{r}
+
+mt_census %>%
+  summarize(PopTotal = sum(PopTotal))
+
+```
+
+**Exercise: Get a summary of population and population density by "Division", which are the NOAA climate divisions for the state of Montana. Bonus if you also give the proportion of the population that are non-white per climate division.**
+
+```{r}
+
+mt_census %>%
+  mutate(NonWhite = PopTotal - White) %>%
+  group_by(Division) %>%
+  summarize(PopTotal = sum(PopTotal),
+            NonWhite = sum(NonWhite),
+            ALANDsqMi = sum(ALANDsqMi)) %>%
+  mutate(PopDensity = PopTotal/ALANDsqMi,
+         PropNonWhite = NonWhite/PopTotal)
+
+```
+
+# An interlude about **sp**
+**sp** is a legacy package, currently in the process of being superceded by **sf**. However, many packages still require data in **sp** format (often referred to as `Spatial*`), including the **FedData** package. Luckily for us, there is a really easy way to convert between **sf** and **sp** format.
+```{r}
+
+# Convert from sf to sp
+mt_census.sp <- 
+  as(mt_census,"Spatial")
+mt_census.sp
+
+# Convert from sp back to sf
+mt_census_sf <- 
+  st_as_sf(mt_census.sp)
+mt_census_sf
+
+```
+
+# Plotting
+As you already know, there are many ways to plot in *R*. Here, we'll look at both the "normal" way to plot, and plotting using **ggplot2**.
+## Data overview
+```{r}
+
+plot(mt_census)
+
+plot(mt_census,
+     max.plot = 14)
+
+```
+
+## Plotting single variables
+```{r}
+
+plot(mt_census['PopTotal'])
+
+# You can also define your own class intervals
+plot(mt_census['PopTotal'], 
+     breaks = c(0,20000,40000,60000,80000,100000,150000,200000))
+
+# Or use a breaks function like Jenk's
+plot(mt_census['PopTotal'], 
+     breaks = "jenks")
+
+# or Quantile (see ?plot.sf for others)
+plot(mt_census['PopTotal'], 
+     breaks = "quantile")
+
+# It handles categorical variables nicely too
+plot(mt_census['County'])
+
+# And it is easy to add axes
+plot(mt_census['County'], 
+     axes = TRUE)
+
+# or graticules
+plot(mt_census['County'], 
+     graticule = TRUE,
+     axes = TRUE)
+
+```
+
+## Plotting multiple geometric objects
+```{r}
+lake_co <-
+  mt_counties %>%
+  filter(County == "Lake")
+
+# Read in the NorWeST_ObservedTempPoints data "data/NorWeST_ObservedTempPoints.shp"
+norwest <- read_sf("data/NorWeST_ObservedTempPoints_Spokoot.shp") %>%
+  st_transform(mt_state_plane)
+
+plot(lake_co$Shape)
+
+plot(norwest['SampleYear'],
+     add = T,
+     pch = 19,
+     cex = 0.5,
+     key.pos = 1)
+plot(lake_co$Shape, 
+     add = TRUE)
+
+```
+
+### **mapview**
+The same layered plot in **mapview** is fun:
+
+```{r}
+
+norwest %>%
+  # Make the year a character
+  mutate(SampleYear = as.character(SampleYear)) %>%
+  mapview(zcol = "SampleYear",
+          legend = TRUE) + 
+  mapview(lake_co,
+          zcol = "County")
+
+# With st_intersection
+norwest %>%
+  st_intersection(lake_co) %>%
+  mutate(SampleYear = as.character(SampleYear)) %>%
+  mapview(zcol = "SampleYear",
+          legend = TRUE) + 
+  mapview(lake_co,
+          zcol = "County")
+
+```
+
+# Geometrical operations
+Many of the names of geometrical operations in the **sf** package are taken from PostGIS. Operations are either "unary" (only operating on one geometry) or "binary" (relating two geometries).
+### `st_bbox(x)`
+```{r}
+st_bbox(mt_census)
+```
+
+### `st_area(x)`
+```{r}
+# Calculates area per geometry
+st_area(mt_census)
+
+# More useful to use in a pipe with mutate
+mt_census %>%
+  mutate(Area = st_area(.))
+
+```
+
+### `st_buffer(x)`
+```{r}
+# MT State Plane is in meters
+mt_census.buff <- 
+  st_buffer(mt_census, 
+            dist = 5000)
+plot(mt_census.buff$geom)
+
+# Use a negative distance to get the internal buffer
+mt_census.buff <- 
+  st_buffer(mt_census, 
+            dist = -5000)
+plot(mt_census.buff$geom)
+
+```
+
+### `st_union(x,y)`
+```{r}
+# Calling st_union on a single object takes the spatial union of its geometries
+st_union(mt_census) %>%
+  plot()
+
+```
+
+### `st_intersection(x,y)`
+```{r}
+mt_names %<>%
+  st_transform(st_crs(mt_counties))
+
+missoula_co <-
+  mt_counties %>%
+  filter(County == "Missoula")
+
+# Behaves like cropping
+mt_names %>%
+  st_intersection(missoula_co) %>%
+  mapview(zcol = "Name")
+
+```
+
+
+### `st_difference(x,y)`
+```{r}
+# Sort of the opposite of cropping
+
+wheres_missoula <- 
+  mt_state %>%
+  st_difference(missoula_co)
+
+plot(wheres_missoula['County'])
+
+```
+
+# Exercise: Mapping rivers and streams on the Flathead Reservation
+1. Load data:
+- Flathead reservation boundary: `"mt_tribal_land"` from **mcor**, get just Flathead Reservation
+- Rivers and streams from the National Hydrography Dataset: `"data/flathead_nhd_flowline.shp"`
+2. Dealing with projections: make sure both are in MT State Plane
+3. Crop streams to Flathead boundary
+4. Filter for only **named** rivers and streams
+5. Make an interactive plot with **mapview**
+- Color by name
+- Include the Flathead Reservation boundary in the background

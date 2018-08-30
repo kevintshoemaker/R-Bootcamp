@@ -1,0 +1,7 @@
+"0","####"
+"0","####  Functions"
+"0","####"
+"0","my.function = function(){       # this function has no arguments"
+"0","  message <- ""Hello, world!"""
+"0","  print(message)"
+"0","}"

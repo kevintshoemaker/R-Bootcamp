@@ -1,0 +1,5 @@
+"0","# spread distributes the clim_var column into separate columns, with the data values from the 'value' column"
+"0","tidy_clim_data <- spread(separate_clim_vars, "
+"0","                        key = climvar, "
+"0","                        value = value)"
+"0","tidy_clim_data"

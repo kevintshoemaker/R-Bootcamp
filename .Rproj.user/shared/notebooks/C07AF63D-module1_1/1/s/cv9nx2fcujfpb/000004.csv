@@ -1,0 +1,8 @@
+"0","names(d.df)          # view column names"
+"1","[1]"
+"1"," ""d1"""
+"1"," ""d2"""
+"1","
+"
+"0","names(d.df)=c(""meas_1"",""meas_2"")        # provide new names for columns"
+"0","d.df"

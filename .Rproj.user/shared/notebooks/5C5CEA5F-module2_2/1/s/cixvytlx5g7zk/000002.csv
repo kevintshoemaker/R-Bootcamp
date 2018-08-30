@@ -1,0 +1,18 @@
+"0","####"
+"0","####  Import data as a Tibble dataframe and take a quick glance"
+"0","####"
+"0","# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr "
+"0","clim_data <- read_csv(""MTMetStations.csv"")"
+"2","Parsed with column specification:
+cols(
+  Date = col_character(),
+  PK.TMaxF = col_integer(),
+  PK.TMinF = col_integer(),
+  PK.PrcpIN = col_double(),
+  HH.TMaxF = col_integer(),
+  HH.TMinF = col_integer(),
+  HH.PrcpIN = col_double()
+)
+"
+"0","# display tibble - note nice formatting and variable info, entire dataset is not displayed as is case in read.csv"
+"0","clim_data"

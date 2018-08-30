@@ -1,0 +1,2 @@
+"0","# First legend"
+"0","legend(""topleft"", pch=19, col=plot.colors, legend=unique(ToothGrowth$supp))"

@@ -1,0 +1,7 @@
+"0","####"
+"0","#### Exporting data (save to hard drive as data file)"
+"0","####"
+"0","# ?write.table: writes a file to the working directory"
+"0","# ?writeLines: writes to a file, one line at a time"
+"0","   "
+"0","write.table(data.df[,c(""Country"",""Export"")], file=""data_export.csv"", sep="","", col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in."

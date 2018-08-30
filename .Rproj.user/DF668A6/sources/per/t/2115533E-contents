@@ -1,0 +1,358 @@
+---
+title: "Combining Raster and Vector Data"
+author: "Kyle Bocinsky"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  bookdown::html_document2:
+    code_folding: hide
+    df_print: paged
+    fig_caption: yes
+    toc: true
+    toc_float: true
+editor_options: 
+  chunk_output_type: inline
+---
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(tidyverse)
+library(thredds)
+library(magrittr)
+library(mcor)
+library(sf)
+library(raster)
+library(sp)
+library(fasterize)
+library(velox)
+
+# Get the Flathead Reservation boundary
+flathead <- mt_tribal_land %>%
+  filter(Name == "Flathead") %>%
+  st_transform(4326)
+
+```
+
+In this tutorial we introduce tools and functions for integrating raster and vector data, including aggregating raster data over polygons and rasterizing polygons. We also introduce a new package, **velox**, that enables fast extraction of very large raster data over very many polygons or points.
+
+# Learning goals
+
+- `crop()` rasters to a vector geometry's bounding box
+- `mask()` rasters to a vector geometry
+- `extract()` values from a raster object at the locations of other spatial data, perhaps summarizing.
+- `rasterize()` a vector geometry over a template raster
+- Use the **thredds** package from the Montana Climate Office to access data from THREDDS data services
+
+# **raster**: keeping it old school (for now)
+Most spatial analyses we do don't just require *only* vector or *only* raster data. Everything from putting a hillshade behind some vector data to complex hydrological and climate models require us to combine raster and vector data in creative ways. The **raster** package makes combining these data really easy, and it has improved over the past year so that many functions are now able to interact with simple features. Packages like **stars** may be waiting in the wings, but for now **raster** is your one-stop-shop for dealing with raster data.
+
+## `crop()`
+The **raster** package uses "crop" as the verb meaning to restrict a raster to a specified bounding rectangle (or one derived from another spatial object). All data outside that bounding box gets removed. In this chunk, we crop the elevation data from Lesson 3.3 to the boundary of the Flathead reservation. Crop only works on **sp** objects, so we have to convert the Flathead boundary to a **sp** object.
+
+```{r crop}
+# Load the Flathead NED raster
+flathead_ned <- raster("data/Flathead_NED_1.tif")
+
+# Plot it with Flathead on top
+plot(flathead_ned)
+plot(flathead, 
+     add = T)
+
+# Crop the NED to the Flathead boundary
+flathead_ned_cropped <- crop(flathead_ned,
+                             flathead %>%
+                               as("Spatial")) # Make into an Spatial* object
+
+# Plot the new map
+plot(flathead_ned_cropped)
+plot(flathead, 
+     add = T)
+
+```
+
+## `rasterize()` --> `fasterize()`
+The **raster** package ships with an notoriously slow algorithm for "rasterizing" a polygon, or turning a polygon into a raster. That is unfortunate, because rasterization is in fact the first step in "masking", which we'll discuss in the next section. So, here, we will raserize a polygon (the Flathead Reservation boundary), but use the `fasterize()` method from the **fasterize** package. It is, indeed, *way* faster. We will fasterize the Flathead Reservation boundary, using the cropped Flathead NED as a template raster. By default, all cells within the polygon are given values of 1.
+
+```{r fasterize}
+# rasterize with fasterize
+flathead_rast <- fasterize(flathead, flathead_ned_cropped)
+
+plot(flathead_rast)
+```
+
+## `mask()`
+Masking sets all raster cells not overlapping the geometry (or, optionally, overlapping it) to NA, making them transparent when plotting and easy to omit from calculations. Let's mask the cropped NED to the Flathead boundary. As stated above, the `mask()` function uses `rasterize()` in the background to convert the input polygons into rasters, which is really slow. We can use the output from `fasterize()`, above, to do it in a snap!
+
+```{r mask}
+flathead_ned_cropped_masked <- 
+  flathead_ned_cropped %>%
+  mask(flathead_rast)
+
+# Plot the new raster
+plot(flathead_ned_cropped_masked)
+
+# Alternatively, you can make everything within the geometry NA
+flathead_ned_cropped_masked_inverse <- flathead_ned_cropped %>%
+  mask(flathead_rast,
+       inverse = TRUE)
+
+# Plot the new raster
+plot(flathead_ned_cropped_masked_inverse)
+
+```
+
+## `extract()` --> **velox**
+The extract function is used to retrieve data from a raster underlying either points or polygons, and, optionally, to aggregate those data. Here, we aggregate the Flathead elevation data by the HUC 10 watershed boundary polygons in the Flathead reservation. We report the mean elevation within each watershed.
+
+Like `rasterize()` above, the `extract()` function in **raster** is terribly slow. So, instead, we use a package called **velox**. **velox** requires us to first convert our raster into a **velox** object, and then to perform the extraction. **velox** objects are differnt than other objects we've seen so far in this short course. Suffice it to say, they are a type of object that would be familiar to object-oriented programmers, but not to many users of *R*.
+
+```{r extract}
+flathead_watersheds <- 
+  mt_watersheds %>%
+  filter(`Hydrologic Unit` == 10) %>%
+  st_transform(4326) %>%
+  st_intersection(flathead %>% st_as_sf())
+
+# Plot the elevation data with the HUC boundaries
+plot(flathead_ned_cropped_masked)
+plot(flathead_watersheds,
+     col = NA,
+     add = TRUE)
+
+# Create the velox raster and extract the values
+flathead_ned_cropped_masked.vx <- velox(flathead_ned_cropped_masked)
+
+flathead_watersheds_ned <- 
+  flathead_ned_cropped_masked.vx$extract(flathead_watersheds %>% 
+                                           st_cast(),
+                                         fun = mean)
+flathead_watersheds %<>%
+  mutate(elevation = flathead_watersheds_ned)
+
+plot(flathead_watersheds["elevation"])
+```
+
+# Exercise: Comparing climate scenarios for the Flathead Reservation
+
+## Downloading climate data from a THREDDS server
+The **thredds** package enables exploration, subsetting, and downloading from [THREDDS data servers](https://www.unidata.ucar.edu/software/thredds/current/tds/) through a series of *R* commands.
+
+### Exploring datasets on a THREDDS server
+Here, we first explore the structure of the CIDA THREDDS server hosted by USGS, which has several downscaled climate model datasets. We do so using the `tds_list_datasets` function.
+
+```{r list-datasets}
+# The base url of the CIDA THREDDS server
+cida <- "https://cida.usgs.gov/thredds/"
+
+datasets <- tds_list_datasets(thredds_url = cida)
+datasets
+```
+
+This returns a data frame with dataset names and their paths. It also will return nested catalogs, should there be any. We can then use the `tds_list_services` function to list all of the THREDDS services available for a particular datasets. Lets list the services for "Future LOCA" dataset:
+
+```{r list-services}
+loca_url <- datasets[datasets$dataset == "Future LOCA",]$path
+loca_url
+
+loca_services <- tds_list_services(loca_url)
+loca_services
+```
+
+Similarly to `tds_list_datasets`, `tds_list_services` returns a data frame with service names and URLs.
+
+### Accessing data through the NetCDF Subset service
+The first service functions to be developed in **thredds** are for the NetCDF Subset service ("ncss"). Here, we first query the variables available in the dataset, which in the case of the LOCA dataset represent combinations of [CMIP5 models](https://pcmdi.llnl.gov/mips/cmip5/), [representative climate pathways](https://en.wikipedia.org/wiki/Representative_Concentration_Pathways) (RCPs, or emissions scenarios), and climate variables. The other fields in the table will vary based on the dataset.
+
+```{r ncss-vars}
+loca_ncss <- loca_services[loca_services$service == "NetcdfSubset",]$path
+loca_ncss
+
+loca_vars <- tds_ncss_list_vars(ncss_url = loca_ncss)
+loca_vars
+
+```
+
+Finally, we can download some data. Lets download the maximum daily temperature data from the Community Climate System Model (CCSM4), for both RCPs so we can compare them. We use the `tds_ncss_download` function; we have to provide the URL of the NetCDF Subset service (the same we used for `tds_ncss_list_vars` above), a character vector of variable names, and a file name and location for the output. We'll create a temporary location to put the file for now.
+
+**Note: This take a while to run, as the LOCA dataset has to be processed on the THREDDS server. The output should already be in your data directory.**
+```{r ncss download loca, eval=FALSE}
+
+CCSM4_loca <- tds_ncss_download(ncss_url = loca_ncss,
+                           out_file = "data/CCSM4_loca.nc",
+                           bbox = flathead %>%
+                             sf::st_bbox(),
+                           vars = c("tasmax_CCSM4_r6i1p1_rcp45",
+                                    "tasmax_CCSM4_r6i1p1_rcp85"),
+                           ncss_args = list(temporal="all"))
+
+CCSM4_loca
+```
+
+There are many different techniques used to downscale climate data for a local area. The one we've just downloaded uses the [LOCA method](http://loca.ucsd.edu/)---Localized Constructed Analogs---used in the National Climate Assessment. Another is the MACA method---Multivariate Adaptive Constructed Analogs---developed out of the University of Idaho and used in the Montana Climate Assessment. Let's download and save the MACA version 2 data for the Flathead Reservation using the **mcor** package.
+
+**Note: This take a while to run, as the MACA dataset has to be processed on the THREDDS server. The output should already be in your data directory.**
+```{r ncss maca, eval=FALSE}
+maca_url <- datasets[datasets$dataset == "Daily Future MACAv2METDATA",]$path
+maca_url
+
+maca_services <- tds_list_services(maca_url)
+maca_services
+
+maca_ncss <- maca_services[maca_services$service == "NetcdfSubset",]$path
+maca_ncss
+
+maca_vars <- tds_ncss_list_vars(ncss_url = maca_ncss)
+maca_vars
+
+
+CCSM4_maca <- tds_ncss_download(ncss_url = maca_ncss,
+                           out_file = "data/CCSM4_maca.nc",
+                           bbox = flathead %>%
+                             sf::st_bbox(),
+                           vars = c("tasmax_CCSM4_r6i1p1_rcp45",
+                                    "tasmax_CCSM4_r6i1p1_rcp85"),
+                           ncss_args = list(temporal="all"))
+
+CCSM4_maca
+```
+
+## Loading the climate data
+
+The `tds_ncss_download` function outputs the path to the downloaded data. In R, we can load a NetCDF using the `brick()` function from the *raster* package. Here, we do so, and then aggregate and plot the data in a couple of ways. Note that we have to import each variable separately when using *raster*; the forthcoming package [*stars*](https://r-spatial.github.io/stars/) will be able to load many variables simultaneously.
+
+```{r load climate data}
+
+# Load the LOCA data
+CCSM4_loca_rcp45 <- raster::brick("data/CCSM4_loca.nc", 
+                                  varname = "tasmax_CCSM4_r6i1p1_rcp45")
+
+CCSM4_loca_rcp85 <- raster::brick("data/CCSM4_loca.nc", 
+                                  varname = "tasmax_CCSM4_r6i1p1_rcp85")
+
+# Load the MACA data
+CCSM4_maca_rcp45 <- raster::brick("data/CCSM4_maca.nc", 
+                                  varname = "tasmax_CCSM4_r6i1p1_rcp45")
+
+CCSM4_maca_rcp85 <- raster::brick("data/CCSM4_maca.nc", 
+                                  varname = "tasmax_CCSM4_r6i1p1_rcp85")
+
+# Print info on one of the LOCA datasets
+CCSM4_loca_rcp45
+
+# Print info on one of the MACA datasets
+CCSM4_maca_rcp45
+
+```
+
+**Explore the LOCA and MACA datasets on your own. What are their minimum and maximum values?**
+
+## Rotating rasters
+One thing you probably noticed is that the LOCA dataset has x coordinates (longitude) from 0 to 360. This is common in global climate models, but we need to *rotate* the raster so that it has standard coordinates between -180 and 180 degrees. Lucky for us, there's a function for that! We'll use the `rotate()` function from **raster**. Ignore the warnings.
+
+```{r rotate loca data}
+CCSM4_loca_rcp45 %<>%
+  rotate()
+
+CCSM4_loca_rcp85 %<>%
+  rotate()
+
+CCSM4_loca_rcp45
+
+
+```
+
+**You probably also noticed that the MACA dataset is in Kelvin! Convert the two MACA bricks into Celcius by subtracting `273.15`**
+```{r kelvin to celcius}
+CCSM4_maca_rcp45 <- CCSM4_maca_rcp45 - 273.15
+CCSM4_maca_rcp85 <- CCSM4_maca_rcp85 - 273.15
+
+```
+
+Let's plot the first layer of each
+
+```{r plot climate}
+# Plot the first layer of each to compare
+plot(CCSM4_loca_rcp45[[1]])
+plot(flathead, add = T, col = NA)
+
+# Plot the first layer of each to compare
+plot(CCSM4_maca_rcp45[[1]])
+plot(flathead, add = T, col = NA)
+
+```
+
+## Averaging across space and plotting
+
+Alright, we are ready to extract the temperature data for the Flathead Reservation, and calculate the mean temperature across space, through time. As you've learned by now, there are a dozen ways in *R* to accomplish any task. Let's us the `mask()` function to mask our bricks to the Flathead reservation, then the `cellStats()` function to calculate the mean daily maximum temperature through time.
+
+```{r extract and calculate average temperature, out.width="100%"}
+CCSM4_loca_rcp45_mean <- 
+  CCSM4_loca_rcp45 %>%
+  mask(flathead) %>% # Mask by the Flathead reservation
+  cellStats(mean) # Calculate the mean
+
+CCSM4_loca_rcp85_mean <- 
+  CCSM4_loca_rcp85 %>%
+  mask(flathead) %>% # Mask by the Flathead reservation
+  cellStats(mean) # Calculate the mean
+
+CCSM4_maca_rcp45_mean <- 
+  CCSM4_maca_rcp45 %>%
+  mask(flathead) %>% # Mask by the Flathead reservation
+  cellStats(mean) # Calculate the mean
+
+CCSM4_maca_rcp85_mean <- 
+  CCSM4_maca_rcp85 %>%
+  mask(flathead) %>% # Mask by the Flathead reservation
+  cellStats(mean) # Calculate the mean
+
+# Create data frames
+CCSM4_loca_timeseries <- 
+  tibble::tibble(`Downscaling Method` = "LOCA",
+                                        Date = names(CCSM4_loca_rcp45) %>%
+                                     stringr::str_remove("X") %>%
+                                     lubridate::as_date(),
+                                   `RCP 4.5` = CCSM4_loca_rcp45_mean,
+                                   `RCP 8.5` = CCSM4_loca_rcp85_mean)
+
+CCSM4_maca_timeseries <- tibble::tibble(`Downscaling Method` = "MACA",
+                                        Date = names(CCSM4_maca_rcp45) %>%
+                                     stringr::str_remove("X") %>%
+                                     lubridate::as_date(),
+                                   `RCP 4.5` = CCSM4_maca_rcp45_mean,
+                                   `RCP 8.5` = CCSM4_maca_rcp85_mean)
+
+# Bind the datasets together
+CCSM4_timeseries <- bind_rows(CCSM4_loca_timeseries, 
+                              CCSM4_maca_timeseries)
+
+# Let's extract the average temperature for June for each year, and convert to Fahrenheit
+CCSM4_timeseries %<>%
+  filter(lubridate::month(Date) == 6) %>% # Filter by June
+  mutate(Year = lubridate::year(Date) %>% # Make a variable for year
+                  as.integer()) %>%
+  group_by(`Downscaling Method`, Year) %>%
+  summarise_at(.vars = vars(`RCP 4.5`,
+                                          `RCP 8.5`),
+                      .funs = mean) %>%
+  gather(`Emissions\nScenario`, Value, -`Downscaling Method`, -Year) %>%
+  mutate(Value = Value * (9/5) + 32) %>% # Convert to Fahrenheit
+  ungroup()
+
+```
+
+```{r plot, out.width="50%", fig.align="center"}
+
+
+CCSM4_timeseries %>%
+  ggplot(aes(x = Year,
+             y = Value,
+             color = `Emissions\nScenario`,
+             linetype = `Downscaling Method`)) +
+  geom_line() +
+  geom_smooth() +
+  ylab("Average June Daytime\nMaximum Temperature (F)") 
+
+```

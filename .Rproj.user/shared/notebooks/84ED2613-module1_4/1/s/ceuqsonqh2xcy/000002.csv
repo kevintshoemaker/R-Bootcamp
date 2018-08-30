@@ -1,0 +1,92 @@
+"0","###########"
+"0","# install package from GitHub:"
+"0","# install.packages(""devtools"")    # run this if you haven't already installed the ""devtools"" package"
+"0","library(devtools)"
+"0","install_github(""kbroman/broman"")  # install a random package from GitHub!"
+"2","Downloading GitHub repo kbroman/broman@master
+from URL https://api.github.com/repos/kbroman/broman/zipball/master
+"
+"2","Installing broman
+"
+"2","Installing 1 package: RPushbullet
+"
+"2","Installing package into ‘C:/Users/kshoemaker/Documents/R/win-library/3.5’
+(as ‘lib’ is unspecified)
+"
+"2","cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5/PACKAGES.rds': HTTP status was '404 Not Found'"
+"2","cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5/PACKAGES.gz': HTTP status was '404 Not Found'"
+"2","cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5/PACKAGES': HTTP status was '404 Not Found'"
+"2","unable to access index for repository http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5:
+  cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5/PACKAGES'"
+"2","trying URL 'https://mran.microsoft.com/snapshot/2018-06-01/bin/windows/contrib/3.5/RPushbullet_0.3.1.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 58014 bytes (56 KB)
+"
+"2","downloaded 56 KB
+
+"
+"1","package â€˜RPushbulletâ€™ successfully unpacked and MD5 sums checked
+"
+"1","
+"
+"1","The downloaded binary packages are in
+	C:\Users\kshoemaker\AppData\Local\Temp\RtmpWKNa5k\downloaded_packages"
+"1","
+"
+"2","""C:/PROGRA~1/MIE74D~1/ROPEN~1/R-35~1.0/bin/x64/R"" --no-site-file --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+  ""C:/Users/kshoemaker/AppData/Local/Temp/RtmpWKNa5k/devtools1b146ba113e/kbroman-broman-bdfb448""  \
+  --library=""C:/Users/kshoemaker/Documents/R/win-library/3.5"" --install-tests 
+"
+"2","
+"
+"1","* installing *source* package 'broman' ...
+"
+"1","** libs
+"
+"1","C:/Rtools/mingw_64/bin/gcc -m64 -I""C:/PROGRA~1/MIE74D~1/ROPEN~1/R-35~1.0/include"" -DNDEBUG     -I""C:/swarm/workspace/External-R-3.5.0/vendor/extsoft/include""     -O2 -Wall  -std=gnu99 -mtune=core2 -c R_init.c -o R_init.o
+"
+"1","C:/Rtools/mingw_64/bin/gcc -m64 -I""C:/PROGRA~1/MIE74D~1/ROPEN~1/R-35~1.0/include"" -DNDEBUG     -I""C:/swarm/workspace/External-R-3.5.0/vendor/extsoft/include""     -O2 -Wall  -std=gnu99 -mtune=core2 -c compare_rows.c -o compare_rows.o
+"
+"1","C:/Rtools/mingw_64/bin/gcc -m64 -I""C:/PROGRA~1/MIE74D~1/ROPEN~1/R-35~1.0/include"" -DNDEBUG     -I""C:/swarm/workspace/External-R-3.5.0/vendor/extsoft/include""     -O2 -Wall  -std=gnu99 -mtune=core2 -c count_close.c -o count_close.o
+"
+"1","C:/Rtools/mingw_64/bin/gcc -m64 -I""C:/PROGRA~1/MIE74D~1/ROPEN~1/R-35~1.0/include"" -DNDEBUG     -I""C:/swarm/workspace/External-R-3.5.0/vendor/extsoft/include""     -O2 -Wall  -std=gnu99 -mtune=core2 -c normalize.c -o normalize.o
+"
+"1","C:/Rtools/mingw_64/bin/gcc -m64 -I""C:/PROGRA~1/MIE74D~1/ROPEN~1/R-35~1.0/include"" -DNDEBUG     -I""C:/swarm/workspace/External-R-3.5.0/vendor/extsoft/include""     -O2 -Wall  -std=gnu99 -mtune=core2 -c runningmean.c -o runningmean.o
+"
+"1","runningmean.c: In function 'runningmean':
+"
+"1","runningmean.c:99:53: warning: 'work3' may be used uninitialized in this function [-Wmaybe-uninitialized]
+"
+"1","                     result[i] = (work3[ns/2-1]+work3[ns/2])/2.0;
+"
+"1","                                                     ^
+"
+"1","C:/Rtools/mingw_64/bin/gcc -m64 -shared -s -static-libgcc -o broman.dll tmp.def R_init.o compare_rows.o count_close.o normalize.o runningmean.o -LC:/swarm/workspace/External-R-3.5.0/vendor/extsoft/lib/x64 -LC:/swarm/workspace/External-R-3.5.0/vendor/extsoft/lib -LC:/PROGRA~1/MIE74D~1/ROPEN~1/R-35~1.0/bin/x64 -lR
+"
+"1","installing to C:/Users/kshoemaker/Documents/R/win-library/3.5/broman/libs/x64
+"
+"1","** R
+"
+"1","** data
+"
+"1","*** moving datasets to lazyload DB
+"
+"1","** inst
+"
+"1","** tests
+"
+"1","** byte-compile and prepare package for lazy loading
+"
+"1","** help
+"
+"1","*** installing help indices
+"
+"1","** building package indices
+"
+"1","** testing if installed package can be loaded
+"
+"1","* DONE (broman)
+"
+"1","In R CMD INSTALL
+"

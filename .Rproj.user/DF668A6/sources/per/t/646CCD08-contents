@@ -1,0 +1,307 @@
+---
+title: "Stats and EDA, Pt. 2"
+author: "Tracy Bowerman"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  bookdown::html_document2:
+    code_folding: hide
+    df_print: paged
+    fig_caption: yes
+    toc: true
+    toc_float: true
+    collapsed: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Disclaimer: this tutorial is provided to you free of charge in the hopes that it will help you learn R and that stats and data analysis will be more accessible.  However, no decisions regarding which statistics to use when should be based on this document!  Please consult a statistician or make sure to do your own research to evaluate which statistical test is valid for your data and how to interpret your results.
+
+
+In this tutorial we will explore data with multiple variables, conduct further exploratory analyses, and demonstrate how to run linear regression and anova.
+
+## Learning goals
+In this tutorial, you will conduct preliminary exploratory analyses on data with multiple variables and perform these tasks:
+  
+  -  run a one-way anova and evaluate residuals
+  -  assess correlations
+  -  test for variance inflation?
+  -  evaluate the relationship between Y and X variables
+  -  run a linear regression and evaluate residuals
+  -  run an anova and evaluate residuals
+  -  look for interactions among predictor variables
+  
+```{r load stuff}
+library(tidyverse)
+library(lattice)
+```
+
+
+Let's do a quick review of our stats by running a 1-way anova to evaluate whether sepal width, one of the iris data variables, differs among species.  Just as before, we will start by evaluating normality and homogeneity. I'm including a few alternative ways of making the same types of plots that we used before.  This should look just like the steps we took to run the t-test because the one-way ANOVA is an extension of the independent samples t-test which allows us to compare more than 2 groups (K > 2). While you could run a slew of paired-samples t-tests on the dataset, the one-way ANOVA provides a much more powerful analysis and controls for Type 1 error inflation.
+
+```{r plots to evaluate assumptions for one-way anova}
+
+# use a boxplot to look at homogeneity of variance between 3 species
+boxplot(Sepal.Width ~ Species,
+  data = iris,
+  col = c("magenta", "dark green", "blue"),
+  main = "Boxplot", xlab = "Species", ylab = "Sepal width (cm)"
+)
+
+with(iris, plot(density(Sepal.Width[Species == "setosa"]),
+  xlim = c(2.0, 4.5), ylim = c(0, 1.5), main = "density plot",
+  xlab = "Petal length", col = "magenta", lwd = 2
+))
+
+with(iris, lines(density(Sepal.Width[Species == "versicolor"]), col = "dark green", lwd = 2))
+with(iris, lines(density(iris$Sepal.Width[iris$Species == "virginica"]), col = "blue", lwd = 2))
+
+# Same density plot using the ggplot package (there are dozens of packages you can choose from)
+library(ggplot2)
+theme_set(theme_classic())
+
+g <- ggplot(iris, aes(Sepal.Width))
+g + geom_density(aes(fill = factor(Species)), alpha = 0.8) +
+  labs(
+    title = "Density plot",
+    x = "Sepal Width",
+    fill = "Species"
+  )
+
+# make histograms for the three species in the lattice package
+library(lattice)
+histogram(~ Sepal.Width | Species, data = iris, breaks = 10)
+
+# Bartlett test for homogeneity of variances
+bartlett.test(Sepal.Width ~ Species, data = iris)
+```
+# based on these plots it looks to me like the data are mostly normally distributed with equal variance--both assumptions needed for anova
+
+# one-way anova to test for differences in sepal width between the 3 iris species.
+
+```{r anova example}
+# the formula for the anova model is exactly the same as the bartlett test and plotting we used above; aov is the anova model
+sepal.anova <- aov(Sepal.Width ~ Species, data = iris)
+summary(sepal.anova) ## get summary output from the model
+
+# results indicate that there is a significant difference between the species but doesn't tell us which ones.  A Tukeys HSD (honestly significant difference) is a post-hoc test commonly used to evaluate the relationships between the variables in an anova.
+TukeyHSD(sepal.anova)
+# it appears that that all 3 are different from one another, and the biggest difference is between the setosa species and the other two (which we saw from the boxplot)
+
+# examine residuals to evaluate assumptions:
+# The residuals from the data are normally distributed.
+
+par(mfrow = c(2, 2))
+plot(sepal.anova)
+
+```
+
+# Optional exercise: 
+go back and play around with any of the graphs we just did, or run a similar analysis for another variable in the iris dataset.  Or we can keep moving
+
+
+# Linear regression:
+We will again use the iris data to evaluate the relationship between petal length and the remaining iris variables using linear regression.  Again, we will use a simplified dataset (the same subset of iris data we used before, with setosa omitted) so we can meet the assumptions of normality.  However, the bigger problem is that based on our t-test and boxplot from before, we know that petal length is significantly different among the species.  So this is a contrived analysis for sure.  In real life we would want to take a different approach to account for the effect of species on petal length and width.
+
+Let's walk through the steps to explore data prior to a linear regression.  The first couple would be the same whether you are doing a simple linear regression or multiple regression.  
+
+```{r exploratory plots for regression analysis}
+# Using the iris.sub data again for linear regression, then we will follow the data exploration protocol again
+# we should be getting used to this by now
+iris.sub <- iris %>% 
+  filter(Species!="setosa")
+iris.sub <- droplevels(iris.sub)
+
+# We have already explored these data to some degree
+# step 1: we know there are no outliers in Petal.Length data; what about in predictors
+par(mfrow = c(2, 2))
+dotchart(iris.sub$Petal.Length, 
+         ylab = "Order of the data", 
+         xlab = "petal length")
+
+dotchart(iris.sub$Petal.Width, 
+         ylab = "Order of the data", 
+         xlab = "petal width")
+
+dotchart(iris.sub$Sepal.Length, 
+         ylab = "Order of the data", 
+         xlab = "sepal length")
+
+dotchart(iris.sub$Sepal.Width, 
+         ylab = "Order of the data", 
+         xlab = "sepal width")
+
+# step 2: homogeneity of variance: verification of homogeneity can be done with residuals in linear regression (remember that that refers to Y variables, not X); i.e. by plotting residuals vs. fitted values, and making a similar set of conditional boxplots for the residuals.
+
+# step 3: Linear regression does assume normality of response variable (Y), but is reasonably robust against violation of this assumption.  We also did this before but let's check--
+par(mfrow = c(1, 1))
+hist(iris.sub$Petal.Length, 
+     breaks = 20) ## mostly normally distributed
+
+with(iris.sub, plot(density(Petal.Length)))
+#another way to show this
+with(iris.sub, densityplot(Petal.Length)) # if you use this command, it shows distribution of points
+qqnorm(iris.sub$Petal.Length)
+qqline(iris.sub$Petal.Length)
+# looks good
+
+# Step 4.  we know there's no zero trouble from histogram; if there was??
+```
+
+# Data exploration results
+So far, our evaluation of the single variables all look good.  If we were conducting simple linear regression, we would be all set here.  Let's run one in which we examine the relationship between petal width as the predictor variable and petal length as the response.  We will examine the residuals to evaluate whether they meet the assumption of iid--independent and identically distributed (i.e., assumptions of normality, constant variance, and independence).
+
+```{r simple linear regression}
+
+# plot the model before you run it so you can visualize results
+plot(Petal.Length ~ Petal.Width, data=iris.sub)
+
+# the model formula is exactly the same as what we have been using to this point.  We use lm to call a linear model.  I named the model  m1 but you could call it anything
+m1 <- lm(Petal.Length ~ Petal.Width, data=iris.sub)
+
+# look at the model output
+summary(m1)
+# set up the plotting window to have 2 rows and 2 columns so you can look at all 4 basic ouput graphs together
+par(mfrow = c(2, 2))
+
+# when you plot the model, R gives you some basic plots to assess model fit and evaluate the assumptions of of normality, constant variance, and independence
+plot(m1)
+```
+
+#reading the residual graphs:
+In all these graphs the residual variation should be similar among points.  In this case, you can see deviation in the upper portion of the normal QQ that corresponds with the curve in the residuals vs fitted plot.  Both are a little troubling. The solution to heterogeneity of variance is either a transformation of the response variable to stabilize the variance, or applying statistical techniques that do not require homogeneity.  
+
+# exercise: 
+try apply a transformation to one of the variables to see if that helps solve the problem.  As a reminder, the code for that would look something like:
+#iris.sub$ln.Petal.Length <- log(iris.sub$Petal.Length)
+or you could use the mutate command
+
+# multiple linear regression
+Let's set that question aside for now and try a multiple regression with the same response variable and multiple predictors.  Going back to our data exploration checklist, we are now concerned with the potential for #5: collinearity
+
+```{r  assessing collinearity prior to running multiple regression }
+# Since we have already looked for outliers and assessed our response variable, we can start by checking for collinearity among the predictor variables
+
+# 5. Collinearity among predictors
+#  the quick and dirty way to look at correlation between multiple variables
+pairs(iris.sub)
+
+# return correlation values between two variables; default is Pearson's
+cor(iris.sub$Petal.Width, 
+    iris.sub$Petal.Length)
+
+# you can specify other methods of estimating correlation (or do the calculations yourself!)
+cor(iris.sub$Petal.Width, 
+    iris.sub$Petal.Length, 
+    method = "spearman")
+
+cor(iris.sub$Petal.Width, 
+    iris.sub$Petal.Length, 
+    method = "kendall")
+
+# # The function below calculates the pearson correlation among variables and adds the correlation coefficient to the plot
+panel.pearson <- function(x, y, ...) {
+  horizontal <- (par("usr")[1] + par("usr")[2]) / 2
+  vertical <- (par("usr")[3] + par("usr")[4]) / 2
+  text(horizontal, vertical, format(abs(cor(x, y)), digits = 2))
+}
+
+# use the pairs function again, but this time make it look nice, add colors, and have the upper set of panels show the panel.pearson function from above
+pairs(iris.sub[1:4],
+      main = "Correlation iris variables", pch = 21,
+      bg = c("magenta", "dark green", "blue")[iris.sub$Species],
+      upper.panel = panel.pearson
+)
+## iris[1:4] specifies just use first 4 variables (row and column)
+
+## alternatively, you can specify which variables you want to plot (it is sometimes better to write them out this way so you can keep track if you are working with multiple datasets with different numbers of variables)--this will make the same plot as above
+pairs(iris.sub[c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")],
+      main = "Correlation iris variables", pch = 21,
+      bg = c("magenta", "dark green", "blue")[iris.sub$Species],
+      upper.panel = panel.pearson
+)
+
+```
+# correlation 
+correlation among all predictors is low, so we can include all 3 predictors in multiple regression model (we could also calculate variance inflation.  There are many ways to do this in R.  I am including some raw code to write a function that calculates VIF)  Note: if correlation among predictors is high, you would either want to just work with the ones of greatest biological importance that are not correlated or do a principle components analysis or similar
+
+# Next steps in protocol
+6.  Look at Y relative to all X--we just did that!
+it looks like both Sepal Length and Petal Width could be predictors.  Might as well include all 3 in the model, since they show low correlation
+
+7.  interactions: no real cause to think about interactions here; we will look at an example below
+8. independence of Y--we will evaluate this through examination of residuals
+
+For this analysis we are done with the data exploration and can proceed with regression model.  We will initially make a model that includes all 3 predictor variables
+
+```{r multiple regression example}
+
+# specify the model the same way we have been.  In this case, there is really no biological reason to look at interactions, so we will build an additive model (i.e., one without interactions) of petal length modeled upon the three predictor variables separated by the '+' sign
+m.multiple <- lm(Petal.Length ~ Petal.Width + Sepal.Length + Sepal.Width,
+  data = iris.sub
+)
+# get model output
+summary(m.multiple)
+plot(m.multiple)
+# As we suspected, petal width and sepal length are both strong predictors of Petal length, whereas sepal width is borderline
+
+# now depending on which school of stats you adhere to, you might either choose to do something like stepwise regression, backward regression, etc.  That choice is up to you.  I decided not to work through that code because depending on your choice, you will want to read up on the process(es).
+
+# another alternative is to write a simpler model and compare the two models.
+m.multiple2 <- lm(Petal.Length ~ Petal.Width * Sepal.Length,
+  data = iris.sub
+)
+summary(m.multiple2)
+# note this anova  function is slightly different than the aov function we used earlier--this one is used to compare results returned by a model fitting function
+anova(m.multiple, m.multiple2)
+# results are borderline significant again, suggesting there is some evidence for retaining the model with more parameters.  If there was no significant difference, you generally go with the more parsimonious model.  But wtih P=0.043 you could probably argue either way.
+
+# for now let's stick with the first model and look at the diagnostic plots
+par(mfrow = c(2, 2))
+plot(m.multiple2)
+
+# hey look at that.  Including additional variables mostly got rid of the problems with the residuals we had with the simple regression.
+
+# here's how to call various parts of the model output so you can make your own plots
+str(m.multiple)  # you can look at the structure of the model
+names(m.multiple)  # or ask for the names of model components
+m.multiple$coefficients  # call just the coefficients
+m.multiple$residuals  # or the residuals or fitted values etc.
+m.multiple$fitted.values
+vcov(m.multiple)  # or variance-covariance matrix
+
+```
+
+# exercise
+try to re-create some of the residual plots, such as residuals vs fitted and normal QQ using the residuals from above
+
+# additional plots to evaluate interactions
+although we did not have interactions in this example, below I included code to examine interactions between predictor variables
+
+```{r plots to visualize interactions}
+# load the lattice package-- a quick way to visualize plots with multiple factors; all the plots below were made in lattice
+library(lattice)
+library(tidyverse)
+
+FLS <- read_csv("data/FlatheadLk_Salv.csv")
+# using the Flathead lake char data again (FLS was the full dataset), make a boxplot to look at interactions between sampling period and species (e.g., is the difference between bull trout and lake trout size the same in the 2 seasons?)
+
+bwplot(Average_Length ~ Section | Species, data=FLS)
+# there appears to be an interaction: bull trout avg length was smaller in spring and lake trout were larger
+
+# use scatterplot for each species to look at interaction between continuous and categorical (are slopes of lines different?)
+xyplot(Average_Length ~ Average_Weight | Species, 
+       data = FLS, 
+       type = c("p", "r")) # type= p calls points, and r calls bivariate regression line
+
+# use a coplot to look at 3-way interactions between one continuous and 2 categorical variables
+coplot(Average_Length ~ Average_Weight | Species * Section,
+  data = FLS,
+  panel = function(x, y, ...) {
+    tmp <- lm(y ~ x, 
+              na.action = na.omit)
+    abline(tmp)
+    points(x, y)
+  }
+)
+```
+

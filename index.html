@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="A hopefully more-or-less painless introduction to R" />
+
+
+<title>Welcome to R Bootcamp!</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2018</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Bootcamp #1: getting started
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="module1_1.html">Module 1.1: working with objects</a>
+    </li>
+    <li>
+      <a href="module1_2.html">Module 1.2: managing data</a>
+    </li>
+    <li>
+      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
+    </li>
+    <li>
+      <a href="module1_4.html">Module 1.4: expanding your skill set</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Bootcamp #2: beyond the basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="module2_1.html">Module 2.1: Programming in R</a>
+    </li>
+    <li>
+      <a href="module2_2.html">Module 2.2: Using the 'tidyvierse'</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data sets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="turtle_data.txt">Turtle Data</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Welcome to R Bootcamp!</h1>
+<h4 class="author"><em>A hopefully more-or-less painless introduction to R</em></h4>
+<h4 class="date"><em>Fall 2018</em></h4>
+
+</div>
+
+
+<ul>
+<li><strong>When?</strong> The first two Saturday afternoons of the 2018 Fall semester- Sep 1 and 8 from 1 to 5pm.</li>
+<li><strong>Where?</strong> DMSC 103 (Davidson Math and Science Center, first floor)<br />
+</li>
+<li><strong>What to prepare?</strong> Please bring your laptop computer! If possible, install R and RStudio prior to coming to the first bootcamp (see <a href="Links.html">links</a>).</li>
+</ul>
+<div id="facilitators" class="section level2">
+<h2>Facilitators</h2>
+<p><a href="http://naes.unr.edu/shoemaker/">Kevin Shoemaker</a><br />
+Department of Natural Resources and Environmental Science<br />
+Office: Fleischmann Agriculture 220E<br />
+Email: <a href="kshoemaker@cabnr.unr.edu" class="uri">kshoemaker@cabnr.unr.edu</a></p>
+<p><a href="http://www.perrywilliams.us/">Perry Williams</a><br />
+Department of Natural Resources and Environmental Science<br />
+Office: 240 Fleischmann<br />
+Email: perryw(at)unr(dot)edu</p>
+<p><a href="http://mgritts.github.io/cv/">Mitchell Gritts</a><br />
+Nevada Department of Wildlife<br />
+Email: mgritts(at)ndow(dot)org</p>
+<p><a href="http://www.csp-inc.org/about-us/core-science-staff/albano-christine/">Christine Albano</a><br />
+Lead Scientist at Conservation Science Partners and doctoral student at DRI<br />
+Email: christine(at)csp-inc(dot)org</p>
+<p><a href="http://jessilbrown.org/Welcome.html">Jessi Brown</a><br />
+Department of Biology<br />
+Office: Fleischmann Agriculture 244<br />
+Email: jlbrown(at)unr(dot)edu</p>
+<p><a href="https://naes.unr.edu/gears/">Jonathan Greenberg</a><br />
+Department of Natural Resources and Environmental Science<br />
+Office: 241 Fleischmann Ag<br />
+Email: jgreenberg(at)unr(dot)edu</p>
+<p><a href="http://www.nussear.com/">Ken Nussear</a><br />
+Department of Geography<br />
+Office: Mackay Science Room 223<br />
+Email: knussear(at)unr(dot)edu</p>
+<p><a href="https://naes.unr.edu/gears/">Adriana Parra</a><br />
+G.E.A.R.S. lab in NRES<br />
+Office: 241 Fleischmann Ag<br />
+Email: adrianaparra(at)unr(dot)edu</p>
+<p><a href="http://newinghamlab.weebly.com/lab-members.html">Stephanie Freund</a><br />
+Office: Agricultural Education 002<br />
+Newingham lab at ARS<br />
+Email: smfreu(at)gmail(dot)com</p>
+<p><a href="https://naes.unr.edu/harpold/">Rose Petersky</a><br />
+Nevada Mountain Ecohydrology Lab, NRES<br />
+Email: rosepetersky(at)gmail(dot)com</p>
+<p><a href="http://naes.unr.edu/shoemaker/lab/about/">Nathan Cook</a><br />
+Applied Population Ecology Lab, NRES<br />
+Office: FA 235<br />
+Email: nathancook(at)nevada.unr(dot)edu</p>
+<p><a href="http://pauljhurtado.com/">Paul Hurtado</a><br />
+Department of Mathematics and Statistics<br />
+Office: Davidson Math and Science Center 220<br />
+Email: <a href="phurtado@unr.edu" class="uri">phurtado@unr.edu</a></p>
+</div>
+<div id="about" class="section level2">
+<h2>About</h2>
+<p>The statistical programming software “R” is one of the fundamental tools of modern science, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of quality figures) will make graduate research much more manageable! Because many incoming graduate students have limited prior experience with R, we are offering short R/programming “bootcamps” during the first two Saturdays of the fall semester (Sep 1 and 8, 1pm to 5pm, in DMSC 103).</p>
+<p>The main goal of these 4-hr workshops will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshops are primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the second workshop, which will delve into more advanced topics. The first bootcamp (Sep 1) will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second bootcamp (Sep 8) will focus on some more advanced programming operations (loops, functions, debugging etc.), vectorized operations (e.g., “apply” functions), working with large datasets, and (very briefly) running scripts in parallel and taking advantage of UNR’s high-performance computing facility.</p>
+<p>Each bootcamp will consist of a series of short modules, each of which covers a particular skill (e.g., reading in data, writing functions). Modules will include a quick introduction, a demonstration in R, and some short challenges for you to work through on your own (or with your neighbors!). All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won’t need to constantly copy and paste from the web!</p>
+<p><a href="module1_1.html">–go to first module–</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1533948409467.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1447475569",
+    "id" : "4E4A93F2",
+    "lastKnownWriteTime" : 1531885314,
+    "last_content_update" : 1531885314,
+    "path" : "E:/Dropbox/My Service/R Bootcamp/Materials from Christine/SKCr_day_2/2.2 Stats and EDA revised.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "chunk_output_type" : "console",
+        "cursorPosition" : "15,223",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

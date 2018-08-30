@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Getting started: plotting and basic stats" />
+
+
+<title>Module 1.3</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2018</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Bootcamp #1: getting started
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="module1_1.html">Module 1.1: Getting started: working with objects</a>
+    </li>
+    <li>
+      <a href="module1_2.html">Module 1.2: Getting started: managing data</a>
+    </li>
+    <li>
+      <a href="module1_3.html">Module 1.3: Getting started: plotting and basic stats</a>
+    </li>
+    <li>
+      <a href="module1_4.html">Module 1.4: Getting started: expanding your skill set</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Bootcamp #2: beyond the basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="module2_1.html">Module 2.1: Programming in R</a>
+    </li>
+    <li>
+      <a href="module2_2.html">Module 2.2: Using the 'tidyvierse'</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data sets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="turtle_data.txt">Turtle Data</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Module 1.3</h1>
+<h4 class="author"><em>Getting started: plotting and basic stats</em></h4>
+<h4 class="date"><em>September 2018</em></h4>
+
+</div>
+
+
+<p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. - Thanks to Perry Williams for allowing us to use these materials!! - Thanks to John Tipton at CSU for developing much of this module (plotting in R)!</p>
+<div id="load-script-for-module-1.3" class="section level2">
+<h2>Load script for module #1.3</h2>
+<ol style="list-style-type: decimal">
+<li><p>Click <a href="module1_3.R">here</a> to download the script! Save the script to a convenient folder on your laptop.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script.</p></li>
+</ol>
+</div>
+<div id="plotting" class="section level2">
+<h2>Plotting!</h2>
+<p>Let’s get started with plotting in R!</p>
+<p>We’ll start with the ‘trees’ dataset, which is built into R. It describes the girth, height, and volume of 31 black cherry trees.</p>
+<pre class="r"><code>?trees      # description of built in dataset</code></pre>
+<pre><code>## starting httpd help server ... done</code></pre>
+<pre class="r"><code>dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
+<pre><code>## [1] 31  3</code></pre>
+<pre class="r"><code>str(trees)   # Show the structure of the trees dataframe</code></pre>
+<pre><code>## &#39;data.frame&#39;:    31 obs. of  3 variables:
+##  $ Girth : num  8.3 8.6 8.8 10.5 10.7 10.8 11 11 11.1 11.2 ...
+##  $ Height: num  70 65 63 72 81 83 66 75 80 75 ...
+##  $ Volume: num  10.3 10.3 10.2 16.4 18.8 19.7 15.6 18.2 22.6 19.9 ...</code></pre>
+<pre class="r"><code>head(trees)   # Show the first few observations of the trees dataframe</code></pre>
+<pre><code>##   Girth Height Volume
+## 1   8.3     70   10.3
+## 2   8.6     65   10.3
+## 3   8.8     63   10.2
+## 4  10.5     72   16.4
+## 5  10.7     81   18.8
+## 6  10.8     83   19.7</code></pre>
+<pre class="r"><code># Access the columns 
+trees$Girth     
+trees$Volume</code></pre>
+<div id="basic-plots" class="section level3">
+<h3>Basic plots</h3>
+<p>R’s basic “plot()” function takes an “x” argument (defining coordinates on an x axis) and a “y” argument (defining coordinates on a y axis).</p>
+<p>Here is an example of a <strong>scatterplot</strong></p>
+<pre class="r"><code>plot(x=trees$Girth, y=trees$Volume)    # use R&#39;s built-in &quot;trees&quot; dataset: ?trees</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="change-plot-type" class="section level3">
+<h3>Change Plot Type</h3>
+<p>Because we’re exploring different ways of plotting, it is useful to include multiple plots in the same image.</p>
+<p>We can do this using the <code>par()</code> function (graphical parameters), which has arguments that control just about every aspect of a plot in R.</p>
+<pre class="r"><code>?par
+
+par()   # view the default graphical parameters</code></pre>
+<p>We could change the “mfrow” parameter from c(1,1) to c(2,2): this means that we can fit four plots into a single window.</p>
+<p>An even easier solution is to use the convenience function <code>layout()</code>. An example using <code>layout()</code> is below. The default plot type is points, but you can change it to lines or both points and lines (or others) by adding the <code>type=</code> option</p>
+<pre class="r"><code># Use &quot;layout&quot; to define a 2 row x 2 column matrix with elements 1, 2, 3, and 4.
+# This divides the image into four sections and then fills these with the plot function
+layout(matrix(1:4, nrow=2, ncol=2))
+
+  # par(mfrow=c(2,2))  # (alternative way to do this)
+
+plot(x=trees$Girth, y=trees$Volume)             # points
+plot(x=trees$Girth, y=trees$Volume, type=&quot;l&quot;)   # lines
+plot(x=trees$Girth, y=trees$Volume, type=&quot;b&quot;)   # both
+plot(x=trees$Girth, y=trees$Volume, type=&quot;o&quot;)   # both with conected lines</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Whenver you use <code>layout()</code> or <code>par()</code>, the graphics window will retain this layout for all future plots. To start over (and return to the default graphical parameters), use <code>graphics.off()</code> to reset the plot. For example</p>
+<pre class="r"><code>plot(x=trees$Girth, y=trees$Volume)             ## The plot is still in 4 parts
+
+graphics.off()                                  ## now the plot is reset!
+
+# layout(1)   # (alternative way to reset back to a single plot)
+
+plot(x=trees$Girth, y=trees$Volume)             ## The plot is still in 4 parts</code></pre>
+</div>
+<div id="change-plot-symbol" class="section level3">
+<h3>Change Plot Symbol</h3>
+<p>We can also change the type of points used when plotting using the <code>pch=</code> option. For example, we plot three different shape options below:</p>
+<pre class="r"><code># Use layout to define a 3 row x 1 column matrix with elements 1, 2, and 3.
+# This divides the image into three sections and then fills these with the plot function
+layout(matrix(1:3, nrow=3, ncol=1))
+
+# pch: &#39;plotting character&#39; changes the type of point that is used (default is an open circle)!
+plot(x=trees$Girth, y=trees$Volume, pch=19)     # filled point
+plot(x=trees$Girth, y=trees$Volume, pch=2)      # open triangle
+plot(x=trees$Girth, y=trees$Volume, pch=11)     # star</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>You might want to remember a couple favorites (for example, I like to use pch=19)</p>
+</div>
+<div id="title-and-axes" class="section level3">
+<h3>Title and Axes</h3>
+<p>We can also add titles, axis labels, and other options to make the plots look pretty. For example, we show below how each plot is changed by the addition of one extra command, starting at the top left corner and moving top-to-bottom</p>
+<pre class="r"><code>layout(matrix(1:4, 2, 2))
+# main: adds a title
+plot(x=trees$Girth, y=trees$Volume, pch=19, 
+     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;)
+
+# xlab: adds an x axis label
+plot(x=trees$Girth, y=trees$Volume, pch=19, 
+     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;, 
+     xlab=&quot;Tree Girth (in)&quot;)
+
+# ylab: adds a y axis label
+plot(x=trees$Girth, y=trees$Volume, pch=19, 
+     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;, 
+     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;)
+
+# las: rotates axis labels; las=1 makes them all parallel to reading direction
+plot(x=trees$Girth, y=trees$Volume, pch=19, 
+     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;, 
+     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;, 
+     las=1)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="add-colors" class="section level3">
+<h3>Add Colors</h3>
+<p>If we want we can add colors to the points in the plot as well using the <code>col=</code> option. We will also use the <code>layout()</code> function to make a more interesting plot</p>
+<pre class="r"><code># Use layout to define a 2 row x 2 column matrix with elements 1, 1, 2, and 3.
+# This divides the image into four sections but fills the first two sections
+# with the first plot and then fills these next two sections with the final two plots
+layout(matrix(c(1, 1, 2, 3), 2, 2))
+
+# col: select a color for the plotting characters
+plot(x=trees$Girth, y=trees$Volume, pch=19, 
+     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;,
+     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;,
+     las=1, col=&quot;blue&quot;)
+
+# We can use the c() function to make a vector and have several colors, plotting characters, etc. per plot.
+# We start with alternating colors for each point
+plot(x=trees$Girth, y=trees$Volume, pch=19, 
+     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;,
+     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;, 
+     las=1, col=c(&quot;black&quot;, &quot;blue&quot;))
+
+# And we can also alternate the plotting symbol at each point.
+plot(x=trees$Girth, y=trees$Volume, pch=c(1,19), 
+     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;, 
+     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;, 
+     las=1, col=&quot;blue&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+<div id="plotting-by-group" class="section level2">
+<h2>Plotting By Group</h2>
+<p>In our previous plot, we alternated colors between points - wouldn’t it be awesome to use color to distinguish between groups in the data? To do this, we look at the <code>iris</code> dataset This dataframe describes the sepal length, sepal width, petal length, petal width, and species for 150 different irises. First we look at the data:</p>
+<pre class="r"><code>?iris
+head(iris)     # display first few rows of data</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<pre class="r"><code>dim(iris)      # dimensionality of the data</code></pre>
+<pre><code>## [1] 150   5</code></pre>
+<pre class="r"><code>str(iris)      # details of the data structure</code></pre>
+<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<div id="by-hand" class="section level3">
+<h3>“By Hand”</h3>
+<p>We use the <code>col=</code> option of our <code>plot()</code> function. First, let’s show how to do this the “by hand” way. In general, this is not good programming as you want to make your code general (if you get new data you don’t want to re-write your code) but it is a good starting point. We’ll show how to make this “automatic” later.</p>
+<p>First I define a new object with the three colors that I want to use. You can use any colors you like (Google “R color chart”),</p>
+<pre class="r"><code>plot.colors &lt;- c(&quot;violet&quot;, &quot;purple&quot;, &quot;blue&quot;)</code></pre>
+<p>Here’s the cheating bit: I just looked at this dataframe and saw that there are exactly 50 observations for each species. I use the repeat function, <code>rep()</code> and the <code>each=</code> argument, to create a new vector with each element of <code>plot.colors</code> repeated 50 times in turn.</p>
+<pre class="r"><code>color.vector &lt;- rep(x=plot.colors, each=50)
+color.vector</code></pre>
+<pre><code>##   [1] &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot;
+##   [8] &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot;
+##  [15] &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot;
+##  [22] &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot;
+##  [29] &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot;
+##  [36] &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot;
+##  [43] &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot; &quot;violet&quot;
+##  [50] &quot;violet&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [57] &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [64] &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [71] &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [78] &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [85] &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [92] &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [99] &quot;purple&quot; &quot;purple&quot; &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;  
+## [106] &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;  
+## [113] &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;  
+## [120] &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;  
+## [127] &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;  
+## [134] &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;  
+## [141] &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;  
+## [148] &quot;blue&quot;   &quot;blue&quot;   &quot;blue&quot;</code></pre>
+<pre class="r"><code>## color vector is now a list of our colors, each repeated 50 times
+
+plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
+     main=&quot;Plot of Iris colored by species&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/colorvector-1.png" width="672" /></p>
+<p>Notice the lengths of the x-vector, the y-vector, and the color vector are all the same. If this is not true, <code>R</code> will “make up” stuff, so make sure these are the same size.</p>
+<pre class="r"><code>length(iris$Petal.Length)</code></pre>
+<pre><code>## [1] 150</code></pre>
+<pre class="r"><code>length(iris$Sepal.Length)</code></pre>
+<pre><code>## [1] 150</code></pre>
+<pre class="r"><code>length(color.vector)</code></pre>
+<pre><code>## [1] 150</code></pre>
+</div>
+<div id="automatic-grouping" class="section level3">
+<h3>Automatic Grouping</h3>
+<p>What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. We can take advantage of the fact that the Species column is a factor.</p>
+<pre class="r"><code>plot.colors &lt;- c(&quot;violet&quot;, &quot;purple&quot;, &quot;blue&quot;)
+# subset the colors in plot.colors based on the variable iris$Species
+# iris$Species is a factor variable that has 3 levels
+color.vector &lt;- plot.colors[iris$Species]
+
+plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
+     main=&quot;Iris sepal length vs. petal length&quot;, xlab=&quot;Petal length&quot;, 
+     ylab=&quot;Sepal length&quot;, las=1)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="add-a-legend" class="section level3">
+<h3>Add a Legend</h3>
+<p>We use the <code>legend()</code> function to add a legend to an existing plot. You can customize the legend if you wish. Here I pass a character vector to the <code>legend=</code> argument so that I can include the first letter of the genus in the second plot and use the <code>bty='n'</code> argument to remove the box around the legend. We can also Italicize the labels in the legend using <code>text.font=3</code>, as in the third plot.</p>
+<pre class="r"><code>layout(matrix(1:3, 1, 3))
+
+# Plot
+plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
+     main=&quot;Iris sepal length vs. petal length&quot;, xlab=&quot;Petal length&quot;, 
+     ylab=&quot;Sepal length&quot;, las=1)
+
+# First legend
+legend(&quot;topleft&quot;, pch=19, col=plot.colors, legend=unique(iris$Species))
+
+# Second plot
+plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector,
+     main=&quot;Iris sepal length vs. petal length&quot;, 
+     xlab=&quot;Petal length&quot;, ylab=&quot;Sepal length&quot;, las=1)
+
+# Second legend
+# The bty=&quot;n&quot; argument suppresses the border around the legend. (A personal preference)
+legend(&quot;topleft&quot;, pch=19, col=plot.colors, 
+       legend=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), bty=&quot;n&quot;)
+
+
+# Plot Three
+plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
+     main=&quot;Iris sepal length vs. petal length&quot;, 
+     xlab=&quot;Petal length&quot;, ylab=&quot;Sepal length&quot;, las=1)
+
+#Legend tree with Italics
+legend(&quot;topleft&quot;, pch=19, col=plot.colors, 
+       legend=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), 
+       bty=&quot;n&quot;, text.font=3)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="bar-plots" class="section level3">
+<h3>Bar Plots</h3>
+<pre class="r"><code>## calculate the mean Sepal Length of for each species
+bar.heights &lt;- by(iris$Sepal.Length, iris$Species, mean)
+
+# The basic barplot function
+barplot(bar.heights)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Using the <code>barplot()</code> options, we can make this look fancier</p>
+<pre class="r"><code># Let&#39;s add some flair
+barplot(bar.heights, names.arg=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), 
+        las=1, col=adjustcolor(plot.colors, alpha.f=0.5),
+        main=&quot;Sepal length for 3 Irises&quot;, ylab=&quot;Sepal length (cm)&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="error-bars" class="section level3">
+<h3>Error bars</h3>
+<p>Adding error bars to our barplot. These can be added to scatter plots in a similar way. We’ll plot error bars representing 2 standard deviations. The object that you called your barplot (<code>b</code>) is interpreted by <code>R</code> as the x values in the middle of each bar <code>b</code>. We’ll use the <code>arrows()</code> function to add arrows to an existing plot. With some modifications, our arrows will have an arrowhead at each end (<code>code=3</code>), and the ‘arrowhead’ will actually be perpendicular to the arrow shaft (<code>angle=90</code>)</p>
+<pre class="r"><code>CI &lt;- 2 * by(iris$Sepal.Length, iris$Species, sd)
+lwr &lt;- bar.heights - CI
+upr &lt;- bar.heights + CI
+
+# I used the ylim= argument to pass a 2-element numeric vector specifying the y extent of the barplot. I added some extra room on the top to account for error bars.
+# Importantly, assign the barplot to an object. I called it &#39;b&#39; but you can call it whatever you like.
+
+b &lt;- barplot(bar.heights, 
+             names.arg=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), 
+             las=1, ylim=c(0,8), col=adjustcolor(plot.colors, alpha.f=0.5),
+             main=&quot;Sepal length for 3 Irises&quot;, ylab=&quot;Sepal length (cm)&quot;)
+
+# Specify where each arrow starts (x0= and y0=) and ends (x1= and y1=)
+arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
+<div id="histograms" class="section level3">
+<h3>Histograms</h3>
+<p>We can also use histograms to explore our data.</p>
+<pre class="r"><code>layout(matrix(1:2, 1, 2))
+## y-axis is in counts
+hist(iris$Sepal.Length, main=&quot;Histogram of Sepal Length&quot;,
+     xlab = &quot;Sepal Length&quot;)
+## change y-axis to proportions using freq=FALSE
+hist(iris$Sepal.Length, freq=FALSE, main=&quot;Histogram of Sepal Length&quot;, 
+     xlab = &quot;Sepal Length&quot;)
+## Add a density estimator
+lines(density(iris$Sepal.Length))</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="pairs-plots" class="section level3">
+<h3>Pairs Plots</h3>
+<p>The <code>pairs()</code> function allows for quick investigation into relationships between variables. Be careful if your data is large as this can be a slow function.</p>
+<pre class="r"><code>pairs(iris)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="challenge-yourself-by-recreating-the-following-plots" class="section level3">
+<h3>Challenge Yourself by recreating the following plots:</h3>
+<p>Feel free to work in groups!</p>
+<div id="using-colors" class="section level4">
+<h4>Using colors</h4>
+<p>Using the <code>ToothGrowth</code> dataset built into <code>R</code>, plot the tooth length (the <code>len</code> variable) as a function of the vitamin C dosage (the <code>dose</code> variable). Use a different color for each method of administering the vitamin C (the <code>supp</code> variable). Try and recreate the plot below:</p>
+<pre class="r"><code>?ToothGrowth
+head(ToothGrowth)</code></pre>
+<pre><code>##    len supp dose
+## 1  4.2   VC  0.5
+## 2 11.5   VC  0.5
+## 3  7.3   VC  0.5
+## 4  5.8   VC  0.5
+## 5  6.4   VC  0.5
+## 6 10.0   VC  0.5</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="bar-plots-challenge" class="section level4">
+<h4>Bar Plots Challenge</h4>
+<p>The following data represent survivorship of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below) like what might come from a logistic regression model. Try and recreate the plot below:</p>
+<pre class="r"><code>prop &lt;- c(0.18, 0.25, 0.13, 0.05)
+asympLCL &lt;- c(0.14, 0.20, 0.11, 0.035)
+asympUCL &lt;- c(0.24, 0.33, 0.18, 0.09)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+<div id="scatterplot-challenge-error-bars" class="section level4">
+<h4>Scatterplot Challenge Error Bars</h4>
+<p>The randomly generated data below are measurements of the number of the number of angels who get their wings as a function of the number of bells that have been rung. There is some uncertainty in measuring wing acquisition (represented as the offset from the sampled mean). How would you add error bars to a scatter plot? Remember, once you master plotting it’s a wondeful life!</p>
+<pre class="r"><code>set.seed(13)
+n &lt;- 20 # Number of experimental trials
+a &lt;- 12
+b &lt;- 1.5
+
+rings &lt;- round(runif(n)*50)
+wings &lt;- round(a + b*rings + rnorm(n, sd=5))
+offset &lt;- rpois(n, lambda=10)
+lwr &lt;- wings - offset
+upr &lt;- wings + offset</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="basic-statistics" class="section level2">
+<h2>Basic statistics!</h2>
+<p>This bootcamp is NOT an intro to statistics!</p>
+<p>But, R is an environment developed for statistical computing, so let’s do some basic statistics in R!</p>
+<div id="load-data" class="section level3">
+<h3>Load data</h3>
+<p>First, download the sculpin eggs data <a href="%22sculpineggs.csv%22">here</a> and save this to your working directory.</p>
+<pre class="r"><code>####################
+# STATISTICS!
+####################
+
+#####
+#####  Load Data
+#####
+
+sculpin.df &lt;- read.csv(&quot;sculpineggs.csv&quot;)
+
+head(sculpin.df)</code></pre>
+<pre><code>##   FEMWT NUMEGGS
+## 1    14      61
+## 2    17      37
+## 3    24      65
+## 4    25      69
+## 5    27      54
+## 6    33      93</code></pre>
+<pre class="r"><code>summary(sculpin.df) # provides a set of summary statistics for data frame. </code></pre>
+<pre><code>##      FEMWT          NUMEGGS      
+##  Min.   :14.00   Min.   : 37.00  
+##  1st Qu.:24.50   1st Qu.: 63.00  
+##  Median :33.00   Median : 87.00  
+##  Mean   :30.36   Mean   : 76.55  
+##  3rd Qu.:38.50   3rd Qu.: 91.50  
+##  Max.   :42.00   Max.   :100.00</code></pre>
+</div>
+<div id="summary-statistics" class="section level3">
+<h3>Summary statistics</h3>
+<p>Let’s start by generating summary statistics, some of which are the same ones that are displayed by the “summary()” function. Most of the function names are pretty intuitive, like mean() and median():</p>
+<pre class="r"><code>#####
+#####  Summary Statistics
+#####
+
+mean(sculpin.df$NUMEGGS)      # compute sample mean</code></pre>
+<pre><code>## [1] 76.54545</code></pre>
+<pre class="r"><code>median(sculpin.df$NUMEGGS)    # compute sample median</code></pre>
+<pre><code>## [1] 87</code></pre>
+<pre class="r"><code>min(sculpin.df$NUMEGGS)       # sample minimum</code></pre>
+<pre><code>## [1] 37</code></pre>
+<pre class="r"><code>max(sculpin.df$NUMEGGS)       # sample maximum</code></pre>
+<pre><code>## [1] 100</code></pre>
+<pre class="r"><code>range(sculpin.df$NUMEGGS)     # both min and max.</code></pre>
+<pre><code>## [1]  37 100</code></pre>
+<pre class="r"><code>quantile(sculpin.df$NUMEGGS,0.5)            # compute sample median using quantile function</code></pre>
+<pre><code>## 50% 
+##  87</code></pre>
+<pre class="r"><code>quantile(sculpin.df$NUMEGGS,c(0.25,0.75))   # compute sample quartiles</code></pre>
+<pre><code>##  25%  75% 
+## 63.0 91.5</code></pre>
+<pre class="r"><code>var(sculpin.df$NUMEGGS)           # sample variance</code></pre>
+<pre><code>## [1] 418.8727</code></pre>
+<pre class="r"><code>sd(sculpin.df$NUMEGGS)            # sample standard deviation</code></pre>
+<pre><code>## [1] 20.46638</code></pre>
+<pre class="r"><code>sd(sculpin.df$NUMEGGS)^2          # another way to compute variance</code></pre>
+<pre><code>## [1] 418.8727</code></pre>
+<pre class="r"><code>var(sculpin.df$NUMEGGS)^0.5       # another way to compute std. dev.</code></pre>
+<pre><code>## [1] 20.46638</code></pre>
+<pre class="r"><code>colMeans(sculpin.df)           # column mean of data frame</code></pre>
+<pre><code>##    FEMWT  NUMEGGS 
+## 30.36364 76.54545</code></pre>
+<pre class="r"><code>apply(sculpin.df,2,mean)       # column mean of data frame   # note the use of the &quot;apply()&quot; function. </code></pre>
+<pre><code>##    FEMWT  NUMEGGS 
+## 30.36364 76.54545</code></pre>
+<pre class="r"><code>apply(sculpin.df,2,median)     # column median of data frame</code></pre>
+<pre><code>##   FEMWT NUMEGGS 
+##      33      87</code></pre>
+<p>If your data has missing values (NA), some statistical functions won’t work properly unless you specify an “na.rm=TRUE” argument:</p>
+<pre class="r"><code>###########
+# Deal with missing data
+
+newdf &lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)  # load dataset with missing data
+
+mean(newdf$Export)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>mean(newdf$Export,na.rm = TRUE)</code></pre>
+<pre><code>## [1] 10.22222</code></pre>
+</div>
+<div id="visual-exploration" class="section level3">
+<h3>Visual exploration</h3>
+<p>Plots take data exploration to the next level- we can start to discern patterns and identify outliers visually, giving us cues for further analyses we might want to perform.</p>
+<pre class="r"><code>#####
+#####  Plot data 
+#####
+
+hist(sculpin.df$NUMEGGS)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+</div>
+<div id="linear-regression" class="section level3">
+<h3>Linear Regression</h3>
+<p>The plot above suggests a fairly strong relationship between sculpin weight and number of eggs. Let’s try to model this relationship:</p>
+<pre class="r"><code>#####
+#####  Linear Regression 
+#####
+
+m1 &lt;- lm(NUMEGGS ~ FEMWT, data=sculpin.df)      # fit linear regression model
+
+m1                                      # view estimates of intercept and slope </code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = NUMEGGS ~ FEMWT, data = sculpin.df)
+## 
+## Coefficients:
+## (Intercept)        FEMWT  
+##       19.77         1.87</code></pre>
+<pre class="r"><code>summary(m1)                             # view summary of fit</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = NUMEGGS ~ FEMWT, data = sculpin.df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -16.2556  -3.8700   0.3543   4.5448  15.0538 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  19.7668    10.5497   1.874 0.093747 .  
+## FEMWT         1.8700     0.3325   5.624 0.000324 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 10.15 on 9 degrees of freedom
+## Multiple R-squared:  0.7785, Adjusted R-squared:  0.7539 
+## F-statistic: 31.63 on 1 and 9 DF,  p-value: 0.0003242</code></pre>
+<pre class="r"><code>summary(m1)$r.squared                   # extract R-squared</code></pre>
+<pre><code>## [1] 0.7784851</code></pre>
+<pre class="r"><code>confint(m1)                             # confidence intervals for intercept and slope</code></pre>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept) -4.098376 43.632008
+## FEMWT        1.117797  2.622113</code></pre>
+<pre class="r"><code>AIC(m1)                                 # report AIC </code></pre>
+<pre><code>## [1] 86.00155</code></pre>
+<pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
+abline(m1)                                           # plot line of best fit</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<pre class="r"><code>FEMWT.pred &lt;- data.frame(FEMWT = 30)                   # create new data frame to predict number of eggs at FEMWT of 30
+predict(m1,newdata=FEMWT.pred)                         # make prediction</code></pre>
+<pre><code>##        1 
+## 75.86547</code></pre>
+<pre class="r"><code>predict(m1,newdata=FEMWT.pred,interval=&quot;confidence&quot;)   # make prediction and get confidence interval</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 75.86547 68.93463 82.79631</code></pre>
+<pre class="r"><code>predict(m1,newdata=FEMWT.pred,interval=&quot;prediction&quot;)   # make prediction and get prediction interval</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 75.86547 51.87347 99.85748</code></pre>
+</div>
+<div id="model-selection" class="section level3">
+<h3>Model selection</h3>
+<p>Sometimes we may be uncertain which model is “best”. In this case, we run a set of <strong>plausible models</strong> and compare these models using metrics of model fit and performance, like AIC or R-squared.</p>
+<pre class="r"><code>####################
+####  Exercises ####
+####################
+
+m1 &lt;- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
+summary(m1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = NUMEGGS ~ FEMWT, data = sculpin.df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -16.2556  -3.8700   0.3543   4.5448  15.0538 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  19.7668    10.5497   1.874 0.093747 .  
+## FEMWT         1.8700     0.3325   5.624 0.000324 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 10.15 on 9 degrees of freedom
+## Multiple R-squared:  0.7785, Adjusted R-squared:  0.7539 
+## F-statistic: 31.63 on 1 and 9 DF,  p-value: 0.0003242</code></pre>
+<pre class="r"><code>m2 &lt;- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (mean model)
+summary(m2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = NUMEGGS ~ 1, data = sculpin.df)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -39.55 -13.54  10.46  14.96  23.45 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   76.545      6.171    12.4 2.14e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20.47 on 10 degrees of freedom</code></pre>
+<pre class="r"><code>m3 &lt;- lm(NUMEGGS ~ I(FEMWT^0.5), data=sculpin.df)           # fit linear regression with intercept and sqrt of FEMWT term
+
+plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
+abline(m1,col=&quot;black&quot;)                                     # plot line of best fit
+abline(m2,col=&quot;red&quot;)                                       # plot intercept only model
+
+FEMWT.pred &lt;- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
+NUMEGGS.pred &lt;- predict(m3,newdata=FEMWT.pred)             # make prediction
+points(FEMWT.pred$FEMWT,NUMEGGS.pred,col=&quot;green&quot;,typ=&quot;l&quot;)  # plot sqrt model</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<pre class="r"><code>#Compare models using AIC and R-squared
+AIC(m1)</code></pre>
+<pre><code>## [1] 86.00155</code></pre>
+<pre class="r"><code>AIC(m2)</code></pre>
+<pre><code>## [1] 100.5815</code></pre>
+<pre class="r"><code>AIC(m3)</code></pre>
+<pre><code>## [1] 86.87398</code></pre>
+<pre class="r"><code>summary(m1)$r.squared </code></pre>
+<pre><code>## [1] 0.7784851</code></pre>
+<pre class="r"><code>summary(m2)$r.squared </code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>summary(m3)$r.squared </code></pre>
+<pre><code>## [1] 0.7602009</code></pre>
+</div>
+<div id="statistics-challenge-exercises" class="section level3">
+<h3>Statistics challenge exercises</h3>
+<p>1: Fit a linear regression model with NUMEGGS as the response and some other transformation of FEWMT (e.g., lm(NUMEGGS ~ I(FEMWT^3)))</p>
+<p>2: Plot the data and the curve of best fit from #1. How does the model fit the data?</p>
+<p>3: Fit a linear regression model with NUMEGGS as the response and with both a linear and quadratic effect of FEWMT.</p>
+<p>4: Plot the data and the curve of best fit from #1 and #3. Compare the two models.</p>
+<p>5: Predict the number of eggs (along with prediction interval) for FEMWT=15 using the models you fit in #1 and #3.</p>
+<p>How do the predictions compare?</p>
+<p><a href="module1_4.html">–go to next module–</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

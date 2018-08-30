@@ -1,0 +1,76 @@
+---
+title: "Raster data in *R* with **raster**"
+author: "Kyle Bocinsky"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  bookdown::html_document2:
+    code_folding: hide
+    df_print: paged
+    fig_caption: yes
+    toc: true
+    toc_float: true
+editor_options: 
+  chunk_output_type: console
+---
+
+In this tutorial we ...
+
+# Learning goals
+
+# **raster**: keeping it old school (for now)
+There are several packages for working with gridded (or "raster") data in R, including **ncdf4** and **rgdal**, but by far the most useful (and widely used) is **raster**. It is the one
+
+## Rasters, stacks, and bricks
+## Bounding boxes
+
+# Reading raster data
+## Drivers (GDAL)
+## Multiple variables
+## Reading: `raster()`, `stack()`, and `brick()`
+
+# Writing raster data: `writeRaster()`
+## Drivers
+
+# Manipulating rasters
+## Extracting layers/cells by index/name
+## Raster (re)projection and resampling
+## Raster algebra
+### Arithmetic operations
+### Operations among layers: `calc()`
+### Operations among cells: `cellStats()`
+
+# Terrain functions
+## `terrain()`
+```{r}
+# Load the Flathead NED raster
+flathead_ned <- raster("data/Flathead_NED_1.tif")
+
+slope <- terrain(flathead_ned, opt='slope')
+aspect <- terrain(flathead_ned, opt='aspect')
+
+```
+## `hillshade()`
+
+```{r}
+hill <- hillShade(slope, aspect, 40, 270)
+```
+
+# An interlude about **stars**
+## Converting between **stars** and **raster**
+
+# Plotting
+## Data overview
+## Plotting single layers
+## Colors
+## Plotting multiple layers
+## **ggplot2** and `geom_raster()`
+
+# Exercise: Mapping landcover over a hillshade on the Flathead Reservation
+## Load data
+### Flathead reservation boundary
+### National Elevation Dataset
+### National Land Cover Database
+## Dealing with projections
+## Calculate hillshade
+## Masking to the Flathead reservation
+## Plotting

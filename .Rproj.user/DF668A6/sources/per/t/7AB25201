@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1533948462004.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4076732110",
+    "id" : "7AB25201",
+    "lastKnownWriteTime" : 1531885315,
+    "last_content_update" : 1531885315,
+    "path" : "E:/Dropbox/My Service/R Bootcamp/Materials from Christine/SKCr_day_3/3.1 Spatial Packages in R.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "chunk_output_type" : "console",
+        "cursorPosition" : "16,22",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 14,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

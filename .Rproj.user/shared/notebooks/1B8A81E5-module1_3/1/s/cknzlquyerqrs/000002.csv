@@ -1,0 +1,7 @@
+"0","plot.colors <- c(""red"", ""blue"")"
+"0","# subset the colors in plot.colors based on the variable iris$Species"
+"0","# iris$Species is a factor variable that has 3 levels"
+"0","color.vector <- plot.colors[ToothGrowth$supp]"
+"0","plot(x=ToothGrowth$len, y=ToothGrowth$dose, pch=19, col=color.vector, "
+"0","     main=""Tooth Growth vs. Vitamin C Dose"", xlab=""Viatmin C Dose (mg)"", "
+"0","     ylab=""Tooth Growth (mm)"", las=1)"

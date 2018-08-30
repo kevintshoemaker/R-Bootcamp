@@ -1,0 +1,3 @@
+"0","# Another way to manipulate the names"
+"0","colnames(data.df) <- c(""Country"", ""Imports"",""Exports"", ""Products"") "
+"0","head(data.df)"

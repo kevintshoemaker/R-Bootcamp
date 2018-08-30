@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1533857281857.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1662674901",
+    "id" : "47B5954B",
+    "lastKnownWriteTime" : 1535333231,
+    "last_content_update" : 1535333231228,
+    "path" : "E:/GIT/R-Bootcamp/module2_1.Rmd",
+    "project_path" : "module2_1.Rmd",
+    "properties" : {
+        "cursorPosition" : "67,15",
+        "last_setup_crc32" : "",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

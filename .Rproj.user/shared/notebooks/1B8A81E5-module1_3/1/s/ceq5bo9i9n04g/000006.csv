@@ -1,0 +1,4 @@
+"0","#####"
+"0","#####  Plot data "
+"0","#####"
+"0","hist(sculpin.df$NUMEGGS)"

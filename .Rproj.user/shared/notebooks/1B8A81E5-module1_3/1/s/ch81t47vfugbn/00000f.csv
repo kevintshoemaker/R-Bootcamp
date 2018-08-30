@@ -1,0 +1,4 @@
+"0","#Legend tree with Italics"
+"0","legend(""topleft"", pch=19, col=plot.colors, "
+"0","       legend=c(""I. setosa"", ""I. versicolor"", ""I. virginica""), "
+"0","       bty=""n"", text.font=3)"

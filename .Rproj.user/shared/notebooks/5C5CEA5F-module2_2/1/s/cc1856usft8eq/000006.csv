@@ -1,0 +1,5 @@
+"0","# separate the climvar_station column into two separate columns that identify the climate variable and the station"
+"0","separate_clim_vars <- gather_clim_vars %>%"
+"0","  separate(climvar_station, "
+"0","           into = c(""Station"",""climvar""))"
+"0","separate_clim_vars"

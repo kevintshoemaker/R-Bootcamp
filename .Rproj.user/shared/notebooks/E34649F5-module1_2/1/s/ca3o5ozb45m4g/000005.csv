@@ -1,0 +1,7 @@
+"0","####"
+"0","####  Manipulate Headers"
+"0","####"
+"0","# ?names: used to manipulate the column names of a data frame"
+"0","# Rename the columns of 'data'"
+"0","names(data.df) <- c(""CNTRY"", ""IMP"",""EXP"", ""PROD"") "
+"0","head(data.df)"

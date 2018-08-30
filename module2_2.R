@@ -1,0 +1,185 @@
+
+##################################################
+####                                          ####  
+####  R Bootcamp #2, Module 2                 ####
+####                                          #### 
+####   University of Nevada, Reno             ####
+####                                          #### 
+##################################################
+
+
+#########################################
+####  Data Wrangling with Tidyverse  ####
+#########################################
+
+
+
+# install.packages("tidyverse")
+library(tidyverse)
+
+
+####
+####  Using the pipe operator %>% (ctrl-shift-m)
+####
+
+# start with a simple example
+x <- 3
+
+# calculate the log of x
+log(x) # form f(x) is equivalent to
+
+x %>% log() # form x %>% f
+
+# example of multiple steps in pipe
+round(log(x), digits=2) # form g(f(x)) is equivalent to
+
+x %>% log() %>% round(digits=2) # form x %>% f %>%  g
+
+
+####
+####  Import data as a Tibble dataframe and take a quick glance
+####
+
+# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
+clim_data <- read_csv("MTMetStations.csv")
+
+# display tibble - note nice formatting and variable info, entire dataset is not displayed as is case in read.csv
+clim_data
+
+ # display the last few lines of the data frame
+tail(clim_data)
+
+
+####
+####  Use Tidyr verbs to make data 'tidy'
+####
+
+# look at clim_data -- is it in tidy format? What do we need to do to get it there?
+head(clim_data)
+
+# gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column.
+gather_clim_vars <- gather(clim_data, 
+                           key = climvar_station, 
+                           value = value, 
+                           -Date)
+
+gather_clim_vars
+
+# separate the climvar_station column into two separate columns that identify the climate variable and the station
+separate_clim_vars <- gather_clim_vars %>%
+  separate(climvar_station, 
+           into = c("Station","climvar"))
+
+separate_clim_vars
+
+# spread distributes the clim_var column into separate columns, with the data values from the 'value' column
+tidy_clim_data <- spread(separate_clim_vars, 
+                        key = climvar, 
+                        value = value)
+
+tidy_clim_data
+
+  
+# repeat above as single pipe series without creation of intermediate datasets
+  
+tidy_clim_data <- clim_data %>% 
+  gather(key = climvar_station,
+         value = value,
+         -Date) %>% 
+  separate(climvar_station, 
+           into = c("Station","climvar")) %>% 
+  spread(key = climvar,
+         value = value)
+  
+tidy_clim_data
+
+
+#### 
+####  Using lubridate to format and create date data types
+####
+
+library(lubridate)
+
+date_string <- ("2017-01-31")
+
+# convert date string into date format by identifing the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date
+
+date_dtformat <- ymd(date_string)
+
+# note the different formats of the date_string and date_dtformat objects in the environment window.
+
+# a variety of other formats/orders can also be accommodated. Note how each of these are reformatted to "2017-01-31" A timezone can be specified using tz=
+
+mdy("January 31st, 2017")
+dmy("31-Jan-2017")
+ymd(20170131)
+ymd(20170131, tz = "UTC")
+
+# can also make a date from components. this is useful if you have columns for year, month, day in a dataframe
+year<-2017
+month<-1
+day<-31
+make_date(year, month, day)
+
+
+# times can be included as well. Note that unless otherwise specified, R assumes UTC time
+
+ymd_hms("2017-01-31 20:11:59")
+mdy_hm("01/31/2017 08:01")
+
+# we can also have R tell us the current time or date
+
+now()
+now(tz = "UTC")
+today()
+####
+####  Parsing dates with lubridate
+####
+
+datetime <- ymd_hms("2016-07-08 12:34:56")
+
+# year
+year(datetime)
+
+# month as numeric
+month(datetime)
+
+# month as name
+month(datetime, label = TRUE)
+
+# day of month
+mday(datetime)
+
+# day of year (julian day)
+yday(datetime)
+
+# day of week
+wday(datetime)
+wday(datetime, label = TRUE, abbr = FALSE)
+
+#### 
+####  Using lubridate with dataframes and dplyr verbs
+####
+
+# going back to our tidy_clim_data dataset we see that the date column is formatted as character, not date
+head(tidy_clim_data)
+
+# change format of date column
+tidy_clim_data <- tidy_clim_data %>% 
+  mutate(Date = mdy(Date))
+tidy_clim_data
+# parse date into year, month, day, and day of year columns
+tidy_clim_data <- tidy_clim_data %>% mutate(
+  Year = year(Date),
+  Month = month(Date),
+  Day = mday(Date),
+  Yday = yday(Date))
+
+tidy_clim_data
+
+# calculate total annual precipitation by station and year
+annual_sum_precip_by_station <- tidy_clim_data %>%
+  group_by(Station, Year) %>%
+  summarise(PrecipSum = sum(PrcpIN))
+
+annual_sum_precip_by_station 

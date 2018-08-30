@@ -1,0 +1,3 @@
+"0","FEMWT.pred <- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1"
+"0","NUMEGGS.pred <- predict(m3,newdata=FEMWT.pred)             # make prediction"
+"0","points(FEMWT.pred$FEMWT,NUMEGGS.pred,col=""green"",typ=""l"")  # plot sqrt model"

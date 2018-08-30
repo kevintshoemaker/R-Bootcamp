@@ -1,0 +1,5 @@
+"0","####"
+"0","####  Use Tidyr verbs to make data 'tidy'"
+"0","####"
+"0","# look at clim_data -- is it in tidy format? What do we need to do to get it there?"
+"0","head(clim_data)"

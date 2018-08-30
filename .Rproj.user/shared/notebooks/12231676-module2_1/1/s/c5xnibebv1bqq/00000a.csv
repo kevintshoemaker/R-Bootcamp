@@ -1,0 +1,2 @@
+"0","## Plot ""logistic"" curve"
+"0","plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type=""l"")"

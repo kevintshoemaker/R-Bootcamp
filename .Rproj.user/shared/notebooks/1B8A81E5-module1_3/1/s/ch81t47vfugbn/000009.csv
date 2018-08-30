@@ -1,0 +1,4 @@
+"0","# Second plot"
+"0","plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector,"
+"0","     main=""Iris sepal length vs. petal length"", "
+"0","     xlab=""Petal length"", ylab=""Sepal length"", las=1)"
