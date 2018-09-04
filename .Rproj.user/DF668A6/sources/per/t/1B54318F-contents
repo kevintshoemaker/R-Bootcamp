@@ -24,17 +24,17 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ##################################################
 
 
-########################
-####  Learning more ####
-########################
+###################################################
+####  Expanding R functionality: packages etc. ####
+###################################################
 
 
 ```
 
 
-In this "bootcamp" we have barely scratched the surface of R's power and functionality. In this module we will talk about how you can go about expanding your skill set and learning more. 
+In this introductory "bootcamp" we have barely scratched the surface of R's power and functionality. In this module we will talk about how you can continue learning more, gaining confidence, and expanding what you can do in R. 
 
-Whether you are an expert or a novice, you will always encounter situations where you don't know exactly what to do. The great thing about R is that there is *nearly always a way to do it*, and once you get familiar with the basics, it's not that hard to figure out how to do it!
+Whether you are an expert or a novice, you will always encounter situations where you don't know exactly what to do. The great thing about R is that there is *nearly always a way to do it*, and once you get familiar with the basics, it's not that hard to figure out how!
 
 ![](tech_support_cheat_sheet.jpg)
 
@@ -49,11 +49,13 @@ Whether you are an expert or a novice, you will always encounter situations wher
 
 How is it possible to have so many features implemented in a single programming environment? 
 
-The answer is that you have a whole community of researchers adding new functionality _all the time_! This new functionality is implemented in the form of **R Packages**, also known as **libraries**. Each package includes a set of functions for accomplishing specific tasks (and associated help files!).
+The answer is that you have a whole community of researchers adding new functionality _all the time_! This new functionality is implemented in the form of **R Packages**, also known as **libraries**. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).
 
 ### Mode example
 
-For a simple, trivial example (example borrowed from [Prelude in R](https://preludeinr.com)), base R does not include a function for computing the *mode* of a vector. BUT, someone decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called "modeest", which is available in the CRAN repository. Packages in the CRAN repository can be installed using the function "install.packages()":
+For a simple example (borrowed from [Prelude in R](https://preludeinr.com)), base R does not include a function for computing the *mode* of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called "modeest", and made the package available in the CRAN repository. 
+
+Packages in the CRAN repository can be installed using the function "install.packages()":
 
 ```{r eval=FALSE}
 
@@ -71,7 +73,7 @@ library(modeest)    # load the package: This is package 'modeest' written by P. 
 
 ```
 
-Now that we have installed and loaded the package, we can learn more about it. One quick way to get a quick overview of the package is to use the following syntax: 
+Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax: 
 
 ```{r eval=FALSE}
 
@@ -87,16 +89,26 @@ Let's try to use it! If you haven't already loaded the "data.missing.txt" datase
 
 newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 
-?mlv   # learn more about the function for computing the mode. Who knew there were so many ways to compute the mode?
+?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
 
-  # lets find the most frequent value(s) in the "Import" column:
-mlv(newdf$Export, method="mfv", na.rm = T)        # apparently there is a three-way tie for the mode!
+  # lets find the most frequent value(s) in the "Export" column:
+mlv(newdf$Export, method="mfv", na.rm = T)    
 
 ```
 
+#### Removing a package from your environment
+Not that you need to do this very often, but if you want to remove a package from your current session, you can use the "detach()" function:
+
+```{r eval=FALSE}
+
+detach("modeest")  # remove the package from the workspace
+
+```
+
+
 ### 3d scatterplot example!
 
-Before we move on, the "car" package gives us an example of the endless, amazing things we can do with R packages. Here we will make our own interactive 3d plot! (example from "prelude in R").
+Before we move on, the "car" package (_c_ompanion to _a_pplied _r_egression) gives us an example of the endless, amazing things we can do with R packages. Here we will make our own interactive 3d plot! (example from "prelude in R").
 
 Here is a data set that represents the number of times a dog barks in a day, and two potential explanatory factors: food given (in lbs) and cars passing by the house. 
 
@@ -130,7 +142,7 @@ library(car)
 
 ```
 
-Now for the fun part- interactive 3-D graphics! Run the following code and take some time to play around with the resulting scatterplot. 
+Now for the fun part- interactive 3-D graphics! Run the following code and take a minute to play around with the resulting scatterplot. 
 
 ```{r eval=FALSE}
 
@@ -145,10 +157,9 @@ car::scatter3d(Bark~Food+Cars,surface=TRUE)
 
 More and more package developers are bypassing the CRAN repository, and instead using [GitHub](https://github.com/). In some cases, the version available on CRAN is not the latest version- for the latest version, you need to use GitHub. Also, many packages that are in development are only found on GitHub. There are actually some good reasons to put an R package on GitHub:
 
-1. It's easier for others to peruse your code.   
-2. People can actually fix the problem and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, “There’s a typo in your documentation,” they can say “Here, I’ve fixed a typo in your documentation.”
-3. With the install_github() function in Hadley Wickham’s devtools package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)
-
+1. It's easier for others to peruse your code.     
+2. People can actually fix the problem and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, "There’s a typo in your documentation" they can say "Here, I’ve fixed a typo in your documentation."        
+3. With the install_github() function in Hadley Wickham’s devtools package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)      
 
 
 The syntax for using "install_github()" is just install_github("[author]/[package]") Here's an example using the "install_github()" function:
@@ -220,78 +231,7 @@ vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' pa
 
 ```
 
-#### Package demos
-
-Some packages include "demos", which are a bit more interactive than the built-in examples. Here's an example:
-
-```{r eval=FALSE}
-
-########
-# package demo
-
-demo(package="stats")    # list all demos for package 'stats', which is included in base R
-demo('nlm','stats')
-
-```
-
-
-#### Package pdf
-
-The 'master' documentation for any package is packaged as a PDF file that is included as part of the package download. 
-
-
-#### Package citations
-
-Most packages include one or more citations, which are often peer-reviewed papers that document the novel algorithms included in the package, often in more detail than the help files. These are also the papers you should cite if you use the package for a manuscript. You can find these citations using the "citation()" function:
-
-```{r}
-
-########
-# package citations
-
-citation('car')   # citation for the 'car' package
-
-citation()    # and here's the citation for R in general- useful for when you use R for manuscripts!
-
-```
-
-#### Online forums
-
-In some cases you may run into issues with a particular package that you just can't seem to solve. It's still likely that others have had this problem! If you use some appropriate keywords in a google search you may find a link to an online forum (like [stackoverflow](https://stackoverflow.com/)) where someone has answered a similar question. It's amazing how many knowledgeable people are answering questions on these forums - they are a tremendously valuable resource!
-
-And of couse, if you still can't find an answer to your question, you can ask your question on [one of these online forums](https://r-dir.com/community/forums.html). The best ones are probably [Nabble](http://r.789695.n4.nabble.com/), [Stack Overflow](https://stackoverflow.com/), and [Cross Validated](https://stats.stackexchange.com/questions/tagged/r).
-
-
-#### Ask the package author!!
-
-When all else fails, you can always reach out to the package author! The author's name and contact info are listed in the package overview, and I have found they are generally very responsive and willing to help!! 
- 
-
-## Cheat sheets
-
-There are lots of "cheat sheets" available for reminding you of basic R functionality. It can be useful to tape these to the wall next to your desk!
-
-For example, [here](https://cran.r-project.org/doc/contrib/Short-refcard.pdf) is a good cheat sheet for using base R. 
-
-see [Links page](Links.html) for more resources, including cheat sheets! 
-
-
-## General tips for learning more
-
-1. *Use code examples provided by others.* To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written. 
-
-One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using 'help()' or '?'). You can also run these examples using the "example()" function. For example:
-
-```{r eval=FALSE}
-
-#########
-# Built-in examples
-
-example(lm)   # run examples for "lm" function (included in base R)
-
-```
-
-Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can just use your favorite search engine to find more helpful examples. Also, as we have seen, many packages have "vignettes" which often provide more extensive, useful worked examples. For example, take the "dismo" package, which is for species distribution modeling in R:
+Or let's take a look at the "dismo" package, which is for species distribution modeling in R:
 
 ```{r eval=FALSE}
 
@@ -311,14 +251,105 @@ vignette('brt','dismo')      # and another one!
 ```
 
 
-2. *Google!*  I don't even understand why it works so well to google R help ('r' is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work, and the internet, you can pretty much always find a solution to your analysis problems! 
+#### Package demos
 
-By the end of these two workshops, my goal is that all of you will have the tools you need to tackle your specific analysis problems- even though we almost certainly didn't cover your analysis problem in these short workshops! 
+Some packages include "demos", which are a bit more interactive than the built-in examples. Here's an example:
+
+```{r eval=FALSE}
+
+########
+# package demo
+
+demo(package="stats")    # list all demos for package 'stats', which is included in base R
+demo('nlm','stats')
+
+```
+
+
+#### Package documentation (html or PDF)
+
+The 'master' documentation for any package is often packaged as a PDF file that can be downloaded from CRAN (each package on the CRAN repository has its own webpage- for example, here's the one for the [raster package](https://cran.r-project.org/web/packages/raster/index.html)) 
+
+Also, you can load the documentation for any package you have installed using the "help.start()" function:
+
+```{r eval=FALSE}
+
+###########
+# Load html documentation for R and all installed packages
+
+help.start()
+
+```
+
+#### Learning by example!
+
+To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written. 
+
+One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using 'help()' or '?'). You can also run these examples using the "example()" function. For example:
+
+```{r eval=FALSE}
+
+#########
+# Built-in examples
+
+example(lm)   # run examples for "lm" function (included in base R)
+
+```
+
+Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples! 
+
+#### Package citations
+
+Most packages include one or more citations, which are often peer-reviewed papers that document the novel algorithms included in the package, often in more detail than the help files. These are also the papers you should cite if you use the package for a manuscript. You can find these citations using the "citation()" function:
+
+```{r}
+
+########
+# package citations
+
+citation('car')   # citation for the 'car' package
+
+citation()    # and here's the citation for R in general- useful for when you use R for manuscripts
+
+
+
+```
+
+
+#### Online forums
+In some cases you may run into issues with a particular package that you just can't seem to solve. It's still likely that others have had this problem! If you use some appropriate keywords in a google search you may find a link to an online forum (like [stackoverflow](https://stackoverflow.com/)) where someone has answered a similar question. It's amazing how many knowledgeable people are answering questions on these forums - they are a tremendously valuable resource!
+
+And of couse, if you still can't find an answer to your question, you can ask your question on [one of these online forums](https://r-dir.com/community/forums.html). The best ones are probably [Nabble](http://r.789695.n4.nabble.com/), [Stack Overflow](https://stackoverflow.com/), and [Cross Validated](https://stats.stackexchange.com/questions/tagged/r).
+
+
+#### Ask the package author!!
+
+When all else fails, you can always reach out to the package author! The author's name and contact info are listed in the package overview, and I have found they are generally very responsive and willing to help!! 
+ 
+
+## 'Cheat sheets'
+
+There are lots of "cheat sheets" available for reminding you of basic R functionality. It can be useful to tape these to the wall next to your desk!
+
+For example, [here](https://cran.r-project.org/doc/contrib/Short-refcard.pdf) is a good cheat sheet for using base R. 
+
+see [Links page](Links.html) for more resources, including cheat sheets! 
+
+## *Google!* 
+
+I don't even understand why it works so well to google R help ('r' is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work (and some cheat sheets by your desk), and the internet, you can pretty much always find a solution! 
+
+
+More helpful links for going further with R are provided on the [Links](Links.html) page. 
+
+
+## Any questions???
 
 
 
 
-[--go to next module--](module2_1.html) (start of bootcamp #2)
+
+[--go to next module--](module2_1.html)
 
 
 

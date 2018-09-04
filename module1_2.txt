@@ -88,7 +88,7 @@ data()
 # read built-in data on the passengers of the titanic
 data(Titanic)         
 
-str(Titanic)
+str(Titanic)    # examine the structure of this data object
 
 
 ####
@@ -188,10 +188,10 @@ Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
 Y < Z
 
 # Wrong!
-data.df[,2]=74 
+data.df[,2]=74     # sets entire second column equal to 74!
 
 # Right
-data.df[,2] 
+data.df[,2]==74    # tests each element of column to see whether it is equal to 74
 
 
 ####
@@ -208,7 +208,7 @@ which((data.df[,2]<74)|(data.df[,2]==91))   # use the OR operator
 
 data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
-data.df[data.df[,2]<74,2]    # alternative form without using "which()"...
+data.df[data.df[,2]<74,2]    # alternative form without using "which()"... 
 
 
 sub.countries<-c("Chile","Colombia","Mexico")    # create vector of character strings
@@ -222,12 +222,12 @@ which (data.df[,1]==sub.countries)
 
 
 # Instead we use %in%
-which(data.df[,1] %in% sub.countries) 
+which(data.df[,1] %in% sub.countries)     # elements of data column that match one or more of the elements in "sub.countries"
 which((data.df[,1] %in% sub.countries) & (data.df[,4]=="N"))   # use AND operator 
 which((data.df$Country %in% sub.countries) & (data.df$Product=="N")) 
 
-# What if we don't want the row number, but the row(s) of data that meet a particular condition?
-data.df[which (data.df$Country %in% sub.countries),] 
+# What if we don't want the row number, but the actual row(s) of data that meet a particular condition?
+data.df[which(data.df$Country %in% sub.countries),] 
 
 
 
@@ -410,4 +410,17 @@ detach(data.df)   # Remember to detach
  
 
 df <- read.csv("data.csv", header=T, stringsAsFactors=FALSE)   # avoid reading in character data as factors by default.
+
+
+##########
+# Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
+
+newmat <- array(c(1:9),dim=c(3,3,3))
+class(newmat)
+
+newmat[1,1,]
+class(newmat[1,1,])    # what? why is it no longer an array????
+
+newmat[1,1,,drop=FALSE]
+class(newmat[1,1,,drop=FALSE])    # ahhh, now we retain a 3-D array! 
 

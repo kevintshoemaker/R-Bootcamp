@@ -15,6 +15,12 @@
 
 
 
+##############
+# Clear the workspace
+
+rm(list=ls()) 
+
+
 ##################
 ####  Create R Objects 
 ##################
@@ -27,12 +33,14 @@ c <- 3
 ###################
 #### Try using an R Function
 
-sum(1,2,3,10)
+sum(1,2,3,10)     # "sum()" is an R function for computing the sum of a bunch of numbers
 
 
-help(sum)
+
+help(sum)    # get help for the function "sum()"
 
 ?sum    # alternative shortcut for getting help!
+
 
 ##################
 ##### Manage your R workspace
@@ -95,15 +103,15 @@ d.mat/sum(d.mat)
 #############
 ### DATA FRAMES
 #############
-d.df <- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create ‘data frame’
+d.df <- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create a ‘data frame’ with two columns
 d.df
 
 
-d.df=data.frame(d.mat)        # create data frame another way
+d.df=data.frame(d.mat)        # create data frame another way - directly from a matrix
 d.df
 
 
-names(d.df)          # view column names
+names(d.df)          # view or change column names
 names(d.df)=c("meas_1","meas_2")        # provide new names for columns
 d.df
 
@@ -308,4 +316,9 @@ factorial(5)     # factorial
 c(1,4) 
 c(2,5) 
 c(3,6)
+
+
+x <- rep(seq(-1,1,length=5),each=5)
+y <- rep(seq(-1,1,length=5),times=5)
+df_spatial <- data.frame(long=x,lat=y)
 

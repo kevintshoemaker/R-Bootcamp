@@ -1,1 +1,0 @@
-"0","plot(x=trees$Girth, y=trees$Volume, type=""o"")   # both with conected lines"

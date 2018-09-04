@@ -7,9 +7,9 @@
 ##################################################
 
 
-########################
-####  Learning more ####
-########################
+###################################################
+####  Expanding R functionality: packages etc. ####
+###################################################
 
 
 
@@ -17,7 +17,7 @@
 # PACKAGES!
 ##############
 
-install.packages("modeest")    # run this if you haven't yet installed the package!
+install.packages("modeest")    # run this if you haven't yet installed the package from CRAN!
 
 
 library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
@@ -28,10 +28,10 @@ library(help = "modeest")    # get overview of package
 
 newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 
-?mlv   # learn more about the function for computing the mode. Who knew there were so many ways to compute the mode?
+?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
 
-  # lets find the most frequent value(s) in the "Import" column:
-mlv(newdf$Export, method="mfv", na.rm = T)        # apparently there is a three-way tie for the mode!
+  # lets find the most frequent value(s) in the "Export" column:
+mlv(newdf$Export, method="mfv", na.rm = T)    
 
 
 #########
@@ -62,6 +62,14 @@ car::scatter3d(Bark~Food+Cars,surface=TRUE)
 
 
 ###########
+# install package from GitHub:
+
+# install.packages("devtools")    # run this if you haven't already installed the "devtools" package
+library(devtools)
+install_github("kbroman/broman")  # install a random package from GitHub!
+
+
+###########
 # Learning more about packages
 ###########
 
@@ -78,27 +86,6 @@ browseVignettes('car')
 vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
 
 
-########
-# package demo
-
-demo(package="stats")    # list all demos for package 'stats', which is included in base R
-demo('nlm','stats')
-
-
-########
-# package citations
-
-citation('car')   # citation for the 'car' package
-
-citation()    # and here's the citation for R in general- useful for when you use R for manuscripts!
-
-
-#########
-# Built-in examples
-
-example(lm)   # run examples for "lm" function (included in base R)
-
-
 ################
 #### GENERAL TIPS
 ################
@@ -111,4 +98,31 @@ install.packages("dismo")     # install "dismo" for species distribution modelin
 browseVignettes('dismo')
 vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.
 vignette('brt','dismo')      # and another one!
+
+
+########
+# package demo
+
+demo(package="stats")    # list all demos for package 'stats', which is included in base R
+demo('nlm','stats')
+
+
+###########
+# Load html documentation for R and all installed packages
+
+help.start()
+
+
+#########
+# Built-in examples
+
+example(lm)   # run examples for "lm" function (included in base R)
+
+
+########
+# package citations
+
+citation('car')   # citation for the 'car' package
+
+citation()    # and here's the citation for R in general- useful for when you use R for manuscripts!
 

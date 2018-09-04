@@ -1,3 +1,0 @@
-"0","## change y-axis to proportions using freq=FALSE"
-"0","hist(iris$Sepal.Length, freq=FALSE, main=""Histogram of Sepal Length"", "
-"0","     xlab = ""Sepal Length"")"

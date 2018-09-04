@@ -1,2 +1,0 @@
-"0","brain.df <- read.table(""http://www.oup.com/us/static/companion.websites/9780195089653/Spreadsheets/brainbody.csv"", header=T, sep="","")"
-"0","head(brain.df)"

@@ -1,4 +1,0 @@
-"0","layout(matrix(1:2, 1, 2))"
-"0","## y-axis is in counts"
-"0","hist(iris$Sepal.Length, main=""Histogram of Sepal Length"","
-"0","     xlab = ""Sepal Length"")"

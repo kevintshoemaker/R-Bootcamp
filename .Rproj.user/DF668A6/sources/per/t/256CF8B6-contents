@@ -23,8 +23,22 @@ navbar:
           href: module2_2.html
     - text: "Data sets"
       menu:
+        - text: "Example: tab-separated data"
+          href: data.dat
+        - text: "Example: comma-separated data"
+          href: data.csv
+        - text: "Example: whitespace-separated data"
+          href: data.txt
+        - text: "Example: missing data"
+          href: data_missing.txt
+        - text: "Meteorological Data"
+          href: MTMetStations.csv
+        - text: "Sculpin Data"
+          href: sculpineggs.csv
         - text: "Turtle Data"
           href: turtle_data.txt
     - text: "Links"
       href: Links.html
+      
+      
       

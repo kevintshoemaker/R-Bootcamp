@@ -1,4 +1,0 @@
-"0","# Let's add some flair"
-"0","barplot(bar.heights, names.arg=c(""I. setosa"", ""I. versicolor"", ""I. virginica""), "
-"0","        las=1, col=adjustcolor(plot.colors, alpha.f=0.5),"
-"0","        main=""Sepal length for 3 Irises"", ylab=""Sepal length (cm)"")"

@@ -5,16 +5,16 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2567588714",
+    "hash" : "3911291715",
     "id" : "83316F42",
-    "lastKnownWriteTime" : 1535329143,
-    "last_content_update" : 1535329143851,
+    "lastKnownWriteTime" : 1535825919,
+    "last_content_update" : 1535825919835,
     "path" : "E:/GIT/R-Bootcamp/module1_3.Rmd",
     "project_path" : "module1_3.Rmd",
     "properties" : {
-        "cursorPosition" : "564,41",
-        "last_setup_crc32" : "AFC161067d023e20",
-        "scrollLine" : "560"
+        "cursorPosition" : "666,48",
+        "last_setup_crc32" : "",
+        "scrollLine" : "0"
     },
     "relative_order" : 5,
     "source_on_save" : false,

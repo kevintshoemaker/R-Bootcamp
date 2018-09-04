@@ -1,5 +1,0 @@
-"0","# Use layout to define a 3 row x 1 column matrix with elements 1, 2, and 3."
-"0","# This divides the image into three sections and then fills these with the plot function"
-"0","layout(matrix(1:3, nrow=3, ncol=1))"
-"0","# pch: 'plotting character' changes the type of point that is used (default is an open circle)!"
-"0","plot(x=trees$Girth, y=trees$Volume, pch=19)     # filled point"

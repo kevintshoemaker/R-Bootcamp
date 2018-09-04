@@ -1,4 +1,0 @@
-"0","## calculate the mean Sepal Length of for each species"
-"0","bar.heights <- by(iris$Sepal.Length, iris$Species, mean)"
-"0","# The basic barplot function"
-"0","barplot(bar.heights)"

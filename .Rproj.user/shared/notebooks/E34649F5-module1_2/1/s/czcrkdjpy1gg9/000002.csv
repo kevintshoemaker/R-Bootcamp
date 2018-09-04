@@ -1,5 +1,5 @@
 "0","####"
-"0","#### Check data/object"
+"0","#### Check/explore data object"
 "0","#### "
 "0","# ?class: tells you what type of object you have"
 "0","class(data.df)"

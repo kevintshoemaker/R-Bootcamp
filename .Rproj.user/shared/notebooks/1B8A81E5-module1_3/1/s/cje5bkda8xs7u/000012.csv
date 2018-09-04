@@ -1,4 +1,0 @@
-"0","layout(matrix(1:4, 2, 2))"
-"0","# main: adds a title"
-"0","plot(x=trees$Girth, y=trees$Volume, pch=19, "
-"0","     main=""Girth vs. Volume for Black Cherry Trees"")"

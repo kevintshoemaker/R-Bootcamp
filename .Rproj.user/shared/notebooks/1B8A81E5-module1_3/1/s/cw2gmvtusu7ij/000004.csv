@@ -1,3 +1,0 @@
-"0","plot(x=rings, y=wings, ylim=c(min(lwr), max(upr)), "
-"0","     ylab=""Number of Angels Who Get Wings"", xlab=""Number of Bell Rings"", "
-"0","     main=""Bell Rings vs. Angels Getting Wings"", pch=19, col=""blue"")"

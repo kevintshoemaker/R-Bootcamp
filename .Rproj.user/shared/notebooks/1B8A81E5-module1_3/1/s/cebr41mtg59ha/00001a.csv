@@ -1,5 +1,0 @@
-"0","# Use layout to define a 2 row x 2 column matrix with elements 1, 2, 3, and 4."
-"0","# This divides the image into four sections and then fills these with the plot function"
-"0","layout(matrix(1:4, nrow=2, ncol=2))"
-"0","  # par(mfrow=c(2,2))  # alternative"
-"0","plot(x=trees$Girth, y=trees$Volume)             # points"

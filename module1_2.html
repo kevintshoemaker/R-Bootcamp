@@ -287,16 +287,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module1_1.html">Module 1.1: Getting started: working with objects</a>
+      <a href="module1_1.html">Module 1.1: working with objects</a>
     </li>
     <li>
-      <a href="module1_2.html">Module 1.2: Getting started: managing data</a>
+      <a href="module1_2.html">Module 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Module 1.3: Getting started: plotting and basic stats</a>
+      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
     </li>
     <li>
-      <a href="module1_4.html">Module 1.4: Getting started: expanding your skill set</a>
+      <a href="module1_4.html">Module 1.4: expanding your skill set</a>
     </li>
   </ul>
 </li>
@@ -322,6 +322,24 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="data.dat">Example: tab-separated data</a>
+    </li>
+    <li>
+      <a href="data.csv">Example: comma-separated data</a>
+    </li>
+    <li>
+      <a href="data.txt">Example: whitespace-separated data</a>
+    </li>
+    <li>
+      <a href="data_missing.txt">Example: missing data</a>
+    </li>
+    <li>
+      <a href="MTMetStations.csv">Meteorological Data</a>
+    </li>
+    <li>
+      <a href="sculpineggs.csv">Sculpin Data</a>
+    </li>
     <li>
       <a href="turtle_data.txt">Turtle Data</a>
     </li>
@@ -385,33 +403,9 @@ getwd()          # note: the results from running this command on my machine wil
 setwd(file.choose())</code></pre>
 <p><strong>NOTE:</strong> when you put file paths in R, they need to use forward slashes (“/”; or double backslashes, “\\”) – single backslashes (“\”, as seen in Windows) do not work for specifying file paths in R.</p>
 <p>Alternatively, you can (in RStudio) use the top dropdown menus to set the working directory (Session-&gt;Set Working Directory-&gt;Choose Directory).</p>
-<p>Once you have set the working directory, you can use the “dir()” function to see what’s in the directory. Here, we see the contents of the directory that I’m using to create this R bootcamp website (how meta!).</p>
+<p>Once you have set the working directory, you can use the “dir()” function to see what’s in the directory. If I ran this, we would see the contents of the directory that I’m using to create this R bootcamp website!</p>
 <pre class="r"><code># Names of files in working directory
 dir()</code></pre>
-<pre><code>##  [1] &quot;_site.yml&quot;                    &quot;comm_data.txt&quot;               
-##  [3] &quot;data.csv&quot;                     &quot;data.dat&quot;                    
-##  [5] &quot;data.txt&quot;                     &quot;data_export.csv&quot;             
-##  [7] &quot;data_missing.txt&quot;             &quot;data2.txt&quot;                   
-##  [9] &quot;index.html&quot;                   &quot;index.Rmd&quot;                   
-## [11] &quot;Links.html&quot;                   &quot;Links.Rmd&quot;                   
-## [13] &quot;Module_1.R&quot;                   &quot;module1_1.html&quot;              
-## [15] &quot;module1_1.R&quot;                  &quot;module1_1.Rmd&quot;               
-## [17] &quot;module1_1.txt&quot;                &quot;module1_1_cache&quot;             
-## [19] &quot;module1_2.html&quot;               &quot;module1_2.R&quot;                 
-## [21] &quot;Module1_2.RData&quot;              &quot;module1_2.Rmd&quot;               
-## [23] &quot;module1_2.txt&quot;                &quot;module1_2_cache&quot;             
-## [25] &quot;module1_3.html&quot;               &quot;module1_3.R&quot;                 
-## [27] &quot;module1_3.Rmd&quot;                &quot;module1_3.txt&quot;               
-## [29] &quot;module1_3_cache&quot;              &quot;module1_3_files&quot;             
-## [31] &quot;module1_4.html&quot;               &quot;module1_4.R&quot;                 
-## [33] &quot;module1_4.Rmd&quot;                &quot;module1_4.txt&quot;               
-## [35] &quot;module1_4_cache&quot;              &quot;Module2.RData&quot;               
-## [37] &quot;module2_1.html&quot;               &quot;module2_1.R&quot;                 
-## [39] &quot;module2_1.Rmd&quot;                &quot;module2_1.txt&quot;               
-## [41] &quot;module2_1_cache&quot;              &quot;R-Bootcamp.Rproj&quot;            
-## [43] &quot;rstudio1.jpg&quot;                 &quot;sculpineggs.csv&quot;             
-## [45] &quot;site_libs&quot;                    &quot;tech_support_cheat_sheet.jpg&quot;
-## [47] &quot;tech_support_cheat_sheet.png&quot; &quot;turtle_data.txt&quot;</code></pre>
 <p>What’s in your working directory?</p>
 </div>
 </div>
@@ -421,7 +415,8 @@ dir()</code></pre>
 <ul>
 <li>read.table
 <ul>
-<li>reads any table, you can specify which format (very general)</li>
+<li>reads any table, you can specify which format (very general)<br />
+</li>
 </ul></li>
 <li>read.csv
 <ul>
@@ -443,7 +438,7 @@ dir()</code></pre>
 <li>tab delimited with periods as commas</li>
 </ul></li>
 </ul>
-<p>Before we can read data in, we need to get some data in our working directory!</p>
+<p>Before we can read data in, we need to put some data files in our working directory!</p>
 <ol style="list-style-type: decimal">
 <li>Download the following data files and store them in a convenient file location (e.g., the R bootcamp folder where your scripts are already!)</li>
 </ol>
@@ -455,7 +450,7 @@ dir()</code></pre>
 <li><a href="data.csv">Comma delimited data file</a></li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li>Set the directory where the data files are as your working directory! In my case, the R command looks like this:</li>
+<li>Set the directory where the data files are as your working directory! In my case, the R command would look like this:</li>
 </ol>
 <pre class="r"><code>setwd(&quot;E:/GIT/R-Bootcamp&quot;)   # set working directory to the folder with my data!
 
@@ -473,28 +468,22 @@ dir()</code></pre>
 # read.table with tab delimited file (default is sep = &quot;&quot; (one of several common delimiters, including any type of whitespace))
 data.tab.df &lt;- read.table(&quot;data2.txt&quot;, header=TRUE)
 
-head(data.tab.df)    # display the first few lines of the data frame</code></pre>
-<pre><code>##     Country Import Export Product
-## 1   Bolivia     46      0       N
-## 2    Brazil     74      0       N
-## 3     Chile     89     16       N
-## 4  Colombia     77     16       A
-## 5 CostaRica     84     21       A
-## 6      Cuba     89     15       A</code></pre>
-<pre class="r"><code># read.table to import textfile
+head(data.tab.df)    # display the first few lines of the data frame
+
+# read.table to import textfile
 data.txt.df &lt;- read.table(&quot;data.txt&quot;, header=T, sep=&quot;&quot;)  
 
 # read.table with csv file
 data.csv.df &lt;- read.table(&quot;data.csv&quot;, header=T, sep=&quot;,&quot;)  
 
 # ?names: lists names of an object (columns, name of list elements)
-names(data.csv.df)      </code></pre>
-<pre><code>## [1] &quot;Country&quot; &quot;Import&quot;  &quot;Export&quot;  &quot;Product&quot;</code></pre>
-<pre class="r"><code># built-in default for importing from CSV (easiest and most widely used)
+names(data.csv.df)      
+
+# built-in default for importing from CSV (easiest and most widely used)
 data.df &lt;- read.csv(&quot;data.csv&quot;)
-names(data.df) </code></pre>
-<pre><code>## [1] &quot;Country&quot; &quot;Import&quot;  &quot;Export&quot;  &quot;Product&quot;</code></pre>
-<pre class="r"><code># Remove objects we won&#39;t be using
+names(data.df) 
+
+# Remove objects we won&#39;t be using
 rm(data.tab.df)
 rm(data.txt.df)
 rm(data.csv.df)</code></pre>
@@ -505,16 +494,8 @@ rm(data.csv.df)</code></pre>
 # Import data from the internet directly
 
 brain.df &lt;- read.table(&quot;http://www.oup.com/us/static/companion.websites/9780195089653/Spreadsheets/brainbody.csv&quot;, header=T, sep=&quot;,&quot;)
-head(brain.df)</code></pre>
-<pre><code>##   X                    Species BodyWt BrainWt
-## 1 1  Lesser Short-tailed Shrew      5    0.14
-## 2 2           Little Brown Bat     10    0.25
-## 3 3                      Mouse     23    0.30
-## 4 4              Big Brown Bat     23    0.40
-## 5 5                 Musk Shrew     48    0.33
-## 6 6            Star Nosed Mole     60    1.00</code></pre>
-<pre class="r"><code>dim(brain.df)</code></pre>
-<pre><code>## [1] 64  4</code></pre>
+head(brain.df)
+dim(brain.df)</code></pre>
 </div>
 <div id="using-rs-built-in-data" class="section level3">
 <h3>Using R’s built in data</h3>
@@ -525,13 +506,7 @@ data()   </code></pre>
 <pre class="r"><code># read built-in data on the passengers of the titanic
 data(Titanic)         
 
-str(Titanic)</code></pre>
-<pre><code>##  &#39;table&#39; num [1:4, 1:2, 1:2, 1:2] 0 0 35 0 0 0 17 0 118 154 ...
-##  - attr(*, &quot;dimnames&quot;)=List of 4
-##   ..$ Class   : chr [1:4] &quot;1st&quot; &quot;2nd&quot; &quot;3rd&quot; &quot;Crew&quot;
-##   ..$ Sex     : chr [1:2] &quot;Male&quot; &quot;Female&quot;
-##   ..$ Age     : chr [1:2] &quot;Child&quot; &quot;Adult&quot;
-##   ..$ Survived: chr [1:2] &quot;No&quot; &quot;Yes&quot;</code></pre>
+str(Titanic)    # examine the structure of this data object</code></pre>
 </div>
 <div id="aside-tips-on-good-data-management-in-r" class="section level3">
 <h3>Aside: Tips on good data management in R</h3>
@@ -682,16 +657,14 @@ a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quo
 Y &lt;- 4
 Z &lt;- 6
 
-Y == Z  #I am asking if Y is equal to Z, and it will return FALSE</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>Y &lt; Z</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code># Wrong!
-data.df[,2]=74 
+Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
+Y &lt; Z
+
+# Wrong!
+data.df[,2]=74     # sets entire second column equal to 74!
 
 # Right
-data.df[,2] </code></pre>
-<pre><code>##  [1] 74 74 74 74 74 74 74 74 74 74 74 74 74 74 74 74 74 74 74 74</code></pre>
+data.df[,2]==74    # tests each element of column to see whether it is equal to 74</code></pre>
 </div>
 <div id="data-subsetting-using-boolean-logic" class="section level3">
 <h3>Data subsetting using boolean logic</h3>
@@ -705,17 +678,17 @@ data.df[,2] </code></pre>
 # The &quot;which()&quot; function -- return indices of a vector that meet a certain condition (condition is TRUE)
 
 which(data.df[,2]==74)       # elements of the data column that are equal to 74</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre><code>## [1]  2 17</code></pre>
 <pre class="r"><code>which(data.df[,2]!=74)       # elements of the data column that are NOT equal to 74</code></pre>
-<pre><code>## integer(0)</code></pre>
+<pre><code>##  [1]  1  3  4  5  6  7  8  9 10 11 12 13 14 15 16 18 19 20</code></pre>
 <pre class="r"><code>which(data.df[,2]&lt;74)        #  and so on...</code></pre>
-<pre><code>## integer(0)</code></pre>
+<pre><code>## [1]  1  7  8  9 10 11 12 15 18</code></pre>
 <pre class="r"><code>which((data.df[,2]&lt;74)|(data.df[,2]==91))   # use the OR operator</code></pre>
-<pre><code>## integer(0)</code></pre>
+<pre><code>##  [1]  1  7  8  9 10 11 12 15 18 20</code></pre>
 <pre class="r"><code>data.df[which(data.df[,2]&lt;74),2]    # check to make sure these numbers are under 74- they had better be!</code></pre>
-<pre><code>## numeric(0)</code></pre>
-<pre class="r"><code>data.df[data.df[,2]&lt;74,2]    # alternative form without using &quot;which()&quot;...</code></pre>
-<pre><code>## numeric(0)</code></pre>
+<pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
+<pre class="r"><code>data.df[data.df[,2]&lt;74,2]    # alternative form without using &quot;which()&quot;... </code></pre>
+<pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
 <pre class="r"><code>sub.countries&lt;-c(&quot;Chile&quot;,&quot;Colombia&quot;,&quot;Mexico&quot;)    # create vector of character strings
 
 which(data.df[,1]==&quot;Chile&quot;) </code></pre>
@@ -731,21 +704,21 @@ which (data.df[,1]==sub.countries) </code></pre>
 <pre><code>## integer(0)</code></pre>
 <p>When we want all elements of a vector that match one of a group (vector) of possibilities, we use the “%in%” operator:</p>
 <pre class="r"><code># Instead we use %in%
-which(data.df[,1] %in% sub.countries) </code></pre>
+which(data.df[,1] %in% sub.countries)     # elements of data column that match one or more of the elements in &quot;sub.countries&quot;</code></pre>
 <pre><code>## [1]  3  4 14</code></pre>
 <pre class="r"><code>which((data.df[,1] %in% sub.countries) &amp; (data.df[,4]==&quot;N&quot;))   # use AND operator </code></pre>
 <pre><code>## [1]  3 14</code></pre>
 <pre class="r"><code>which((data.df$Country %in% sub.countries) &amp; (data.df$Product==&quot;N&quot;)) </code></pre>
 <pre><code>## [1]  3 14</code></pre>
-<pre class="r"><code># What if we don&#39;t want the row number, but the row(s) of data that meet a particular condition?
-data.df[which (data.df$Country %in% sub.countries),] </code></pre>
+<pre class="r"><code># What if we don&#39;t want the row number, but the actual row(s) of data that meet a particular condition?
+data.df[which(data.df$Country %in% sub.countries),] </code></pre>
 <pre><code>##     Country Import Export Product
-## 3     Chile     74     16       N
-## 4  Colombia     74     16       A
-## 14   Mexico     74      4       N</code></pre>
+## 3     Chile     89     16       N
+## 4  Colombia     77     16       A
+## 14   Mexico     83      4       N</code></pre>
 <div id="practice-exercise" class="section level4">
 <h4>Practice exercise!</h4>
-<p>Let’s work together to practice some of what we’ve learned. Here we will use a different data file.</p>
+<p>Let’s practice some of what we’ve learned. Here we will use a different data file. Take a couple minutes to make sure you understand this code.</p>
 <p>First, make sure you download the <a href="turtle_data.txt">Turtle Data</a> and save to your working directory.</p>
 <pre class="r"><code>####
 ####  Practice subsetting a data frame
@@ -1057,6 +1030,37 @@ detach(data.df)   # Remember to detach</code></pre>
 </ol>
 <p>My recommendation is that, when reading in data, use the function argument “stringsAsFactors=FALSE” so that R reads these variables in as character strings rather than as factors:</p>
 <pre class="r"><code>df &lt;- read.csv(&quot;data.csv&quot;, header=T, stringsAsFactors=FALSE)   # avoid reading in character data as factors by default.</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>When subsetting matrices or arrays, R automatically “drops” dimensions. This is best understood by example:</li>
+</ol>
+<pre class="r"><code>##########
+# Demo- using the &quot;drop=TRUE&quot; argument when subsetting higher-dimensional objects
+
+newmat &lt;- array(c(1:9),dim=c(3,3,3))
+class(newmat)</code></pre>
+<pre><code>## [1] &quot;array&quot;</code></pre>
+<pre class="r"><code>newmat[1,1,]</code></pre>
+<pre><code>## [1] 1 1 1</code></pre>
+<pre class="r"><code>class(newmat[1,1,])    # what? why is it no longer an array????</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>newmat[1,1,,drop=FALSE]</code></pre>
+<pre><code>## , , 1
+## 
+##      [,1]
+## [1,]    1
+## 
+## , , 2
+## 
+##      [,1]
+## [1,]    1
+## 
+## , , 3
+## 
+##      [,1]
+## [1,]    1</code></pre>
+<pre class="r"><code>class(newmat[1,1,,drop=FALSE])    # ahhh, now we retain a 3-D array! </code></pre>
+<pre><code>## [1] &quot;array&quot;</code></pre>
+<p>This default behavior in R can lead to enormous problems when programming in R- just remember that the “drop=FALSE” argument can be your friend!!!</p>
 </div>
 <div id="challenge-exercises" class="section level2">
 <h2>Challenge Exercises!</h2>

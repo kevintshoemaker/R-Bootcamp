@@ -287,16 +287,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module1_1.html">Module 1.1: Getting started: working with objects</a>
+      <a href="module1_1.html">Module 1.1: working with objects</a>
     </li>
     <li>
-      <a href="module1_2.html">Module 1.2: Getting started: managing data</a>
+      <a href="module1_2.html">Module 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Module 1.3: Getting started: plotting and basic stats</a>
+      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
     </li>
     <li>
-      <a href="module1_4.html">Module 1.4: Getting started: expanding your skill set</a>
+      <a href="module1_4.html">Module 1.4: expanding your skill set</a>
     </li>
   </ul>
 </li>
@@ -322,6 +322,24 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="data.dat">Example: tab-separated data</a>
+    </li>
+    <li>
+      <a href="data.csv">Example: comma-separated data</a>
+    </li>
+    <li>
+      <a href="data.txt">Example: whitespace-separated data</a>
+    </li>
+    <li>
+      <a href="data_missing.txt">Example: missing data</a>
+    </li>
+    <li>
+      <a href="MTMetStations.csv">Meteorological Data</a>
+    </li>
+    <li>
+      <a href="sculpineggs.csv">Sculpin Data</a>
+    </li>
     <li>
       <a href="turtle_data.txt">Turtle Data</a>
     </li>
@@ -349,8 +367,8 @@ div.tocify {
 </div>
 
 
-<p>In this “bootcamp” we have barely scratched the surface of R’s power and functionality. In this module we will talk about how you can go about expanding your skill set and learning more.</p>
-<p>Whether you are an expert or a novice, you will always encounter situations where you don’t know exactly what to do. The great thing about R is that there is <em>nearly always a way to do it</em>, and once you get familiar with the basics, it’s not that hard to figure out how to do it!</p>
+<p>In this introductory “bootcamp” we have barely scratched the surface of R’s power and functionality. In this module we will talk about how you can continue learning more, gaining confidence, and expanding what you can do in R.</p>
+<p>Whether you are an expert or a novice, you will always encounter situations where you don’t know exactly what to do. The great thing about R is that there is <em>nearly always a way to do it</em>, and once you get familiar with the basics, it’s not that hard to figure out how!</p>
 <div class="figure">
 <img src="tech_support_cheat_sheet.jpg" />
 
@@ -365,36 +383,37 @@ div.tocify {
 <div id="packages" class="section level2">
 <h2>Packages</h2>
 <p>How is it possible to have so many features implemented in a single programming environment?</p>
-<p>The answer is that you have a whole community of researchers adding new functionality <em>all the time</em>! This new functionality is implemented in the form of <strong>R Packages</strong>, also known as <strong>libraries</strong>. Each package includes a set of functions for accomplishing specific tasks (and associated help files!).</p>
+<p>The answer is that you have a whole community of researchers adding new functionality <em>all the time</em>! This new functionality is implemented in the form of <strong>R Packages</strong>, also known as <strong>libraries</strong>. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).</p>
 <div id="mode-example" class="section level3">
 <h3>Mode example</h3>
-<p>For a simple, trivial example (example borrowed from <a href="https://preludeinr.com">Prelude in R</a>), base R does not include a function for computing the <em>mode</em> of a vector. BUT, someone decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called “modeest”, which is available in the CRAN repository. Packages in the CRAN repository can be installed using the function “install.packages()”:</p>
+<p>For a simple example (borrowed from <a href="https://preludeinr.com">Prelude in R</a>), base R does not include a function for computing the <em>mode</em> of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called “modeest”, and made the package available in the CRAN repository.</p>
+<p>Packages in the CRAN repository can be installed using the function “install.packages()”:</p>
 <pre class="r"><code>##############
 # PACKAGES!
 ##############
 
-install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet installed the package!</code></pre>
+install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet installed the package from CRAN!</code></pre>
 <pre class="r"><code>library(modeest)    # load the package: This is package &#39;modeest&#39; written by P. PONCET.</code></pre>
 <pre><code>## 
 ## This is package &#39;modeest&#39; written by P. PONCET.
 ## For a complete list of functions, use &#39;library(help = &quot;modeest&quot;)&#39; or &#39;help.start()&#39;.</code></pre>
-<p>Now that we have installed and loaded the package, we can learn more about it. One quick way to get a quick overview of the package is to use the following syntax:</p>
+<p>Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax:</p>
 <pre class="r"><code>library(help = &quot;modeest&quot;)    # get overview of package</code></pre>
 <p>Can you use the package overview to identify a function for computing the mode of a data vector?</p>
 <p>Let’s try to use it! If you haven’t already loaded the “data.missing.txt” dataset, download it <a href="data_missing.txt">here</a> and save to your working directory.</p>
 <pre class="r"><code>newdf &lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)
 
-?mlv   # learn more about the function for computing the mode. Who knew there were so many ways to compute the mode?</code></pre>
+?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?</code></pre>
 <pre><code>## starting httpd help server ... done</code></pre>
-<pre class="r"><code>  # lets find the most frequent value(s) in the &quot;Import&quot; column:
-mlv(newdf$Export, method=&quot;mfv&quot;, na.rm = T)        # apparently there is a three-way tie for the mode!</code></pre>
+<pre class="r"><code>  # lets find the most frequent value(s) in the &quot;Export&quot; column:
+mlv(newdf$Export, method=&quot;mfv&quot;, na.rm = T)    </code></pre>
 <pre><code>## Mode (most frequent value): 0 
 ## Bickel&#39;s modal skewness: 0.8333333 
 ## Call: mlv.integer(x = newdf$Export, na.rm = T, method = &quot;mfv&quot;)</code></pre>
 </div>
 <div id="d-scatterplot-example" class="section level3">
 <h3>3d scatterplot example!</h3>
-<p>Before we move on, the “car” package gives us an example of the endless, amazing things we can do with R packages. Here we will make our own interactive 3d plot! (example from “prelude in R”).</p>
+<p>Before we move on, the “car” package (_c_ompanion to _a_pplied _r_egression) gives us an example of the endless, amazing things we can do with R packages. Here we will make our own interactive 3d plot! (example from “prelude in R”).</p>
 <p>Here is a data set that represents the number of times a dog barks in a day, and two potential explanatory factors: food given (in lbs) and cars passing by the house.</p>
 <pre class="r"><code>#########
 # 3D Plotting example 
@@ -414,11 +433,29 @@ Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
 <p>Let’s install and load the “car” package:</p>
 <pre class="r"><code>install.packages(&quot;car&quot;)
 library(car)</code></pre>
-<p>Now for the fun part- interactive 3-D graphics! Run the following code and take some time to play around with the resulting scatterplot.</p>
+<p>Now for the fun part- interactive 3-D graphics! Run the following code and take a minute to play around with the resulting scatterplot.</p>
 <pre class="r"><code>##########
 # interactive 3-D graphics!
 
 car::scatter3d(Bark~Food+Cars,surface=TRUE)</code></pre>
+</div>
+<div id="loading-packages-from-github" class="section level3">
+<h3>Loading packages from GitHub</h3>
+<p>More and more package developers are bypassing the CRAN repository, and instead using <a href="https://github.com/">GitHub</a>. In some cases, the version available on CRAN is not the latest version- for the latest version, you need to use GitHub. Also, many packages that are in development are only found on GitHub. There are actually some good reasons to put an R package on GitHub:</p>
+<ol style="list-style-type: decimal">
+<li>It’s easier for others to peruse your code.<br />
+</li>
+<li>People can actually fix the problem and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, “There’s a typo in your documentation” they can say “Here, I’ve fixed a typo in your documentation.”<br />
+</li>
+<li>With the install_github() function in Hadley Wickham’s devtools package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)</li>
+</ol>
+<p>The syntax for using “install_github()” is just install_github(“[author]/[package]”) Here’s an example using the “install_github()” function:</p>
+<pre class="r"><code>###########
+# install package from GitHub:
+
+# install.packages(&quot;devtools&quot;)    # run this if you haven&#39;t already installed the &quot;devtools&quot; package
+library(devtools)
+install_github(&quot;kbroman/broman&quot;)  # install a random package from GitHub!</code></pre>
 </div>
 <div id="finding-the-right-package-for-the-job" class="section level3">
 <h3>Finding the right package for the job</h3>
@@ -455,6 +492,19 @@ vignette(&#39;[name of vignette]&#39;, &#39;[name of package]&#39;)
 
 browseVignettes(&#39;car&#39;)
 vignette(&#39;embedding&#39;,&#39;car&#39;)   # pull up the &quot;embedding&quot; vignette in the &#39;car&#39; package</code></pre>
+<p>Or let’s take a look at the “dismo” package, which is for species distribution modeling in R:</p>
+<pre class="r"><code>################
+#### GENERAL TIPS
+################
+
+#############
+# 1. Use code examples provided by others
+
+install.packages(&quot;dismo&quot;)     # install &quot;dismo&quot; for species distribution modeling
+
+browseVignettes(&#39;dismo&#39;)
+vignette(&#39;sdm&#39;,&#39;dismo&#39;)      # pull up one of the helpful vignettes from the &#39;dismo&#39; package, with useful code examples! Many packages have built-in vignettes.
+vignette(&#39;brt&#39;,&#39;dismo&#39;)      # and another one!</code></pre>
 </div>
 <div id="package-demos" class="section level4">
 <h4>Package demos</h4>
@@ -465,9 +515,24 @@ vignette(&#39;embedding&#39;,&#39;car&#39;)   # pull up the &quot;embedding&quot
 demo(package=&quot;stats&quot;)    # list all demos for package &#39;stats&#39;, which is included in base R
 demo(&#39;nlm&#39;,&#39;stats&#39;)</code></pre>
 </div>
-<div id="package-pdf" class="section level4">
-<h4>Package pdf</h4>
-<p>The ‘master’ documentation for any package is packaged as a PDF file that is included as part of the package download.</p>
+<div id="package-documentation-html-or-pdf" class="section level4">
+<h4>Package documentation (html or PDF)</h4>
+<p>The ‘master’ documentation for any package is often packaged as a PDF file that can be downloaded from CRAN (each package on the CRAN repository has its own webpage- for example, here’s the one for the <a href="https://cran.r-project.org/web/packages/raster/index.html">raster package</a>)</p>
+<p>Also, you can load the documentation for any package you have installed using the “help.start()” function:</p>
+<pre class="r"><code>###########
+# Load html documentation for R and all installed packages
+
+help.start()</code></pre>
+</div>
+<div id="learning-by-example" class="section level4">
+<h4>Learning by example!</h4>
+<p>To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written.</p>
+<p>One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using ‘help()’ or ‘?’). You can also run these examples using the “example()” function. For example:</p>
+<pre class="r"><code>#########
+# Built-in examples
+
+example(lm)   # run examples for &quot;lm&quot; function (included in base R)</code></pre>
+<p>Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples!</p>
 </div>
 <div id="package-citations" class="section level4">
 <h4>Package citations</h4>
@@ -494,7 +559,7 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 ##     address = {Thousand Oaks {CA}},
 ##     url = {http://socserv.socsci.mcmaster.ca/jfox/Books/Companion},
 ##   }</code></pre>
-<pre class="r"><code>citation()    # and here&#39;s the citation for R in general- useful for when you use R for manuscripts!</code></pre>
+<pre class="r"><code>citation()    # and here&#39;s the citation for R in general- useful for when you use R for manuscripts</code></pre>
 <pre><code>## 
 ## To cite R in publications use:
 ## 
@@ -529,39 +594,19 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 </div>
 </div>
 <div id="cheat-sheets" class="section level2">
-<h2>Cheat sheets</h2>
+<h2>‘Cheat sheets’</h2>
 <p>There are lots of “cheat sheets” available for reminding you of basic R functionality. It can be useful to tape these to the wall next to your desk!</p>
 <p>For example, <a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">here</a> is a good cheat sheet for using base R.</p>
 <p>see <a href="Links.html">Links page</a> for more resources, including cheat sheets!</p>
 </div>
-<div id="general-tips-for-learning-more" class="section level2">
-<h2>General tips for learning more</h2>
-<ol style="list-style-type: decimal">
-<li><em>Use code examples provided by others.</em> To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written.</li>
-</ol>
-<p>One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using ‘help()’ or ‘?’). You can also run these examples using the “example()” function. For example:</p>
-<pre class="r"><code>#########
-# Built-in examples
-
-example(lm)   # run examples for &quot;lm&quot; function (included in base R)</code></pre>
-<p>Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can just use your favorite search engine to find more helpful examples. Also, as we have seen, many packages have “vignettes” which often provide more extensive, useful worked examples. For example, take the “dismo” package, which is for species distribution modeling in R:</p>
-<pre class="r"><code>################
-#### GENERAL TIPS
-################
-
-#############
-# 1. Use code examples provided by others
-
-install.packages(&quot;dismo&quot;)     # install &quot;dismo&quot; for species distribution modeling
-
-browseVignettes(&#39;dismo&#39;)
-vignette(&#39;sdm&#39;,&#39;dismo&#39;)      # pull up one of the helpful vignettes from the &#39;dismo&#39; package, with useful code examples! Many packages have built-in vignettes.
-vignette(&#39;brt&#39;,&#39;dismo&#39;)      # and another one!</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li><em>Google!</em> I don’t even understand why it works so well to google R help (‘r’ is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work, and the internet, you can pretty much always find a solution to your analysis problems!</li>
-</ol>
-<p>By the end of these two workshops, my goal is that all of you will have the tools you need to tackle your specific analysis problems- even though we almost certainly didn’t cover your analysis problem in these short workshops!</p>
-<p><a href="module2_1.html">–go to next module–</a> (start of bootcamp #2)</p>
+<div id="google" class="section level2">
+<h2><em>Google!</em></h2>
+<p>I don’t even understand why it works so well to google R help (‘r’ is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work (and some cheat sheets by your desk), and the internet, you can pretty much always find a solution!</p>
+<p>More helpful links for going further with R are provided on the <a href="Links.html">Links</a> page.</p>
+</div>
+<div id="any-questions" class="section level2">
+<h2>Any questions???</h2>
+<p><a href="module2_1.html">–go to next module–</a></p>
 </div>
 
 

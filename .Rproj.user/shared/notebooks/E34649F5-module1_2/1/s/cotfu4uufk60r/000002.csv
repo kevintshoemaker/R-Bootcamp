@@ -1,5 +1,6 @@
-"0","str(Titanic)
-"
+"0","# read built-in data on the passengers of the titanic"
+"0","data(Titanic)         "
+"0","str(Titanic)    # examine the structure of this data object"
 "1"," 'table' num [1:4, 1:2, 1:2, 1:2] "
 "1","0 0 35 0 0 0 17 0 118 154"
 "1"," ..."

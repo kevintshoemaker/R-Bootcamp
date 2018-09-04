@@ -1,8 +1,0 @@
-"0","####################"
-"0","# STATISTICS!"
-"0","####################"
-"0","#####"
-"0","#####  Load Data"
-"0","#####"
-"0","sculpin.df <- read.csv(""sculpineggs.csv"")"
-"0","head(sculpin.df)"

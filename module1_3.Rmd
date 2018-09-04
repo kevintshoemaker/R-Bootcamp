@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ####                                          #### 
 ##################################################
 
-## NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
+## NOTE: this module borrows heavily from an R short-course developed by a team at Colorado State University. 
    # Thanks to Perry Williams for allowing us to use these materials!!
    # Thanks to John Tipton at CSU for developing much of this module (plotting in R)!
 
@@ -34,9 +34,9 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
-NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
-   - Thanks to Perry Williams for allowing us to use these materials!!
-   - Thanks to John Tipton at CSU for developing much of this module (plotting in R)!
+NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University.    
+   - Thanks to Perry Williams for allowing us to use these materials!!      
+   - Thanks to John Tipton at CSU for developing much of this module (plotting in R)!    
 
 ## Load script for module #1.3
 
@@ -48,7 +48,7 @@ NOTE: this module borrows heavily from an R short course developed by a team at 
 
 Let's get started with plotting in R!
 
-We'll start with the 'trees' dataset, which is built into R. It describes the girth, height, and volume of 31 black cherry trees.
+We'll start with the 'trees' dataset, which is built into R. It describes the girth, height, and volume of 31 felled black cherry trees.   
 
 ```{r}
 
@@ -73,13 +73,14 @@ trees$Volume
 ### Basic plots
 R's basic "plot()" function takes an "x" argument (defining coordinates on an x axis) and a "y" argument (defining coordinates on a y axis).
 
-Here is an example of a **scatterplot**
+Here is an example of a **scatterplot** in R:  
 
 ```{r}
 
 plot(x=trees$Girth, y=trees$Volume)    # use R's built-in "trees" dataset: ?trees
 
 ```
+
 
 ### Change Plot Type
 Because we're exploring different ways of plotting, it is useful to include multiple plots in the same image. 
@@ -90,7 +91,7 @@ We can do this using the `par()` function (graphical parameters), which has argu
 
 ?par
 
-par()   # view the default graphical parameters
+par()   # view the default graphical parameters (can be kind of overwhelming!)
 
 ```
 
@@ -98,7 +99,9 @@ par()   # view the default graphical parameters
 We could change the "mfrow" parameter from c(1,1) to c(2,2): this means that we can fit four plots into a single window. 
 
 
-An even easier solution is to use the convenience function `layout()`. An example using `layout()` is below. The default plot type is points, but you can change it to lines or both points and lines (or others) by adding the `type=` option
+An even easier solution is to use the convenience function `layout()`. An example using `layout()` is below. 
+
+The default plot type for two quantitative variables is points (classic scatterplot), but you can change it to lines or both points and lines (or others) by using the `type=` option:
 
 ```{r}
 
@@ -115,7 +118,7 @@ plot(x=trees$Girth, y=trees$Volume, type="o")   # both with conected lines
 
 ```
 
-Whenver you use `layout()` or `par()`, the graphics window will retain this layout for all future plots. To start over (and return to the default graphical parameters), use `graphics.off()` to reset the plot. For example
+Whenever you use `layout()` or `par()`, the graphics window will retain this layout for all future plots. To start over (and return to the default graphical parameters), use `graphics.off()` to reset the plot. For example:
 
 ```{r, eval=FALSE}
 
@@ -146,10 +149,12 @@ plot(x=trees$Girth, y=trees$Volume, pch=11)     # star
 
 ```
 
-You might want to remember a couple favorites (for example, I like to use pch=19)
+You might want to remember a couple favorites (for example, I like to use pch=19). Alternatively, you might consider saving a useful guide like this (or taping something like this to your office wall):
+
+![](points.png)
 
 ### Title and Axes
-We can also add titles, axis labels, and other options to make the plots look pretty. For example, we show below how each plot is changed by the addition of one extra command, starting at the top left corner and moving top-to-bottom 
+We can also add titles, axis labels, and other options to make the plots look pretty. For example, we show below how each plot is changed by the addition of one extra command, starting at the top left corner and moving top-to-bottom: 
 
 ```{r}
 
@@ -184,7 +189,7 @@ If we want we can add colors to the points in the plot as well using the `col=` 
 # Use layout to define a 2 row x 2 column matrix with elements 1, 1, 2, and 3.
 # This divides the image into four sections but fills the first two sections
 # with the first plot and then fills these next two sections with the final two plots
-layout(matrix(c(1, 1, 2, 3), 2, 2))
+layout(matrix(c(1, 1, 2, 3), nrow=2, ncol=2))
 
 # col: select a color for the plotting characters
 plot(x=trees$Girth, y=trees$Volume, pch=19, 
@@ -222,7 +227,7 @@ str(iris)      # details of the data structure
 ### "By Hand"
 We use the `col=` option of our `plot()` function. First, let's show how to do this the "by hand" way. In general, this is not good programming as you want to make your code general (if you get new data you don't want to re-write your code) but it is a good starting point. We'll show how to make this "automatic" later.
 
-First I define a new object with the three colors that I want to use. You can use any colors you like (Google "R color chart"),
+First I define a new object with the three colors that I want to use. You can use any colors you like (Google "R color chart", or just click [here](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf))
 
 ```{r}
 
@@ -230,22 +235,26 @@ plot.colors <- c("violet", "purple", "blue")
 
 ```
 
-Here's the cheating bit: I just looked at this dataframe and saw that there are exactly 50 observations for each species. I use the repeat function, `rep()` and the `each=` argument, to create a new vector with each element of `plot.colors` repeated 50 times in turn.
+Here's the cheating bit: I just looked at this dataframe and saw that there are exactly 50 observations for each species. I use the repeat function, `rep()` and the `each=` argument, to create a new vector with each element of the vector `plot.colors` repeated 50 times in turn.
 
-```{r colorvector}
+```{r colorvector, results=FALSE}
 
 color.vector <- rep(x=plot.colors, each=50)
 color.vector
 ## color vector is now a list of our colors, each repeated 50 times
+
+```
+
+```{r}
 
 plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
      main="Plot of Iris colored by species")
 
 ```
 
-Notice the lengths of the x-vector, the y-vector, and the color vector are all the same. If this is not true, `R` will "make up" stuff, so make sure these are the same size.
+Notice the lengths of the x-vector, the y-vector, and the color vector are all the same. If this is not true, `R` will make up stuff to force them to be the same length, so make sure these vectors are the same size.
 
-```{r}
+```{r eval=FALSE}
 
 length(iris$Petal.Length)
 length(iris$Sepal.Length)
@@ -255,13 +264,13 @@ length(color.vector)
 
 ### Automatic Grouping
 
-What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. We can take advantage of the fact that the Species column is a factor. 
+What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. We can take advantage of the fact that the 'Species' column is a factor (factors are integers in disguise!). 
 
 ```{r}
 
 plot.colors <- c("violet", "purple", "blue")
 # subset the colors in plot.colors based on the variable iris$Species
-# iris$Species is a factor variable that has 3 levels
+# iris$Species is a factor variable (integer in disguise) that has 3 levels (represented internally as '1:3')
 color.vector <- plot.colors[iris$Species]
 
 plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
@@ -276,7 +285,9 @@ We use the `legend()` function to add a legend to an existing plot. You can cust
 
 ```{r}
 
-layout(matrix(1:3, 1, 3))
+# ?legend
+
+layout(matrix(1:3, nrow=1, ncol=3))
 
 # Plot
 plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
@@ -314,14 +325,14 @@ legend("topleft", pch=19, col=plot.colors,
 ```{r}
 
 ## calculate the mean Sepal Length of for each species
-bar.heights <- by(iris$Sepal.Length, iris$Species, mean)
+bar.heights <- tapply(X=iris$Sepal.Length, INDEX=iris$Species, FUN=mean)   #use "tapply()" function, which summarizes a numeric variable by levels of a categorical variable)
 
-# The basic barplot function
+# The basic 'barplot()' function
 barplot(bar.heights)
 
 ```
 
-Using the `barplot()` options, we can make this look fancier
+Using the `barplot()` options (arguments), we can make this look fancier
 
 ```{r}
 
@@ -334,7 +345,9 @@ barplot(bar.heights, names.arg=c("I. setosa", "I. versicolor", "I. virginica"),
 
 ### Error bars
 
-Adding error bars to our barplot. These can be added to scatter plots in a similar way. We'll plot error bars representing 2 standard deviations. The object that you called your barplot (`b`) is interpreted by `R` as the x values in the middle of each bar `b`. We'll use the `arrows()` function to add arrows to an existing plot. With some modifications, our arrows will have an arrowhead at each end (`code=3`), and the 'arrowhead' will actually be perpendicular to the arrow shaft (`angle=90`)
+Adding error bars to our barplot. These can be added to scatter plots in a similar way. We'll plot error bars representing 2 standard deviations from the expected value. The object that you called your barplot (`b`) is interpreted by R as the x values in the middle of each bar `b` (which are very hard to guess, as you'll see!). 
+
+We'll use the `arrows()` function to add arrows to an existing plot. With some modifications, our arrows will have an arrowhead at each end (`code=3`), and the 'arrowhead' will actually be perpendicular to the arrow shaft (`angle=90`)
 
 
 ```{r}
@@ -343,8 +356,8 @@ CI <- 2 * by(iris$Sepal.Length, iris$Species, sd)
 lwr <- bar.heights - CI
 upr <- bar.heights + CI
 
-# I used the ylim= argument to pass a 2-element numeric vector specifying the y extent of the barplot. I added some extra room on the top to account for error bars.
-# Importantly, assign the barplot to an object. I called it 'b' but you can call it whatever you like.
+# I used the ylim= argument to pass a 2-element numeric vector specifying the y extent of the barplot (y axis lower and upper bounds). I added some extra room on the top to account for error bars.
+# Importantly, assign the barplot to an object. I called it 'b' but you can call it whatever you like. (otherwise, it's hard to know what the "X" values of the error bars are!)
 
 b <- barplot(bar.heights, 
              names.arg=c("I. setosa", "I. versicolor", "I. virginica"), 
@@ -354,6 +367,8 @@ b <- barplot(bar.heights,
 # Specify where each arrow starts (x0= and y0=) and ends (x1= and y1=)
 arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)
 
+# ?arrows
+
 ```
 
 ### Histograms
@@ -362,20 +377,23 @@ We can also use histograms to explore our data.
 ```{r}
 
 layout(matrix(1:2, 1, 2))
-## y-axis is in counts
+
+## y-axis is in counts by default (total observations in each "bin")
 hist(iris$Sepal.Length, main="Histogram of Sepal Length",
      xlab = "Sepal Length")
-## change y-axis to proportions using freq=FALSE
+
+## change y-axis to proportions of the entire dataset using freq=FALSE
 hist(iris$Sepal.Length, freq=FALSE, main="Histogram of Sepal Length", 
      xlab = "Sepal Length")
 ## Add a density estimator
-lines(density(iris$Sepal.Length))
+
+lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
 
 ```
 
 
 ### Pairs Plots
-The `pairs()` function allows for quick investigation into relationships between variables. Be careful if your data is large as this can be a slow function.
+The `pairs()` function allows for quick investigation into relationships between variables. Be careful if your data set is large (e.g., lots of columns), as this can be a slow function.   
 
 ```{r}
 
@@ -385,11 +403,11 @@ pairs(iris)
 
 ### Challenge Yourself by recreating the following plots:
 
-Feel free to work in groups!
+Feel free to work in groups!    
 
 #### Using colors
 
-Using the `ToothGrowth` dataset built into `R`, plot the tooth length (the `len` variable) as a function of the vitamin C dosage (the `dose` variable). Use a different color for each method of administering the vitamin C (the `supp` variable). Try and recreate the plot below:
+Using the `ToothGrowth` dataset built into `R`, plot the tooth length (the `len` variable) as a function of the vitamin C dosage (the `dose` variable). Use a different color for each method of administering the vitamin C (the `supp` variable). Try and re-create the plot below:
 
 ```{r tooth}
 
@@ -398,26 +416,12 @@ head(ToothGrowth)
 
 ```
 
-```{r, echo=FALSE}
-
-plot.colors <- c("red", "blue")
-# subset the colors in plot.colors based on the variable iris$Species
-# iris$Species is a factor variable that has 3 levels
-color.vector <- plot.colors[ToothGrowth$supp]
-
-plot(x=ToothGrowth$len, y=ToothGrowth$dose, pch=19, col=color.vector, 
-     main="Tooth Growth vs. Vitamin C Dose", xlab="Viatmin C Dose (mg)", 
-     ylab="Tooth Growth (mm)", las=1)
-
-# First legend
-legend("topleft", pch=19, col=plot.colors, legend=unique(ToothGrowth$supp))
-
-```
+![](toothplot1.png)
 
 
 #### Bar Plots Challenge
 
-The following data represent survivorship of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below) like what might come from a logistic regression model. Try and recreate the plot below:
+The following data represent survivorship of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:
 
 ```{r}
 
@@ -427,19 +431,11 @@ asympUCL <- c(0.24, 0.33, 0.18, 0.09)
 
 ```
 
-```{r echo=FALSE}
+![](plantsurv1.png)
 
-plot.colors <- c("red", "blue", "yellow", "green")
-b <- barplot(prop, ylim = c(0, max(asympUCL)),
-        names.arg=c("ambient", "watered", "heated + watered", "heated"),
-        las=1, col=adjustcolor(plot.colors, alpha.f=0.5),
-        main="Plant Survivorship by treatment", ylab="Probability of survival")
-arrows(x0=b, x1=b, y0=asympLCL, y1=asympUCL, code=3, angle=90, length=0.1)
-
-```
 
 #### Scatterplot Challenge Error Bars
-The randomly generated data below are measurements of the number of the number of angels who get their wings as a function of the number of bells that have been rung. There is some uncertainty in measuring wing acquisition (represented as the offset from the sampled mean). How would you add error bars to a scatter plot? Remember, once you master plotting it's a wondeful life!
+The randomly generated data below are measurements of the number of the number of angels who get their wings as a function of the number of bells that have been rung. There is some uncertainty in measuring wing acquisition (represented as the offset from the sampled mean). How would you add error bars to a scatter plot? See if you can re-create the plot below: 
 
 ```{r}
 
@@ -448,29 +444,22 @@ n <- 20 # Number of experimental trials
 a <- 12
 b <- 1.5
 
-rings <- round(runif(n)*50)
-wings <- round(a + b*rings + rnorm(n, sd=5))
-offset <- rpois(n, lambda=10)
-lwr <- wings - offset
+rings <- round(runif(n)*50)  # number of bell rings
+wings <- round(a + b*rings + rnorm(n, sd=5))       # number of angels who get their wings
+offset <- rpois(n, lambda=10)           # measurement error
+lwr <- wings - offset                 
 upr <- wings + offset
 
 ```
 
-```{r echo=FALSE}
-
-plot(x=rings, y=wings, ylim=c(min(lwr), max(upr)), 
-     ylab="Number of Angels Who Get Wings", xlab="Number of Bell Rings", 
-     main="Bell Rings vs. Angels Getting Wings", pch=19, col="blue")
-arrows(x0=rings, x1=rings, y0=lwr, y1=upr, code=3, angle=90, length=0.1)
-
-```
+![](ringswings1.png)
 
 
 ## Basic statistics!
 
 This bootcamp is NOT an intro to statistics! 
 
-But, R is an environment developed for statistical computing, so let's do some basic statistics in R! 
+But, R is an environment developed for statistical computing, so let's run some basic statistics in R! 
 
 ### Load data
 
@@ -490,8 +479,6 @@ First, download the sculpin eggs data [here]("sculpineggs.csv") and save this to
 sculpin.df <- read.csv("sculpineggs.csv")
 
 head(sculpin.df)
-
-summary(sculpin.df) # provides a set of summary statistics for data frame. 
 
 ```
 
@@ -525,9 +512,15 @@ apply(sculpin.df,2,mean)       # column mean of data frame   # note the use of t
 apply(sculpin.df,2,median)     # column median of data frame
 
 
+########
+# Or just use the "summary()" function!
+
+summary(sculpin.df) # provides a set of summary statistics for all columns in a data frame. 
+
+
 ```
 
-If your data has missing values (NA), some statistical functions won't work properly unless you specify an "na.rm=TRUE" argument:
+If your data have missing values (NA), some statistical functions won't work properly unless you specify an "na.rm=TRUE" argument:
 
 ```{r}
 
@@ -545,7 +538,7 @@ mean(newdf$Export,na.rm = TRUE)
 
 ### Visual exploration
 
-Plots take data exploration to the next level- we can start to discern patterns and identify outliers visually, giving us cues for further analyses we might want to perform. 
+Plots (see beginning of module) take data exploration to the next level- we can start to discern patterns and identify outliers visually, giving us cues for further analyses we might want to perform. 
 
 ```{r}
 
@@ -562,12 +555,16 @@ plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)
 
 ### Linear Regression
 
-The plot above suggests a fairly strong relationship between sculpin weight and number of eggs. Let's try to model this relationship:
+The plot above suggests a fairly strong relationship between sculpin weight ("FEMWT") and number of eggs ("NUMEGGS"). Let's try to model this relationship!
+
+Note the use of the generic "summary()" function below, which returns something very different when the input object is a linear model vs. when the input object is a data frame!
+
+Also note the use of the "predict()" function, which not only allows you to use the model to make predictions, but also reports the uncertainty bounds on these predictions (via confidence or prediction intervals). 
 
 ```{r}
 
 #####
-#####  Linear Regression 
+#####  Linear Regression  
 #####
 
 m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)      # fit linear regression model
@@ -576,10 +573,13 @@ m1                                      # view estimates of intercept and slope
 summary(m1)                             # view summary of fit
 summary(m1)$r.squared                   # extract R-squared
 confint(m1)                             # confidence intervals for intercept and slope
-AIC(m1)                                 # report AIC 
+AIC(m1)                                 # report AIC (Akaike's Information Criterion, used to perform model selection) 
 
 plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
 abline(m1)                                           # plot line of best fit
+
+########
+# Use the "predict()" function!
 
 FEMWT.pred <- data.frame(FEMWT = 30)                   # create new data frame to predict number of eggs at FEMWT of 30
 predict(m1,newdata=FEMWT.pred)                         # make prediction
@@ -590,15 +590,38 @@ predict(m1,newdata=FEMWT.pred,interval="prediction")   # make prediction and get
 ```
 
 
-### Model selection
+### Model selection example
 
 Sometimes we may be uncertain which model is "best". In this case, we run a set of **plausible models** and compare these models using metrics of model fit and performance, like AIC or R-squared. 
 
-```{r}
+Note the use of the "I()" within the formula specification (i.e., the "[response] ~ [predictors]" statement). Using "I()" causes R to interpret what's inside the parentheses literally ("as is"), instead of using R's formula shorthands. For instance, you might try running a linear model ("lm()") in the following two ways and see how the results differ!
 
-####################
-####  Exercises ####
-####################
+Click [here](http://faculty.washington.edu/jmiyamot/p448/hahnpr%20r%20formula%20notation.pdf) for more information on R's formula notation.
+
+```{r eval=FALSE}
+
+##########
+#  Explore the use of the "I()" syntax to interpret mathematical expressions literally (as is) within formulas. 
+
+mod_noI <- lm(NUMEGGS ~ FEMWT^2, data=sculpin.df)                  # fit linear regression model. But the "^2" doesn't seem to do anything here? What happened?
+summary(mod_noI)
+
+mod_withI <- lm(NUMEGGS ~ I(FEMWT^2), data=sculpin.df)                  # fit linear regression model
+summary(mod_withI)
+
+```
+
+Below we perform AIC model selection and also visualize the differences between these alternative linear models.
+
+A flexible method for visualizing the fit of alternative linear models involves overlaying predictions from each model (using the "predict()" function) on a basic scatterplot:   
+
+```{r results=FALSE}
+
+##################################
+####  Model selection example ####
+##################################
+
+## Try to work through these examples and make sure you understand them before moving on to the challenge exercises.
 
 m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
 summary(m1)
@@ -607,36 +630,59 @@ m2 <- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regress
 summary(m2)
 
 m3 <- lm(NUMEGGS ~ I(FEMWT^0.5), data=sculpin.df)           # fit linear regression with intercept and sqrt of FEMWT term
+summary(m3)
+
+```
+
+
+```{r}
 
 plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
 abline(m1,col="black")                                     # plot line of best fit
 abline(m2,col="red")                                       # plot intercept only model
 
+#########
+#  Here's a flexible method for drawing any arbitrary non-linear relationship!
 FEMWT.pred <- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
-NUMEGGS.pred <- predict(m3,newdata=FEMWT.pred)             # make prediction
-points(FEMWT.pred$FEMWT,NUMEGGS.pred,col="green",typ="l")  # plot sqrt model
+NUMEGGS.pred <- predict(m3,newdata=FEMWT.pred)             # make prediction using "predict()" function
+points(FEMWT.pred$FEMWT,NUMEGGS.pred,col="green",typ="l")  # plot sqrt model (note the use of the "points()" function to draw a line!)
 
-#Compare models using AIC and R-squared
+########
+# Perform model selection!
+
+
+#Compare models using AIC
 AIC(m1)
 AIC(m2)
 AIC(m3)
 
+#Compare models using R-squared
 summary(m1)$r.squared 
 summary(m2)$r.squared 
 summary(m3)$r.squared 
+
+#########
+#  And finally, here's how you can draw a confidence interval or prediction interval around a regression relationship!
+
+plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
+NUMEGGS.confint <- predict(m3,newdata=FEMWT.pred,interval="prediction")             # use "predict()" function to compute the prediction interval!
+points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"fit"],col="green",typ="l",lwd=2)  # plot fitted sqrt model
+points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"lwr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
+points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"upr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
+
 
 ```
 
 
 ### Statistics challenge exercises
 
-1: Fit a linear regression model with NUMEGGS as the response and some other transformation of FEWMT (e.g., lm(NUMEGGS ~ I(FEMWT^3)))
+1: Fit a linear regression model with NUMEGGS as the response and some other transformation of FEMWT (e.g., lm(NUMEGGS ~ I(FEMWT^3))) as the predictor.
 
 2: Plot the data and the curve of best fit from #1. How does the model fit the data?
 
-3: Fit a linear regression model with NUMEGGS as the response and with both a linear and quadratic effect of FEWMT.
+3: Fit a linear regression model with NUMEGGS as the response and with both a linear and quadratic effect of FEMWT (within the same formula).
 
-4: Plot the data and the curve of best fit from #1 and #3. Compare the two models.
+4: Plot the data and the curve of best fit from #1 and #3. Compare the two models. Can you identify a "best model"? If so, which one?
 
 5: Predict the number of eggs (along with prediction interval) for FEMWT=15 using the models you fit in #1 and #3. 
 

@@ -1,4 +1,0 @@
-"0","# Second legend"
-"0","# The bty=""n"" argument suppresses the border around the legend. (A personal preference)"
-"0","legend(""topleft"", pch=19, col=plot.colors, "
-"0","       legend=c(""I. setosa"", ""I. versicolor"", ""I. virginica""), bty=""n"")"

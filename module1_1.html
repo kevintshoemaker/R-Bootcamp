@@ -323,6 +323,24 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="data.dat">Example: tab-separated data</a>
+    </li>
+    <li>
+      <a href="data.csv">Example: comma-separated data</a>
+    </li>
+    <li>
+      <a href="data.txt">Example: whitespace-separated data</a>
+    </li>
+    <li>
+      <a href="data_missing.txt">Example: missing data</a>
+    </li>
+    <li>
+      <a href="MTMetStations.csv">Meteorological Data</a>
+    </li>
+    <li>
+      <a href="sculpineggs.csv">Sculpin Data</a>
+    </li>
+    <li>
       <a href="turtle_data.txt">Turtle Data</a>
     </li>
   </ul>
@@ -350,6 +368,7 @@ div.tocify {
 
 
 <p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. - Thanks to Perry Williams for allowing us to use these materials!!</p>
+<p>Welcome to the 2018 R bootcamps! Let’s get started!!</p>
 <div id="load-script-for-module-1.1" class="section level2">
 <h2>Load script for module #1.1</h2>
 <ol style="list-style-type: decimal">
@@ -389,7 +408,7 @@ div.tocify {
 <p>The first few lines (commands) of the script are preceded by pound signs. R doesn’t do anything with these commands- they are called <strong>comments</strong>, and they help to keep code clear, organized and understandable to human readers. <em>use comments early and often- they are tremendously valuable</em>.</p>
 <ol style="list-style-type: decimal">
 <li><p>Click on the top of the script (first line of comments). To <strong>run</strong> a line of code, press the “Ctrl” key (or the “Apple” key) and hit “Enter”. R will then run that line through the console. But of course, nothing happens because it’s a comment and not meant to be interpreted by a machine.</p></li>
-<li><p>Click on a blank line in the script and type “2+2”. Now hit “Ctrl+Enter” (or “Apple+Enter”) to run the line of code.</p></li>
+<li><p>Click on a blank line in the script and type “2+2”. Now hit “Ctrl+Enter” (or “Command+Enter”) to run the line of code.</p></li>
 </ol>
 <p>Now you know the basics of how to use R scripts.</p>
 </div>
@@ -418,7 +437,9 @@ c &lt;- 3</code></pre>
 <div id="aside-r-functions" class="section level3">
 <h3>Aside: R functions</h3>
 <p>Functions are essentially machines that take inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!</p>
-<pre><code>[name of function]([inputs])   # function syntax</code></pre>
+<pre><code>
+[name of function]([inputs])   # function syntax
+</code></pre>
 <p>For example…</p>
 <pre class="r"><code>###################
 #### Try using an R Function
@@ -487,8 +508,9 @@ d4 &lt;- d1+c(1,2)       # what does this do?</code></pre>
 </div>
 <div id="matrix-objects-in-r" class="section level3">
 <h3>Matrix objects in R</h3>
-<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together! NOTE: to form a matrix, the vectors must be of the same length and the same <strong>class</strong> (we’ll get into what this means shortly). A matrix has two <strong>dimensions</strong>: rows and columns.</p>
-<p>Let’s make our first matrix. One simple way to make a matrix is just by joining two vectors using the function “cbind” (bind vectors together by column) or “rbind” (bind vectors together by row)</p>
+<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together!</p>
+<p>NOTE: to form a matrix, the vectors must be of the same length and the same <strong>class</strong> (we’ll get into what this means shortly). A matrix has two <strong>dimensions</strong>: rows and columns.</p>
+<p>Let’s make our first matrix. One simple way to make a matrix is just by joining two vectors using the function “cbind” (bind vectors or matrices together by column) or “rbind” (bind vectors or matrices together by row)</p>
 <pre class="r"><code>#############
 ### MATRICES
 #############
@@ -528,7 +550,7 @@ d.mat</code></pre>
 <pre class="r"><code>#############
 ### DATA FRAMES
 #############
-d.df &lt;- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create ‘data frame’
+d.df &lt;- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create a ‘data frame’ with two columns
 d.df</code></pre>
 <pre><code>##   d1 d2
 ## 1  1  4
@@ -536,14 +558,14 @@ d.df</code></pre>
 ## 3  3  6</code></pre>
 <p>Now we have a data frame with three observation units and two measurements (variables).</p>
 <p>Alternatively, we can convert a matrix to a data frame:</p>
-<pre class="r"><code>d.df=data.frame(d.mat)        # create data frame another way
+<pre class="r"><code>d.df=data.frame(d.mat)        # create data frame another way - directly from a matrix
 d.df</code></pre>
 <pre><code>##   X1 X2
 ## 1  1  4
 ## 2  2  5
 ## 3  3  6</code></pre>
 <p>We can use the “names()” function to see the variable names, or to change the variable names!</p>
-<pre class="r"><code>names(d.df)          # view column names</code></pre>
+<pre class="r"><code>names(d.df)          # view or change column names</code></pre>
 <pre><code>## [1] &quot;X1&quot; &quot;X2&quot;</code></pre>
 <pre class="r"><code>names(d.df)=c(&quot;meas_1&quot;,&quot;meas_2&quot;)        # provide new names for columns
 d.df</code></pre>
@@ -551,7 +573,7 @@ d.df</code></pre>
 ## 1      1      4
 ## 2      2      5
 ## 3      3      6</code></pre>
-<p>And we can change the row names using the “rownames()” function:</p>
+<p>And we can view or change the row names using the “rownames()” function:</p>
 <pre class="r"><code>rownames(d.df) &lt;- c(&quot;obs1&quot;,&quot;obs2&quot;,&quot;obs3&quot;)
 d.df</code></pre>
 <pre><code>##      meas_1 meas_2
@@ -714,7 +736,7 @@ d.vec</code></pre>
 <pre class="r"><code>d.vec[c(&quot;sally&quot;,&quot;fred&quot;)]</code></pre>
 <pre><code>## sally  fred 
 ##     2     1</code></pre>
-<p>We can similarly subset matrices using brackets, but we need to specify the rows and columns we’re interested in extracting!</p>
+<p>We can similarly subset matrices using brackets, but we need to specify the rows AND columns we’re interested in extracting!</p>
 <pre class="r"><code># X[a,b]       access row a, column b element of matrix/data frame X
 # X[,b]        access column b of matrix/data frame X
 # X[a,]        access row a of matrix/data frame X
@@ -935,10 +957,8 @@ c(1,4) </code></pre>
 </ol>
 <p>6: Create a list named ‘d.list’ that includes a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).</p>
 <p>7: Extract (subset) the 2nd row of the 3rd matrix in the array in ‘d.list’ (the list created in challenge 6 above).</p>
-<p>8: Create a data frame named ‘df_spatial’ that contains 25 locations, with ‘long’ and ‘lat’ as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. HINT: you don’t need to type each location in by hand!</p>
-<pre><code>x &lt;- rep(seq(-1,1,length=5),each=5)
-y &lt;- rep(seq(-1,1,length=5),times=5)
-df_spatial &lt;- data.frame(long=x,lat=y)</code></pre>
+<p>8: (extra challenging!) Create a data frame named ‘df_spatial’ that contains 25 locations, with ‘long’ and ‘lat’ as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1].</p>
+<p>HINT: you don’t need to type each location in by hand!</p>
 <p>To make sure you got it right, use the following commands in R:</p>
 <p>Don’t worry if you don’t understand the code- we’ll talk about plotting soon enough!</p>
 <pre><code>

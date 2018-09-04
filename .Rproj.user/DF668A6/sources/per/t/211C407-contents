@@ -35,6 +35,9 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
     - Thanks to Perry Williams for allowing us to use these materials!!
+    
+    
+Welcome to the 2018 R bootcamps! Let's get started!! 
 
 ## Load script for module #1.1
 
@@ -86,7 +89,7 @@ The first few lines (commands) of the script are preceded by pound signs. R does
 
 1. Click on the top of the script (first line of comments). To **run** a line of code, press the "Ctrl" key (or the "Apple" key) and hit "Enter". R will then run that line through the console. But of course, nothing happens because it's a comment and not meant to be interpreted by a machine. 
 
-2. Click on a blank line in the script and type "2+2". Now hit "Ctrl+Enter" (or "Apple+Enter") to run the line of code. 
+2. Click on a blank line in the script and type "2+2". Now hit "Ctrl+Enter" (or "Command+Enter") to run the line of code. 
 
 Now you know the basics of how to use R scripts. 
 
@@ -130,7 +133,9 @@ c <- 3
 Functions are essentially machines that take inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!  
 
 ```
+
 [name of function]([inputs])   # function syntax
+
 ```
 For example...
 
@@ -235,9 +240,11 @@ NOTE: the last command we ran, "d1+c(1,2)", produced a **warning message**. Reme
 
 ### Matrix objects in R
 
-**Matrix** objects are just a bunch of vectors grouped together! NOTE: to form a matrix, the vectors must be of the same length and the same **class** (we'll get into what this means shortly). A matrix has two **dimensions**: rows and columns.  
+**Matrix** objects are just a bunch of vectors grouped together! 
 
-Let's make our first matrix. One simple way to make a matrix is just by joining two vectors using the function "cbind" (bind vectors together by column) or "rbind" (bind vectors together by row)
+NOTE: to form a matrix, the vectors must be of the same length and the same **class** (we'll get into what this means shortly). A matrix has two **dimensions**: rows and columns.  
+
+Let's make our first matrix. One simple way to make a matrix is just by joining two vectors using the function "cbind" (bind vectors or matrices together by column) or "rbind" (bind vectors or matrices together by row)
 
 ```{r}
 
@@ -284,7 +291,7 @@ Let's make our first data frame. We will use the function "data.frame()".
 #############
 ### DATA FRAMES
 #############
-d.df <- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create ‘data frame’
+d.df <- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create a ‘data frame’ with two columns
 d.df
 
 ```
@@ -295,7 +302,7 @@ Alternatively, we can convert a matrix to a data frame:
 
 ```{r}
 
-d.df=data.frame(d.mat)        # create data frame another way
+d.df=data.frame(d.mat)        # create data frame another way - directly from a matrix
 d.df
 
 ```
@@ -304,13 +311,13 @@ We can use the "names()" function to see the variable names, or to change the va
 
 ```{r}
 
-names(d.df)          # view column names
+names(d.df)          # view or change column names
 names(d.df)=c("meas_1","meas_2")        # provide new names for columns
 d.df
 
 ```
 
-And we can change the row names using the "rownames()" function:
+And we can view or change the row names using the "rownames()" function:
 
 ```{r}
 
@@ -466,7 +473,7 @@ d.vec[c("sally","fred")]
 
 ```
 
-We can similarly subset matrices using brackets, but we need to specify the rows and columns we're interested in extracting!
+We can similarly subset matrices using brackets, but we need to specify the rows AND columns we're interested in extracting!
 
 ```{r}
 
@@ -624,12 +631,16 @@ c(3,6)
 7: Extract (subset) the 2nd row of the 3rd matrix in the array in 'd.list' (the list created in challenge 6 above).
 
 
-8: Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. HINT: you don't need to type each location in by hand!
+8: (extra challenging!) Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
-```
+HINT: you don't need to type each location in by hand!
+
+```{r echo=FALSE, results=FALSE}
+
 x <- rep(seq(-1,1,length=5),each=5)
 y <- rep(seq(-1,1,length=5),times=5)
 df_spatial <- data.frame(long=x,lat=y)
+
 ```
 
 To make sure you got it right, use the following commands in R:

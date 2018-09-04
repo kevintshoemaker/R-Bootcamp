@@ -81,7 +81,7 @@ Email: [phurtado@unr.edu](phurtado@unr.edu)
 
 The statistical programming software "R" is one of the fundamental tools of modern science, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of quality figures) will make graduate research much more manageable! Because many incoming graduate students have limited prior experience with R, we are offering short R/programming “bootcamps” during the first two Saturdays of the fall semester (Sep 1 and 8, 1pm to 5pm, in DMSC 103). 
 
-The main goal of these 4-hr workshops will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshops are primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the second workshop, which will delve into more advanced topics. The first bootcamp (Sep 1) will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second bootcamp (Sep 8) will focus on some more advanced programming operations (loops, functions, debugging etc.), vectorized operations (e.g., “apply” functions), working with large datasets, and (very briefly) running scripts in parallel and taking advantage of UNR’s high-performance computing facility. 
+The main goal of these 4-hr workshops will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshops are primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the second workshop, which will delve into more advanced topics. The first bootcamp (Sep 1) will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second bootcamp (Sep 8) will focus on some more advanced programming operations (loops, functions, debugging etc.), vectorized operations (e.g., “apply()” operations), working with large datasets, and (very briefly) running scripts in parallel (e.g., for high-performance computing). 
 
 Each bootcamp will consist of a series of short modules, each of which covers a particular skill (e.g., reading in data, writing functions). Modules will include a quick introduction, a demonstration in R, and some short challenges for you to work through on your own (or with your neighbors!). All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won't need to constantly copy and paste from the web!  
 
@@ -146,10 +146,12 @@ rmarkdown::render('LAB6.Rmd', 'word_document')
 rmarkdown::render('LAB7.Rmd', 'word_document')
 
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-rmarkdown::render('index.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LECTURE1.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('INTRO.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LECTURE2.Rmd',rmarkdown::pdf_document())  # latex_engine="xelatex"
+rmarkdown::render("module1_1.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("module1_2.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("module1_3.Rmd",rmarkdown::pdf_document())
+rmarkdown::render("module1_4.Rmd",rmarkdown::pdf_document())  # latex_engine="xelatex"
+
+
 rmarkdown::render('LECTURE3.Rmd',rmarkdown::pdf_document())
 rmarkdown::render('LAB1.Rmd',rmarkdown::pdf_document())
 rmarkdown::render('LAB2.Rmd',rmarkdown::pdf_document())

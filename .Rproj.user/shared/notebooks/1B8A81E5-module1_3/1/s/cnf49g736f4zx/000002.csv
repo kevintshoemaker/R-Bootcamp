@@ -1,7 +1,0 @@
-"0","plot.colors <- c(""violet"", ""purple"", ""blue"")"
-"0","# subset the colors in plot.colors based on the variable iris$Species"
-"0","# iris$Species is a factor variable that has 3 levels"
-"0","color.vector <- plot.colors[iris$Species]"
-"0","plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, "
-"0","     main=""Iris sepal length vs. petal length"", xlab=""Petal length"", "
-"0","     ylab=""Sepal length"", las=1)"

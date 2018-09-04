@@ -1,4 +1,0 @@
-"0","# xlab: adds an x axis label"
-"0","plot(x=trees$Girth, y=trees$Volume, pch=19, "
-"0","     main=""Girth vs. Volume for Black Cherry Trees"", "
-"0","     xlab=""Tree Girth (in)"")"
