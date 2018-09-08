@@ -1,4 +1,3 @@
-
 ##################################################
 ####                                          ####  
 ####  R Bootcamp #2, Module 2                 ####
@@ -8,178 +7,127 @@
 ##################################################
 
 
-#########################################
-####  Data Wrangling with Tidyverse  ####
-#########################################
+###################################################
+####  Expanding R functionality: packages etc. ####
+###################################################
 
 
 
-# install.packages("tidyverse")
-library(tidyverse)
+##############
+# PACKAGES!
+##############
+
+install.packages("modeest")    # run this if you haven't yet installed the package from CRAN!
 
 
-####
-####  Using the pipe operator %>% (ctrl-shift-m)
-####
-
-# start with a simple example
-x <- 3
-
-# calculate the log of x
-log(x) # form f(x) is equivalent to
-
-x %>% log() # form x %>% f
-
-# example of multiple steps in pipe
-round(log(x), digits=2) # form g(f(x)) is equivalent to
-
-x %>% log() %>% round(digits=2) # form x %>% f %>%  g
+library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
 
 
-####
-####  Import data as a Tibble dataframe and take a quick glance
-####
-
-# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
-clim_data <- read_csv("MTMetStations.csv")
-
-# display tibble - note nice formatting and variable info, entire dataset is not displayed as is case in read.csv
-clim_data
-
- # display the last few lines of the data frame
-tail(clim_data)
+library(help = "modeest")    # get overview of package
 
 
-####
-####  Use Tidyr verbs to make data 'tidy'
-####
+newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 
-# look at clim_data -- is it in tidy format? What do we need to do to get it there?
-head(clim_data)
+?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
 
-# gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column.
-gather_clim_vars <- gather(clim_data, 
-                           key = climvar_station, 
-                           value = value, 
-                           -Date)
-
-gather_clim_vars
-
-# separate the climvar_station column into two separate columns that identify the climate variable and the station
-separate_clim_vars <- gather_clim_vars %>%
-  separate(climvar_station, 
-           into = c("Station","climvar"))
-
-separate_clim_vars
-
-# spread distributes the clim_var column into separate columns, with the data values from the 'value' column
-tidy_clim_data <- spread(separate_clim_vars, 
-                        key = climvar, 
-                        value = value)
-
-tidy_clim_data
-
-  
-# repeat above as single pipe series without creation of intermediate datasets
-  
-tidy_clim_data <- clim_data %>% 
-  gather(key = climvar_station,
-         value = value,
-         -Date) %>% 
-  separate(climvar_station, 
-           into = c("Station","climvar")) %>% 
-  spread(key = climvar,
-         value = value)
-  
-tidy_clim_data
+  # lets find the most frequent value(s) in the "Export" column:
+mlv(newdf$Export, method="mfv", na.rm = T)    
 
 
-#### 
-####  Using lubridate to format and create date data types
-####
-
-library(lubridate)
-
-date_string <- ("2017-01-31")
-
-# convert date string into date format by identifing the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date
-
-date_dtformat <- ymd(date_string)
-
-# note the different formats of the date_string and date_dtformat objects in the environment window.
-
-# a variety of other formats/orders can also be accommodated. Note how each of these are reformatted to "2017-01-31" A timezone can be specified using tz=
-
-mdy("January 31st, 2017")
-dmy("31-Jan-2017")
-ymd(20170131)
-ymd(20170131, tz = "UTC")
-
-# can also make a date from components. this is useful if you have columns for year, month, day in a dataframe
-year<-2017
-month<-1
-day<-31
-make_date(year, month, day)
+detach("modeest")  # remove the package from the workspace
 
 
-# times can be included as well. Note that unless otherwise specified, R assumes UTC time
+#########
+# 3D Plotting example 
+#########
 
-ymd_hms("2017-01-31 20:11:59")
-mdy_hm("01/31/2017 08:01")
+#########
+# Data: dog barks per day (and two explanatory variables)
 
-# we can also have R tell us the current time or date
+Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
+        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
+Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
+        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
+        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
+        0.272, 0.098, 0.415)
+Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
+       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
 
-now()
-now(tz = "UTC")
-today()
-####
-####  Parsing dates with lubridate
-####
 
-datetime <- ymd_hms("2016-07-08 12:34:56")
+install.packages("car")
+library(car)
 
-# year
-year(datetime)
 
-# month as numeric
-month(datetime)
+##########
+# interactive 3-D graphics!
 
-# month as name
-month(datetime, label = TRUE)
+car::scatter3d(Bark~Food+Cars,surface=TRUE)
 
-# day of month
-mday(datetime)
 
-# day of year (julian day)
-yday(datetime)
+###########
+# install package from GitHub:
 
-# day of week
-wday(datetime)
-wday(datetime, label = TRUE, abbr = FALSE)
+# install.packages("devtools")    # run this if you haven't already installed the "devtools" package
+library(devtools)
+install_github("kbroman/broman")  # install a random package from GitHub!
 
-#### 
-####  Using lubridate with dataframes and dplyr verbs
-####
 
-# going back to our tidy_clim_data dataset we see that the date column is formatted as character, not date
-head(tidy_clim_data)
+###########
+# Learning more about packages
+###########
 
-# change format of date column
-tidy_clim_data <- tidy_clim_data %>% 
-  mutate(Date = mdy(Date))
-tidy_clim_data
-# parse date into year, month, day, and day of year columns
-tidy_clim_data <- tidy_clim_data %>% mutate(
-  Year = year(Date),
-  Month = month(Date),
-  Day = mday(Date),
-  Yday = yday(Date))
+###########
+# Package overview
 
-tidy_clim_data
+library(help = "car")    # help file for the useful "car" package for applied regression
 
-# calculate total annual precipitation by station and year
-annual_sum_precip_by_station <- tidy_clim_data %>%
-  group_by(Station, Year) %>%
-  summarise(PrecipSum = sum(PrcpIN))
 
-annual_sum_precip_by_station 
+##########
+# package vignette
+
+browseVignettes('car')
+vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
+
+
+################
+#### GENERAL TIPS
+################
+
+#############
+# 1. Use code examples provided by others
+
+install.packages("dismo")     # install "dismo" for species distribution modeling
+
+browseVignettes('dismo')
+vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.
+vignette('brt','dismo')      # and another one!
+
+
+########
+# package demo
+
+demo(package="stats")    # list all demos for package 'stats', which is included in base R
+demo('nlm','stats')
+
+
+###########
+# Load html documentation for R and all installed packages
+
+help.start()
+
+
+#########
+# Built-in examples
+
+example(lm)   # run examples for "lm" function (included in base R)
+
+
+########
+# package citations
+
+citation('car')   # citation for the 'car' package
+
+citation()    # and here's the citation for R in general- useful for when you use R for manuscripts
+
+
+

@@ -117,6 +117,32 @@ rmd2rscript <- function(infile="module1_1.Rmd"){    # function for converting ma
   closeAllConnections()
 }
 
+rmd2rscript2 <- function(infile="LECTURE2.Rmd"){    # function for converting markdown to scripts
+  outfile <- gsub(".Rmd",".R",infile)
+  close( file( outfile, open="w" ) )   # clear output file
+  con1 <- file(infile,open="r")
+  con2 <- file(outfile,"w")
+  stringToFind <- "```{r*"
+  stringToFind2 <- "echo"
+  isrblock <- FALSE
+  #count=0
+  blocknum=0
+  
+  while(length(input <- readLines(con1, n=1)) > 0){   # while there are still lines to be read
+    isrblock <- grepl(input, pattern = stringToFind, perl = TRUE)   # is it the start of an R block?
+    showit <- !grepl(input, pattern = stringToFind2, perl = TRUE)   # is it hidden (echo=FALSE)
+    if(isrblock){
+      blocknum=blocknum+1
+      while(!grepl(newline<-readLines(con1, n=1),pattern="```",perl=TRUE)){
+        if((blocknum>1)&((showit)|(blocknum==2))) write(newline,file=con2,append=TRUE)
+        #count=count+1
+      }
+      isrblock=FALSE
+    }
+  }
+  closeAllConnections()
+}
+
 ```
 
 
@@ -125,13 +151,12 @@ rmd2rscript <- function(infile="module1_1.Rmd"){    # function for converting ma
 rmd2rscript("module1_1.Rmd")
 rmd2rscript("module1_2.Rmd")
 rmd2rscript("module1_3.Rmd")
-rmd2rscript("module1_4.Rmd")
 rmd2rscript("module2_1.Rmd")
 rmd2rscript("module2_2.Rmd")
 rmd2rscript("module2_3.Rmd")
 rmd2rscript("module2_4.Rmd")
-rmd2rscript("module2_4.Rmd")
-rmd2rscript("module2_4.Rmd")
+rmd2rscript2("module2_5.Rmd")
+rmd2rscript2("module2_6.Rmd")
 
 
 

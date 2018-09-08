@@ -7,12 +7,12 @@
 ####                                          #### 
 ##################################################
 
-## NOTE: this module borrows heavily from an R short-course developed by a team at Colorado State University. 
-   # Thanks to Perry Williams for allowing us to use these materials!!
+##################################################
+####  PROGRAMMING: FUNCTIONS AND MORE         ####
+####  Facilitator: Perry Williams             ####
+##################################################
 
-##########################################
-####  PROGRAMMING: FUNCTIONS AND MORE ####
-##########################################
+## NOTE: this module borrows heavily from an R short-course developed by a team at Colorado State University. 
 
 
 
@@ -100,11 +100,11 @@ plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type="l")
 
 
 ## Kaplan Meier known-fate maximum likelihood estimator.
+## n is the number of animals fitted with ratio transmitters being monitored.
+## d is the number of n that died.
 survival.mle <- function(n, d){
     (n-d)/n
 }
-## n is the number of animals fitted with ratio transmitters being monitored.
-## d is the number of n that died.
 
 ## One year of data.
 survival.mle(n = 10, d = 5)
@@ -176,8 +176,8 @@ ifelse(xt[, 1] > 0 & xt[, 2] > 0, print("Detected twice"),
 n.iter <- 10
 count <- 0
 for(i in 1:n.iter){
-    count <- count+1            # assign a new value of count equal to the old value of count + 1
-    print(count)
+  count <- count+1            # assign a new value of count equal to the old value of count + 1
+  print(count)
 }
 
 
@@ -209,7 +209,7 @@ x
 
 
 ###
-### apply
+### apply (A more efficient, vectorized way to iterate)
 ###
 
 W <- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
@@ -231,60 +231,76 @@ MyFunc <- function(x){
 apply(W, 1, MyFunc)
 
 
+
 ####################
 ####  Exercises ####
 ####################
 
-## if...else
-## Reject or fail to reject a null hypothesis.
+
+###
+### Perform hypothesis test using if...then...else
+###
+
 n.samples <- 100
-x <- rnorm(n = n.samples, mean = 1, sd = 1) # Sample from a normal distribution.
-mu <- mean(x)                               # Sample mean.
-s <- sd(x)                                  # Sample standard deviation.
-t <- mu/(s/sqrt(n.samples))                 # Calculate t-statistic.
-t.crit <- qt(p = 0.975, df = 99)            # Calculate critical value for test.
+x <- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
+mu <- mean(x)                               # Compute the sample mean.
+s <- sd(x)                                  # Compute the sample standard deviation.
+t <- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
+t.crit <- qt(p = 0.975, df = 99)            # Calculate critical value for test (above which we can reject the null hypothesis with acceptable type-I error)
 if (t > t.crit) {
     print("reject")                        # Reject if condition holds.
 } else {
     print("fail to reject")                # Fail to reject otherwise.
 }
 
+
 ###
 ### Clean up messy matrix using ifelse
 ###
 
 ## Simulate data.
-observations <- matrix(sample(c("Detected", "NotDetected", 1, 0), 20*3, replace = TRUE), 20, 3)
-habitat <- rnorm(20, 0, 2)
-Data <- cbind(observations, habitat)
+observations <- matrix(sample(c("Detected", "NotDetected", 1, 0), 20*3, replace = TRUE), 20, 3)    # simulate detection/non-detection data over three sampling occasions
+
+habitat <- rnorm(20, 0, 2)    # simulate environmental covariate
+Data <- cbind(observations, habitat)       # bind into single matrix.
 Data
 
-## Clean-up data
-NewObs <- ifelse(Data[, 1:3] == "Detected"|Data[, 1:3] == "1", 1, 0) #  The "|" means "or." Similarly "&" means "and"
+
+## Clean-up data using "ifelse()" function
+NewObs <- ifelse( (Data[, 1:3] == "Detected") | (Data[, 1:3] == "1"), 1, 0) #  The "|" means "or." Similarly "&" means "and"
 NewHabitat <- as.numeric(Data[, 4])  # as.numeric gets rid of quotes around habitat data.
 NewHabitat <- round(NewHabitat, 2)   # round rounds to number of decimals specified.
 NewData <- cbind(NewObs, NewHabitat) # bind the columns to form a matrix.
 colnames(NewData) <- c("obs1", "obs2", "obs3", "Habitat")  # provide column names
 NewData
 
+
 ###
-### for loop
+### FOR loop examples
 ###
 
-## Plot a 3D surface using data already stored in R.
-Z <- 2 * volcano        # Exaggerate the relief
-X <- 10 * (1:nrow(Z))   # 10 meter spacing (S to N)
-Y <- 10 * (1:ncol(Z))   # 10 meter spacing (E to W)
-Z
+#############
+## EXAMPLE 1: Plot a 3D surface using data already stored in R.
+
+Z <- 2 * volcano        # Exaggerate the relief (multiply the elevation by 2)   
+
+X <- 10 * (1:nrow(Z))   # set horizontal coordinates -- 10 meter spacing (S to N)     
+
+Y <- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to W)
+
+# Z   # make sure the elevation matrix looks right
+
 par(mfrow = c(2,1), bg = "white")
-persp(X,  Y, Z, theta = 135, phi = 30, col = "green3",
+persp(X,  Y, Z, theta = 135, phi = 30, col = "green3",    # "persp()" produces a 3D "perspective plot"
       scale = FALSE, ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)
+
 
 ## change the value of theta from 135 to 90 to change the viewing angle
 persp(X, Y, Z, theta = 90, phi = 30, col = "green3",
       scale = FALSE,  ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)
+
 
 ## Use a for-loop to help view many angles.
 par(mfrow = c(1,1))
@@ -296,15 +312,20 @@ for(i in 1:18){
     readline()                               # Pauses the for-loop until [enter] is pushed
 }
 
-## Use a for-loop to create a simulation to test the central limit theorem.
-n.iter <- 1000                                # 1000 hypothetical "repeat samples."
+
+
+
+##################
+## EXAMPLE 2: Use a FOR loop to create a simulation to test the central limit theorem (CLT).
+
+n.iter <- 1000                                # large number of hypothetical "repeat samples."
 sample.size <- 30                             # Sample size of 30 from each repeat sample.
 mu <- 5                                       # True population mean of 5.
 sd <- 2                                       # True standard deviation of 2.
-means <- numeric(n.iter)                      # Empty vector to store the sample means.
-for(i in 1:n.iter){                        # For each of the repeat samples, calculate and
-    sample <- rnorm(sample.size, mean = mu, sd = sd)  # store the mean.
-    means[i] <- mean(sample)
+means <- numeric(n.iter)                      # Initialize empty vector to store the sample means.
+for(i in 1:n.iter){                           # For each of the repeat samples...
+    sample <- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
+    means[i] <- mean(sample)                # and store the sample mean.
 }
 hist(means)                                # Histogram of all the means.
 abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.
@@ -313,22 +334,35 @@ abline(v = mean(means), col = 2, lwd = 4)
 mean(means)                                # Close to true mean of 5
 sd(means)*sqrt(30)                         # Close to true sd of 2
 
-## Logistic growth function.
-logistic.growth <- function(r, P0, K){          # A function to calculate population
-    dpdt <- r*P0*(1-P0/K)                       # size using logistic growth model.
-    P0+dpdt                                  # r = intrinsic growth rate, P0 = initial population size,
-}                                          # K = carrying capacity.
-logistic.growth(r = .5, P0 = 10, K = 100)
+
+
+##############
+##  Logistic population growth example (uses function and for loop)
+
+
+## Logistic growth function: calculate population size using logistic growth model.
+  # K = carrying capacity.
+  # r = intrinsic growth rate
+  # P0 = initial population size
+
+logistic.growth <- function(r, P0, K){            
+    dpdt <- r*P0*(1-P0/K)                   # implement logistic growth equation
+    P0+dpdt                                   
+}                                           
+logistic.growth(r = .5, P0 = 10, K = 100)   # try out the new function!
+
 
 ## Logistic growth function within a for-loop
+
 years <- 20                                   # How many years we want to calc population size.
 pop.size <- numeric(years)                    # Empty vector to store population size.
 pop.size[1] <- 5                              # Starting population size (P0).
-for(i in 1:(years-1)){                     # Function within a for-loop.
+for(i in 1:(years-1)){                     # Function within a FOR loop!
     pop.size[i+1] <- logistic.growth(r = 0.5, P0 = pop.size[i], K = 100)
 }
 plot(1:years, pop.size, type = 'l',
      xlab = "Years", ylab = "Population Size")
+
 
 ## A more complex function that ouputs a plot.
 plot.logistic.growth <- function(r, P, K, years){
@@ -349,3 +383,32 @@ plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
 plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
 plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)
 par(mfrow = c(1, 1))                               # Return to a 1X1 plot.
+
+
+##########
+# Challenge problem 3: code skeleton to get you started!   
+
+get.t.test <- function(data, mu0, alpha = 0.05) {
+    n <- length(data)
+    mu <- mean(____)
+    s <- ____(data)
+    t <- (mu-mu0)/(s/sqrt(n))
+    t.crit <- qt(p = (1-alpha/2), df = n-1)        # get the critical value
+    if (abs(t)>t.crit) {
+        answer = "_______"
+    } ____ {
+        answer = "Fail to reject"
+    }
+    print(answer)
+}
+
+
+#######
+# Example code to get you started with challenge problem 5... 
+
+persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?,
+                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
+      border = NA, box = FALSE)
+print(?)
+readline()
+

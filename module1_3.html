@@ -295,14 +295,11 @@ div.tocify {
     <li>
       <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
     </li>
-    <li>
-      <a href="module1_4.html">Module 1.4: expanding your skill set</a>
-    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #2: beyond the basics
+    Bootcamp #2: Beyond the basics
      
     <span class="caret"></span>
   </a>
@@ -311,7 +308,19 @@ div.tocify {
       <a href="module2_1.html">Module 2.1: Programming in R</a>
     </li>
     <li>
-      <a href="module2_2.html">Module 2.2: Using the 'tidyvierse'</a>
+      <a href="module2_2.html">Module 2.2: R packages</a>
+    </li>
+    <li>
+      <a href="module2_3.html">Module 2.3: Parallel computing in R</a>
+    </li>
+    <li>
+      <a href="module2_4.html">Module 2.4: Using the 'tidyvierse'</a>
+    </li>
+    <li>
+      <a href="module2_5.html">Module 2.5: Plotting with 'ggplot'</a>
+    </li>
+    <li>
+      <a href="module2_6.html">Module 2.6: Spatial analysis</a>
     </li>
   </ul>
 </li>
@@ -342,6 +351,15 @@ div.tocify {
     </li>
     <li>
       <a href="turtle_data.txt">Turtle Data</a>
+    </li>
+    <li>
+      <a href="geneData.csv">Gene Data</a>
+    </li>
+    <li>
+      <a href="reptiles.csv">Reptile Data</a>
+    </li>
+    <li>
+      <a href="data.zip">GIS Data</a>
     </li>
   </ul>
 </li>
@@ -381,9 +399,9 @@ div.tocify {
 <h2>Plotting!</h2>
 <p>Let’s get started with plotting in R!</p>
 <p>We’ll start with the ‘trees’ dataset, which is built into R. It describes the girth, height, and volume of 31 felled black cherry trees.</p>
-<pre class="r"><code>?trees      # description of built in dataset</code></pre>
-<pre><code>## starting httpd help server ... done</code></pre>
-<pre class="r"><code>dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
+<pre class="r"><code>?trees      # description of built in dataset
+
+dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
 <pre><code>## [1] 31  3</code></pre>
 <pre class="r"><code>str(trees)   # Show the structure of the trees dataframe</code></pre>
 <pre><code>## &#39;data.frame&#39;:    31 obs. of  3 variables:
@@ -946,7 +964,7 @@ points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;upr&quot;],col=&quot;green&quot;,
 <p>4: Plot the data and the curve of best fit from #1 and #3. Compare the two models. Can you identify a “best model”? If so, which one?</p>
 <p>5: Predict the number of eggs (along with prediction interval) for FEMWT=15 using the models you fit in #1 and #3.</p>
 <p>How do the predictions compare?</p>
-<p><a href="module1_4.html">–go to next module–</a></p>
+<p><a href="module2_1.html">–go to next module–</a></p>
 </div>
 </div>
 

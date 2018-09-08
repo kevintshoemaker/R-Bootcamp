@@ -1,0 +1,155 @@
+library(ggplot2)
+library(ggthemes)
+library(carData)
+library(DAAG)
+library(RColorBrewer)
+library(leaflet)
+#Load the dataset and see what variables it contains
+soil <- data.frame(Soils)
+head(soil)
+ggplot(soil) +
+  geom_boxplot(aes(x=Contour, y=pH))
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca))
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, color=Depth))
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5)
+ggplot(soil, aes(x=pH)) +
+  geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Mg), shape=21, fill="blue", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Na), shape=21, fill="gray30", color="black", size=4, stroke=1.5)
+soil.nut <- gather(soil, nutrient, value, c(10,11,13))
+ggplot(soil.nut) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+soil.nut2 <- gather(soil, nutrient, value, c(10,11,12))
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+    
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_igray() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_economist() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_gdocs() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+display.brewer.all()
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  geom_smooth(aes(x=pH, y=value), method="lm", color="black") +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+    
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value), color="black", fill="white", bins=15) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  geom_density(aes(x=value,color=nutrient), size=1.5) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  stat_function(fun = dnorm, color = "blue", size = 1.5,
+                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+ggplot(soil, aes(x=Contour, y=pH)) +
+  stat_boxplot(geom="errorbar", width=0.2) +  
+  geom_boxplot() +
+  stat_summary(fun.y=mean, geom="point", size=5, color="black")
+  
+leaflet(possumsites) %>%
+  addTiles() %>% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
+
+#Solution
+
+ggplot(soil) +
+  geom_point(aes(pH, Ca, fill=Depth), shape=21, color='black', size=4, stroke=1.5) +
+  geom_smooth(method='lm', aes(pH, Ca, color=Depth), se=FALSE) +
+  theme_bw() +
+  ylab('Ca (mg/100g soil)') +
+  scale_fill_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'), name='Depth (cm)') +
+  scale_color_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'))
+
+#Solution
+
+ggplot(soil.nut) +
+  geom_boxplot(aes(nutrient, value, fill=Contour)) +
+  stat_summary(aes(nutrient, value), 
+               fun.y=mean, geom="point", shape=18, size=4, color='black')
+  
+
+#Solution
+
+ggplot(soil.nut) +
+  geom_density(aes(x=value, fill=nutrient), color="black", alpha=0.5) +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))

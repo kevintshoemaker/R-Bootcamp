@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Introduction to Spatial Data (Mitch Gritts)" />
+
+
+<title>Module 2.6</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-2.0.0/leaflet.js"></script>
+<script src="site_libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
+<script src="site_libs/leaflet-providers-plugin-2.0.0/leaflet-providers-plugin.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2018</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Bootcamp #1: getting started
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="module1_1.html">Module 1.1: working with objects</a>
+    </li>
+    <li>
+      <a href="module1_2.html">Module 1.2: managing data</a>
+    </li>
+    <li>
+      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Bootcamp #2: Beyond the basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="module2_1.html">Module 2.1: Programming in R</a>
+    </li>
+    <li>
+      <a href="module2_2.html">Module 2.2: R packages</a>
+    </li>
+    <li>
+      <a href="module2_3.html">Module 2.3: Parallel computing in R</a>
+    </li>
+    <li>
+      <a href="module2_4.html">Module 2.4: Using the 'tidyvierse'</a>
+    </li>
+    <li>
+      <a href="module2_5.html">Module 2.5: Plotting with 'ggplot'</a>
+    </li>
+    <li>
+      <a href="module2_6.html">Module 2.6: Spatial analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data sets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="data.dat">Example: tab-separated data</a>
+    </li>
+    <li>
+      <a href="data.csv">Example: comma-separated data</a>
+    </li>
+    <li>
+      <a href="data.txt">Example: whitespace-separated data</a>
+    </li>
+    <li>
+      <a href="data_missing.txt">Example: missing data</a>
+    </li>
+    <li>
+      <a href="MTMetStations.csv">Meteorological Data</a>
+    </li>
+    <li>
+      <a href="sculpineggs.csv">Sculpin Data</a>
+    </li>
+    <li>
+      <a href="turtle_data.txt">Turtle Data</a>
+    </li>
+    <li>
+      <a href="geneData.csv">Gene Data</a>
+    </li>
+    <li>
+      <a href="reptiles.csv">Reptile Data</a>
+    </li>
+    <li>
+      <a href="data.zip">GIS Data</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Module 2.6</h1>
+<h4 class="author"><em>Introduction to Spatial Data (Mitch Gritts)</em></h4>
+<h4 class="date"><em>September 2018</em></h4>
+
+</div>
+
+
+<p><strong>Guest presenter</strong>: Mitch Gritts (who also pulled this module together!)</p>
+<div id="load-script-for-module-2.6" class="section level2">
+<h2>Load script for module 2.6</h2>
+<ol style="list-style-type: decimal">
+<li><p>Click <a href="module2_6.txt">here</a> to download the script! Save the script to a convenient folder on your laptop.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script.</p></li>
+</ol>
+<p>Let’s get started with spatial data in R!</p>
+</div>
+<div id="the-science-of-where" class="section level2">
+<h2>The Science of Where</h2>
+<p>Spatial analysis allows you to solve complex location-oriented problems and better understand where and what is occurring in your world. It goes beyond mere mapping to let you study the characteristics of places and the relationships between them.</p>
+<div style="margin: 16px 0">
+<img class="img-responsive center-block" src="assets/SpatialAnalysisLayers.jpg" alt="gis analysis layers", width="50%" align="middle">
+<figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">
+Spatial data analysis combines several different data types and methods in an attempt to model the real world.
+</figcaption>
+</div>
+</div>
+<div id="spatial-isnt-special-in-r" class="section level2">
+<h2>Spatial isn’t Special (in R)</h2>
+<p>Spatial data, just like all other data in R, are combinations of vectors, matrices, and lists. These combinations of data are wrapped into specialized classes, and have many specialized methods to make working with them easier. Most of the functionality comes from the <code>sp</code> package for vector data, and <code>raster</code> package for raster data. In addition to these packages we will use a few other packages:</p>
+<ol style="list-style-type: decimal">
+<li><code>rgdal</code> - an R wrapper to the open source <a href="https://www.gdal.org/">gdal library</a></li>
+<li><code>rgeos</code> - an R wrapper to the open source <a href="http://trac.osgeo.org/geos">geos library</a></li>
+<li><code>leaflet</code> - an R wrapper to the javascript library ‘leaflet’ for interactive maps</li>
+</ol>
+<pre class="r"><code>###################
+# before starting make sure we have a clean global environment
+rm(list = ls())
+
+# load libraries and set working directory
+library(dplyr)
+library(sp)</code></pre>
+<pre><code>## Warning: package &#39;sp&#39; was built under R version 3.5.1</code></pre>
+<pre class="r"><code>library(raster)
+library(rgdal)</code></pre>
+<pre><code>## Warning: package &#39;rgdal&#39; was built under R version 3.5.1</code></pre>
+<pre class="r"><code>library(rgeos)</code></pre>
+<pre><code>## Warning: package &#39;rgeos&#39; was built under R version 3.5.1</code></pre>
+<pre class="r"><code>library(ggthemes)
+library(magrittr)
+library(leaflet)</code></pre>
+<p><em>Check the footnotes for info about some of the warnings</em> <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+</div>
+<div id="spatial-data" class="section level2">
+<h2>Spatial Data</h2>
+<blockquote>
+Everything is related to everything else, but near things are more related than distant things
+<p class="display-block text-right">
+<small>Waldo Tobler, <em>Tobler’s first law of geography</em></small>
+</p>
+</blockquote>
+<p>Remember back to module 1.1 <a href="http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/module1_1.html#vector_objects_in_r">that vectors are a bunch of objects grouped together in an orderly line</a>. Spatial vectors are not the same thing. In a spatial context vector data are points, lines, and polygons. We can also call these geometries. These data strucutures are sets of coordinate pairs (x, y) that can have variables or attribute data associated with them (but not always). Raster data are matrices of cell values. I like to think of rasters a images; in fact satelite images of earth are often the source of raster data.</p>
+<div id="points" class="section level3">
+<h3>Points</h3>
+<p>Points are the simplest spatial data structure to reason about. In this case each coordinate pair is a point. We can attach attribute data to the points. An example of points might be trees in a forest, and the attribute data are height, diameter, species, etc.</p>
+</div>
+<div id="lines" class="section level3">
+<h3>Lines</h3>
+<p>Lines are a bit more complex. They are composed of many vertices that are connected. Each line can have data associated with it. The order of the connections is important. Roads or rivers are great examples, and might have data like width, speed limit, flow as attribute data.</p>
+<p>In R lines can be one or more line objects. For instance, the Truckee River and all its tributaries can be a single lines (multi-line) object, composed of many line objects for each of the tributaries.</p>
+</div>
+<div id="polygons" class="section level3">
+<h3>Polygons</h3>
+<p>A polygon is a set of closed lines. It is very similar to lines, however the first vertex must also be the last vertex in order to close the polygon. Polygons can have holes in them, think an island in a lake, which is a polygon enclosed inside another polygon. And just like lines, multiple polygon objects can make up a single polygons (multi-polygons) object. For instance, a chain of islands. Each island is a single polygon. Together all the individual island polygons represent the entire island chain polygon (multi-polygon).</p>
+<p>I find polygons easier to think about, so in the examples below I will first review points, then polygons, then lines.</p>
+</div>
+<div id="raster" class="section level3">
+<h3>Raster</h3>
+<p>Raster data divides area of interest into a grid to represent continuous (and sometimes discrete) data such as elevation. The grid has equally sized rectangular cells (or pixels) that can have one or more values. The size of the cells refered to as the resolution of the grid, smaller cell sizes are higher resolution. The value of that cell should represent the average value for the area that cell covers. Raster data is often represented by a matrix of the spatial extent we are interested in. So if we have a 1km square area of interest with a 1 meter resoltion we have 1000 x 1000 matrix, each element of that matrix representing the value of a variable for that 1 meter cell.</p>
+<p>We will likely not have much time to cover raster data because of our limited time together, and the amount of time loading and working with raster can take. I’ll provide a few short examples at the end to run on your own.</p>
+</div>
+</div>
+<div id="projections-coordinate-reference-systems" class="section level2">
+<h2>Projections &amp; Coordinate Reference Systems</h2>
+<div style="margin: 16px 0">
+<img class="img-responsive center-block" src="assets/geoid.jpg" alt="The shape of the earth", width="50%" align="middle">
+<figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">
+This figure represents on of the most accurate representations of the shape of the earth, or geoid, the global mean sea level.
+</figcaption>
+</div>
+<p>An important component of all spatial objects is the projection of the data. Projections attempt to map the round/oval shape of the earth onto a flat surface. Without a projection vector data are refered to as geometries. Once the projection is added it is geographic data.</p>
+<div style="margin: 16px 0">
+<img class="img-responsive center-block" src="assets/projections.gif" alt="ana animation of different geographic projections" align="middle">
+<figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">
+Watch how the representatino of the earth changes as the projections change
+</figcaption>
+</div>
+<p>There are several methods to add a projection to <code>sp</code> and <code>raster</code> objects. The underlying structure of a projection string is from the <a href="https://proj4.org/">PROJ.4 open source library</a>. These are often refered to as a coordinate reference system (CRS). A common shorthand for creating CRSs is to use an EPSG id<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+<p>Below is a list of common projections:</p>
+<ol style="list-style-type: decimal">
+<li>WGS84 (<a href="epsg.io/4326">EPSG:4326</a>) - Latlong used in GPS systems</li>
+<li>Pseudo-Mercator (<a href="epsg.io/3857">EPSG:3857</a>) - Used in web maps</li>
+<li>NAD83 zone 11n (<a href="epsg.io/26911">EPSG:26911</a>) - North America metric based, Nevada. Can be used across zone lines, however accuracy suffers, especially further North</li>
+<li>NAD27 zone 11n (<a href="epsg.io/26711">EPSG:26711</a>) - Old, replaced by NAD83. Works best within zone lines. Don’t use this, convert old data to NAD83.</li>
+<li>Albers Equal-area Conic (<a href="epsg.io/102003">EPSG:102003</a>) - Used by the USGS and US Census</li>
+</ol>
+</div>
+<div id="spatial-objects" class="section level2">
+<h2>Spatial Objects</h2>
+<p>You will most likely load spatial data from shapefiles, Google kml or kmz files, or .gpx files. However, I imagine a lot of you are collecting point data in the field and transcribing it into Excel Spreadsheets. These will need to be converted from <code>data.frames</code> to <code>SpatialPointsDataFrames</code>. So below we will create a <code>SpatialPointsDataFrame</code> by hand, and load a <code>SpatialPolygonsDataFrame</code> from a shapefile</p>
+<div id="creating-spatial-points-data" class="section level3">
+<h3>Creating Spatial Points Data</h3>
+<p>Let’s start out by creating a <code>SpatialPoints</code> object.</p>
+<p>First, download the following data set and save to your working directory: <a href="reptiles.csv" class="uri">reptiles.csv</a></p>
+<pre class="r"><code># create spatial points data frame ----
+## load reptile data 
+reptiles &lt;- readr::read_csv(&#39;reptiles.csv&#39;)
+
+## create a SpatialPoints object
+sp_points &lt;- SpatialPoints(
+  coords = reptiles[, c(&#39;x&#39;, &#39;y&#39;)]
+)
+
+## inspect the SpatialPoints object
+str(sp_points)</code></pre>
+<pre><code>## Formal class &#39;SpatialPoints&#39; [package &quot;sp&quot;] with 3 slots
+##   ..@ coords     : num [1:60955, 1:2] 581906 581738 581630 581209 581046 ...
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. ..$ : NULL
+##   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
+##   ..@ bbox       : num [1:2, 1:2] 267031 3853330 769527 4702755
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
+##   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
+##   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
+##   .. .. ..@ projargs: chr NA</code></pre>
+<p><code>sp_reptiles</code> contains an object of class <code>SpatialPoints</code>. It doesn’t have any data associated with it, or a projection. Let’s work on giving this data a projection. You will need to know the projection the data is recorded in order to acurately project the data. I know that the data is NAD83 Zone 11.</p>
+<pre class="r"><code># add a projection to a spatial object ----
+## create a CRS object
+utm &lt;- CRS(&#39;+init=epsg:26911&#39;)
+
+## add the projection to sp_points
+sp_points@proj4string &lt;- utm
+
+## inspect SpatialPoints
+str(sp_points)</code></pre>
+<pre><code>## Formal class &#39;SpatialPoints&#39; [package &quot;sp&quot;] with 3 slots
+##   ..@ coords     : num [1:60955, 1:2] 581906 581738 581630 581209 581046 ...
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. ..$ : NULL
+##   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
+##   ..@ bbox       : num [1:2, 1:2] 267031 3853330 769527 4702755
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
+##   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
+##   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
+##   .. .. ..@ projargs: chr &quot;+init=epsg:26911 +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0&quot;</code></pre>
+<p>Nice, the data can now be plotted onto the earth! But first, lets add some data (attributes) to these points with the <code>SpatialPointsDataFrame</code> function</p>
+<pre class="r"><code># add data to sp_points ----
+spdf_points &lt;- SpatialPointsDataFrame(coords = sp_points, data = reptiles)</code></pre>
+<pre class="r"><code>## inspect the data
+str(spdf_points)</code></pre>
+<p>Now we have a <code>SpatialPointsDataFrame</code>! And just like <code>data.frames</code> we can use indexing to subset the data. Check the data in the <code>@data</code> slot. One of the columns is species. Lets use this column to subset the data frame for only desert horned lizards (**Phrynosoma platyrhinos*).</p>
+<pre class="r"><code># subset a SpatialPointsDataFrame ----
+## first, inspect the data in the @data slo
+head(spdf_points@data)</code></pre>
+<pre><code>## # A tibble: 6 x 8
+##        x       y species        date       total label          year month
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;date&gt;     &lt;int&gt; &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;
+## 1 581906 4015885 Crotaphytus b~ 2015-04-03     4 Ivanpah-Pahr~  2015 Apr  
+## 2 581738 4015674 Sauromalus at~ 2015-04-03     1 Ivanpah-Pahr~  2015 Apr  
+## 3 581630 4015679 Sauromalus at~ 2015-04-03     3 Ivanpah-Pahr~  2015 Apr  
+## 4 581209 4016290 Sauromalus at~ 2015-04-03     1 Ivanpah-Pahr~  2015 Apr  
+## 5 581046 4015795 Sauromalus at~ 2015-04-03     1 Ivanpah-Pahr~  2015 Apr  
+## 6 408859 4369481 Crotaphytus b~ 2010-06-30     1 Dixie Valley   2010 Jun</code></pre>
+<pre class="r"><code>## great, it looks just like a data.frame
+## lets look at the species column, I&#39;ll only return the first 10
+spdf_points@data$species[1:10]</code></pre>
+<pre><code>##  [1] &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot;        
+##  [3] &quot;Sauromalus ater&quot;         &quot;Sauromalus ater&quot;        
+##  [5] &quot;Sauromalus ater&quot;         &quot;Crotaphytus bicinctores&quot;
+##  [7] &quot;Phrynosoma platyrhinos&quot;  &quot;Phrynosoma platyrhinos&quot; 
+##  [9] &quot;Gambelia wislizenii&quot;     &quot;Crotaphytus bicinctores&quot;</code></pre>
+<pre class="r"><code>## another way to do this
+spdf_points$species[1:10]</code></pre>
+<pre><code>##  [1] &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot;        
+##  [3] &quot;Sauromalus ater&quot;         &quot;Sauromalus ater&quot;        
+##  [5] &quot;Sauromalus ater&quot;         &quot;Crotaphytus bicinctores&quot;
+##  [7] &quot;Phrynosoma platyrhinos&quot;  &quot;Phrynosoma platyrhinos&quot; 
+##  [9] &quot;Gambelia wislizenii&quot;     &quot;Crotaphytus bicinctores&quot;</code></pre>
+<pre class="r"><code>## or, another method
+spdf_points@data[1:10, &#39;species&#39;]</code></pre>
+<pre><code>## # A tibble: 10 x 1
+##    species                
+##    &lt;chr&gt;                  
+##  1 Crotaphytus bicinctores
+##  2 Sauromalus ater        
+##  3 Sauromalus ater        
+##  4 Sauromalus ater        
+##  5 Sauromalus ater        
+##  6 Crotaphytus bicinctores
+##  7 Phrynosoma platyrhinos 
+##  8 Phrynosoma platyrhinos 
+##  9 Gambelia wislizenii    
+## 10 Crotaphytus bicinctores</code></pre>
+<pre class="r"><code>## cool, this thing behaves just like a data frame. Lets subset it.
+## create a variable to hold our species of interest
+phpl &lt;- &#39;Phrynosoma platyrhinos&#39;
+
+## then subset the data...
+phpl_spdf &lt;- spdf_points[spdf_points$species == phpl, ]
+
+## check to see that there is only one species in the data.frame
+phpl_spdf %&gt;% magrittr::extract2(&#39;species&#39;) %&gt;% unique()</code></pre>
+<pre><code>## [1] &quot;Phrynosoma platyrhinos&quot;</code></pre>
+<p>We can use any of the operation for a <code>data.frame</code> to work with a <code>SpatialPointsDataFrame</code>.</p>
+<p>One more thing before we move on – we can create a <code>SpatialPointsDataFrame</code> in one step, skipping the creation of a <code>SpatialPoints</code> object.</p>
+<pre class="r"><code># one step to create a SpatialPointsDataFrame ----
+spdf1 &lt;- SpatialPointsDataFrame(
+  coords = reptiles[, c(&#39;x&#39;, &#39;y&#39;)],
+  data = reptiles,
+  proj4string = utm
+)
+ # str(spdf1, max.level = 2)
+
+## and lets clean up the global env
+rm(phpl_spdf, reptiles, sp_points, spdf1, phpl)</code></pre>
+</div>
+<div id="aside-slots" class="section level3">
+<h3>ASIDE: Slots</h3>
+<p>Look carefully at the structure of an <code>sp</code> data. You will notice there are <code>@</code> signs used to separate different attributes or properties of data within an <code>sp</code> class. These are called slots. They are a special attribute to certain data types in R. You can think of the <code>@</code> like the <code>$</code> for <code>data.frames</code>. They are just ways to organize, set, and get certain bits of data out of classes.</p>
+</div>
+<div id="loading-spatialpolygons" class="section level3">
+<h3>Loading SpatialPolygons</h3>
+<p>It is possible to create polygons from scratch in R. It takes a bit of work, and I’ll provide an example later for reference. Most of the time you will not need to do this. Instead you will likely load data from a shapefile. In the code example below we are going to load county polygons for the state of Nevada. Like everything in R there are multiple methods to read shapefiles. The easiest method I’ve seen is to use the <code>raster::shapefile</code> function.</p>
+<p>NOTE: for the next examples you will need to use GIS files that are stored in the following compressed data directory: <a href="data.zip">GIS data for module 2.6</a>. If you want to follow along, please download this file and unzip it in your working directory. Make sure the folder called “data” (that contains subdirectories called “nv_counties” and “roads”) is in now in your working directory.</p>
+<pre class="r"><code>#############
+# Nevada Counties example...
+
+# read in nv county shapefile ----
+counties &lt;- shapefile(&#39;data/nv_counties/NV_Admin_Counties.shp&#39;)
+
+## once finished check the structure
+# str(counties, max.level = 3)
+
+## some data management
+### check the proj4string
+counties@proj4string</code></pre>
+<pre><code>## CRS arguments:
+##  +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs +ellps=GRS80
+## +towgs84=0,0,0</code></pre>
+<pre class="r"><code>### this proj4string, while encoding the same projection isn&#39;t identical to 
+### the proj4string of spdf_points
+spdf_points@proj4string</code></pre>
+<pre><code>## CRS arguments:
+##  +init=epsg:26911 +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs
+## +ellps=GRS80 +towgs84=0,0,0</code></pre>
+<pre class="r"><code>identicalCRS(counties, spdf_points)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>### let&#39;s coerce the points to our desired CRS, utm
+### this will throw a warning because we counties already has a projection
+### and we are forcing a new (albeit same) projection onto it. This isn&#39;t
+### the same as reprojecting, which we will get to later
+proj4string(counties) &lt;- utm</code></pre>
+<pre><code>## Warning in `proj4string&lt;-`(`*tmp*`, value = new(&quot;CRS&quot;, projargs = &quot;+init=epsg:26911 +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0&quot;)): A new CRS was assigned to an object with an existing CRS:
+## +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0
+## without reprojecting.
+## For reprojection, use function spTransform</code></pre>
+<p>A little more complex than the points data. Instead of a <code>@coords</code> slot there is a <code>@polygons</code> slot. This contains the shape information for each polygon that makes up the state. Check the structure of a polygon. For more information about the structure of <code>SpatialPolygons</code> and <code>SpatialPolygonsDataFrames</code> <a href="https://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html">check here</a>.</p>
+<pre class="r"><code>## check structure of a polygon within a SpatialPolygonsDataFrame
+str(counties@polygons[[1]])</code></pre>
+<pre><code>## Formal class &#39;Polygons&#39; [package &quot;sp&quot;] with 5 slots
+##   ..@ Polygons :List of 1
+##   .. ..$ :Formal class &#39;Polygon&#39; [package &quot;sp&quot;] with 5 slots
+##   .. .. .. ..@ labpt  : num [1:2] 274798 4503915
+##   .. .. .. ..@ area   : num 1.7e+10
+##   .. .. .. ..@ hole   : logi FALSE
+##   .. .. .. ..@ ringDir: int 1
+##   .. .. .. ..@ coords : num [1:1486, 1:2] 307493 307395 307254 307197 307152 ...
+##   ..@ plotOrder: int 1
+##   ..@ labpt    : num [1:2] 274798 4503915
+##   ..@ ID       : chr &quot;0&quot;
+##   ..@ area     : num 1.7e+10</code></pre>
+<p>Lets quickly plot this data to see what it looks like. We don’t have to do anything special to plot spatial data in R. Just like a plotting data from a <code>data.frame</code>, except we don’t have to specify an x &amp; y value because spatial classes already know where to find the x &amp; y values.</p>
+<pre class="r"><code>## plot a spatial polygon
+plot(counties, col = &#39;springgreen&#39;, border = &#39;purple&#39;, lwd = 3)</code></pre>
+<p><img src="module2_6_files/figure-html/plotting_spatial_polygon_1-1.png" width="672" /></p>
+<pre class="r"><code>## we can plot certain polygons...
+layout(matrix(1:3, ncol = 3, nrow = 1))
+plot(counties[1, ])
+plot(counties[1:4, ])
+plot(counties[counties$CNTYNAME == &#39;Clark&#39;, ])</code></pre>
+<p><img src="module2_6_files/figure-html/plotting_spatial_polygon_1-2.png" width="672" /></p>
+<pre class="r"><code>## we can even plot our reptile points ontop of the counties
+layout(matrix(1))
+plot(counties)
+points(spdf_points, pch = 1, cex = .5, col = &#39;purple&#39;)</code></pre>
+<p><img src="module2_6_files/figure-html/plotting_spatial_polygon_1-3.png" width="672" /></p>
+</div>
+</div>
+<div id="gis-operations" class="section level2">
+<h2>GIS Operations</h2>
+<div id="spatial-joins" class="section level3">
+<h3>Spatial Joins</h3>
+<p>Spatial joins are executed by using the <code>over</code> (or <code>%over%</code>) function from the <code>sp</code> library. The behavior of <code>over</code> depends on the types of data used. However the basic question when we are running an spatial join with <code>over</code> is: For each item in the first geometry, where does item intersect the second geometry.</p>
+<pre class="r"><code># Spatial joins ----
+
+## use the %over% funcstion, which is the same as over(spdf_points, counties)
+rslt &lt;- spdf_points %over% counties
+
+## what does rslt look like?
+str(rslt)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    60955 obs. of  6 variables:
+##  $ ST        : chr  &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; ...
+##  $ CNTYNAME  : chr  &quot;Nye&quot; &quot;Nye&quot; &quot;Nye&quot; &quot;Nye&quot; ...
+##  $ COV_NAME  : chr  &quot;NYE&quot; &quot;NYE&quot; &quot;NYE&quot; &quot;NYE&quot; ...
+##  $ STATEPLANE: chr  &quot;4626&quot; &quot;4626&quot; &quot;4626&quot; &quot;4626&quot; ...
+##  $ STATEPLA_1: chr  &quot;Central  Zone&quot; &quot;Central  Zone&quot; &quot;Central  Zone&quot; &quot;Central  Zone&quot; ...
+##  $ Acres     : num  11613744 11613744 11613744 11613744 11613744 ...</code></pre>
+<p><code>rslt</code> is an <code>data.frame</code> with 60,955 observations of 6 variables. If you look at <code>spdf_points</code> we see that there are 60,955 elements. If you look at <code>counties@data</code> you will see that there are 6 variables. To reiterate <code>over</code> has taken each point in our first geometry, <code>spdf_points</code>, and looked at the polygons in counties to see which polygon that point lies within, then created a row of a new <code>data.frame</code> of the polygon data.</p>
+<p>We can bind this new <code>rslt</code> object with the data in <code>spdf_points</code>. Lets only use the county name though.</p>
+<pre class="r"><code>## bind data in rslt to spdf_points
+spdf_points$county &lt;- rslt$CNTYNAME
+
+## remember back to one of our plot above that some points
+## fall outside nevada
+plot(counties)
+points(spdf_points, col = &#39;purple&#39;)</code></pre>
+<p><img src="module2_6_files/figure-html/cbind_rslt-1.png" width="672" /></p>
+<pre class="r"><code>## lets remove those from our dataset, as we shouldn&#39;t have any collections
+## outside nevada and these are data entry mistakes
+spdf_points &lt;- spdf_points[!(is.na(spdf_points$county)), ]
+
+## now lets plot, for fun
+plot(counties)
+points(spdf_points[spdf_points$county == &#39;Clark&#39;, ], col = &#39;springgreen&#39;, cex = .5)</code></pre>
+<p><img src="module2_6_files/figure-html/cbind_rslt-2.png" width="672" /></p>
+<div id="challenge-subset-spatial" class="section level4">
+<h4>Challenge: Subset <code>Spatial</code></h4>
+<p>You’ve seen how to subset both <code>SpatialPointsDataFrames</code>, and <code>SpatialPolygonsDataFrames</code>. Continue practicing subsetting on your own.</p>
+</div>
+</div>
+<div id="merge-polygons" class="section level3">
+<h3>Merge Polygons</h3>
+<p>We can do the same thing with two polygon geometries.</p>
+<pre class="r"><code># create a study grid ----
+bb &lt;- counties@bbox
+
+## this code is used to create a SpatialPolygonsDataFrame grid
+## it isn&#39;t important that you understand it right now
+grd &lt;- GridTopology(
+  cellcentre.offset = c(bb[1, 1] + 50000, bb[2, 1]), 
+  cellsize = c(150000, 150000),
+  cells.dim = c(4, 6)
+)
+
+p_grd &lt;- SpatialPolygonsDataFrame(
+  Sr = as.SpatialPolygons.GridTopology(grd),
+  data = data.frame(&#39;study_area&#39; = 1:24),
+  match.ID = F)
+proj4string(p_grd) &lt;- utm
+
+## plot the  grid and counties
+layout(matrix(1:2, nrow = 1, ncol = 2))
+plot(p_grd)
+text(coordinates(p_grd), label = row.names(p_grd))
+
+plot(counties)
+text(coordinates(counties), label = counties$CNTYNAME, cex = .75)</code></pre>
+<p><img src="module2_6_files/figure-html/spatial_join_polygons-1.png" width="672" /></p>
+<p>Our goal is to attempt to intersect the two of the geometries together and try to create a new set of polygons. These new polygons will be a mash up of our two starting geometries. It’ll make more sense as we work through the example. Instead of using the <code>over</code> command we will use the <code>gIntersection</code> command. We could also run this example using <code>raster::intersect</code>. But for now, do the following:</p>
+<pre class="r"><code># intersect 2 polygon geometries ----
+## a little data management to make the intersection easier
+row.names(counties) &lt;- counties$COV_NAME
+
+## intersect the geometries
+intersect &lt;- gIntersection(counties, p_grd, byid = T)
+
+## plot the result, color to show that they are separate
+plot(intersect, col = blues9)</code></pre>
+<p><img src="module2_6_files/figure-html/intersection-1.png" width="672" /></p>
+<pre class="r"><code>## check the structure
+str(intersect, max.level = 2)</code></pre>
+<pre><code>## Formal class &#39;SpatialPolygons&#39; [package &quot;sp&quot;] with 4 slots
+##   ..@ polygons   :List of 58
+##   ..@ plotOrder  : int [1:58] 38 5 49 11 35 25 8 56 21 53 ...
+##   ..@ bbox       : num [1:2, 1:2] 240110 3875834 765544 4653630
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot</code></pre>
+<p>You’ll notice that now we have 58 polygons. There isn’t any data associated with these polygons. That was all dropped as a result of the <code>gIntersect</code> operation, which is slightly annoying, but we can fix that.</p>
+<p><em>Note: many functions from <code>rgeos</code> will drop the data.frame from the result. If you supply the parameter <code>byid = T</code> to the function, you will be able to get the attribute data from either geometry</em></p>
+<pre class="r"><code># getting our data back from the intersection ----
+## check the row.names of these polygons
+row.names(intersect)</code></pre>
+<pre><code>##  [1] &quot;WASHOE g1&quot;      &quot;WASHOE g5&quot;      &quot;WASHOE g9&quot;      &quot;ELKO g2&quot;       
+##  [5] &quot;ELKO g3&quot;        &quot;ELKO g4&quot;        &quot;ELKO g6&quot;        &quot;ELKO g7&quot;       
+##  [9] &quot;ELKO g8&quot;        &quot;HUMBOLDT g1&quot;    &quot;HUMBOLDT g2&quot;    &quot;HUMBOLDT g5&quot;   
+## [13] &quot;HUMBOLDT g6&quot;    &quot;EUREKA g7&quot;      &quot;EUREKA g11&quot;     &quot;LANDER g6&quot;     
+## [17] &quot;LANDER g7&quot;      &quot;LANDER g10&quot;     &quot;LANDER g11&quot;     &quot;PERSHING g5&quot;   
+## [21] &quot;PERSHING g6&quot;    &quot;WHITE_PINE g7&quot;  &quot;WHITE_PINE g8&quot;  &quot;WHITE_PINE g11&quot;
+## [25] &quot;WHITE_PINE g12&quot; &quot;CHURCHILL g5&quot;   &quot;CHURCHILL g6&quot;   &quot;CHURCHILL g9&quot;  
+## [29] &quot;CHURCHILL g10&quot;  &quot;LYON g5&quot;        &quot;LYON g9&quot;        &quot;STOREY g9&quot;     
+## [33] &quot;CARSON g9&quot;      &quot;NYE g10&quot;        &quot;NYE g11&quot;        &quot;NYE g12&quot;       
+## [37] &quot;NYE g14&quot;        &quot;NYE g15&quot;        &quot;NYE g16&quot;        &quot;NYE g18&quot;       
+## [41] &quot;NYE g19&quot;        &quot;DOUGLAS g9&quot;     &quot;MINERAL g9&quot;     &quot;MINERAL g10&quot;   
+## [45] &quot;MINERAL g13&quot;    &quot;MINERAL g14&quot;    &quot;LINCOLN g12&quot;    &quot;LINCOLN g15&quot;   
+## [49] &quot;LINCOLN g16&quot;    &quot;LINCOLN g19&quot;    &quot;LINCOLN g20&quot;    &quot;ESMERALDA g10&quot; 
+## [53] &quot;ESMERALDA g14&quot;  &quot;ESMERALDA g18&quot;  &quot;CLARK g19&quot;      &quot;CLARK g20&quot;     
+## [57] &quot;CLARK g23&quot;      &quot;CLARK g24&quot;</code></pre>
+<pre class="r"><code>## these appear to be a concat of the first geometries row.names, and 
+## the second geometries row.names. We can work with that to get our data
+## strsplit returns a list
+tmp &lt;- strsplit(row.names(intersect), split = &#39; &#39;)
+
+
+## iterate over the list to get either the 1st or 2nd element
+county_name &lt;- sapply(tmp, &#39;[[&#39;, 1)
+study_area &lt;- sapply(tmp, &#39;[[&#39;, 2)
+
+## now we now which county and study area each polygon belongs to
+## store this data in a data.frame
+df_names &lt;- data.frame(county_name = county_name, study_area = study_area, row.names = row.names(intersect))
+
+## let&#39;s add the area of each polygon to this data.frame
+## remember that the area for each polygon is stored
+## with each Polygon object, and is in square meters
+## below we will get the area and convert it to square kilometers
+intersect@polygons[[1]]@area / 1e6</code></pre>
+<pre><code>## [1] 5766.362</code></pre>
+<pre class="r"><code>## lets iterate over the object to get this data
+parea &lt;- sapply(seq_along(intersect), function (i) intersect@polygons[[i]]@area / 1e6)
+df_names$area &lt;- parea
+
+## finally, create a SpatialPolygonsDataFrame
+new_polys &lt;- SpatialPolygonsDataFrame(Sr = intersect, data = df_names)
+
+## and just for completions sake... plot it
+layout(matrix(1:3, nrow = 1, ncol = 3))
+### plot colored by county
+plot(new_polys, col = ggthemes::gdocs_pal()(17)[new_polys$county_name])
+
+### plot colored by study area
+plot(new_polys, col = ggthemes::gdocs_pal()(20)[new_polys$study_area])
+
+### plot differentiating each polygon
+plot(new_polys, col = blues9)</code></pre>
+<p><img src="module2_6_files/figure-html/get_intersection_data-1.png" width="672" /></p>
+<p>That was a lot of code! With some new concepts. Allow me to try and explain that in plain english!</p>
+<p><code>rgeos</code> doesn’t know which data to keep from each geometries <code>@data</code> slot. So it returns a concatenation of row names from the two geometries. This is the join part of the operation. We are still interested in the data from each of the parent geometries. In order to get that data from each geometry we can use <code>strsplit</code> to split the row names string. Which ever geometry you put first in the <code>gIntersection</code> function will be the first element, the second will be the second element, etc…</p>
+<p><code>strsplit</code> returns a list of <em>n</em> elements, where <em>n</em> is the number number of splits <code>strsplit</code> finds in the supplied string. In the example above I know that each row name is 1 word. So each list item has 2 elements. Instead of writing a for loop to extract each element from the list I used <code>vapply</code> (a function from the <a href="https://csgillespie.github.io/efficientR/programming.html#the-apply-family"><code>apply</code> family</a> of functions). This function iterates over a list or vector (iterable) object, performs the actions in the given function, and returns a vector (a real, <a href="https://stackoverflow.com/questions/3505701/grouping-functions-tapply-by-aggregate-and-the-apply-family">useful stackoverflow answer</a> to help you decide when to use which <code>apply</code> function). Another thing to remember is that almost everything in R is a function call. Even a generic <code>1 + 1</code> is really, <code><code>+</code>(1, 1)</code>. The function I am calling is the Extract function <code>[[</code>. As a quick example try the following in R.</p>
+<pre class="r"><code># Everything in R is a function call, almost ----
+## are the following equal?
+1 + 1 == `+`(1, 1)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>## how about these?
+county_name[[1]] == `[[`(county_name, 1)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p><code>vapply</code> is used again to return a vector of the area of each polygon. The area, county name, and study area are used to create a <code>data.frame</code>. Then a new <code>SpatialPolygonsDataFrame</code> is created for the intersection.</p>
+</div>
+<div id="union-polygons" class="section level3">
+<h3>Union Polygons</h3>
+<p>Another common GIS task is to union sets of polygons into 1 bigger polygon. This is a common operation if you are trying to create a boundary to clip other data to (like when using the <code>over</code> function). Sometimes this operation is refered to as dissolving polygons.</p>
+<pre class="r"><code># unioning polygons ----
+## all of these function come from the rgeos package.
+## select two counties to union
+plot(counties[2:3, ])</code></pre>
+<p><img src="module2_6_files/figure-html/unions-1.png" width="672" /></p>
+<pre class="r"><code>## union them
+nnv &lt;- gUnion(counties[2, ], counties[3, ])
+
+## plot the result
+plot(nnv)</code></pre>
+<p><img src="module2_6_files/figure-html/unions-2.png" width="672" /></p>
+<pre class="r"><code>## inspect
+str(nnv)</code></pre>
+<pre><code>## Formal class &#39;SpatialPolygons&#39; [package &quot;sp&quot;] with 4 slots
+##   ..@ polygons   :List of 1
+##   .. ..$ :Formal class &#39;Polygons&#39; [package &quot;sp&quot;] with 5 slots
+##   .. .. .. ..@ Polygons :List of 1
+##   .. .. .. .. ..$ :Formal class &#39;Polygon&#39; [package &quot;sp&quot;] with 5 slots
+##   .. .. .. .. .. .. ..@ labpt  : num [1:2] 555073 4566314
+##   .. .. .. .. .. .. ..@ area   : num 6.95e+10
+##   .. .. .. .. .. .. ..@ hole   : logi FALSE
+##   .. .. .. .. .. .. ..@ ringDir: int 1
+##   .. .. .. .. .. .. ..@ coords : num [1:1988, 1:2] 498485 498772 498879 499233 499921 ...
+##   .. .. .. .. .. .. .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. .. .. .. .. .. .. ..$ : NULL
+##   .. .. .. .. .. .. .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
+##   .. .. .. ..@ plotOrder: int 1
+##   .. .. .. ..@ labpt    : num [1:2] 555073 4566314
+##   .. .. .. ..@ ID       : chr &quot;1&quot;
+##   .. .. .. ..@ area     : num 6.95e+10
+##   ..@ plotOrder  : int 1
+##   ..@ bbox       : num [1:2, 1:2] 303940 4442372 751681 4653313
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
+##   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
+##   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
+##   .. .. ..@ projargs: chr &quot;+init=epsg:26911 +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0&quot;</code></pre>
+<pre class="r"><code>rm(nnv)
+
+# union all interior polygons ----
+## we ccan do the same thing to get a the border of NV
+## use a different function, but same idea
+nv &lt;- gUnaryUnion(counties)
+plot(nv)</code></pre>
+<p><img src="module2_6_files/figure-html/unions-3.png" width="672" /></p>
+</div>
+<div id="reproject" class="section level3">
+<h3>Reproject</h3>
+<p>In order to convert coordinates from one CRS to another we need to use the <code>spTransform</code> and provide the CRS we want to reproject the data into. Below we will reproject the data from NAD83 zone 11 to WGS84.</p>
+<pre class="r"><code># spTranform ----
+## reproject
+wgs_pts &lt;- spTransform(spdf_points, CRS(&#39;+init=epsg:4326&#39;))
+
+## inspect coordinates
+wgs_pts@coords[1:5, 1:2]</code></pre>
+<pre><code>##              x        y
+## [1,] -116.0879 36.28445
+## [2,] -116.0898 36.28257
+## [3,] -116.0910 36.28262
+## [4,] -116.0957 36.28816
+## [5,] -116.0975 36.28371</code></pre>
+<pre class="r"><code>## we can do this to polygons too
+wgs_counties &lt;- spTransform(counties, CRS(&#39;+init=epsg:4326&#39;))
+
+## then we can plot the two counties projection side by side
+layout(matrix(1:2, nrow=1, ncol=2))
+
+plot(counties, main = &#39;UTM NAD83 zone 11&#39;)
+plot(wgs_counties, main = &#39;WGS84&#39;)</code></pre>
+<p><img src="module2_6_files/figure-html/reproject-1.png" width="672" /></p>
+<p>There are many, many different projection, as stated in the projections section above. We can choose to project our data however we want. Ultimately, the most important apsect of projections (and spatial data) is that we document the projection of our data. Without a projection we can’t plot our points onto earth. So please, do everyone a favor and document your data’s projection.</p>
+<p>Below is a figure demonstrating how the shape of Nevada counties change depending on the projection</p>
+<pre class="r"><code>## we can do this with other reprojections as well so you can really tell a difference
+layout(matrix(1:8, nrow = 2, ncol = 4))
+plot(spTransform(counties, CRS(&#39;+proj=aea&#39;)), main = &#39;Albers Equal Area&#39;, sub = &#39;USGS&#39;)
+plot(spTransform(counties, CRS(&#39;+proj=sinu&#39;)), main = &#39;Van Der Grinten&#39;)
+plot(spTransform(counties, CRS(&#39;+proj=robin&#39;)), main = &#39;Robinson&#39;)
+plot(spTransform(counties, CRS(&#39;+proj=isea&#39;)), main = &#39;Icosahedral Snyder&#39;, sub = &#39;Dymaxion, Butterfly not open source&#39;)
+plot(spTransform(counties, CRS(&#39;+proj=wintri&#39;)), main = &#39;Winkel-Tripel&#39;, sub = &#39;National Geographic&#39;)
+plot(spTransform(counties, CRS(&#39;+proj=goode&#39;)), main = &#39;Goode Homolosine&#39;)
+plot(spTransform(counties, CRS(&#39;+proj=eqc&#39;)), main = &#39;Plate Carree&#39;)
+plot(spTransform(counties, CRS(&#39;+proj=gall&#39;)), main = &#39;Gall-Peters&#39;)</code></pre>
+<p><img src="module2_6_files/figure-html/many_projections-1.png" width="672" /></p>
+</div>
+</div>
+<div id="raster-data" class="section level2">
+<h2>Raster Data</h2>
+<p>You will almost always read raster data from external files. There are many different file types to store raster data. The most common is probably .tif, or .geotiff. R has a native raster format that is very compact with an extension .grd &amp; .gri (there are two files). We will use this format to read in raster data.</p>
+<pre class="r"><code># working with raster data ----
+## save some data for later
+save(counties, spdf_points, wgs_pts, file = &#39;data/module2_6.RData&#39;)
+
+## let&#39;s clean our workspace first
+rm(bb, df_names, grd, intersect, new_polys, nnv, p_grd, rslt, tmp, wgs_counties, county_name, parea, study_area, counties, spdf_points, wgs_pts)</code></pre>
+<pre><code>## Warning in rm(bb, df_names, grd, intersect, new_polys, nnv, p_grd, rslt, :
+## object &#39;nnv&#39; not found</code></pre>
+<pre class="r"><code>## load a raster
+dem &lt;- raster(&#39;data/nv_dem_coarse.grd&#39;)
+
+## check dem structure
+str(dem)</code></pre>
+<pre><code>## Formal class &#39;RasterLayer&#39; [package &quot;raster&quot;] with 12 slots
+##   ..@ file    :Formal class &#39;.RasterFile&#39; [package &quot;raster&quot;] with 13 slots
+##   .. .. ..@ name        : chr &quot;E:\\GIT\\R-Bootcamp\\data\\nv_dem_coarse.grd&quot;
+##   .. .. ..@ datanotation: chr &quot;FLT4S&quot;
+##   .. .. ..@ byteorder   : Named chr &quot;little&quot;
+##   .. .. .. ..- attr(*, &quot;names&quot;)= chr &quot;value&quot;
+##   .. .. ..@ nodatavalue : num -3.4e+38
+##   .. .. ..@ NAchanged   : logi FALSE
+##   .. .. ..@ nbands      : int 1
+##   .. .. ..@ bandorder   : Named chr &quot;BIL&quot;
+##   .. .. .. ..- attr(*, &quot;names&quot;)= chr &quot;value&quot;
+##   .. .. ..@ offset      : int 0
+##   .. .. ..@ toptobottom : logi TRUE
+##   .. .. ..@ blockrows   : int 0
+##   .. .. ..@ blockcols   : int 0
+##   .. .. ..@ driver      : chr &quot;raster&quot;
+##   .. .. ..@ open        : logi FALSE
+##   ..@ data    :Formal class &#39;.SingleLayerData&#39; [package &quot;raster&quot;] with 13 slots
+##   .. .. ..@ values    : logi(0) 
+##   .. .. ..@ offset    : num 0
+##   .. .. ..@ gain      : num 1
+##   .. .. ..@ inmemory  : logi FALSE
+##   .. .. ..@ fromdisk  : logi TRUE
+##   .. .. ..@ isfactor  : logi FALSE
+##   .. .. ..@ attributes: list()
+##   .. .. ..@ haveminmax: logi TRUE
+##   .. .. ..@ min       : num 147
+##   .. .. ..@ max       : num 3576
+##   .. .. ..@ band      : int 1
+##   .. .. ..@ unit      : chr &quot;&quot;
+##   .. .. ..@ names     : chr &quot;w001001&quot;
+##   ..@ legend  :Formal class &#39;.RasterLegend&#39; [package &quot;raster&quot;] with 5 slots
+##   .. .. ..@ type      : chr(0) 
+##   .. .. ..@ values    : logi(0) 
+##   .. .. ..@ color     : logi(0) 
+##   .. .. ..@ names     : logi(0) 
+##   .. .. ..@ colortable: logi(0) 
+##   ..@ title   : chr(0) 
+##   ..@ extent  :Formal class &#39;Extent&#39; [package &quot;raster&quot;] with 4 slots
+##   .. .. ..@ xmin: num 240120
+##   .. .. ..@ xmax: num 766120
+##   .. .. ..@ ymin: num 3875611
+##   .. .. ..@ ymax: num 4653611
+##   ..@ rotated : logi FALSE
+##   ..@ rotation:Formal class &#39;.Rotation&#39; [package &quot;raster&quot;] with 2 slots
+##   .. .. ..@ geotrans: num(0) 
+##   .. .. ..@ transfun:function ()  
+##   ..@ ncols   : int 263
+##   ..@ nrows   : int 389
+##   ..@ crs     :Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
+##   .. .. ..@ projargs: chr &quot;+proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;
+##   ..@ history : list()
+##   ..@ z       : list()</code></pre>
+<pre class="r"><code>## what is this?
+dem@data@inmemory</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>Wow, that is a lot of data packed into a single class. Check that last command. What does that mean? Well, the Raster package cleverly keeps raster data saved in on disk, in a temporary file, rather than loading it into memory. This is a very nice feature because raster data can be huge. Don’t let anyone tell you differently, geographic data was the first big data!</p>
+<p>How about plotting the data? We have two different methods, <code>plot</code> and <code>image</code>. The essentially do the same thing. Pick your favorite.</p>
+<pre class="r"><code>## plot raster
+plot(dem)</code></pre>
+<p><img src="module2_6_files/figure-html/plot%20a%20raster-1.png" width="672" /></p>
+<pre class="r"><code>## or
+image(dem, asp = 1)</code></pre>
+<p><img src="module2_6_files/figure-html/plot%20a%20raster-2.png" width="672" /></p>
+<p>Let’s load a second raster. This next one represents major roads in Nevada (from the Census TIGER dataset). I’ve converted the data from a <code>SpatialLinesDataFrame</code> to a <code>raster</code> so that we can do some computations with it. The plot below looks like a road network. If you look closely down near Las Vegas you’ll see some green. Those cells are all the roads and highways lumped together in a single raster cell. The value of each cell in this data is the number of roads in that cell.</p>
+<pre class="r"><code># load a second raster, distance to roads ----
+road_rast &lt;- raster(&#39;data/road_dist.grd&#39;)
+
+## plot
+plot(road_rast)</code></pre>
+<p><img src="module2_6_files/figure-html/distance%20to%20roads%20raster-1.png" width="672" /></p>
+<p>Check the projection on our Raster objects. The rasters we just loaded should be the same. What about when we compare it to <code>nv</code>? This is one of those instances, again, where the datasets are using the same coordinate reference system, however two different methods have been used to apply that coordinate reference system to the data. To prove they are the same coordinate reference system, we can plot the state border over the dem raster.</p>
+<pre class="r"><code>## use the raster::projection function
+projection(road_rast)</code></pre>
+<pre><code>## [1] &quot;+proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;</code></pre>
+<pre class="r"><code>projection(dem)</code></pre>
+<pre><code>## [1] &quot;+proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;</code></pre>
+<pre class="r"><code>identicalCRS(road_rast, dem)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>## compare to nv SpatialPolygonsDataFrame
+identicalCRS(dem, nv)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>projection(nv)</code></pre>
+<pre><code>## [1] &quot;+init=epsg:26911 +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0&quot;</code></pre>
+<pre class="r"><code>## proof these are the same crs
+plot(dem)
+plot(nv, lwd = 3, add = T)</code></pre>
+<p><img src="module2_6_files/figure-html/check%20raster%20projection-1.png" width="672" /></p>
+<pre class="r"><code>## coerce projection
+dem@crs &lt;- nv@proj4string
+road_rast@crs &lt;- nv@proj4string
+identicalCRS(dem, nv)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>## check that we haven&#39;t screwed things up
+plot(dem)
+plot(nv, lwd = 3, add = T)</code></pre>
+<p><img src="module2_6_files/figure-html/check%20raster%20projection-2.png" width="672" /></p>
+<p>If we wanted to reproject the raster into a different coordinate reference system we would use the <code>raster::projectRaster</code> function. One of the parameters for this function is <code>filename</code>. This parameter allows you to give the function a filename so that data is saved onto disk as the operation progresses, rather than saving it in memory. Most of the time you should specify a filename when working with rasters.</p>
+<div id="distance-to-roads" class="section level3">
+<h3>Distance to Roads</h3>
+<p>Lets create a distance to roads raster from <code>road_rast</code>. We can later use this to perform spatial overlays, intersections, or joins. This should be a relatively quick operation. If you have an older computer with a slower processor and few RAM patience is required.</p>
+<pre class="r"><code># create distance to roads ----
+road_dist &lt;- distance(road_rast, filename = &quot;road_dist.grd&quot;, overwrite = T)
+
+## cool, what does this look like?
+plot(road_dist)</code></pre>
+<p><img src="module2_6_files/figure-html/distance%20to%20roads-1.png" width="672" /></p>
+<p>Very cool! This raster represents a continuous measure of distance to roads across the landscape. White pixels are directly on roads, so the cell value is 0. The darker the and greener the color, the further away from major roads that cell is. The units for each cell are meters. This isn’t as clean as the DEM we have loaded. The lower left corner is all in California, and because we didn’t include any California roads in the calculation of this raster, that data isn’t accurate. Instead of including California roads we will clip or mask this raster to the state border.</p>
+<pre class="r"><code>## mask raster to NV border. This will set all values outside NV to NA
+nv_road_dist &lt;- mask(road_dist, mask = nv, filename = &#39;nv_road_dist.grd&#39;, overwrite = T)</code></pre>
+<p><em>If you need to overwrite a file that already exists on disk provide the <code>overwrite = T</code> parameter. Without this the operation will error out.</em></p>
+<pre class="r"><code>## plot our new raster, with nevada border
+plot(nv_road_dist)
+plot(nv, lwd = 3, add = T)</code></pre>
+<p><img src="module2_6_files/figure-html/plot%20new%20raster-1.png" width="672" /></p>
+<p>The appearance of the raster changed but the data is still the same. The change in appearance is due to the range of our cell values. Check for yourself. Removing all those extremely large values from California changes the distribution of our cell values.</p>
+<pre class="r"><code>## compare raster values
+summary(road_dist)</code></pre>
+<pre><code>## Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (97.75% of all cells)</code></pre>
+<pre><code>##              layer
+## Min.         0.000
+## 1st Qu.   6324.555
+## Median   16124.516
+## 3rd Qu.  39395.430
+## Max.    323932.094
+## NA&#39;s         0.000</code></pre>
+<pre class="r"><code>summary(nv_road_dist)</code></pre>
+<pre><code>## Warning in sampleInt(length(x), size): size changed to n because it cannot be larger than n when replace is FALSE
+
+## Warning in sampleInt(length(x), size): summary is an estimate based on a sample of 1e+05 cells (97.75% of all cells)</code></pre>
+<pre><code>##            layer
+## Min.        0.00
+## 1st Qu.  4000.00
+## Median  10000.00
+## 3rd Qu. 20000.00
+## Max.    64124.88
+## NA&#39;s        0.00</code></pre>
+</div>
+<div id="overlay-operations" class="section level3">
+<h3>Overlay Operations</h3>
+<p>We can perform overlay operations between vector and raster geometries, similar to what we did with two raster geometries. When interacting with raster-vector geometries this is referred to as extraction. The easiest way for me to think about this is with point data. We want to provide additional attribute data to the points by extracting the cell value from a raster at that points’ position.</p>
+<pre class="r"><code># raster extraction ----
+## global env setup
+rm(road_dist, road_rast)
+load(&#39;data/module2_3.RData&#39;)
+## the following command might not do anything, however there may be some additional data in the .RData file that we don&#39;t need
+rm(counties, wgs_pts)</code></pre>
+<p>Before we do anything else, lets visualize what we are trying to do. In the figure below we have several points ontop of the elevation DEM for Humboldt county. For each point on the map we want to get the value of the raster cell underneath that point.</p>
+<pre class="r"><code>## create an extent object to limit the size of our raster plot
+## wubset the points so we can see them
+bounds &lt;- extent(spdf_points[spdf_points$county == &#39;Humboldt&#39;, ])
+
+## extend the extent object so all the points fit on the map
+plot(dem, ext = extend(bounds, 10000))
+points(spdf_points[spdf_points$county == &#39;Humboldt&#39;, ])</code></pre>
+<p><img src="module2_6_files/figure-html/visualize%20the%20problem-1.png" width="672" /></p>
+<p>Now let’s do the extraction.</p>
+<pre class="r"><code>## extract values from the dem
+## this returns a vector of length = nrow(spdf_points)
+elevation &lt;- raster::extract(dem, spdf_points)
+summary(elevation)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   154.2  1242.4  1400.6  1353.8  1563.9  2959.7      31</code></pre>
+<pre class="r"><code>## this can be combined with our data
+## and yes, this can be done in one step instead of 2
+spdf_points$elevation &lt;- elevation</code></pre>
+<p>Once the extraction is complete, and we add this column to our data we can do some data exploration. There are some <code>NA</code> values, what is that about? We can also plot a histogram and see the distribution of elevations for our data.</p>
+<pre class="r"><code>## and now, we can figure out the distribution of elevations in our data!
+hist(spdf_points$elevation * 3.28, main = &#39;Distribution of Elevation&#39;, xlab = &#39;Elevation (ft)&#39;, freq = F)</code></pre>
+<p><img src="module2_6_files/figure-html/explore%20data-1.png" width="672" /></p>
+<pre class="r"><code>## what about those NAs?
+na_points &lt;- spdf_points[is.na(spdf_points$elevation), ]
+## honestly, this 2000 number is purely experimental, 
+## change values till you get what you want on the map
+bounds &lt;- extend(extent(na_points), 2000)
+
+## plot the map, zoom in on these points in the map
+plot(dem, ext = bounds)
+points(na_points)
+plot(nv, add = T)</code></pre>
+<p><img src="module2_6_files/figure-html/explore%20data-2.png" width="672" /></p>
+<p>This is due to the fact that a raster is a grid of rectangles (squares) and we can’t perfectly mimic every vector shape. A solution is to use smaller resolutions for rasters, or buffer the state border to include cells outside the state.</p>
+</div>
+</div>
+<div id="interactive-maps" class="section level2">
+<h2>Interactive Maps</h2>
+<p>I’ll often hear that many people don’t use R as a GIS because it is hard to add basemaps. Well, some wonderful R user decided to write a library that allows for interactive mapping in R. Underneath the hood this library is calling a JavaScript library called leaflet.</p>
+<pre class="r"><code>load(&quot;data/module2_6.RData&quot;)
+
+library(leaflet)
+# interactive mapping ----
+leaflet::leaflet(wgs_pts[1:100, ]) %&gt;% 
+  addTiles() %&gt;% 
+  addCircleMarkers(radius = 5)</code></pre>
+<div id="htmlwidget-d37aa7e6b437d68f8e4c" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d37aa7e6b437d68f8e4c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.4755640917091,39.4753555063411,39.4750609359988,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574393,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.6800687564421,36.6959640338587,39.4408761742465,39.4755690699925,39.475304543,39.475304543,39.475304543,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191074,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101654,36.5724726911758,38.2878545419551,36.288162585203,36.2844709301225,36.2916296390376,39.3332501329895,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301225,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549489,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.2529976782511,38.2511578560742,38.2511578560742],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043848,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416222,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378969,-118.349410378969],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
+<p>We can change the basemap too.</p>
+<pre class="r"><code>## leaflet provider tiles
+leaflet::leaflet(wgs_pts[1:100, ]) %&gt;% 
+  addProviderTiles(providers$Esri.WorldTopoMap) %&gt;% 
+  addCircleMarkers(radius = 5)</code></pre>
+<div id="htmlwidget-b37aeeaee0bbbe7c90ae" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b37aeeaee0bbbe7c90ae">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.4755640917091,39.4753555063411,39.4750609359988,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574393,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.6800687564421,36.6959640338587,39.4408761742465,39.4755690699925,39.475304543,39.475304543,39.475304543,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191074,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101654,36.5724726911758,38.2878545419551,36.288162585203,36.2844709301225,36.2916296390376,39.3332501329895,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301225,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549489,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.2529976782511,38.2511578560742,38.2511578560742],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043848,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416222,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378969,-118.349410378969],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
+<p>And popups!</p>
+<pre class="r"><code>## and popups
+leaflet::leaflet(wgs_pts[1:100, ]) %&gt;% 
+  addTiles() %&gt;% 
+  addCircleMarkers(radius = 5, popup = paste(wgs_pts$species[1:100]))</code></pre>
+<div id="htmlwidget-66fb661bb6508b7adf3b" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-66fb661bb6508b7adf3b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.4755640917091,39.4753555063411,39.4750609359988,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574393,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.6800687564421,36.6959640338587,39.4408761742465,39.4755690699925,39.475304543,39.475304543,39.475304543,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191074,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101654,36.5724726911758,38.2878545419551,36.288162585203,36.2844709301225,36.2916296390376,39.3332501329895,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301225,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549489,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.2529976782511,38.2511578560742,38.2511578560742],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043848,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416222,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378969,-118.349410378969],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,["Crotaphytus bicinctores","Sauromalus ater","Sauromalus ater","Sauromalus ater","Sauromalus ater","Crotaphytus bicinctores","Phrynosoma platyrhinos","Gambelia wislizenii","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Gambelia wislizenii","Phrynosoma platyrhinos","Crotaphytus bicinctores","Phrynosoma platyrhinos","Gambelia wislizenii","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Gambelia wislizenii","Callisaurus draconoides","Callisaurus draconoides","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Dipsosaurus dorsalis","Dipsosaurus dorsalis","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Sceloporus uniformis","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Callisaurus draconoides","Phrynosoma platyrhinos","Crotaphytus bicinctores","Phrynosoma platyrhinos","Callisaurus draconoides","Sauromalus ater","Sauromalus ater","Sauromalus ater","Phrynosoma platyrhinos","Sauromalus ater","Crotaphytus bicinctores","Dipsosaurus dorsalis","Dipsosaurus dorsalis","Sceloporus occidentalis","Sauromalus ater","Crotaphytus bicinctores","Sceloporus occidentalis","Sauromalus ater","Sceloporus uniformis","Uta stansburiana","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Crotaphytus bicinctores","Gambelia wislizenii","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="challenge-spatial-lines" class="section level2">
+<h2>Challenge: Spatial Lines</h2>
+<p>Lines are very similar to polygons. See if you can load a shapefile of lines and plot it over the counties.</p>
+<ol style="list-style-type: decimal">
+<li>Read in the roads shapefile</li>
+<li>reproject to match the counties CRS</li>
+<li>Plot counties and roads</li>
+<li>Plot roads based on road type</li>
+<li>Intersect counties and roads</li>
+<li>Plot some intersections</li>
+</ol>
+<pre class="r"><code># SpatialLines solution ----
+## 1. read in data
+### HINT: use readshapefile
+### data to use:
+#### data/roads/roads.shp
+#### data/counties/counties.shp
+
+## 2. reproject
+### HINT: check counties projection
+
+## 3. plot
+
+## 4. plot roads, style based on road type 
+
+## 5. intersect counties and roads
+
+## 6. plot some of the intersections
+
+## etc ...</code></pre>
+<p><img src="module2_6_files/figure-html/spatial_lines_solution-1.png" width="672" /></p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The <code>raster</code> and <code>dplyr</code> libraries each have a function called <code>select</code>. I prefer to load <code>dplyr</code> first and have the <code>raster</code> library mask the <code>select</code> function in the <code>dplyr</code> library. In order to call the <code>select</code> function in the <code>raster</code> library we need to explicitly reference the library we want to use with two colons: <code>dplyr::select</code>. When using double colons the libraries namespace (list of functions, variable, etc.) is loaded, but not attached to the session. This allows us to call function from libraries we haven’t explicitly loaded with <code>library()</code> or <code>requrie()</code> function. I have a tendancy to (over)use this method. It is very helpful when writing your own functions and libraries as those functions will not throw errors about a library not being loaded.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>The European Petroleum Survey Group maintains a list of IDs to all the projection systems. These are a nice shorthand for create coordinate reference strings in R. <a href="epsg.io" class="uri">epsg.io</a> is a great interactive site to discover EPSG IDs.<a href="#fnref2">↩</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

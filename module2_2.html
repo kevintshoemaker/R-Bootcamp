@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="The Tidyverse and Data Wrangling in R (C. Albano)" />
+<meta name="author" content="R packages: expanding your skill set" />
 
 
 <title>Module 2.2</title>
@@ -295,14 +295,11 @@ div.tocify {
     <li>
       <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
     </li>
-    <li>
-      <a href="module1_4.html">Module 1.4: expanding your skill set</a>
-    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #2: beyond the basics
+    Bootcamp #2: Beyond the basics
      
     <span class="caret"></span>
   </a>
@@ -311,7 +308,19 @@ div.tocify {
       <a href="module2_1.html">Module 2.1: Programming in R</a>
     </li>
     <li>
-      <a href="module2_2.html">Module 2.2: Using the 'tidyvierse'</a>
+      <a href="module2_2.html">Module 2.2: R packages</a>
+    </li>
+    <li>
+      <a href="module2_3.html">Module 2.3: Parallel computing in R</a>
+    </li>
+    <li>
+      <a href="module2_4.html">Module 2.4: Using the 'tidyvierse'</a>
+    </li>
+    <li>
+      <a href="module2_5.html">Module 2.5: Plotting with 'ggplot'</a>
+    </li>
+    <li>
+      <a href="module2_6.html">Module 2.6: Spatial analysis</a>
     </li>
   </ul>
 </li>
@@ -343,6 +352,15 @@ div.tocify {
     <li>
       <a href="turtle_data.txt">Turtle Data</a>
     </li>
+    <li>
+      <a href="geneData.csv">Gene Data</a>
+    </li>
+    <li>
+      <a href="reptiles.csv">Reptile Data</a>
+    </li>
+    <li>
+      <a href="data.zip">GIS Data</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -361,507 +379,257 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Module 2.2</h1>
-<h4 class="author"><em>The Tidyverse and Data Wrangling in R (C. Albano)</em></h4>
+<h4 class="author"><em>R packages: expanding your skill set</em></h4>
 <h4 class="date"><em>September 2018</em></h4>
 
 </div>
 
 
-<p><strong>Guest presenter</strong>: Christine Albano (who also pulled this module together!)</p>
-<p>In this tutorial we introduce the ‘Tidyverse’ set of packages, which were designed to facilitate everyday data management and visualization tasks in R using a consistent data structure and syntax. Much of the content in this tutorial is based on the online resource <a href="http://r4ds.had.co.nz/">R for Data Science</a> by Garrett Grolemund and Hadley Wickham.</p>
+<p>In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed <strong>packages</strong> (also called <em>libraries</em>).</p>
+<p>Whether you are an expert or a novice, you will always encounter situations where you don’t know exactly what to do. The great thing about R is that there is <em>nearly always a way to do it</em> (whether in base R or via <strong>packages</strong> contributed by R users from around the world), and once you get familiar with the basics, it’s usually not that hard to figure out how to accomplish your analysis objectives!</p>
 <div class="figure">
-<img src="http://r4ds.had.co.nz/diagrams/data-science-wrangle.png" />
+<img src="tech_support_cheat_sheet.jpg" />
 
 </div>
-<p>The core tidyverse set of packages includes all of the below (plus a handfull of others). For now, just focused on the first four for data wrangling:</p>
-<ul>
-<li><p>dplyr, for data manipulation</p></li>
-<li><p>tidyr, for data tidying</p></li>
-<li><p>readr, for data import</p></li>
-<li><p>tibble, for tibbles, a modern re-imagining of data frames</p></li>
-<li><p>ggplot2, for data visualisation</p></li>
-<li><p>purrr, for functional programming</p></li>
-<li><p>stringr, for strings</p></li>
-<li><p>forcats, for factors</p></li>
-</ul>
-<div id="learning-goals" class="section level1">
-<h1>Learning goals</h1>
-<ul>
-<li><p>Use <em>Tidyverse</em> grammar (piping) and data structures to perform basic data manipulation tasks</p></li>
-<li><p>Use <em>tidyr</em> and <em>dplyr</em> data transformation verbs to wrangle data</p></li>
-<li><p>Work with and parse dates using <em>lubridate</em></p></li>
-</ul>
-<pre class="r"><code># install.packages(&quot;tidyverse&quot;)
-library(tidyverse)</code></pre>
-</div>
-<div id="load-script-for-module-2.2" class="section level1">
-<h1>Load script for module #2.2</h1>
+<div id="load-script-for-module-2.2" class="section level2">
+<h2>Load script for module #2.2</h2>
 <ol style="list-style-type: decimal">
 <li><p>Click <a href="module2_2.R">here</a> to download the script! Save the script to a convenient folder on your laptop.</p></li>
-<li><p>Load your script in RStudio.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script.</p></li>
 </ol>
 </div>
-<div id="using-the-pipe-operator-in-r" class="section level1">
-<h1>Using the pipe operator <code>%&gt;%</code> in R</h1>
-<p>The ‘tidyverse’ set of packages takes advantage of the pipe operator <code>%&gt;%</code>, which provides a clean and intuitive way to structure code and perform sequential operations in R.</p>
-<p>Key advantages include:</p>
-<ul>
-<li><p>code is more readable and intuitive – reads left to right, rather than inside out as is the case for nested function</p></li>
-<li><p>perform multiple operations without creating a bunch of intermediate (temporary) datasets</p></li>
-</ul>
-<p>This operator originally comes from the <em>magrittr</em> package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m. When reading code out loud, use ‘then’ for the pipe. For example the command here:</p>
+<div id="packages" class="section level2">
+<h2>Packages</h2>
+<p>How is it possible to have so many features implemented in a single programming environment?</p>
+<p>The answer is that you have a whole community of researchers adding new functionality <em>all the time</em>! This new functionality is implemented in the form of <strong>R Packages</strong>, also known as <strong>libraries</strong>. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).</p>
+<div id="mode-example" class="section level3">
+<h3>Mode example</h3>
+<p>For a simple example (borrowed from <a href="https://preludeinr.com">Prelude in R</a>), base R does not include a function for computing the <em>mode</em> of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called “modeest”, and made the package available in the CRAN repository.</p>
+<p>Packages in the CRAN repository can be installed using the function “install.packages()”:</p>
+<pre class="r"><code>##############
+# PACKAGES!
+##############
+
+install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet installed the package from CRAN!</code></pre>
+<pre class="r"><code>library(modeest)    # load the package: This is package &#39;modeest&#39; written by P. PONCET.</code></pre>
+<pre><code>## 
+## This is package &#39;modeest&#39; written by P. PONCET.
+## For a complete list of functions, use &#39;library(help = &quot;modeest&quot;)&#39; or &#39;help.start()&#39;.</code></pre>
+<p>Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax:</p>
+<pre class="r"><code>library(help = &quot;modeest&quot;)    # get overview of package</code></pre>
+<p>Can you use the package overview to identify a function for computing the mode of a data vector?</p>
+<p>Let’s try to use it! If you haven’t already loaded the “data.missing.txt” dataset, download it <a href="data_missing.txt">here</a> and save to your working directory.</p>
+<pre class="r"><code>newdf &lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)
+
+?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
+
+  # lets find the most frequent value(s) in the &quot;Export&quot; column:
+mlv(newdf$Export, method=&quot;mfv&quot;, na.rm = T)    </code></pre>
+<pre><code>## Mode (most frequent value): 0 
+## Bickel&#39;s modal skewness: 0.8333333 
+## Call: mlv.integer(x = newdf$Export, na.rm = T, method = &quot;mfv&quot;)</code></pre>
+<div id="removing-a-package-from-your-environment" class="section level4">
+<h4>Removing a package from your environment</h4>
+<p>Not that you need to do this very often, but if you want to remove a package from your current session, you can use the “detach()” function:</p>
+<pre class="r"><code>detach(&quot;modeest&quot;)  # remove the package from the workspace</code></pre>
+</div>
+</div>
+<div id="d-scatterplot-example" class="section level3">
+<h3>3d scatterplot example!</h3>
+<p>Before we move on, the “car” package (_c_ompanion to _a_pplied _r_egression) gives us an example of the endless, amazing things we can do with R packages. Here we will make our own interactive 3d plot! (example from “prelude in R”).</p>
+<p>Here is a data set that represents the number of times a dog barks in a day, and two potential explanatory factors: food given (in lbs) and cars passing by the house.</p>
+<pre class="r"><code>#########
+# 3D Plotting example 
+#########
+
+#########
+# Data: dog barks per day (and two explanatory variables)
+
+Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
+        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
+Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
+        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
+        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
+        0.272, 0.098, 0.415)
+Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
+       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)</code></pre>
+<p>Let’s install and load the “car” package:</p>
+<pre class="r"><code>install.packages(&quot;car&quot;)
+library(car)</code></pre>
+<p>Now for the fun part- interactive 3-D graphics! Run the following code and take a minute to play around with the resulting scatterplot.</p>
+<pre class="r"><code>##########
+# interactive 3-D graphics!
+
+car::scatter3d(Bark~Food+Cars,surface=TRUE)</code></pre>
+</div>
+<div id="loading-packages-from-github" class="section level3">
+<h3>Loading packages from GitHub</h3>
+<p>More and more package developers are bypassing the CRAN repository, and instead using <a href="https://github.com/">GitHub</a>. In some cases, the version available on CRAN is not the latest version- for the latest version, you need to use GitHub. Also, many packages that are in development are only found on GitHub. There are actually some good reasons to put an R package on GitHub:</p>
+<ol style="list-style-type: decimal">
+<li>It’s easier for others to peruse your code.<br />
+</li>
+<li>People can actually fix the problem and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, “There’s a typo in your documentation” they can say “Here, I’ve fixed a typo in your documentation.”<br />
+</li>
+<li>With the install_github() function in Hadley Wickham’s devtools package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)</li>
+</ol>
+<p>The syntax for using “install_github()” is just install_github(“[author]/[package]”) Here’s an example using the “install_github()” function:</p>
+<pre class="r"><code>###########
+# install package from GitHub:
+
+# install.packages(&quot;devtools&quot;)    # run this if you haven&#39;t already installed the &quot;devtools&quot; package
+library(devtools)
+install_github(&quot;kbroman/broman&quot;)  # install a random package from GitHub!</code></pre>
+</div>
+<div id="finding-the-right-package-for-the-job" class="section level3">
+<h3>Finding the right package for the job</h3>
+<p>Usually a Google search is the best way to find out about packages! But you may also read about new packages in a journal (e.g., <a href="https://besjournals.onlinelibrary.wiley.com/journal/2041210X">Methods in Ecology and Evolution</a>) or textbook, or conference, or just talking with other researchers!</p>
+</div>
+<div id="learning-more-about-how-a-package-works" class="section level3">
+<h3>Learning more about how a package works</h3>
+<p>It’s not always perfectly obvious how to get started in actually using a new package. Here are three tips.</p>
+<div id="built-in-package-overview" class="section level4">
+<h4>Built-in package overview</h4>
+<p>We’ve already seen this one- just use the following syntax to pull up an overview of any package:</p>
 <pre><code>
-x %&gt;% log() %&gt;% round(digits=2)
+library(help = &quot;[package name]&quot;)
 </code></pre>
-<p>can be interpreted as follows:</p>
-<blockquote>
-<p>Take the object “x”, THEN take its natural logarithm, THEN round that value to 2 significant figures</p>
-</blockquote>
-<p>The structure is simple. Start with the object you want to manipulate, and apply actions (e.g., functions) to that object in the order in which you want to apply them.</p>
-<p>Here is a quick example.</p>
-<pre class="r"><code>####
-####  Using the pipe operator %&gt;% (ctrl-shift-m)
-####
+<p>For example,</p>
+<pre class="r"><code>###########
+# Learning more about packages
+###########
 
-# start with a simple example
-x &lt;- 3
+###########
+# Package overview
 
-# calculate the log of x
-log(x) # form f(x) is equivalent to</code></pre>
-<pre><code>## [1] 1.098612</code></pre>
-<pre class="r"><code>x %&gt;% log() # form x %&gt;% f</code></pre>
-<pre><code>## [1] 1.098612</code></pre>
-<pre class="r"><code># example of multiple steps in pipe
-round(log(x), digits=2) # form g(f(x)) is equivalent to</code></pre>
-<pre><code>## [1] 1.1</code></pre>
-<pre class="r"><code>x %&gt;% log() %&gt;% round(digits=2) # form x %&gt;% f %&gt;%  g</code></pre>
-<pre><code>## [1] 1.1</code></pre>
+library(help = &quot;car&quot;)    # help file for the useful &quot;car&quot; package for applied regression</code></pre>
 </div>
-<div id="importing-data-into-r-using-readr" class="section level1">
-<h1>Importing data into <em>R</em> using <em>readr</em></h1>
-<p>Here, we import meteorological data from Hungry Horse and Polson Kerr Dams in Montana as a <em>tibble</em> dataframe. The <em>readr</em> package imports data as a special type of dataframe called a <em>tibble</em>. The <em>tibble</em> dataframe has several advantages over the ‘regular’ dataframe, including nicely formatted printing, more useful defaults, faster imports, and it also flags potential issues in your dataset early on – which can save you a lot of time later! All this said, tibble and regular dataframes are readily converted to one type vs. the other if the need arises.</p>
-<div id="download-an-example-dataset" class="section level2">
-<h2>Download an example dataset</h2>
-<p>The next few examples use meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams. You can download this data set by clicking <a href="MTMetStations.csv">here</a>.</p>
+<div id="package-vignettes" class="section level4">
+<h4>Package vignettes</h4>
+<p>“Vignettes” are provided in many packages, and are tremendously useful, providing worked examples. Usually the package overview (above) will tell you which vignettes are available (see above). Use the following syntax to pull up a vignette:</p>
+<pre><code>
+vignette(&#39;[name of vignette]&#39;, &#39;[name of package]&#39;)
+</code></pre>
+<p>For example,</p>
+<pre class="r"><code>##########
+# package vignette
+
+browseVignettes(&#39;car&#39;)
+vignette(&#39;embedding&#39;,&#39;car&#39;)   # pull up the &quot;embedding&quot; vignette in the &#39;car&#39; package</code></pre>
+<p>Or let’s take a look at the “dismo” package, which is for species distribution modeling in R:</p>
+<pre class="r"><code>################
+#### GENERAL TIPS
+################
+
+#############
+# 1. Use code examples provided by others
+
+install.packages(&quot;dismo&quot;)     # install &quot;dismo&quot; for species distribution modeling
+
+browseVignettes(&#39;dismo&#39;)
+vignette(&#39;sdm&#39;,&#39;dismo&#39;)      # pull up one of the helpful vignettes from the &#39;dismo&#39; package, with useful code examples! Many packages have built-in vignettes.
+vignette(&#39;brt&#39;,&#39;dismo&#39;)      # and another one!</code></pre>
 </div>
-<div id="import-as-a-tibble" class="section level2">
-<h2>Import as a <em>tibble</em></h2>
-<pre class="r"><code>####
-####  Import data as a Tibble dataframe and take a quick glance
-####
+<div id="package-demos" class="section level4">
+<h4>Package demos</h4>
+<p>Some packages include “demos”, which are a bit more interactive than the built-in examples. Here’s an example:</p>
+<pre class="r"><code>########
+# package demo
 
-# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
-clim_data &lt;- read_csv(&quot;MTMetStations.csv&quot;)
-
-# display tibble - note nice formatting and variable info, entire dataset is not displayed as is case in read.csv
-clim_data</code></pre>
-<pre><code>## # A tibble: 1,734 x 7
-##    Date      PK.TMaxF PK.TMinF PK.PrcpIN HH.TMaxF HH.TMinF HH.PrcpIN
-##    &lt;chr&gt;        &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;
-##  1 1/1/2013        27       19      0          26       22      0   
-##  2 1/2/2013        27       22      0          27       23      0   
-##  3 1/3/2013        23       14      0          25       21      0   
-##  4 1/4/2013        25       19      0          22       13      0   
-##  5 1/5/2013        29       20      0          24       13      0   
-##  6 1/6/2013        36       25      0          30       20      0.1 
-##  7 1/7/2013        35       30      0.16       35       22      0.23
-##  8 1/8/2013        39       32      0.04       36       25      0.32
-##  9 1/9/2013        44       31      0.07       39       30      0.1 
-## 10 1/10/2013       39       27      0.22       46       32      0.1 
-## # ... with 1,724 more rows</code></pre>
-<pre class="r"><code> # display the last few lines of the data frame
-tail(clim_data)</code></pre>
-<pre><code>## # A tibble: 6 x 7
-##   Date      PK.TMaxF PK.TMinF PK.PrcpIN HH.TMaxF HH.TMinF HH.PrcpIN
-##   &lt;chr&gt;        &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;
-## 1 9/25/2017       59       47     0.001       56       39         0
-## 2 9/26/2017       66       47     0           58       43         0
-## 3 9/27/2017       66       41     0           68       43         0
-## 4 9/28/2017       67       39     0           66       43         0
-## 5 9/29/2017       70       40     0           71       38         0
-## 6 9/30/2017       62       47     0.06        71       38         0</code></pre>
+demo(package=&quot;stats&quot;)    # list all demos for package &#39;stats&#39;, which is included in base R
+demo(&#39;nlm&#39;,&#39;stats&#39;)</code></pre>
 </div>
+<div id="package-documentation-html-or-pdf" class="section level4">
+<h4>Package documentation (html or PDF)</h4>
+<p>The ‘master’ documentation for any package is often packaged as a PDF file that can be downloaded from CRAN (each package on the CRAN repository has its own webpage- for example, here’s the one for the <a href="https://cran.r-project.org/web/packages/raster/index.html">raster package</a>)</p>
+<p>Also, you can load the documentation for any package you have installed using the “help.start()” function:</p>
+<pre class="r"><code>###########
+# Load html documentation for R and all installed packages
+
+help.start()</code></pre>
 </div>
-<div id="making-data-tidy-using-tidyr" class="section level1">
-<h1>Making data tidy using <em>tidyr</em></h1>
-<p>All of the tidyverse set of packages are designed to work with <em>Tidy</em> formatted data.</p>
-<p>This means:</p>
-<ul>
-<li>Each variable must have its own column.</li>
-<li>Each observation must have its own row.</li>
-<li>Each value must have its own cell.</li>
-</ul>
-<p>This is what it looks like:</p>
-<div class="figure">
-<img src="http://r4ds.had.co.nz/images/tidy-1.png" />
+<div id="learning-by-example" class="section level4">
+<h4>Learning by example!</h4>
+<p>To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written.</p>
+<p>One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using ‘help()’ or ‘?’). You can also run these examples using the “example()” function. For example:</p>
+<pre class="r"><code>#########
+# Built-in examples
 
+example(lm)   # run examples for &quot;lm&quot; function (included in base R)</code></pre>
+<p>Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples!</p>
 </div>
-<p>The <em>tidyr</em> package has several functions to help you get your data into this format.</p>
-<p>Use “gather()” to get all of the values and variables into a single column.</p>
-<div class="figure">
-<img src="http://r4ds.had.co.nz/images/tidy-9.png" />
+<div id="package-citations" class="section level4">
+<h4>Package citations</h4>
+<p>Most packages include one or more citations, which are often peer-reviewed papers that document the novel algorithms included in the package, often in more detail than the help files. These are also the papers you should cite if you use the package for a manuscript. You can find these citations using the “citation()” function:</p>
+<pre class="r"><code>########
+# package citations
 
+citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
+<pre><code>## 
+## To cite the car package in publications use:
+## 
+##   John Fox and Sanford Weisberg (2011). An {R} Companion to
+##   Applied Regression, Second Edition. Thousand Oaks CA: Sage. URL:
+##   http://socserv.socsci.mcmaster.ca/jfox/Books/Companion
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Book{,
+##     title = {An {R} Companion to Applied Regression},
+##     edition = {Second},
+##     author = {John Fox and Sanford Weisberg},
+##     year = {2011},
+##     publisher = {Sage},
+##     address = {Thousand Oaks {CA}},
+##     url = {http://socserv.socsci.mcmaster.ca/jfox/Books/Companion},
+##   }</code></pre>
+<pre class="r"><code>citation()    # and here&#39;s the citation for R in general- useful for when you use R for manuscripts</code></pre>
+<pre><code>## 
+## To cite R in publications use:
+## 
+##   R Core Team (2018). R: A language and environment for
+##   statistical computing. R Foundation for Statistical Computing,
+##   Vienna, Austria. URL https://www.R-project.org/.
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Manual{,
+##     title = {R: A Language and Environment for Statistical Computing},
+##     author = {{R Core Team}},
+##     organization = {R Foundation for Statistical Computing},
+##     address = {Vienna, Austria},
+##     year = {2018},
+##     url = {https://www.R-project.org/},
+##   }
+## 
+## We have invested a lot of time and effort in creating R, please
+## cite it when using it for data analysis. See also
+## &#39;citation(&quot;pkgname&quot;)&#39; for citing R packages.</code></pre>
 </div>
-<p>Use “separate()” to separate a single column into two separate columns. “unite()” does the opposite</p>
-<div class="figure">
-<img src="http://r4ds.had.co.nz/images/tidy-17.png" />
-
+<div id="online-forums" class="section level4">
+<h4>Online forums</h4>
+<p>In some cases you may run into issues with a particular package that you just can’t seem to solve. It’s still likely that others have had this problem! If you use some appropriate keywords in a google search you may find a link to an online forum (like <a href="https://stackoverflow.com/">stackoverflow</a>) where someone has answered a similar question. It’s amazing how many knowledgeable people are answering questions on these forums - they are a tremendously valuable resource!</p>
+<p>And of couse, if you still can’t find an answer to your question, you can ask your question on <a href="https://r-dir.com/community/forums.html">one of these online forums</a>. The best ones are probably <a href="http://r.789695.n4.nabble.com/">Nabble</a>, <a href="https://stackoverflow.com/">Stack Overflow</a>, and <a href="https://stats.stackexchange.com/questions/tagged/r">Cross Validated</a>.</p>
 </div>
-<p>Use “spread()” to distribute two variables in a single (‘key’) column into separate columns, with their data values(‘value’)</p>
-<div class="figure">
-<img src="http://r4ds.had.co.nz/images/tidy-8.png" />
-
-</div>
-<pre class="r"><code>####
-####  Use Tidyr verbs to make data &#39;tidy&#39;
-####
-
-# look at clim_data -- is it in tidy format? What do we need to do to get it there?
-head(clim_data)</code></pre>
-<pre><code>## # A tibble: 6 x 7
-##   Date     PK.TMaxF PK.TMinF PK.PrcpIN HH.TMaxF HH.TMinF HH.PrcpIN
-##   &lt;chr&gt;       &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt;
-## 1 1/1/2013       27       19         0       26       22       0  
-## 2 1/2/2013       27       22         0       27       23       0  
-## 3 1/3/2013       23       14         0       25       21       0  
-## 4 1/4/2013       25       19         0       22       13       0  
-## 5 1/5/2013       29       20         0       24       13       0  
-## 6 1/6/2013       36       25         0       30       20       0.1</code></pre>
-<pre class="r"><code># gather column names into a new column called &#39;climvar_station&#39;, and all of the numeric precip and temp values into a column called &#39;value&#39;. By including -Date, we indicate that we don&#39;t want to gather this column.
-gather_clim_vars &lt;- gather(clim_data, 
-                           key = climvar_station, 
-                           value = value, 
-                           -Date)
-
-gather_clim_vars</code></pre>
-<pre><code>## # A tibble: 10,404 x 3
-##    Date      climvar_station value
-##    &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;
-##  1 1/1/2013  PK.TMaxF           27
-##  2 1/2/2013  PK.TMaxF           27
-##  3 1/3/2013  PK.TMaxF           23
-##  4 1/4/2013  PK.TMaxF           25
-##  5 1/5/2013  PK.TMaxF           29
-##  6 1/6/2013  PK.TMaxF           36
-##  7 1/7/2013  PK.TMaxF           35
-##  8 1/8/2013  PK.TMaxF           39
-##  9 1/9/2013  PK.TMaxF           44
-## 10 1/10/2013 PK.TMaxF           39
-## # ... with 10,394 more rows</code></pre>
-<pre class="r"><code># separate the climvar_station column into two separate columns that identify the climate variable and the station
-separate_clim_vars &lt;- gather_clim_vars %&gt;%
-  separate(climvar_station, 
-           into = c(&quot;Station&quot;,&quot;climvar&quot;))
-
-separate_clim_vars</code></pre>
-<pre><code>## # A tibble: 10,404 x 4
-##    Date      Station climvar value
-##    &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
-##  1 1/1/2013  PK      TMaxF      27
-##  2 1/2/2013  PK      TMaxF      27
-##  3 1/3/2013  PK      TMaxF      23
-##  4 1/4/2013  PK      TMaxF      25
-##  5 1/5/2013  PK      TMaxF      29
-##  6 1/6/2013  PK      TMaxF      36
-##  7 1/7/2013  PK      TMaxF      35
-##  8 1/8/2013  PK      TMaxF      39
-##  9 1/9/2013  PK      TMaxF      44
-## 10 1/10/2013 PK      TMaxF      39
-## # ... with 10,394 more rows</code></pre>
-<pre class="r"><code># spread distributes the clim_var column into separate columns, with the data values from the &#39;value&#39; column
-tidy_clim_data &lt;- spread(separate_clim_vars, 
-                        key = climvar, 
-                        value = value)
-
-tidy_clim_data</code></pre>
-<pre><code>## # A tibble: 3,468 x 5
-##    Date     Station PrcpIN TMaxF TMinF
-##    &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 1/1/2013 HH        0       26    22
-##  2 1/1/2013 PK        0       27    19
-##  3 1/1/2014 HH        0       38    27
-##  4 1/1/2014 PK        0       35    24
-##  5 1/1/2015 HH        0        7     0
-##  6 1/1/2015 PK        0        7    -1
-##  7 1/1/2016 HH        0       22    15
-##  8 1/1/2016 PK        0       22    17
-##  9 1/1/2017 HH        0.16    30    16
-## 10 1/1/2017 PK        0.34    22     7
-## # ... with 3,458 more rows</code></pre>
-<pre class="r"><code># repeat above as single pipe series without creation of intermediate datasets
-  
-tidy_clim_data &lt;- clim_data %&gt;% 
-  gather(key = climvar_station,
-         value = value,
-         -Date) %&gt;% 
-  separate(climvar_station, 
-           into = c(&quot;Station&quot;,&quot;climvar&quot;)) %&gt;% 
-  spread(key = climvar,
-         value = value)
-  
-tidy_clim_data</code></pre>
-<pre><code>## # A tibble: 3,468 x 5
-##    Date     Station PrcpIN TMaxF TMinF
-##    &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 1/1/2013 HH        0       26    22
-##  2 1/1/2013 PK        0       27    19
-##  3 1/1/2014 HH        0       38    27
-##  4 1/1/2014 PK        0       35    24
-##  5 1/1/2015 HH        0        7     0
-##  6 1/1/2015 PK        0        7    -1
-##  7 1/1/2016 HH        0       22    15
-##  8 1/1/2016 PK        0       22    17
-##  9 1/1/2017 HH        0.16    30    16
-## 10 1/1/2017 PK        0.34    22     7
-## # ... with 3,458 more rows</code></pre>
-</div>
-<div id="using-dplyr-the-data-wrangling-workhorse" class="section level1">
-<h1>Using dplyr – the data wrangling workhorse</h1>
-<p>dplyr is by far one of the most useful packages in all of the tidyverse as it allows you to quickly and easily summarize and manipulate your data once you have it in tidy form. The basic dplyr verbs include:</p>
-<pre><code>  * grouping data with *group_by()*
-
-  * filtering rows with *filter()*
-  
-  * creating new variables with *mutate()*
-  
-  * summarizing with *summarize()*
-  
-  * selecting columns with *select()*
-  
-  * sorting columns by row with *arrange()*</code></pre>
-<p>you can add variants _all (affects all variables), _at (affects selected variables), _if (affects variables that meet criteria) to most of these verbs</p>
-<pre class="r"><code>####
-####  Use dplyr verbs to wrangle data
-####
-
-# example of simple data selection and summary using group_by, summarize, and mutate verbs
-
-# take tidy_clim_data, then
-# group data by station, then 
-# calculate summaries and put in columns with names mean.precip.in, mean.TMax.F, and mean.Tmin.F, then 
-# transform to metric and put in new columns mean.precip.in, mean.TMax.F, and mean.Tmin.F
-
-station_mean1 &lt;- tidy_clim_data %&gt;%
-  group_by(Station) %&gt;% 
-  summarize(
-    mean.precip.in = mean(PrcpIN, na.rm=TRUE),
-    mean.TMax.F = mean(TMaxF, na.rm=TRUE),
-    mean.TMin.F = mean(TMinF, na.rm=TRUE)) %&gt;%
-  mutate(
-    mean.precip.mm = mean.precip.in * 25.4,
-    mean.TMax.C = (mean.TMax.F - 32) * 5 / 9,
-    mean.TMin.C = (mean.TMin.F - 32) * 5 / 9
-  )
-  
-station_mean1</code></pre>
-<pre><code>## # A tibble: 2 x 7
-##   Station mean.precip.in mean.TMax.F mean.TMin.F mean.precip.mm
-##   &lt;chr&gt;            &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;
-## 1 HH              0.0972        56.0        36.3           2.47
-## 2 PK              0.0442        57.8        36.5           1.12
-## # ... with 2 more variables: mean.TMax.C &lt;dbl&gt;, mean.TMin.C &lt;dbl&gt;</code></pre>
-<pre class="r"><code># using variants
-
-# take tidy_clim_data, then
-# group data by station, then 
-# calculate summary (mean of all non-NA values) for numeric data only, then 
-# transform temp data (.) from F to C, then
-# transform precip data (.) from in to mm
-
-
-station_mean2 &lt;- tidy_clim_data %&gt;%
-  group_by(Station) %&gt;% 
-  summarize_if(is.numeric, mean, na.rm=TRUE) %&gt;%
-  mutate_at(vars(TMaxF, TMinF), funs(C=(.-32)*5/9)) %&gt;% 
-  mutate_at(vars(PrcpIN), funs(Prcp.mm=.*25.4))
-
-station_mean2</code></pre>
-<pre><code>## # A tibble: 2 x 7
-##   Station PrcpIN TMaxF TMinF TMaxF_C TMinF_C Prcp.mm
-##   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1 HH      0.0972  56.0  36.3    13.3    2.36    2.47
-## 2 PK      0.0442  57.8  36.5    14.3    2.48    1.12</code></pre>
-</div>
-<div id="working-with-dates-with-lubridate---date-from-character-string" class="section level1">
-<h1>Working with Dates with <em>lubridate</em> - Date from character string</h1>
-<p>Dates can be tricky to work with and we often want to eventually get to the point that we can summarize our data by years, seasons, months, or even day of the year. The <em>lubridate</em> package in R (also part of the tidyverse) is very useful for creating and parsing dates for this purpose. Date/time data often comes as strings in a variety of orders/formats. Lubridate is useful because it automatically works out the date format once you specify the order of the components. To to do this, identify the order in which year, month, and day appear in your dates, then arrange “y”, “m”, and “d” in the same order. That gives you the name of the lubridate function that will parse your date. For example:</p>
-<pre class="r"><code>#### 
-####  Using lubridate to format and create date data types
-####
-
-library(lubridate)
-
-date_string &lt;- (&quot;2017-01-31&quot;)
-
-# convert date string into date format by identifing the order in which year, month, and day appear in your dates, then arrange &quot;y&quot;, &quot;m&quot;, and &quot;d&quot; in the same order. That gives you the name of the lubridate function that will parse your date
-
-date_dtformat &lt;- ymd(date_string)
-
-# note the different formats of the date_string and date_dtformat objects in the environment window.
-
-# a variety of other formats/orders can also be accommodated. Note how each of these are reformatted to &quot;2017-01-31&quot; A timezone can be specified using tz=
-
-mdy(&quot;January 31st, 2017&quot;)</code></pre>
-<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
-<pre class="r"><code>dmy(&quot;31-Jan-2017&quot;)</code></pre>
-<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
-<pre class="r"><code>ymd(20170131)</code></pre>
-<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
-<pre class="r"><code>ymd(20170131, tz = &quot;UTC&quot;)</code></pre>
-<pre><code>## [1] &quot;2017-01-31 UTC&quot;</code></pre>
-<pre class="r"><code># can also make a date from components. this is useful if you have columns for year, month, day in a dataframe
-year&lt;-2017
-month&lt;-1
-day&lt;-31
-make_date(year, month, day)</code></pre>
-<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
-<pre class="r"><code># times can be included as well. Note that unless otherwise specified, R assumes UTC time
-
-ymd_hms(&quot;2017-01-31 20:11:59&quot;)</code></pre>
-<pre><code>## [1] &quot;2017-01-31 20:11:59 UTC&quot;</code></pre>
-<pre class="r"><code>mdy_hm(&quot;01/31/2017 08:01&quot;)</code></pre>
-<pre><code>## [1] &quot;2017-01-31 08:01:00 UTC&quot;</code></pre>
-<pre class="r"><code># we can also have R tell us the current time or date
-
-now()</code></pre>
-<pre><code>## [1] &quot;2018-08-31 15:45:18 PDT&quot;</code></pre>
-<pre class="r"><code>now(tz = &quot;UTC&quot;)</code></pre>
-<pre><code>## [1] &quot;2018-08-31 22:45:18 UTC&quot;</code></pre>
-<pre class="r"><code>today()</code></pre>
-<pre><code>## [1] &quot;2018-08-31&quot;</code></pre>
-</div>
-<div id="working-with-dates-with-lubridate---parsing-dates" class="section level1">
-<h1>Working with Dates with lubridate - Parsing Dates</h1>
-<p>Once dates are in date format, we can easily pull out their individual components like this:</p>
-<pre class="r"><code>####
-####  Parsing dates with lubridate
-####
-
-datetime &lt;- ymd_hms(&quot;2016-07-08 12:34:56&quot;)
-
-# year
-year(datetime)</code></pre>
-<pre><code>## [1] 2016</code></pre>
-<pre class="r"><code># month as numeric
-month(datetime)</code></pre>
-<pre><code>## [1] 7</code></pre>
-<pre class="r"><code># month as name
-month(datetime, label = TRUE)</code></pre>
-<pre><code>## [1] Jul
-## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec</code></pre>
-<pre class="r"><code># day of month
-mday(datetime)</code></pre>
-<pre><code>## [1] 8</code></pre>
-<pre class="r"><code># day of year (julian day)
-yday(datetime)</code></pre>
-<pre><code>## [1] 190</code></pre>
-<pre class="r"><code># day of week
-wday(datetime)</code></pre>
-<pre><code>## [1] 6</code></pre>
-<pre class="r"><code>wday(datetime, label = TRUE, abbr = FALSE)</code></pre>
-<pre><code>## [1] Friday
-## 7 Levels: Sunday &lt; Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; ... &lt; Saturday</code></pre>
-<div id="working-with-dates---parsing-dates-example" class="section level2">
-<h2>Working with Dates - Parsing Dates Example</h2>
-<p>We can use lubridate and dplyr to make new columns from a date for year, month, day of month, and day of year</p>
-<p>first we convert the character string date into date format. Here we are naming the new column “Date”, so R will replace character string with date formatted dates</p>
-<pre class="r"><code>#### 
-####  Using lubridate with dataframes and dplyr verbs
-####
-
-# going back to our tidy_clim_data dataset we see that the date column is formatted as character, not date
-head(tidy_clim_data)</code></pre>
-<pre><code>## # A tibble: 6 x 5
-##   Date     Station PrcpIN TMaxF TMinF
-##   &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 1/1/2013 HH           0    26    22
-## 2 1/1/2013 PK           0    27    19
-## 3 1/1/2014 HH           0    38    27
-## 4 1/1/2014 PK           0    35    24
-## 5 1/1/2015 HH           0     7     0
-## 6 1/1/2015 PK           0     7    -1</code></pre>
-<pre class="r"><code># change format of date column
-tidy_clim_data &lt;- tidy_clim_data %&gt;% 
-  mutate(Date = mdy(Date))
-tidy_clim_data</code></pre>
-<pre><code>## # A tibble: 3,468 x 5
-##    Date       Station PrcpIN TMaxF TMinF
-##    &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 2013-01-01 HH        0       26    22
-##  2 2013-01-01 PK        0       27    19
-##  3 2014-01-01 HH        0       38    27
-##  4 2014-01-01 PK        0       35    24
-##  5 2015-01-01 HH        0        7     0
-##  6 2015-01-01 PK        0        7    -1
-##  7 2016-01-01 HH        0       22    15
-##  8 2016-01-01 PK        0       22    17
-##  9 2017-01-01 HH        0.16    30    16
-## 10 2017-01-01 PK        0.34    22     7
-## # ... with 3,458 more rows</code></pre>
-<p>now we can use mutate to create individual columns for the date components</p>
-<pre class="r"><code># parse date into year, month, day, and day of year columns
-tidy_clim_data &lt;- tidy_clim_data %&gt;% mutate(
-  Year = year(Date),
-  Month = month(Date),
-  Day = mday(Date),
-  Yday = yday(Date))
-
-tidy_clim_data</code></pre>
-<pre><code>## # A tibble: 3,468 x 9
-##    Date       Station PrcpIN TMaxF TMinF  Year Month   Day  Yday
-##    &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
-##  1 2013-01-01 HH        0       26    22  2013     1     1     1
-##  2 2013-01-01 PK        0       27    19  2013     1     1     1
-##  3 2014-01-01 HH        0       38    27  2014     1     1     1
-##  4 2014-01-01 PK        0       35    24  2014     1     1     1
-##  5 2015-01-01 HH        0        7     0  2015     1     1     1
-##  6 2015-01-01 PK        0        7    -1  2015     1     1     1
-##  7 2016-01-01 HH        0       22    15  2016     1     1     1
-##  8 2016-01-01 PK        0       22    17  2016     1     1     1
-##  9 2017-01-01 HH        0.16    30    16  2017     1     1     1
-## 10 2017-01-01 PK        0.34    22     7  2017     1     1     1
-## # ... with 3,458 more rows</code></pre>
-<pre class="r"><code># calculate total annual precipitation by station and year
-annual_sum_precip_by_station &lt;- tidy_clim_data %&gt;%
-  group_by(Station, Year) %&gt;%
-  summarise(PrecipSum = sum(PrcpIN))
-
-annual_sum_precip_by_station </code></pre>
-<pre><code>## # A tibble: 10 x 3
-## # Groups:   Station [?]
-##    Station  Year PrecipSum
-##    &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;
-##  1 HH       2013      29.8
-##  2 HH       2014      40.8
-##  3 HH       2015      25.7
-##  4 HH       2016      47.0
-##  5 HH       2017      25.1
-##  6 PK       2013      14.7
-##  7 PK       2014      19.9
-##  8 PK       2015      12.6
-##  9 PK       2016      17.7
-## 10 PK       2017      11.8</code></pre>
+<div id="ask-the-package-author" class="section level4">
+<h4>Ask the package author!!</h4>
+<p>When all else fails, you can always reach out to the package author! The author’s name and contact info are listed in the package overview, and I have found they are generally very responsive and willing to help!!</p>
 </div>
 </div>
-<div id="challenge-exercises" class="section level1">
-<h1>Challenge Exercises</h1>
 </div>
-<div id="exercise-1---make-data-tidy" class="section level1">
-<h1>Exercise 1 - make data tidy</h1>
-<ul>
-<li>Create a tibble dataframe using the code below and make it tidy. Do you need to spread or gather? What are the variables? what are the observations?</li>
-</ul>
-<p>pregnancy &lt;- tribble( ~pregnant, ~male, ~female, “yes”, NA, 10, “no”, 20, 12 )</p>
+<div id="cheat-sheets" class="section level2">
+<h2>‘Cheat sheets’</h2>
+<p>There are lots of “cheat sheets” available for reminding you of basic R functionality. It can be useful to tape these to the wall next to your desk!</p>
+<p>For example, <a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">here</a> is a good cheat sheet for using base R.</p>
+<p>see <a href="Links.html">Links page</a> for more resources, including cheat sheets!</p>
 </div>
-<div id="exercise-2---data-summary-with-dplyr" class="section level1">
-<h1>Exercise 2 - data summary with dplyr</h1>
-<ul>
-<li>use the dplyr verbs and the tidy_clim_data dataset you created above to calculate monthly average Tmin and Tmax for each station</li>
-</ul>
+<div id="google" class="section level2">
+<h2><em>Google!</em></h2>
+<p>I don’t even understand why it works so well to google R help (‘r’ is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work (and some cheat sheets by your desk), and the internet, you can pretty much always find a solution!</p>
+<p>More helpful links for going further with R are provided on the <a href="Links.html">Links</a> page.</p>
 </div>
-<div id="exercise-3---make-and-parse-a-date-with-lubridate" class="section level1">
-<h1>Exercise 3 - make and parse a date with lubridate</h1>
-<p>make a date object out of a character string of your birthday and find the day of year it occurs on</p>
+<div id="any-questions" class="section level2">
+<h2>Any questions???</h2>
+<p><a href="module2_3.html">–go to next module–</a></p>
 </div>
 
 

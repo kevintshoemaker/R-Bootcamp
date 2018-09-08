@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Advanced data visualization with ggplot and more (Stephanie Freund)" />
+
+
+<title>Module 2.5</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-2.0.0/leaflet.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2018</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Bootcamp #1: getting started
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="module1_1.html">Module 1.1: working with objects</a>
+    </li>
+    <li>
+      <a href="module1_2.html">Module 1.2: managing data</a>
+    </li>
+    <li>
+      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Bootcamp #2: Beyond the basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="module2_1.html">Module 2.1: Programming in R</a>
+    </li>
+    <li>
+      <a href="module2_2.html">Module 2.2: R packages</a>
+    </li>
+    <li>
+      <a href="module2_3.html">Module 2.3: Parallel computing in R</a>
+    </li>
+    <li>
+      <a href="module2_4.html">Module 2.4: Using the 'tidyvierse'</a>
+    </li>
+    <li>
+      <a href="module2_5.html">Module 2.5: Plotting with 'ggplot'</a>
+    </li>
+    <li>
+      <a href="module2_6.html">Module 2.6: Spatial analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data sets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="data.dat">Example: tab-separated data</a>
+    </li>
+    <li>
+      <a href="data.csv">Example: comma-separated data</a>
+    </li>
+    <li>
+      <a href="data.txt">Example: whitespace-separated data</a>
+    </li>
+    <li>
+      <a href="data_missing.txt">Example: missing data</a>
+    </li>
+    <li>
+      <a href="MTMetStations.csv">Meteorological Data</a>
+    </li>
+    <li>
+      <a href="sculpineggs.csv">Sculpin Data</a>
+    </li>
+    <li>
+      <a href="turtle_data.txt">Turtle Data</a>
+    </li>
+    <li>
+      <a href="geneData.csv">Gene Data</a>
+    </li>
+    <li>
+      <a href="reptiles.csv">Reptile Data</a>
+    </li>
+    <li>
+      <a href="data.zip">GIS Data</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Module 2.5</h1>
+<h4 class="author"><em>Advanced data visualization with ggplot and more (Stephanie Freund)</em></h4>
+<h4 class="date"><em>September 2018</em></h4>
+
+</div>
+
+
+<p><strong>Guest presenter</strong>: Stephanie Freund (who also pulled this module together!)</p>
+<p>Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. On Day 1, you learned how to create several types of plots in base R. Base R is great for whipping up some quick plots for initial data exploration, and you can make them quite beautiful looking as well.</p>
+<p>When you start creating a lot of plots for which you might want to quickly and easily adjust graphical elements, or want to create more complex plots that display a lot of information in one place, the data visualization package <em>ggplot2</em> is extremely useful. In this module, we’ll introduce ggplot syntax and briefly survey some of the package’s plotting capabilities.</p>
+<div id="load-script-for-module-2.5" class="section level3">
+<h3>Load script for module #2.5</h3>
+<ol style="list-style-type: decimal">
+<li><p>Click <a href="module2_5.R">here</a> to download the script! Save the script to a convenient folder on your laptop.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script.</p></li>
+</ol>
+</div>
+<div id="using-ggplot2" class="section level3">
+<h3>Using ggplot2</h3>
+<p>ggplot2 is an R package developed by Hadley Wickham and colleagues that is based on Leland Wilkinson’s <a href="https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448">“Grammar of Graphics”</a>. If you are interested in learning more about the philosophy behind ggplot2 and object-oriented design, you can read Hadley’s paper about it <a href="http://vita.had.co.nz/papers/layered-grammar.pdf">here</a>.</p>
+<p>All graphics produced in ggplot2 are built using elements of this grammatical framework. ggplot2 is modular, so that you can easily modify how your plot looks by adding or editing layers, and it generates more features by default (e.g. gridlines, legends with titles, etc) than base R. This saves you time spent cobbling together all of these elements from scratch.</p>
+<div id="basics" class="section level4">
+<h4>Basics</h4>
+<p>A typical workflow begins with initiating plotting with the <strong><code>ggplot()</code></strong> function and specifying your dataset. You can then add geometric objects, beginning with <strong><code>geom_</code></strong>, to represent your data in the form of a boxplot (<strong><code>geom_boxplot()</code></strong>), scatterplot (<strong><code>geom_point()</code></strong>), or a variety of other types of plots. The <strong><code>aes()</code></strong> function can be called within these “geoms” to specify which variables to display and to adjust how the data are displayed. <strong><code>aes()</code></strong> can also be used within the initial call to <strong><code>ggplot()</code></strong>.</p>
+<p>To demonstrate, we’ll use the Soils dataset from the ‘carData’ package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.</p>
+<p>First, install and load ggplot2 and the other packages we’ll be using for this module.</p>
+<pre class="r"><code>########
+# Load packages!
+
+## note: if you don&#39;t already have these packages you will need to install them first!
+
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(carData)
+library(DAAG)
+library(RColorBrewer)
+library(leaflet)</code></pre>
+<p>Now load the dataset.</p>
+<pre class="r"><code>##############
+# Load the example data!
+
+data(Soils,package = &quot;carData&quot;)    # load example data
+
+#See what variables it contains...
+soil &lt;- data.frame(Soils)
+head(soil)</code></pre>
+<pre><code>##   Group Contour Depth Gp Block   pH     N Dens   P    Ca   Mg    K   Na
+## 1     1     Top  0-10 T0     1 5.40 0.188 0.92 215 16.35 7.65 0.72 1.14
+## 2     1     Top  0-10 T0     2 5.65 0.165 1.04 208 12.25 5.15 0.71 0.94
+## 3     1     Top  0-10 T0     3 5.14 0.260 0.95 300 13.02 5.68 0.68 0.60
+## 4     1     Top  0-10 T0     4 5.14 0.169 1.10 248 11.92 7.88 1.09 1.01
+## 5     2     Top 10-30 T1     1 5.14 0.164 1.12 174 14.17 8.12 0.70 2.17
+## 6     2     Top 10-30 T1     2 5.10 0.094 1.22 129  8.55 6.92 0.81 2.67
+##   Conduc
+## 1   1.09
+## 2   1.35
+## 3   1.41
+## 4   1.64
+## 5   1.85
+## 6   3.18</code></pre>
+<p>We’ll start with a basic boxplot. Let’s say we’re interested in how pH, a continuous variable, varies with the contour position, a categorical factor.</p>
+<pre class="r"><code>########
+# basic boxplot...
+
+ggplot(soil) +
+  geom_boxplot(aes(x=Contour, y=pH))</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>You can see that the default plot includes a gray background with white gridlines. This makes all of the elements on this plot easy to see, but as you start adjusting colors and identifying your personal preferences, you’ll probably want to customize this – ggplot has a ton of options for doing so.</p>
+<p>Let’s try a scatterplot of two continuous variables, Calcium content and pH.</p>
+<pre class="r"><code>###########
+# basic scatterplot
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca))</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Now let’s say you wanted to examine how the relationship between pH and Ca varies with depth. You could go back to your scatterplot and use color to identify points from the different sampling depths. ggplot will select default colors that display well against the default gray background.</p>
+<pre class="r"><code>########
+# Color the points by depth
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, color=Depth))</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We can play with how those points look if we want them to show up more boldly. Take note that arguments that affect all of the points equally, and don’t relate to how <em>variables</em> are displayed, fall outside of the <strong><code>aes</code></strong> function.</p>
+<pre class="r"><code>##########
+# make additional alterations (outside the &quot;aes&quot; function)
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Cool! Let’s use the same grammar to plot relationships between pH and several soil nutrients on the same graph. Notice that the y axis label defaults to the first set of points (Ca), and we’d need to modify it. The depths in the legend also have no units! You’ll see how to change things like axis labels and legend titles in a moment.</p>
+<pre class="r"><code>######
+# Plot several relationships on same graphics window
+
+ggplot(soil, aes(x=pH)) +
+  geom_point(aes(y=Ca), shape=21, fill=&quot;red&quot;, color=&quot;black&quot;, size=4, stroke=1.5) +
+  geom_point(aes(y=Mg), shape=21, fill=&quot;blue&quot;, color=&quot;black&quot;, size=4, stroke=1.5) +
+  geom_point(aes(y=Na), shape=21, fill=&quot;gray30&quot;, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Here’s another way to plot multiple series, after reshaping with tidyr. This lets us plot our different nutrients as factor levels without typing each one with its specifications on its own line, and generates a legend that identifies the series (and also gives the default ggplot colors).</p>
+<pre class="r"><code>#########
+# Use &#39;tidyverse&#39; tricks to simplify the syntax for ggplot to color by nutrient
+
+soil.nut &lt;- gather(soil, nutrient, value, c(10,11,13))
+ggplot(soil.nut) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>What if instead of Na, we had K as our third nutrient of interest?</p>
+<pre class="r"><code>######
+# or if we wanted to plot different nutrients...
+
+soil.nut2 &lt;- gather(soil, nutrient, value, c(10,11,12))
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>The problem here is that K occurs at natural concentrations that differ from the other nutrients by an order of magnitude, so it’s difficult to examine them all on the same scale. One approach we can take is to plot them separately. While we’re at it, let’s also make sure that we specify the response units on the y-axis.</p>
+</div>
+<div id="facets-scales-and-themes" class="section level4">
+<h4>Facets, scales, and themes</h4>
+<p>The next plot introduces:</p>
+<ul>
+<li><p><strong>facets</strong>, which allow you to display data on separate panels using some grouping variable</p></li>
+<li><p><strong>scales</strong>, which allow you to adjust how to represent the data with axes and colors</p></li>
+<li><p><strong>themes</strong>, which allow you to adjust the entire plot aesthetic (using <strong><code>theme_X()</code></strong>) as well as individual elements of legends, text, and more (using <strong><code>theme()</code></strong>).</p></li>
+</ul>
+<pre class="r"><code>##########
+# plot with facets, scales, and themes!
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales=&quot;free_y&quot;) +
+  ylab(&quot;mg / 100 g soil&quot;) +
+  theme_bw() +
+  theme(legend.position=&quot;none&quot;,
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face=&quot;bold&quot;))</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-11-1.png" width="1344" /></p>
+<p>In this plot, we’ve kept the different colors for each nutrient, but suppressed the legend that is auto-generated by ggplot, because this information is now redundant with the headers of the three facets. In the <strong><code>facet_wrap</code></strong> function, we used <strong><code>scales</code></strong> to specify that the y-axis should be bounded to fit the data within each facet. There are some cases where you would probably want the axes to be the same – e.g. if you were comparing raw values across groups, rather than the distributions or trends of the data.</p>
+<p>We also changed the theme! ggplot has <a href="http://r4ds.had.co.nz/images/visualization-themes.png">8 built-in themes</a> to choose from. There are also lots of other themes built into extension packages such as ggthemes. Here are a few examples of different themes applied to the plot we just made.</p>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-12-1.png" width="1344" /> <strong><code>theme_igray</code></strong></p>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-13-1.png" width="1344" /> <strong><code>theme_economist</code></strong></p>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-14-1.png" width="1344" /> <strong><code>theme_gdocs</code></strong></p>
+<p>Check out the options and play around with different themes until you find some that appeal to you and lend themselves to the type of data visualization and color scales you plan to use.</p>
+<p>You can also fine-tune pretty much any of the details (gridlines or no? plot borders? line weight of the borders and gridlines? axis label angles?) to your heart’s content using the arguments in the <strong><code>theme()</code></strong> function.</p>
+<p>Speaking of color…</p>
+</div>
+<div id="specifying-colors" class="section level4">
+<h4>Specifying colors</h4>
+<p>Sometimes sticking to the default colors in ggplot isn’t the best choice. You might have factors representing ordered ranks, like in an experiment with different levels of light exposure, and want to represent these levels on a monochromatic scale. Or you might want to make a map displaying regions of positive or negative change in forest cover, using a diverging color scale. Or you don’t even like the default ggplot colors, and have your own preferred color schemes. It’s also important to remember that red-green colorblindness is fairly common, so if you are presenting data that must be distinguished by colors in a single plotting area, you should probably avoid this combination or combine it with changes in value (light to dark) in order for your plot to be accessible.</p>
+<p>Going back to our earlier example showing Ca content by pH at different depths, let’s say we want a color scheme where deeper depths are represented by darker values of the same color. We can do this by using another scale function.</p>
+<p>One method is to use <strong><code>scale_fill_brewer</code></strong>, and select an already composed color palette from RColorBrewer (a package you’ll need to install). You can check out all of the options available in RColorBrewer by entering <strong><code>display.brewer.all()</code></strong>, which shows the sequential palettes, then categorical palettes, than diverging palettes.</p>
+<pre class="r"><code>############
+# Playing with colors in ggplot!
+
+display.brewer.all()</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-15-1.png" width="576" /></p>
+<p>I’m going to pick the YlOrBr (Yellow-Orange-Brown) palette, because those seem like good soil-y colors. Notice that because <strong><code>fill</code></strong> is mapped to the values of the data, inside this function is where I can change the title of the legend (and the labels for the different values, if I wanted to do that).</p>
+<pre class="r"><code>#########
+# Choose a new color palette from the RColorBrewer package
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
+  theme_bw() +
+  ylab(&quot;Ca (mg/100g soil)&quot;) +
+  scale_fill_brewer(palette=&quot;YlOrBr&quot;, name=&quot;Depth (cm)&quot;)</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Another method is to use <strong><code>scale_fill_manual</code></strong>, with which you define your own palette. To pick out your colors, you can use the <a href="&#39;http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">names of colors</a> already recognized by R, or use <a href="https://htmlcolorcodes.com/">hex codes</a> for any color you want.</p>
+<pre class="r"><code>#########
+# Choose your own palette!
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
+  theme_bw() +
+  ylab(&quot;Ca (mg/100g soil)&quot;) +
+  scale_fill_manual(values=c(&quot;#FFF0BF&quot;,&quot;#FFC300&quot;,&quot;#BF9200&quot;,&quot;#604900&quot;), name=&quot;Depth (cm)&quot;)</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>What if depth were a continuous variable, rather than a set of four discrete categories? We could use <strong><code>scale_fill_gradient</code></strong>, supply the hues we want (one for monochromatic, two for diverging) and R would map the soil depth values to color values along the gradient.</p>
+</div>
+<div id="trendlines" class="section level4">
+<h4>Trendlines</h4>
+<p>Next, we might want to add a trendline to each set of points. Try it for the plot we made of different nutrient concentrations as a function of pH. Arguments in the <strong><code>geom_smooth()</code></strong> function allow us to change the confidence level, the smoothing method, and other details.</p>
+<pre class="r"><code>##########
+# add trendlines
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
+  geom_smooth(aes(x=pH, y=value), method=&quot;lm&quot;, color=&quot;black&quot;) +
+  facet_wrap(~nutrient, scales=&quot;free_y&quot;) +
+  ylab(&quot;mg / 100 g soil&quot;) +
+  theme_bw() +
+  theme(legend.position=&quot;none&quot;,
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face=&quot;bold&quot;))</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-18-1.png" width="1344" /></p>
+</div>
+<div id="density-curves-and-error-bars" class="section level4">
+<h4>Density curves and error bars</h4>
+<p>Using <strong><code>geom_smooth</code></strong> to plot trendlines is a useful way to get more information from your scatterplots. To get an idea for how other kinds of statistical elements can be drawn onto ggplot plots, we’ll look at examples using histograms and boxplots.</p>
+<p>First, a simple histogram of 3 soil nutrients.</p>
+<pre class="r"><code>###########
+# Adding density/smooth curves to plots
+
+   ## first produce some histograms
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value), color=&quot;black&quot;, fill=&quot;white&quot;, bins=15) +
+  facet_wrap(~nutrient, scales=&quot;free&quot;) +
+  xlab(&quot;mg / 100g soil&quot;) +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face=&quot;bold&quot;))</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-19-1.png" width="1344" /></p>
+<p>Here is how to add a density curve to the histogram with another <strong><code>geom</code></strong>:</p>
+<pre class="r"><code>########
+# Then add density curves
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color=&quot;black&quot;, fill=&quot;white&quot;, bins=15) +
+  geom_density(aes(x=value,color=nutrient), size=1.5) +
+  facet_wrap(~nutrient, scales=&quot;free&quot;) +
+  xlab(&quot;mg / 100g soil&quot;) +
+  theme_dark() +
+  theme(legend.position=&quot;none&quot;,
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face=&quot;bold&quot;))</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-20-1.png" width="1344" /></p>
+<p>And here’s how we can compare our distributions to a normal distribution, using a <strong><code>stat</code></strong> function:</p>
+<pre class="r"><code>###########
+# And now let&#39;s use a statistical function (dnorm) in ggplot to compare with a normal distribution:
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color=&quot;black&quot;, fill=&quot;white&quot;, bins=15) +
+  stat_function(fun = dnorm, color = &quot;blue&quot;, size = 1.5,
+                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
+  facet_wrap(~nutrient, scales=&quot;free&quot;) +
+  xlab(&quot;mg / 100g soil&quot;) +
+  theme_dark() +
+  theme(legend.position=&quot;none&quot;,
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face=&quot;bold&quot;))</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-21-1.png" width="1344" /></p>
+<p>Let’s go back to our basic boxplot, the default plot for visualizing continuous data against categories.</p>
+<p>First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of <del>principle</del> personal preference, but if capless whiskers look “off” to you, then you can work around it using <strong><code>stat_boxplot</code></strong>. <strong><code>stat</code></strong> functions are another group of functions for creating layers based on statistical properties of the data. Another example is <strong><code>stat_summary</code></strong>, which we use in the example below to add means to the boxplot.</p>
+<pre class="r"><code>#######
+# add error bars and other stat summaries (e.g., mean) to boxplot
+
+ggplot(soil, aes(x=Contour, y=pH)) +
+  stat_boxplot(geom=&quot;errorbar&quot;, width=0.2) +  
+  geom_boxplot() +
+  stat_summary(fun.y=mean, geom=&quot;point&quot;, size=5, color=&quot;black&quot;)</code></pre>
+<p><img src="module2_5_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+</div>
+<div id="beyond-ggplot" class="section level3">
+<h3>Beyond ggplot</h3>
+<p>ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:</p>
+<div id="ggplot-extensions" class="section level5">
+<h5>ggplot extensions</h5>
+<p>Several packages have been created that build off of ggplot’s syntax with additional functions. You can find a list of them <a href="http://www.ggplot2-exts.org/gallery/">here</a>.</p>
+</div>
+<div id="technique-specific-plotting-libraries" class="section level5">
+<h5>Technique-specific plotting libraries</h5>
+<p>Several analytical packages come with their own plotting functions that produce some very nice visualizations. There are dozens out there, but a few of them are <a href="https://cran.r-project.org/web/packages/visreg/visreg.pdf">visreg</a> for regression plots, <a href="https://cran.r-project.org/web/packages/corrplot/index.html">corrplot</a> (and its ggplot counterpart, <a href="http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2">ggcorrplot</a>) for graphical presentation of correlation matrices, and <a href="https://cran.r-project.org/web/packages/rpart.plot/index.html">rpart.plot</a> as a companion to the decision tree package rpart.</p>
+</div>
+<div id="interactive-plots-leaflet-and-plotly" class="section level5">
+<h5>Interactive plots: leaflet and plotly</h5>
+<p>Increasingly, scientific journals are providing platforms for interactive graphics on their websites to accompany published articles. Interactive plots are also popular for personal, lab, and organizational websites, and they can provide another option for your own data exploration. Two of the most popular in R are <a href="https://plot.ly/r/">plotly</a>, which offers a huge variety of 2D and 3D plots, and <a href="https://rstudio.github.io/leaflet/">leaflet</a>, which is specifically for mapping.</p>
+<p>Here’s a quick and simple example of leaflet in action using the “possumsites” dataframe that accompanies the “possum” dataset in the DAAG package. The dataset contains body measurements of several possums in Australia. Where did they catch these possums?</p>
+<pre class="r"><code>##########
+# use leaflet for interactive mapping!
+
+leaflet(possumsites) %&gt;%
+  addTiles() %&gt;% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites</code></pre>
+<div id="htmlwidget-f9d756724652c928ca1f" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f9d756724652c928ca1f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[-37.55,-37.6166666666667,-32.1166666666667,-28.6166666666667,-28.6166666666667,-26.4333333333333,-24.55],[145.883333333333,148.8,151.466666666667,153.333333333333,153.416666666667,152.583333333333,151.466666666667],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["800","300","300","400","200","400","600"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-37.6166666666667,-24.55],"lng":[145.883333333333,153.416666666667]}},"evals":[],"jsHooks":[]}</script>
+<p>Happy plotting!</p>
+</div>
+</div>
+<div id="challenge-exercises" class="section level3">
+<h3>Challenge exercises</h3>
+<ol style="list-style-type: decimal">
+<li><p>Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, fit a trendline to each cloud of points. Have the color of the trendline match the color of each cloud of points, and remove the confidence band from the trendlines.</p></li>
+<li><p>Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.</p></li>
+<li><p>Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color in order to see overlapping areas.</p></li>
+</ol>
+<p><a href="module2_6.html">–go to next module–</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
