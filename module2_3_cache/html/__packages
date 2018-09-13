@@ -2,3 +2,6 @@ base
 RevoUtilsMath
 RevoUtils
 boot
+foreach
+iterators
+doParallel

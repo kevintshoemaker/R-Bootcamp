@@ -154,7 +154,7 @@ rmd2rscript("module1_3.Rmd")
 rmd2rscript("module2_1.Rmd")
 rmd2rscript("module2_2.Rmd")
 rmd2rscript("module2_3.Rmd")
-rmd2rscript("module2_4.Rmd")
+rmd2rscript2("module2_4.Rmd")
 rmd2rscript2("module2_5.Rmd")
 rmd2rscript2("module2_6.Rmd")
 

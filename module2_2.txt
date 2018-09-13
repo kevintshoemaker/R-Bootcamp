@@ -67,7 +67,7 @@ car::scatter3d(Bark~Food+Cars,surface=TRUE)
 ###########
 # install package from GitHub:
 
-# install.packages("devtools")    # run this if you haven't already installed the "devtools" package
+ # install.packages("devtools")    # run this if you haven't already installed the "devtools" package
 library(devtools)
 install_github("kbroman/broman")  # install a random package from GitHub!
 

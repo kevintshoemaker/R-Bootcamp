@@ -74,7 +74,7 @@ The core tidyverse set of packages includes all of the below (plus a handfull of
 
 
 
-```{r setup}
+```{r setupworkspace}
 
 # install.packages("tidyverse")
 library(tidyverse)
@@ -250,7 +250,8 @@ dplyr is by far one of the most useful packages in all of the tidyverse as it al
 
 you can add variants _all (affects all variables), _at (affects selected variables), _if (affects variables that meet criteria) to most of these verbs
 
-``` {r dplyr verbs}
+```{r dplyr verbs}
+
 
 ####
 ####  Use dplyr verbs to wrangle data
@@ -417,12 +418,14 @@ annual_sum_precip_by_station
 #  Exercise 1 - make data tidy
 
 - Create a tibble dataframe using the code below and make it tidy. Do you need to spread or gather? What are the variables? what are the observations?
-  
-  pregnancy <- tribble(
-    ~pregnant, ~male, ~female,
-    "yes",     NA,    10,
-    "no",      20,    12
-  )
+ 
+``` 
+pregnancy <- tribble(         
+    ~pregnant, ~male, ~female,          
+    "yes",     NA,    10,           
+    "no",      20,    12        
+)
+```
   
 #  Exercise 2 - data summary with dplyr
 
@@ -430,4 +433,10 @@ annual_sum_precip_by_station
 
 # Exercise 3 - make and parse a date with lubridate
 
-make a date object out of a character string of your birthday and find the day of year it occurs on
+make a date object out of a character string of your birthday and find the day of year it occurs on.
+
+
+[--go to next module--](module2_5.html)
+
+
+

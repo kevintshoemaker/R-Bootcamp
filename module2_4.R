@@ -1,3 +1,4 @@
+
 ##################################################
 ####                                          ####  
 ####  R Bootcamp #2, Module 4                 ####
@@ -94,6 +95,50 @@ tidy_clim_data <- clim_data %>%
   
 tidy_clim_data
 
+
+
+####
+####  Use dplyr verbs to wrangle data
+####
+
+# example of simple data selection and summary using group_by, summarize, and mutate verbs
+
+# take tidy_clim_data, then
+# group data by station, then 
+# calculate summaries and put in columns with names mean.precip.in, mean.TMax.F, and mean.Tmin.F, then 
+# transform to metric and put in new columns mean.precip.in, mean.TMax.F, and mean.Tmin.F
+
+station_mean1 <- tidy_clim_data %>%
+  group_by(Station) %>% 
+  summarize(
+    mean.precip.in = mean(PrcpIN, na.rm=TRUE),
+    mean.TMax.F = mean(TMaxF, na.rm=TRUE),
+    mean.TMin.F = mean(TMinF, na.rm=TRUE)) %>%
+  mutate(
+    mean.precip.mm = mean.precip.in * 25.4,
+    mean.TMax.C = (mean.TMax.F - 32) * 5 / 9,
+    mean.TMin.C = (mean.TMin.F - 32) * 5 / 9
+  )
+  
+station_mean1
+  
+# using variants
+
+# take tidy_clim_data, then
+# group data by station, then 
+# calculate summary (mean of all non-NA values) for numeric data only, then 
+# transform temp data (.) from F to C, then
+# transform precip data (.) from in to mm
+
+
+station_mean2 <- tidy_clim_data %>%
+  group_by(Station) %>% 
+  summarize_if(is.numeric, mean, na.rm=TRUE) %>%
+  mutate_at(vars(TMaxF, TMinF), funs(C=(.-32)*5/9)) %>% 
+  mutate_at(vars(PrcpIN), funs(Prcp.mm=.*25.4))
+
+station_mean2
+  
 
 #### 
 ####  Using lubridate to format and create date data types

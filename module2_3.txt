@@ -183,9 +183,9 @@ length(workerDates) # One list element per worker.
 ####
 # explore packages loaded in our worker environments
 
-search()
-workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)
-workerPackages
+search()      # packages loaded in global environment
+workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)     # .. and worker environments
+# workerPackages
 
 
 #########
@@ -245,33 +245,35 @@ library("doParallel")
 
 # sequential mode:
 registerDoSEQ() # Avoids warnings
+
 system.time(
   outcor <- foreach(
-    p = pair2, .packages="boot", 
-    .combine="rbind") %dopar% 
-    { 
-      #       browser()
+    p = pair2, 
+    .packages="boot", 
+    .combine="rbind") %dopar% { 
       return(geneCor2(p)) 
     }
 )
 
-# Use a parallel backend:
+
+# Parallel mode (use a parallel backend):
 
 # Create a cluster using parallel:
 myCluster <- makeCluster(spec=4,type="PSOCK")
+
 # Register the backend with foreach (doParallel):
 registerDoParallel(myCluster)
 # Run our code! Notice I didn't change the foreach call at all:
 
+loadData <- parallel::clusterExport(cl=myCluster,"geneCor2")   # KTS: I added this to make it run - was this necessary for others? 
+
 system.time(
-		outcor <- foreach(
-						p = pair2, 
-						.packages="boot",
-						.combine="rbind") %dopar% 
-				{ 
-					#       browser()
-					return(geneCor2(p)) 
-				}
+  outcor <- foreach(
+    p = pair2, 
+    .packages="boot",
+    .combine="rbind") %dopar% {
+      return(geneCor2(p)) 
+    }
 )
 
 

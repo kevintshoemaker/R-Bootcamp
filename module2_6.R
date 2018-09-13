@@ -426,6 +426,8 @@ points(na_points)
 plot(nv, add = T)
 
 
+load("data/module2_6.RData")
+
 library(leaflet)
 # interactive mapping ----
 leaflet::leaflet(wgs_pts[1:100, ]) %>% 
@@ -443,6 +445,10 @@ leaflet::leaflet(wgs_pts[1:100, ]) %>%
 leaflet::leaflet(wgs_pts[1:100, ]) %>% 
   addTiles() %>% 
   addCircleMarkers(radius = 5, popup = paste(wgs_pts$species[1:100]))
+
+
+###########
+# CHALLENGE PROBLEMS
 
 
 # SpatialLines solution ----

@@ -35,7 +35,7 @@ options(knitr.duplicate.label = 'allow')
 
 **Guest presenter**: Jonathan Greenberg (who also pulled this module together: email jgreenberg_at_unr.edu)  
 
-This is the first of the modules that really go beyond the basics. Now we start with our "whirlwhind" tour of more advanced things you can do in R. 
+This is the first of the modules that really go *beyond the basics*. Modules 2.3 to 2.6 provide a "whirlwhind" tour of more advanced things you can do in R, from high performance computing, to sophisticated visualizations to geographic analysis.  
 
 ## Load script for module #2.3
 
@@ -95,9 +95,10 @@ data(geneData, package = "Biobase")   # load example data from Biobase package b
 
 ```
 
-This data represents 500 genes (organized by rows) with expression data (numerical). The goal is to calculate the correlation coefficient between all pairs of genes across all samples. 
 
-### Goal: correlations between all gene pairs
+### Example: A simple yet computationally intensive problem
+
+This data represents 500 genes (organized by rows) with expression data (numerical). The goal is to calculate the correlation coefficient between all pairs of genes across all samples. 
 
 For example, let's examine the correlation between gene 12 vs 13:
 
@@ -141,6 +142,9 @@ tail(pair,n=3)
 
 ```
 
+
+It often makes sense to break a problem like this down a set of repeated tasks, each of which is expressed as a function. 
+
 Let's write (and test) a function to accept a pair in the database and returns the correlation:
 
 ```{r}
@@ -178,7 +182,7 @@ outcor
 Now let's do the whole calculation.  First, open your task manager by hitting control-alt-delete (on Windows) and choosing "Start Task Manager". 
 Click the "Performance" tab.  Notice you have a few graphs next to "CPU Usage", which shows each processor you have on your machine.
 
-Type the following in R and watch the CPU Usage History graph:
+Type the following in R and watch the CPU Usage History graph. Note the use of the "system.time()" function, which allows us to keep track of processing time for one or more R commands. Processing time can vary substantially among machines. 
 
 ```{r}
 
@@ -236,7 +240,7 @@ genCor2_system_time["elapsed"]
 
 ```
 
-What did you get?  On my machine this operation (for 10 pairs) took around 1.2 seconds...
+What did you get? On my machine this operation (for 10 pairs) took around 1.2 seconds...
 
 Let's use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again? 
 
@@ -278,9 +282,9 @@ pair2 <- sample(pair,300)    # first extract a subsamble of all the pairs
 ```
 
 
-The opposite of parallel processing is "sequential processing". Let's test a sequential version of this:
+The opposite of parallel processing is "sequential processing". Let's first test a sequential version of this task:
 
-```{r eval=FALSE}
+```{r}
 
 # Let's test a sequential version of this:
 system.time(outcor <- lapply(pair2,geneCor2))
@@ -308,7 +312,7 @@ The basic order of ops with using 'parallel' is as follows:
 
 So the first step is to load the 'parallel' package:
 
-```{r  eval=FALSE}
+```{r}
 
 ###########
 # Run this operation in parallel!!
@@ -343,7 +347,7 @@ We are going to create a cluster with 4 cpus of type "PSOCK".
 
 Click the task manager "Processes" (Windows) or Activity Monitor (mac), and scroll down to the "R"s:
 
-```{r eval=FALSE}
+```{r}
 
 ########
 # Make a cluster
@@ -399,7 +403,7 @@ We can send the same function to each node (worker) in the cluster using "cluste
 
 For example, we might run the "date()" function on each cluster! Note that the results get returned as lists:
 
-```{r  eval=FALSE}
+```{r}
 
 date()    # run the "date()" function
 
@@ -418,9 +422,9 @@ For example, the "search()" function tells us what packages and data are loaded 
 ####
 # explore packages loaded in our worker environments
 
-search()
-workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)
-workerPackages
+search()      # packages loaded in global environment
+workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)     # .. and worker environments
+# workerPackages
 
 ```
 
@@ -435,7 +439,7 @@ We are using a package called "boot" in our function, so we need to load up this
 ?clusterEvalQ
 ```
 
-```{r  eval=FALSE}
+```{r}
 loadOnCls <- parallel::clusterEvalQ(cl=myCluster,library("boot"))   
 
 ```
@@ -458,7 +462,7 @@ First, look at the worker Rs and note how much memory they are using (in task ma
 ?clusterExport
 ```
 
-```{r eval=FALSE}
+```{r}
 loadData <- parallel::clusterExport(cl=myCluster,"fakeData")
 ```
 
@@ -502,7 +506,7 @@ Let's call the "geneCor2()" function for each gene pair, using parallel processi
 
 Watch your Performance tab as your cores light up:
 
-```{r  eval=FALSE}
+```{r}
 
 #######
 # Call the "geneCor2()" function for each gene pair, using parallel processing
@@ -510,7 +514,7 @@ Watch your Performance tab as your cores light up:
 system.time(outcor2 <- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   
 ```
 
-```{r eval=FALSE}
+```{r}
 
 # vs the non-clustered version:
 system.time(outcor <- lapply(pair2,geneCor2))   # takes much longer!
@@ -559,7 +563,7 @@ install.packages("doParallel")
 
 ```
 
-```{r eval=FALSE}
+```{r}
 
 library("foreach")
 library("doParallel")
@@ -573,10 +577,11 @@ library("doParallel")
 
 Try running in sequential mode...
 
-```{r eval=FALSE}
+```{r}
 
 # sequential mode:
 registerDoSEQ() # Avoids warnings
+
 system.time(
   outcor <- foreach(
     p = pair2, 
@@ -585,26 +590,35 @@ system.time(
       return(geneCor2(p)) 
     }
 )
+
 ```
+
 
 
 And now with a parallel backend!
 
 ```{r eval=FALSE}
 
-# Use a parallel backend:
+# Parallel mode (use a parallel backend):
 
 # Create a cluster using parallel:
 myCluster <- makeCluster(spec=4,type="PSOCK")
+```
+
+
+```{r}
+
 # Register the backend with foreach (doParallel):
 registerDoParallel(myCluster)
 # Run our code! Notice I didn't change the foreach call at all:
 
+loadData <- parallel::clusterExport(cl=myCluster,"geneCor2")   # KTS: I added this to make it run - was this necessary for others? 
+
 system.time(
   outcor <- foreach(
     p = pair2, 
-		.packages="boot",
-		.combine="rbind") %dopar% {
+    .packages="boot",
+    .combine="rbind") %dopar% {
       return(geneCor2(p)) 
     }
 )
@@ -619,7 +633,7 @@ Some things to notice:
 
 Don't forget to stop the cluster:
 
-```{r eval=FALSE}
+```{r}
 
 stopCluster(myCluster)     # Don't forget to stop the cluster:
 
@@ -634,27 +648,30 @@ registerDoSEQ()    # register the default, non-parallel backend for foreach
 ```
 
 
-#### Sources of overhead
+### Sources of overhead
 
 Parallel computing, optimally, should be linear in terms of number of processors vs. time.  However, this is never the case.  A process running on one core does not take twice the time as a process running on two cores.  There are losses along the way from various sources.  These need to be thought about when writing the most efficient code.
 
 First, many programs will have parallel and non-parallel components. If your non-parallel components take X amount of time, no matter how many processors you have available, you will never run faster than X amount of time.
 
-Chunking is one of the most important considerations.  So far, we've been iterating one "row" at a time.  For faster computations, this may not be very efficient, as the overhead of sending/receiving/managing the parallel cluster swamps out gains from the processing.
+#### Chunking
+Chunking is one of the most important considerations.  So far, we've been iterating one "row" at a time.  For faster computations, this may not be very efficient, as the overhead of sending/receiving/managing the parallel cluster swamps out gains from the processing. We can get more clever with this by sending MULTIPLE rows at one time to a worker.  This optimization of the chunk size (number of rows to send at one time to a single worker) can dramatically speed up your computation, at the cost of heavier RAM usage.
 
-We can get more clever with this by sending MULTIPLE rows at one time to a worker.  This optimization of the chunk size (number of rows to send at one time to a single worker) can dramatically speed up your computation, at the cost of heavier RAM usage.  
+#### Shared-memory machines
+A single computer like the one you are working on is a "shared memory machine" -- each processor has access to the same physical RAM.  When two processors "ask" for an R object in RAM they must compete against each other.  One process will have to wait until the other process are done reading that area of memory.  Memory access, thus, can be a bottleneck.
 
-Shared-memory machines: a single computer like the one you are working on is a "shared memory machine" -- each processor has access to the same physical RAM.  When two processors "ask" for an R object in RAM they must compete against each other.  One process will have to wait until the other process are done reading that area of memory.  Memory access, thus, can be a bottleneck.
-
-Networked systems of computers: a cluster computer ("supercomputer") is really just a bunch of individual computers networked together. Each individual computer ("node" in cluster terminology) has its own set of processors, memory, and hard drive space.  When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer.  This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.  
+####Networked systems of computers
+A cluster computer ("supercomputer") is really just a bunch of individual computers networked together. Each individual computer ("node" in cluster terminology) has its own set of processors, memory, and hard drive space.  When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer.  This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.  
 
 For instance, you could copy the data the function will work on to each node in a cluster, so the data does not have to be transferred from the master R to the worker Rs.
 
 Note that two nodes in a cluster do not share memory.
 
-Other things to worry about: RACE CONDITIONS. This comes in to play if your workers are all writing to the same output file (say, a raster file).  As we discussed before, in general only one "thread" (worker) can write to a file at a time, otherwise the file may get corrupt.  In parallel computing, we can increase the chance that this might happen if we aren't careful.  This often requires a programmer to be able to "lock" a file -- i.e. before a worker tries to write to a file, it 1) checks if the file is "locked", 2) if it finds it unlocked it first locks the file itself, 3) it opens/writes/close to the file, 4) it unlocks the file for other workers.
+#### Other things to worry about
 
-Embarrassingly parallel applications and those that aren't: the term "embarrassingly parallel" refers to problems that are absolutely trivial to parallelize.  The function we've been looking at is embarassingly parallel.  Each iteration takes (basically) the same amount of time, uses the same amount of memory, doesn't require cross-talk between workers, etc.  Raster processing, as we will see, is often an embarrassingly parallel problem -- we process an image one line at a time, sending each line to a different processor.
+**RACE CONDITIONS.** This comes in to play if your workers are all writing to the same output file (say, a raster file).  As we discussed before, in general only one "thread" (worker) can write to a file at a time, otherwise the file may get corrupt.  In parallel computing, we can increase the chance that this might happen if we aren't careful.  This often requires a programmer to be able to "lock" a file -- i.e. before a worker tries to write to a file, it 1) checks if the file is "locked", 2) if it finds it unlocked it first locks the file itself, 3) it opens/writes/close to the file, 4) it unlocks the file for other workers.
+
+**Embarrassingly parallel applications and those that aren't:** the term "embarrassingly parallel" refers to problems that are absolutely trivial to parallelize.  The function we've been looking at is embarassingly parallel.  Each iteration takes (basically) the same amount of time, uses the same amount of memory, doesn't require cross-talk between workers, etc.  Raster processing, as we will see, is often an embarrassingly parallel problem -- we process an image one line at a time, sending each line to a different processor.
 
 Vector based processing, on the other hand, is often not embarrassingly parallel, and takes a lot more thought to properly parallelize a function.
 

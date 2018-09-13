@@ -35,7 +35,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ## Load script for module 2.6
 
-1. Click [here](module2_6.txt) to download the script! Save the script to a convenient folder on your laptop.
+1. Click [here](module2_6.R) to download the script! Save the script to a convenient folder on your laptop.
 
 2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
 
@@ -790,6 +790,10 @@ Lines are very similar to polygons. See if you can load a shapefile of lines and
 5. Plot some intersections
 
 ```{r spatial_lines_instructions}
+
+###########
+# CHALLENGE PROBLEMS
+
 
 # SpatialLines solution ----
 ## 1. read in data
