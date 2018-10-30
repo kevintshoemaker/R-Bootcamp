@@ -57,16 +57,18 @@ The R console is located in the left half or bottom left of the RStudio interfac
 
 1. Click on the console just to the right of one of the ">" prompts.  
 
-2. You can use the console like a calculator. For example, type "2+2" at the prompt and hit enter. What does R do? 
+2. You can use the console like a calculator. For example, type `2+2` at the prompt and hit enter. What does R do? 
 
 3. Now hit the "up" arrow. The R console remembers all previous commands in this **session**, which allows you to re-run commands relatively easily. However, if you accidentally hit the "up" arrow you lose everything you had been typing!
 
-4. Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing "# 2+2" and hitting "Enter". Nothing happens, right?
+4. Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing `# 2+2` and hitting "Enter". Nothing happens, right?
 
-5. Now let's create our first **object** in R. Objects are assigned a value using R's **assignment operator**, which looks like a left arrow ("<-"). Type the following statement:
+### Let's create our first object
 
-```
-Batmans_butler <- 'Alfred Pennyworth'
+Objects are assigned a value using R's **assignment operator**, which looks like a left arrow (`<-`). Type the following statement into the console:
+
+```{r results=F}
+Batmans_bulter <- 'Alfred Pennyworth'
 ```
 
 Then hit "Enter". What does R return? 
@@ -75,11 +77,13 @@ NOTHING!
 
 BUT.... check the **Environment**, or **Workspace** window (top right of RStudio interface). You should see that you now have a new **object** in your environment, called "Batmans_butler", and storing a value of "Alfred Pennyworth". 
       
-6. Type "print(Batmans_butler)" into the R console and hit "Enter". What happens? RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you've typed the first couple letters, RStudio will suggest "Batmans_butler" and you can just hit "Enter" to complete the object name!
+Now type `print(Batmans_butler)`[^1] into the R console and hit "Enter". What happens? [^2]
 
-NOTE: "print()" is an **R function** that comes with base R. It takes the name of an object as its **argument** and it responds by printing the contents of that object. We'll get more into R functions shortly.  
+[^1]: NOTE: `print()` is an **R function** that comes with base R. It takes the name of an object as its **argument** and it responds by printing the contents of that object. We'll get more into R functions shortly.  
 
-NOTE: Actually, if you enter the name of an object at the command line, R automatically prints the value of the object- you don't need to use the "print()" function... Try it: type "Batmans_butler" into the R console and hit "Enter". R dutifully returns the name of Bruce Wayne's loyal and tireless butler, best friend and surrogate father figure.
+[^2]: RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you've typed the first couple letters, RStudio will suggest "Batmans_butler" and you can just hit "Enter" to complete the object name!
+
+If you enter the name of an object at the command line, R automatically prints the value of the object- you don't need to use the `print()` function... Try it: type `Batmans_butler` into the R console and hit "Enter". R dutifully returns the name of Bruce Wayne's loyal and tireless butler, best friend and surrogate father figure.
 
 ## Graduating to R Scripts
 
@@ -87,164 +91,205 @@ You will quickly realize that although the command-line R console is nice for so
 
 The first few lines (commands) of the script are preceded by pound signs. R doesn't do anything with these commands- they are called **comments**, and they help to keep code clear, organized and understandable to human readers. _use comments early and often- they are tremendously valuable_.   
 
-1. Click on the top of the script (first line of comments). To **run** a line of code, press the "Ctrl" key (or the "Apple" key) and hit "Enter". R will then run that line through the console. But of course, nothing happens because it's a comment and not meant to be interpreted by a machine. 
+1. Click on the top of the script (first line of comments). To **run** a line of code, press the "Ctrl" key (or the "Command" key) and hit "Enter". R will then run that line through the console. But of course, nothing happens because it's a comment and not meant to be interpreted by a machine[^3]. 
 
-2. Click on a blank line in the script and type "2+2". Now hit "Ctrl+Enter" (or "Command+Enter") to run the line of code. 
+2. Click on a blank line in the script and type `2+2`. Now hit "Ctrl+Enter" (or "Command+Enter") to run the line of code. 
 
 Now you know the basics of how to use R scripts. 
 
+[^3]: RStudio has several helpful keyboard shortcuts to make running lines of code easier. [Check this website](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts) for a comprehensive set of keyboard shortcuts
 
-## Demonstration: making up data in R!
+## R Objects
 
-NOTE: all R code here is also provided in the "Module_1.R" script that you've already loaded. 
+R has many different types of objects (sometimes refered to as data types). These are the building blocks of the language. They include scalars, vectors, matrices, lists, data frames, and functions.
 
-### Clear the workspace
+### Workspace management
 
-Let's start with a blank workspace! To do that, you can use the following command:    
+The workspace (environment) panel window in R can become cluttered as we create variables and assignments in R. As we work through the modules in this bootcamp it will be helpful to clear the workspace everyonce in a while to maintain our sanity. Earlier we assigned the value "Alfred Pennworth" to the variable `Batmans_butler`. Let's remove that from the workspace. There are several ways to do this. 
 
-```{r}
+1. In the environment panel there is a little broom. If you click that it will clear the entire workspace.
+2. Use `rm(Batmans_butler)` to clear just the `Batmans_butler` variable. 
+3. Use this handy one-liner `rm(list=ls())` to clear the entire workspace.
 
-##############
-# Clear the workspace
+### Scalars
 
-rm(list=ls()) 
+Scalars are the simplest objects in R. A scalar is just a single value. Remember the when we assigned Alfred Pennyworth to the `Batmans_butler` object? When we did that we created a scalar. Scalars can be any single value.
 
-```
-
-
-###  Create R Objects 
-
-Let's create a bunch of new objects! Run the following lines: 
-
-```{r}
-
+```{r results=F}
 ##################
 ####  Create R Objects 
 ##################
 
-a <- 1
-b <- 2
-c <- 3
+#############
+### scalars
+#############
 
+scalar1 <- 'this is a scalar'
+scalar2 <- 104
+scalar3 <- 5 + 6.5    # evaluates to the single value 11.5
+scalar4 <- '4'
 ```
 
-### Aside: R functions
+Scalars do have a specific type. In the example above, `scalar1` is a character, `scalar2` and `scalar3` are both numeric. What is the data type for `scalar4`? It is a character. If you are uncertain about the type of any R object the R function [^4] `typeof()` will come in handy. Lets work through the code below. 
 
-Functions are essentially machines that take inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!  
+[^4]: Functions are essentially machines that take inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!
 
+```{r results=F}
+typeof(scalar4)    # returns: character
+
+## what is this type?
+scalar5 <- TRUE
+typeof(scalar5)    # returns: logical
 ```
 
-[name of function]([inputs])   # function syntax
+The complete list of possible types for scalars are as follows:
 
-```
-For example...
+* numeric (2, 8.2)
+* double (similar to numeric)
+* integer (2L)
+* logical (`TRUE`, `FALSE`)
+* character ('a', 'scalar')
+* complex (`1 + 4i`)
 
-```{r}
+What happens when we try and add `scalar2` and `scalar4`? Think about the types of each scalar. Run the code below to find out.
 
-###################
-#### Try using an R Function
-
-sum(1,2,3,10)     # "sum()" is an R function for computing the sum of a bunch of numbers
-
-
-```
-
-In this case, "sum" is the name of a function. The arguments are a set of values. The function takes these arguments, adds them up, and returns the sum of all the values. 
-
-To get help with a function, use the "help" function:
-
-```{r}
-
-help(sum)    # get help for the function "sum()"
-
-?sum    # alternative shortcut for getting help!
-
+```{r eval=F}
+## what happens when we run this line of code? Think about the types.
+scalar_2 + scalar_4
 ```
 
-### Manage your R workspace
+This error can be common in R. Remember that `scalar4` is a character, R cannot perform mathematical operations on character types. Double check your types with the `typeof()` function.
 
-One way to see what objects are in your workspace is to use an **R function** called "ls" (list):
+### Vectors
 
-```{r}
+Vectors are combinations of scalars stored as a single object. Let's create some vectors.
 
-##################
-##### Manage your R workspace
-##################
-
-ls()                  # View contents of your workspace
-?ls                   # View help pertaining to function ‘ls’
-
-```
-
-You can remove objects using another R function called "rm" (remove)
-
-```{r}
-
-test <- 14+a      # make a new object
-test
-
-ls()
-rm(Batmans_butler,test)             # remove extraneous variables
-ls()
-
-```
-
-### Vector objects in R
-
-**Vector** objects are just a bunch of objects grouped together in an orderly line. Each member of a vector is called an **element**. 
-
-Let's make our first vector:
-
-```{r}
-
+```{r echo=F}
 #############
 ### VECTORS
 #############
 
-d.vec <- c(a,b,c)            # d is now a ‘vector’ in R
-d.vec
+vector1 <- c(1.1, 2.1, 3.1, 4)
+vector2 <- c('a', 'b', 'c')
+vector3 <- c(1, 'a', 2, 'b')
+vector4 <- c(TRUE, 'a', 1)
+vector5 <- c(TRUE, 1.2, FALSE)
+
 
 ```
 
-d.vec is a vector with 3 elements: 1, 2, and 3. Alternatively, we could create the vector "d.vec" with the following code:
+There are many different ways to create a vector. You'll learn more about that later in the bootcamp. Look (or print) some of the vecotrs in the workspace. Each vector is comprised of several scalars. Each of these scalars is called an element of the vector. You can still check the types of the objects with the `typeof()` function (try it yourself).
+
+What happened with `vector2` and `vector4`? We supplied a mix of numeric types and character, but the resulting vector is all characters? This is because vectors cannot contain multiple different types. R will convert (coerce) all types to a type that the data can be coerced to. Check `vector5`. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. `TRUE` maps to 1 and `FALSE` maps to 0.
+
+In the code above we use another function called `c()`. I find it easiest to think of it as a concatenate or combine. It takes several objects, and combines them together into a vector. We can even use `c()` to combine scalar objects, like below.
 
 ```{r}
+a <- 1
+b <- 2
+c <- 3
+
+d.vec <- c(a, b, c)
+d.vec
+
+
+```
+
+`d.vec` is a vector with 3 elements: 1, 2, and 3. Alternatively, we could create the vector "d.vec" with the following code:
+
+```{r echo=F}
 
 d.vec <- c(1,2,3)            # another way to construct the vector "d.vec"
 d.vec = c(1,2,3)           # the "equals" sign can also be an assignment operator
+
 
 ```
 
 
 Now let's do some stuff with vectors!
 
-```{r}
+```{r results=F}
 
 length(d.vec)    # the "length()" function returns the number of elements in a vector (or list, matrix etc.)
 
-d1 <- d.vec               # copy the vector "d.vec"
-d2 <- d.vec+3             # add 3 to all elements of the vector "d.vec"
+d1 <- d.vec           # copy the vector "d.vec"
+d2 <- d.vec+3         # add 3 to all elements of the vector "d.vec"
 d3 <- d1+d2           # elementwise addition
 d4 <- d1+c(1,2)       # what does this do?
 
-d1
-d2
-d3
-d4
+## inspect the objects by calling them in the console (or script window)
+d1    # returns: 1 2 3
+d2    # returns: 4 5 6
+d3    # returns: 5 7 9
+d4    # returns: 2 4 4
 
 
 ```
 
-NOTE: the last command we ran, "d1+c(1,2)", produced a **warning message**. Remember to take warning messages seriously- a warning message means "the command ran but the results might not make sense"! In this case, the warning was that we tried to add two vectors of different length. R's default is to repeat the shorter vector until it matches the length of the longer vector.  
+*NOTE: the last command we ran, "d1+c(1,2)", produced a **warning message**. Remember to take warning messages seriously- a warning message means "the command ran but the results might not make sense"! In this case, the warning was that we tried to add two vectors of different length. R's default is to repeat the shorter vector until it matches the length of the longer vector.*
 
+### Functions
+
+Functions are an essential building block in R. Without functions we would need to write out every bit of logic for everything we want to accomplish in R. We've already used a few functions (`typeof`, `c`) without fully understanding what they are. That is about to change!
+
+Just like in algebra, functions are essentially machines that take any number inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. They basic syntax looks like the code snippet below.
+
+```
+## function syntax
+functionName(inputs)
+```
+
+Let's use another function called `sum()`. This function takes a set of several values and computes the sum of those numbers.
+
+```{r results=F}
+
+#############
+### functions
+#############
+
+sum(1, 2, 3, 10)    # returns: 15
+
+## sum can be used with one of the vectors we created
+sum(vector1)        # returns: 10.3
+
+```
+
+If you ever forget the arguments of a function, or how it works there are several ways to get help. There is a built in function called `help()` that will takes a function name as an argument, and looks up the help documents for the given function. The `?` is an alternative to the `help` function.
+
+```{r eval=F}
+
+help(sum)
+?sum
+
+```
+
+One important concept to understand is that functions can be treated like regular objects in R. This is actually a very important concept in programming in general, and a feature of many programming languages. This feature, when objects can be treated as regular objects, is refered to [first-class functions](https://en.wikipedia.org/wiki/First-class_function). In practice this means that we can assign functions to values, use them as arguments in other functions, and return functions from functions. This sounds complicated, but work through the code below for some insight.
+
+```{r results=F}
+
+########
+## first class functions
+
+## assign functions to values
+sum2 <- sum
+sum2(1, 2, 3, 10)    # use the value sum2 as a function!
+
+## use functions as arguments in other functions
+## lets compute the average length of some of the vectors we've created
+## this should return 3.66
+mean(c(length(vector1), length(vector2), length(vector3)))
+
+```
+
+Let's walk through this last line of code together. We are use 3 different functions: `c`, `length`, `mean`. `length` is calculating the length of each vector. We are then taking the results of length and creating a vector with the `c` functions. The result of this is then used as the argument for the `mean` function. 
+
+Throughout your R journey you will see these properties used many times. Maybe not so much when first starting. But they are important concepts. Especially the fact that the R has first-class functions. Functions are often used as arguments to other functions as a shortcut. It saves the intermediate step of saving the results to another variable, then providing that variable as an argument. It also tends to save memory, as we are no longer storing that variable in memory.
 
 ### Matrix objects in R
 
-**Matrix** objects are just a bunch of vectors grouped together! 
+**Matrix** objects are just a bunch of vectors grouped together! To form a matrix, the vectors must be of the same length and the same **class** (class is another term for type, you'll learn more about classes soon). If different types are provided R will attempt to coerce the elements into a common type. A matrix has two **dimensions**: rows and columns.  
 
-NOTE: to form a matrix, the vectors must be of the same length and the same **class** (we'll get into what this means shortly). A matrix has two **dimensions**: rows and columns.  
-
-Let's make our first matrix. One simple way to make a matrix is just by joining two vectors using the function "cbind" (bind vectors or matrices together by column) or "rbind" (bind vectors or matrices together by row)
+Let's make our first matrix. One simple way to make a matrix is just by joining two vectors using the function `cbind` (bind vectors or matrices together by column) or `rbind` (bind vectors or matrices together by row)
 
 ```{r}
 
@@ -276,7 +321,7 @@ d.mat/sum(d.mat)
 ```
 
 
-### 'Data frame' objects in R
+### Data frames
 
 **Data frame** objects are just a bunch of vectors grouped together! In this way they seem a lot like matrices! However, they are really much more general than matrices. In data frames, all the vectors must be the same length, but they no longer need to be the same **class**. A data frame, like a matrix, has two **dimensions**: rows and columns. 
 
@@ -327,7 +372,7 @@ d.df
 ```
 
 
-### 'List' objects in R
+### Lists
 
 **List** objects are just a bunch of objects grouped together! In this way they seem a lot like matrices and data frames! However, they are really much more general than either matrices or data frames. In lists, the objects don't even need to be the same length, never mind the same **class**. They don't even need to be vectors- they could be any type of R object. Each element of a list could be absolutely anything!
 
@@ -347,7 +392,9 @@ d.list
 ```
 
 
-### Filling in vectors with numbers (making up data!)
+## Object operations
+
+### Generating sequences
 
 One task that comes up a lot is making sequences of numbers. We certainly don't want to do this entirely by hand! Here are some shortcuts:
 
@@ -440,7 +487,7 @@ summary(my.data)    # Use the "summary()" function to summarize each column in t
 NOTE: the "head()" function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!
 
 
-### Accessing, indexing and subsetting data!
+### Accessing, indexing and subsetting data
 
 To access a particular element of a vector, we just enclose the element(s) we want in brackets:
 
@@ -562,11 +609,11 @@ d.array				# view the array
 d.array[1,2,4]
 ```
 
-### Basic mathematical operations
+## Basic mathematical operations
 
 Here are some basic mathematical operations you can do in R:
 
-```{r}
+```{r results=F}
 2+3              # addition
           
 6-10             # subtraction
@@ -656,13 +703,3 @@ abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
 
 
 [--go to next module--](module1_2.html)
-
-
- 
-
-
-
-
-
-
-
