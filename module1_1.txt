@@ -14,74 +14,91 @@
 ########################
 
 
-
-##############
-# Clear the workspace
-
-rm(list=ls()) 
-
-
+Batmans_bulter <- 'Alfred Pennyworth'
 ##################
 ####  Create R Objects 
 ##################
+
+#############
+### scalars
+#############
+
+scalar1 <- 'this is a scalar'
+scalar2 <- 104
+scalar3 <- 5 + 6.5    # evaluates to the single value 11.5
+scalar4 <- '4'
+typeof(scalar4)    # returns: character
+
+## what is this type?
+scalar5 <- TRUE
+typeof(scalar5)    # returns: logical
+## what happens when we run this line of code? Think about the types.
+scalar_2 + scalar_4
+#############
+### VECTORS
+#############
+
+vector1 <- c(1.1, 2.1, 3.1, 4)
+vector2 <- c('a', 'b', 'c')
+vector3 <- c(1, 'a', 2, 'b')
+vector4 <- c(TRUE, 'a', 1)
+vector5 <- c(TRUE, 1.2, FALSE)
+
 
 a <- 1
 b <- 2
 c <- 3
 
-
-###################
-#### Try using an R Function
-
-sum(1,2,3,10)     # "sum()" is an R function for computing the sum of a bunch of numbers
-
-
-
-help(sum)    # get help for the function "sum()"
-
-?sum    # alternative shortcut for getting help!
-
-
-##################
-##### Manage your R workspace
-##################
-
-ls()                  # View contents of your workspace
-?ls                   # View help pertaining to function ‘ls’
-
-
-test <- 14+a      # make a new object
-test
-
-ls()
-rm(Batmans_butler,test)             # remove extraneous variables
-ls()
-
-
-#############
-### VECTORS
-#############
-
-d.vec <- c(a,b,c)            # d is now a ‘vector’ in R
+d.vec <- c(a, b, c)
 d.vec
+
 
 
 d.vec <- c(1,2,3)            # another way to construct the vector "d.vec"
 d.vec = c(1,2,3)           # the "equals" sign can also be an assignment operator
 
 
+
 length(d.vec)    # the "length()" function returns the number of elements in a vector (or list, matrix etc.)
 
-d1 <- d.vec               # copy the vector "d.vec"
-d2 <- d.vec+3             # add 3 to all elements of the vector "d.vec"
+d1 <- d.vec           # copy the vector "d.vec"
+d2 <- d.vec+3         # add 3 to all elements of the vector "d.vec"
 d3 <- d1+d2           # elementwise addition
 d4 <- d1+c(1,2)       # what does this do?
 
-d1
-d2
-d3
-d4
+## inspect the objects by calling them in the console (or script window)
+d1    # returns: 1 2 3
+d2    # returns: 4 5 6
+d3    # returns: 5 7 9
+d4    # returns: 2 4 4
 
+
+
+#############
+### functions
+#############
+
+sum(1, 2, 3, 10)    # returns: 15
+
+## sum can be used with one of the vectors we created
+sum(vector1)        # returns: 10.3
+
+
+help(sum)
+?sum
+
+
+########
+## first class functions
+
+## assign functions to values
+sum2 <- sum
+sum2(1, 2, 3, 10)    # use the value sum2 as a function!
+
+## use functions as arguments in other functions
+## lets compute the average length of some of the vectors we've created
+## this should return 3.66
+mean(c(length(vector1), length(vector2), length(vector3)))
 
 
 #############
