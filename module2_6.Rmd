@@ -132,7 +132,7 @@ CRSs are a very important concept in spatial data (maybe the most important?). I
 
 Geographic coordinate system: identify any location on the Earth using *longitude* and *latitude*. These are measures of the angular distance from the Prime Meridian or equatorial plane (for longitude and latitude, respectively). Distances in Geographic CRSs are measured in degrees, minutes, and seconds (or other angular unit of measurement). 
 
-Geographic CRSs will make some assumptions to model the shape of the earth. As stated above, the surface of the earth isn't a perfect sphere or ellipse. Spherical models assume that the earth is a perfect sphere. These models are simple but rarely used because of the amount of inaccuracy. Ellipsoidal models are a more accurate model of the Earth. They are defined by an equatorial radius and polar radius.
+Geographic CRSs will make some assumptions to model the shape of the earth. As stated above, the surface of the earth isn't a perfect sphere or ellipse. Spherical models assume that the earth is a perfect sphere. These models are simple but rarely used because of the amount of inaccuracy in them. Ellipsoidal models are a more accurate model of the Earth. They are defined by an equatorial radius and polar radius.
 
 ### Projected Coordinate Systems
 
