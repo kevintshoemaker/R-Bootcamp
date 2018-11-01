@@ -85,19 +85,25 @@ library(leaflet)
 > Everything is related to everything else, but near things are more related than distant things
 <p class="display-block text-right"><small>Waldo Tobler, <em>Tobler's first law of geography</em></small></p>
 
-Remember back to module 1.1 [that vectors are a bunch of objects grouped together in an orderly line](http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/module1_1.html#vector_objects_in_r). Spatial vectors are not the same thing. In a spatial context vector data are points, lines, and polygons. We can also call these geometries. These data strucutures are sets of coordinate pairs (x, y) that can have variables or attribute data associated with them (but not always). Raster data are matrices of cell values. I like to think of rasters a images; in fact satelite images of earth are often the source of raster data.
+There are two ways to model geographic data: as vectors or rasters. In the sections that follow we will first review vector data, then raster data. First we will review the theory behind each model then demonstrate how to implement them in R
 
-### Points
+### Vector Data
 
-Points are the simplest spatial data structure to reason about. In this case each coordinate pair is a point. We can attach attribute data to the points. An example of points might be trees in a forest, and the attribute data are height, diameter, species, etc.
+Vector [^vector] data represenst the world as points with a geographic refence (they are somewhere on the earth). These points can be linked together to form more complex geometries such as lines and polygons.
 
-### Lines
+[^vector]: In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will almost always be refering to the geographic data .
 
-Lines are a bit more complex. They are composed of many vertices that are connected. Each line can have data associated with it. The order of the connections is important. Roads or rivers are great examples, and might have data like width, speed limit, flow as attribute data.
+#### Points
+
+Points represent single features, such as a tree in a forest or a location of an captured animal. Points are pairs of (x, y) coordinates. Points are often 2 dimensions, however they can be extended with a z value to represent height above sea level. Attribute data can be attached to each point. An example of points with attribute data might be trees in a forest, and the attributes are height, diameter, species, etc.
+
+#### Lines
+
+Lines are a bit more complex. They are composed of many vertices (points) that are ordered and connected. Each line can also have data associated with it. Roads or rivers are great examples, and might have data like width, speed limit, flow as attribute data.
 
 In R lines can be one or more line objects. For instance, the Truckee River and all its tributaries can be a single lines (multi-line) object, composed of many line objects for each of the tributaries.
 
-### Polygons
+#### Polygons
 
 A polygon is a set of closed lines. It is very similar to lines, however the first vertex must also be the last vertex in order to close the polygon. Polygons can have holes in them, think an island in a lake, which is a polygon enclosed inside another polygon. And just like lines, multiple polygon objects can make up a single polygons (multi-polygons) object. For instance, a chain of islands. Each island is a single polygon. Together all the individual island polygons represent the entire island chain polygon (multi-polygon). 
 
@@ -105,7 +111,9 @@ I find polygons easier to think about, so in the examples below I will first rev
 
 ### Raster
 
-Raster data divides area of interest into a grid to represent continuous (and sometimes discrete) data such as elevation. The grid has equally sized rectangular cells (or pixels) that can have one or more values. The size of the cells refered to as the resolution of the grid, smaller cell sizes are higher resolution. The value of that cell should represent the average value for the area that cell covers. Raster data is often represented by a matrix of the spatial extent we are interested in. So if we have a 1km square area of interest with a 1 meter resoltion we have 1000 x 1000 matrix, each element of that matrix representing the value of a variable for that 1 meter cell.
+Raster data divides an area of interest into a grid to represent continuous (and sometimes discrete) data such as elevation. The grid has equally sized rectangular cells (or pixels) that can have one or more values (multi-band rasters). The size of the cells is refered to as the resolution of the grid, smaller cell sizes are higher resolution. The value of that cell generally represent the average value for the area that cell covers. However, the value of each cell can represent the maximum or minimum value as well. If this is the case, the data provider will reference the cell values in a metadata document (hopefully).
+
+Raster data is represented by a matrix of the spatial extent we are interested in. So if we have a 1km square area of interest with a 1 meter resoltion we have 1000 x 1000 matrix, each element of that matrix representing the value of a variable for that 1 meter cell.
 
 We will likely not have much time to cover raster data because of our limited time together, and the amount of time loading and working with raster can take. I'll provide a few short examples at the end to run on your own.  
 
@@ -113,14 +121,28 @@ We will likely not have much time to cover raster data because of our limited ti
 
 <div style="margin: 16px 0">
   <img class="img-responsive center-block" src="assets/geoid.jpg" alt="The shape of the earth", width="50%" align="middle">
-  <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">This figure represents on of the most accurate representations of the shape of the earth, or geoid, the global mean sea level.</figcaption>
+  <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">This figure depicts one of the most accurate representations of the shape of the earth, or geoid.</figcaption>
 </div>
 
-An important component of all spatial objects is the projection of the data. Projections attempt to map the round/oval shape of the earth onto a flat surface. Without a projection vector data are refered to as geometries. Once the projection is added it is geographic data.
+An important component all spatial objects share is a coordinate refernece system (CRS). A CRS defines how the spatial elements of the data relate to the surface of the Earth. CRSs are either geographic or projected. 
+
+CRSs are a very important concept in spatial data (maybe the most important?). I'll go into detail below as a reference, however we will not have enought time to cover this topic in detail. 
+
+### Geographic Coordinate Systems
+
+Geographic coordinate system: identify any location on the Earth using *longitude* and *latitude*. These are measures of the angular distance from the Prime Meridian or equatorial plane (for longitude and latitude, respectively). Distances in Geographic CRSs are measured in degrees, minutes, and seconds (or other angular unit of measurement). 
+
+Geographic CRSs will make some assumptions to model the shape of the earth. As stated above, the surface of the earth isn't a perfect sphere or ellipse. Spherical models assume that the earth is a perfect sphere. These models are simple but rarely used because of the amount of inaccuracy. Ellipsoidal models are a more accurate model of the Earth. They are defined by an equatorial radius and polar radius.
+
+### Projected Coordinate Systems
+
+Projected coordinate system: based on Cartesian coordinates on a flat surface. They have an origin, x and y axes. These rely on map projections to convert the three dimensional shape surface of the earth into Easting and Northing (x and y) in the projected CRS. Easting and Northing of a point are measures of distance from the axes as defined in the CRS. Distances in projected CRSs are linear units of measurement such as meters. 
+
+The projection from an ellipsoid to a plane cannot be done without distorting some of the properties of the Earth's surface. In most cases one or two of the following properties are distorted: area, direction, shape, distance. Projections are often named based on the properties the accurately maintain: equal-area maintains area, azimuthal maintains direction, equidistant maintains distance, and conformal maintains local shape.
 
 <div style="margin: 16px 0">
   <img class="img-responsive center-block" src="assets/projections.gif" alt="ana animation of different geographic projections" align="middle">
-  <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">Watch how the representatino of the earth changes as the projections change</figcaption>
+  <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">Watch how the representation of the earth changes as the projections change</figcaption>
 </div>
 
 There are several methods to add a projection to `sp` and `raster` objects. The underlying structure of a projection string is from the [PROJ.4 open source library](https://proj4.org/). These are often refered to as a coordinate reference system (CRS). A common shorthand for creating CRSs is to use an EPSG id[^2].
@@ -134,6 +156,8 @@ Below is a list of common projections:
 5. Albers Equal-area Conic ([EPSG:102003](epsg.io/102003)) - Used by the USGS and US Census
 
 [^2]: The European Petroleum Survey Group maintains a list of IDs to all the projection systems. These are a nice shorthand for create coordinate reference strings in R. [epsg.io](epsg.io) is a great interactive site to discover EPSG IDs.
+
+Coordinate reference systems are confusing, and I have a super difficult time understanding them sometimes. [Here is a super helpful reference](https://www.axismaps.com/guide/general/map-projections/).
 
 ## Spatial Objects
 
@@ -223,7 +247,7 @@ phpl_spdf %>% magrittr::extract2('species') %>% unique()
 
 ```
 
-We can use any of the operation for a `data.frame` to work with a `SpatialPointsDataFrame`. 
+many of the operation for a `data.frame` work with a `SpatialPointsDataFrame`. 
 
 One more thing before we move on -- we can create a `SpatialPointsDataFrame` in one step, skipping the creation of a `SpatialPoints` object.
 
@@ -235,7 +259,9 @@ spdf1 <- SpatialPointsDataFrame(
   data = reptiles,
   proj4string = utm
 )
- # str(spdf1, max.level = 2)
+
+## its always good idea to inspect your data
+# str(spdf1, max.level = 2)
 
 ## and lets clean up the global env
 rm(phpl_spdf, reptiles, sp_points, spdf1, phpl)
@@ -353,10 +379,6 @@ points(spdf_points[spdf_points$county == 'Clark', ], col = 'springgreen', cex = 
 
 ```
 
-#### Challenge: Subset `Spatial`
-
-You've seen how to subset both `SpatialPointsDataFrames`, and `SpatialPolygonsDataFrames`. Continue practicing subsetting on your own.
-
 ### Merge Polygons
 
 We can do the same thing with two polygon geometries.
@@ -390,7 +412,7 @@ text(coordinates(counties), label = counties$CNTYNAME, cex = .75)
 
 ```
 
-Our goal is to attempt to intersect the two of the geometries together and try to create a new set of polygons. These new polygons will be a mash up of our two starting geometries. It'll make more sense as we work through the example. Instead of using the `over` command we will use the `gIntersection` command. We could also run this example using `raster::intersect`. But for now, do the following:
+Our goal is to intersect the two geometries together and try to create a new set of polygons. These new polygons will be a mash up of our two starting geometries. It'll make more sense as we work through the example. Instead of using the `over` command we will use the `gIntersection` command. We could also run this example using `raster::intersect`. But for now, do the following:
 
 ```{r intersection}
 
@@ -426,8 +448,8 @@ tmp <- strsplit(row.names(intersect), split = ' ')
 
 
 ## iterate over the list to get either the 1st or 2nd element
-county_name <- sapply(tmp, '[[', 1)
-study_area <- sapply(tmp, '[[', 2)
+county_name <- vapply(tmp, FUN = '[[', FUN.VALUE = '', 1)
+study_area <- vapply(tmp, FUN = '[[', FUN.VALUE = '',  2)
 
 ## now we now which county and study area each polygon belongs to
 ## store this data in a data.frame
@@ -440,7 +462,7 @@ df_names <- data.frame(county_name = county_name, study_area = study_area, row.n
 intersect@polygons[[1]]@area / 1e6
 
 ## lets iterate over the object to get this data
-parea <- sapply(seq_along(intersect), function (i) intersect@polygons[[i]]@area / 1e6)
+parea <- vapply(seq_along(intersect), FUN = function (i) { intersect@polygons[[i]]@area / 1e6 }, FUN.VALUE = numeric(1))
 df_names$area <- parea
 
 ## finally, create a SpatialPolygonsDataFrame
@@ -536,7 +558,7 @@ plot(wgs_counties, main = 'WGS84')
 
 There are many, many different projection, as stated in the projections section above. We can choose to project our data however we want. Ultimately, the most important apsect of projections (and spatial data) is that we document the projection of our data. Without a projection we can't plot our points onto earth. So please, do everyone a favor and document your data's projection.
 
-Below is a figure demonstrating how the shape of Nevada counties change depending on the projection
+Below is a figure demonstrating how the shape of Nevada counties change depending on the projection. You can find a list of all these projections, and many more, at the [PROJ4 website](https://proj4.org/operations/projections/index.html).
 
 ```{r many_projections}
 
@@ -545,7 +567,7 @@ layout(matrix(1:8, nrow = 2, ncol = 4))
 plot(spTransform(counties, CRS('+proj=aea')), main = 'Albers Equal Area', sub = 'USGS')
 plot(spTransform(counties, CRS('+proj=sinu')), main = 'Van Der Grinten')
 plot(spTransform(counties, CRS('+proj=robin')), main = 'Robinson')
-plot(spTransform(counties, CRS('+proj=isea')), main = 'Icosahedral Snyder', sub = 'Dymaxion, Butterfly not open source')
+plot(spTransform(counties, CRS('+proj=isea')), main = 'Icosahedral Snyder')
 plot(spTransform(counties, CRS('+proj=wintri')), main = 'Winkel-Tripel', sub = 'National Geographic')
 plot(spTransform(counties, CRS('+proj=goode')), main = 'Goode Homolosine')
 plot(spTransform(counties, CRS('+proj=eqc')), main = 'Plate Carree')
