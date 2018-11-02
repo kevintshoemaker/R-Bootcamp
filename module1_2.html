@@ -404,7 +404,8 @@ getwd()          # note: the results from running this command on my machine wil
 <p>What’s yours? Usually the default working directory is your “Documents” folder.</p>
 <div id="aside-rstudio-projects" class="section level3">
 <h3>ASIDE: RStudio Projects</h3>
-<p>If you’re using an <strong>RStudio Project</strong> (.Rproj extension) then the default working directory is the directory containing the .Rproj file- which is convenient, because: 1. That’s most likely where the data for that project live anyway 2. If you’re collaborating with someone else on the project, you can both open the project and immediately read/write data to that directory (without having to set the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!</p>
+<p>If you’re using an <strong>RStudio Project</strong> (.Rproj extension) then the default working directory is the directory containing the .Rproj file- which is convenient, because: 1. That’s most likely where the data for that project live anyway<br />
+2. If you’re collaborating with someone else on the project, you can both open the project and immediately read/write data to that directory (without having to set the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!</p>
 <p>To start a new RStudio Project, just click on “File-&gt;New Project” in RStudio’s menu bar.</p>
 </div>
 <div id="back-to-basics" class="section level3">
@@ -415,7 +416,7 @@ getwd()          # note: the results from running this command on my machine wil
 
 # for example...
 
-# setwd(&quot;E:/GIT/R-Bootcamp&quot;)   # note the use of forward slash- backslashes for file paths, as used by Windows, is not supported by R
+# setwd(&quot;E:/GIT/R-Bootcamp&quot;)   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
 
 # Open finder to set directory
 setwd(file.choose())</code></pre>
@@ -433,7 +434,7 @@ dir()</code></pre>
 <ul>
 <li>read.table
 <ul>
-<li>reads any table, you can specify which format (very general)<br />
+<li>reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)<br />
 </li>
 </ul></li>
 <li>read.csv
@@ -484,7 +485,7 @@ dir()</code></pre>
 # ?readLines
 
 # read.table with tab delimited file (default is sep = &quot;&quot; (one of several common delimiters, including any type of whitespace))
-data.tab.df &lt;- read.table(&quot;data2.txt&quot;, header=TRUE)
+data.tab.df &lt;- read.table(&quot;data.dat&quot;, header=TRUE, sep=&quot;&quot;)
 
 head(data.tab.df)    # display the first few lines of the data frame
 
@@ -531,7 +532,7 @@ str(Titanic)    # examine the structure of this data object</code></pre>
 <ol style="list-style-type: decimal">
 <li>No spaces within object names (same for column names in data files, use . or _ instead)<br />
 </li>
-<li>Try not to name an object similar/same as a function (e.g. don’t name your data “data.frame”)<br />
+<li>Try not to name an object with a similar/same as a function (e.g. don’t name your data “data.frame”). NOTE: this can be hard- there are so many functions in base R!<br />
 </li>
 <li>Can’t start object names with a number</li>
 </ol>
@@ -539,18 +540,18 @@ str(Titanic)    # examine the structure of this data object</code></pre>
 </div>
 <div id="basic-data-checking" class="section level2">
 <h2>Basic data checking</h2>
-<p>As you’ve already seen, objects can be vectors, matrices, arrays, data frames, lists, and factors.</p>
-<p><em>Elements</em> of vectors and matrices can be numbers (numeric), characters, logicals (TRUE/FALSE), etc.</p>
+<p>As you’ve already seen, data objects can be vectors, matrices, arrays, data frames, and lists.</p>
+<p><em>Elements</em> of vectors, matrices, etc. can be coded as numbers (numeric), characters, logicals (TRUE/FALSE), factors etc.</p>
 <p>You can use the “class()” function to see what kind of object you’re working with:</p>
 <pre class="r"><code>####
 #### Check/explore data object
 #### 
 
-# ?class: tells you what type of object you have
+# ?class: tells you what type of data object you have
 class(data.df)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>Okay, we have a data frame. We know that! What about the internals of the data frame? For this we can use the “str()” function, which tells us some more about what’s IN our object:</p>
-<pre class="r"><code># ?str: displays the internal structure of the object
+<p>Okay, we have a data frame. We know that! What about the internals of the data frame? For this we can use the “str()” function, which tells us some more about what’s IN our data object:</p>
+<pre class="r"><code># ?str: displays the internal structure of the data object
 str(data.df)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    20 obs. of  4 variables:
 ##  $ Country: Factor w/ 20 levels &quot;Bolivia&quot;,&quot;Brazil&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
@@ -598,7 +599,7 @@ write.table(data.df[,c(&quot;Country&quot;,&quot;Export&quot;)], file=&quot;data
 </div>
 <div id="saving-and-loading-data" class="section level3">
 <h3>Saving (and loading) data</h3>
-<p>The data loaded in your <strong>R workspace</strong> are stored in your computers RAM as <strong>binary</strong> representations that are efficient but not particulary human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn’t a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data outside of R.</p>
+<p>The data loaded in your <strong>R workspace</strong> are stored in your computers RAM as <strong>binary</strong> representations that are efficient but not particulary human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn’t a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data <em>outside</em> of R.</p>
 <p>To do this we can use the “save()” (or “save.image()”) and “load()” functions in R:</p>
 <p>NOTE: all binary R data files should be stored with the extension “.RData”:</p>
 <pre class="r"><code>####
@@ -681,6 +682,8 @@ Y &lt; Z
 # Wrong!
 data.df[,2]=74     # sets entire second column equal to 74!
 
+data.df &lt;- read.csv(&quot;data.csv&quot;)  ## correct our mistake in the previous line and revert to the original data!
+
 # Right
 data.df[,2]==74    # tests each element of column to see whether it is equal to 74</code></pre>
 </div>
@@ -705,7 +708,7 @@ which(data.df[,2]==74)       # elements of the data column that are equal to 74<
 <pre><code>##  [1]  1  7  8  9 10 11 12 15 18 20</code></pre>
 <pre class="r"><code>data.df[which(data.df[,2]&lt;74),2]    # check to make sure these numbers are under 74- they had better be!</code></pre>
 <pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
-<pre class="r"><code>data.df[data.df[,2]&lt;74,2]    # alternative form without using &quot;which()&quot;... </code></pre>
+<pre class="r"><code>data.df[data.df[,2]&lt;74,2]    # alternative syntax without using &quot;which()&quot;... </code></pre>
 <pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
 <pre class="r"><code>sub.countries&lt;-c(&quot;Chile&quot;,&quot;Colombia&quot;,&quot;Mexico&quot;)    # create vector of character strings
 
@@ -766,16 +769,16 @@ mean(fem.turtles.df$weight)</code></pre>
 <pre class="r"><code># Using subset to correct data entry problems
 unique(turtles.df$sex)</code></pre>
 <pre><code>## [1] &quot;male&quot;   &quot;female&quot; NA       &quot;fem&quot;</code></pre>
-<pre class="r"><code>table(turtles.df$sex)</code></pre>
+<pre class="r"><code>table(turtles.df$sex)   # do you notice the data entry problem here?    </code></pre>
 <pre><code>## 
 ##    fem female   male 
 ##      1      7      7</code></pre>
-<pre class="r"><code># Try using the &quot;subset()&quot; function, which can make subsetting a data frame even easier!
+<pre class="r"><code>turtles.df[which(turtles.df$sex==&quot;fem&quot;),2]&lt;-&quot;female&quot;            # recode the sex variable
+
+# Try using the &quot;subset()&quot; function, which can make subsetting a data frame even easier!
 female.turtles &lt;- subset(turtles.df,sex==&quot;female&quot;)              # use the &quot;subset()&quot; function!
 female.turtles &lt;- subset(turtles.df,sex!=&quot;male&quot;)                # alternative     
 female.turtles &lt;- turtles.df[which(turtles.df$sex!=&quot;male&quot;),]    # alternative
-
-turtles.df[which(turtles.df$sex==&quot;fem&quot;),2]&lt;-&quot;female&quot;            # recode the 
 
 subset.turtles.df &lt;- subset(turtles.df, weight &gt;= 10)
 head(subset.turtles.df)</code></pre>
@@ -1044,7 +1047,7 @@ Import  # There is still the original object behind it. That&#39;s troubling!
 detach(data.df)   # Remember to detach</code></pre>
 <p>BUT this just leads to problems in the end. My recommendation: just don’t use it!!</p>
 <ol start="2" style="list-style-type: decimal">
-<li>When reading in data, R automatically codes character data (any column containing even one character element) as a <strong>factor</strong>. This often leads to problems, since factor data (while useful) are actually integers and can confuse novice (and non-novice) users. This is one of the most common problems that new R users face!</li>
+<li>When reading in data, R automatically codes character data (any column containing even one character element) as a <strong>factor</strong>. This often leads to problems, since factor data (while useful) are actually integers and can confuse novice and expert R users alike. This is one of the most common problems that new R users face!</li>
 </ol>
 <p>My recommendation is that, when reading in data, use the function argument “stringsAsFactors=FALSE” so that R reads these variables in as character strings rather than as factors:</p>
 <pre class="r"><code>df &lt;- read.csv(&quot;data.csv&quot;, header=T, stringsAsFactors=FALSE)   # avoid reading in character data as factors by default.</code></pre>

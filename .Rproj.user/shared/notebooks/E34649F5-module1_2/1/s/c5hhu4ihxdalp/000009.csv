@@ -71,7 +71,7 @@
 "1"," 73"
 "1","
 "
-"0","data.df[data.df[,2]<74,2]    # alternative form without using ""which()""..."
+"0","data.df[data.df[,2]<74,2]    # alternative syntax without using ""which()""... "
 "1","[1]"
 "1"," 46"
 "1"," 68"

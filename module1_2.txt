@@ -24,7 +24,7 @@ getwd()          # note: the results from running this command on my machine wil
 
 # for example...
 
-# setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, is not supported by R
+# setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
 
 # Open finder to set directory
 setwd(file.choose())
@@ -48,7 +48,7 @@ setwd("E:/GIT/R-Bootcamp")   # set working directory to the folder with my data!
 # ?readLines
 
 # read.table with tab delimited file (default is sep = "" (one of several common delimiters, including any type of whitespace))
-data.tab.df <- read.table("data2.txt", header=TRUE)
+data.tab.df <- read.table("data.dat", header=TRUE, sep="")
 
 head(data.tab.df)    # display the first few lines of the data frame
 
@@ -95,12 +95,12 @@ str(Titanic)    # examine the structure of this data object
 #### Check/explore data object
 #### 
 
-# ?class: tells you what type of object you have
+# ?class: tells you what type of data object you have
 class(data.df)
 
 
 
-# ?str: displays the internal structure of the object
+# ?str: displays the internal structure of the data object
 str(data.df)
 
 
@@ -140,6 +140,7 @@ load("Module1_2.RData")   # load these objects back in!
 save.image(file="Module2.RData")    # ?save.image: saves entire workspace   
 
 load(file="Module2.RData")  # load the workspace from the working directory
+
 
 ##############
 # Clear the workspace (and load it back in!)
@@ -190,6 +191,8 @@ Y < Z
 # Wrong!
 data.df[,2]=74     # sets entire second column equal to 74!
 
+data.df <- read.csv("data.csv")  ## correct our mistake in the previous line and revert to the original data!
+
 # Right
 data.df[,2]==74    # tests each element of column to see whether it is equal to 74
 
@@ -208,7 +211,7 @@ which((data.df[,2]<74)|(data.df[,2]==91))   # use the OR operator
 
 data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
-data.df[data.df[,2]<74,2]    # alternative form without using "which()"... 
+data.df[data.df[,2]<74,2]    # alternative syntax without using "which()"... 
 
 
 sub.countries<-c("Chile","Colombia","Mexico")    # create vector of character strings
@@ -249,14 +252,14 @@ mean(turtles.df$weight[which(turtles.df$sex =="female")])
 
 # Using subset to correct data entry problems
 unique(turtles.df$sex)
-table(turtles.df$sex)
+table(turtles.df$sex)   # do you notice the data entry problem here?    
+
+turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the sex variable
 
 # Try using the "subset()" function, which can make subsetting a data frame even easier!
 female.turtles <- subset(turtles.df,sex=="female")              # use the "subset()" function!
 female.turtles <- subset(turtles.df,sex!="male")                # alternative     
 female.turtles <- turtles.df[which(turtles.df$sex!="male"),]    # alternative
-
-turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the 
 
 subset.turtles.df <- subset(turtles.df, weight >= 10)
 head(subset.turtles.df)

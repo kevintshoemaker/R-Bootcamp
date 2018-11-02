@@ -1,5 +1,0 @@
-"0","# Subsetting to certain individuals"
-"0","bad.tags <- c(13,105)"
-"0","good.turtles.df <- turtles.df[!(turtles.df$tag_number %in% bad.tags),]"
-"0","bad.turtles.df <- turtles.df[turtles.df$tag_number %in% bad.tags,]"
-"0","bad.turtles.df"

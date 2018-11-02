@@ -1,4 +1,4 @@
-"0","# ?str: displays the internal structure of the object"
+"0","# ?str: displays the internal structure of the data object"
 "0","str(data.df)"
 "1","'data.frame':	"
 "1","20"
