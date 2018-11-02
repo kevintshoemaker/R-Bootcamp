@@ -36,7 +36,6 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
     - Thanks to Perry Williams for allowing us to use these materials!!
     
-    
 Welcome to the 2018 R bootcamps! Let's get started!! 
 
 ## Load script for module #1.1
@@ -116,6 +115,7 @@ The workspace (environment) panel window in R can become cluttered as we create 
 Scalars are the simplest objects in R. A scalar is just a single value. Remember the when we assigned Alfred Pennyworth to the `Batmans_butler` object? When we did that we created a scalar. Scalars can be any single value.
 
 ```{r results=F}
+
 ##################
 ####  Create R Objects 
 ##################
@@ -128,6 +128,7 @@ scalar1 <- 'this is a scalar'
 scalar2 <- 104
 scalar3 <- 5 + 6.5    # evaluates to the single value 11.5
 scalar4 <- '4'
+
 ```
 
 Scalars do have a specific type. In the example above, `scalar1` is a character, `scalar2` and `scalar3` are both numeric. What is the data type for `scalar4`? It is a character. If you are uncertain about the type of any R object the R function [^4] `typeof()` will come in handy. Lets work through the code below. 
@@ -135,11 +136,13 @@ Scalars do have a specific type. In the example above, `scalar1` is a character,
 [^4]: Functions are essentially machines that take inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!
 
 ```{r results=F}
+
 typeof(scalar4)    # returns: character
 
 ## what is this type?
 scalar5 <- TRUE
 typeof(scalar5)    # returns: logical
+
 ```
 
 The complete list of possible types for scalars are as follows:
@@ -154,8 +157,10 @@ The complete list of possible types for scalars are as follows:
 What happens when we try and add `scalar2` and `scalar4`? Think about the types of each scalar. Run the code below to find out.
 
 ```{r eval=F}
+
 ## what happens when we run this line of code? Think about the types.
 scalar_2 + scalar_4
+
 ```
 
 This error can be common in R. Remember that `scalar4` is a character, R cannot perform mathematical operations on character types. Double check your types with the `typeof()` function.
@@ -165,6 +170,7 @@ This error can be common in R. Remember that `scalar4` is a character, R cannot 
 Vectors are combinations of scalars stored as a single object. Let's create some vectors.
 
 ```{r echo=F}
+
 #############
 ### VECTORS
 #############
@@ -175,7 +181,6 @@ vector3 <- c(1, 'a', 2, 'b')
 vector4 <- c(TRUE, 'a', 1)
 vector5 <- c(TRUE, 1.2, FALSE)
 
-
 ```
 
 There are many different ways to create a vector. You'll learn more about that later in the bootcamp. Look (or print) some of the vecotrs in the workspace. Each vector is comprised of several scalars. Each of these scalars is called an element of the vector. You can still check the types of the objects with the `typeof()` function (try it yourself).
@@ -185,6 +190,7 @@ What happened with `vector2` and `vector4`? We supplied a mix of numeric types a
 In the code above we use another function called `c()`. I find it easiest to think of it as a concatenate or combine. It takes several objects, and combines them together into a vector. We can even use `c()` to combine scalar objects, like below.
 
 ```{r}
+
 a <- 1
 b <- 2
 c <- 3
@@ -201,7 +207,6 @@ d.vec
 
 d.vec <- c(1,2,3)            # another way to construct the vector "d.vec"
 d.vec = c(1,2,3)           # the "equals" sign can also be an assignment operator
-
 
 ```
 
@@ -222,7 +227,6 @@ d1    # returns: 1 2 3
 d2    # returns: 4 5 6
 d3    # returns: 5 7 9
 d4    # returns: 2 4 4
-
 
 ```
 
@@ -517,7 +521,6 @@ d.vec
 d.vec["terrence"]
 d.vec[c("sally","fred")]
 
-
 ```
 
 We can similarly subset matrices using brackets, but we need to specify the rows AND columns we're interested in extracting!
@@ -607,6 +610,7 @@ d.array[,,4]=d.mat*4
 d.array				# view the array 
 
 d.array[1,2,4]
+
 ```
 
 ## Basic mathematical operations
@@ -645,7 +649,7 @@ factorial(5)     # factorial
 
 ## Challenge exercises!
 
-1. Create a 3 by 2 matrix equivalent to d.mat by binding rows, using the following as rows:
+1. Create a 3 by 2 matrix equivalent to d.mat by binding rows (HINT: use the "rbind()" function), using the following as rows:
 
 ```{r}
 
@@ -694,12 +698,16 @@ To make sure you got it right, use the following commands in R:
 
 Don't worry if you don't understand the code- we'll talk about plotting soon enough!
 
-```
+```{r}
 
 plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
 
 ```
+
+It should look something like this (above)!
+
+
 
 
 [--go to next module--](module1_2.html)

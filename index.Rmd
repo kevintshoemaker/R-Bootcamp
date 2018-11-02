@@ -13,9 +13,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
- * **When?** The first two Saturday afternoons of the 2018 Fall semester- Sep 1 and 8 from 1 to 5pm. 
+ * **When?** First two saturdays in November 2018: Nov 3 and Nov. 10, from 10 to 4pm (pizza lunch at noon) 
  * **Where?** DMSC 103 (Davidson Math and Science Center, first floor)  
  * **What to prepare?** Please bring your laptop computer! If possible, install R and RStudio prior to coming to the first bootcamp (see [links](Links.html)). 
+ 
+NOTE: this workshop series was organized by the UNR student chapter of The Wildlife Society (TWS)-- _a \$10-\$15 donation is suggested_     
  
 ## Facilitators
 
@@ -24,14 +26,29 @@ Department of Natural Resources and Environmental Science
 Office: Fleischmann Agriculture 220E					
 Email: [kshoemaker@cabnr.unr.edu](kshoemaker@cabnr.unr.edu)
 
+[Mitchell Gritts](http://mgritts.github.io/cv/)     
+Nevada Department of Wildlife          
+Email: mgritts(at)ndow(dot)org      
+
+Krymsen Hernandez       
+Department of Natural Resources and Environmental Science
+Email: krymsen21(at)gmail(dot)com
+
+Jonathan DeBoer
+Department of Geography
+Email: jdeboer(at)nevada(dot)unr(dot)edu
+
+Thomas Riecke
+Department of Natural Resources and Environmental Science
+Email: triecke(at)cabnr(dot)unr(dot)edu
+
+
+## Contributors
+
 [Perry Williams](http://www.perrywilliams.us/)  
 Department of Natural Resources and Environmental Science   
 Office: 240 Fleischmann  
 Email: perryw(at)unr(dot)edu
-
-[Mitchell Gritts](http://mgritts.github.io/cv/)     
-Nevada Department of Wildlife          
-Email: mgritts(at)ndow(dot)org      
 
 [Christine Albano](http://www.csp-inc.org/about-us/core-science-staff/albano-christine/)     
 Lead Scientist at Conservation Science Partners and doctoral student at DRI    
@@ -52,24 +69,10 @@ Department of Geography
 Office: Mackay Science Room 223      
 Email: knussear(at)unr(dot)edu        
 
-[Adriana Parra](https://naes.unr.edu/gears/)    
-G.E.A.R.S. lab in NRES     
-Office: 241 Fleischmann Ag   
-Email: adrianaparra(at)unr(dot)edu     
-
 [Stephanie Freund](http://newinghamlab.weebly.com/lab-members.html)      
 Office: Agricultural Education 002      
 Newingham lab at ARS             
 Email: smfreu(at)gmail(dot)com
-
-[Rose Petersky](https://naes.unr.edu/harpold/)     
-Nevada Mountain Ecohydrology Lab, NRES          
-Email: rosepetersky(at)gmail(dot)com    
-
-[Nathan Cook](http://naes.unr.edu/shoemaker/lab/about/)       
-Applied Population Ecology Lab, NRES        
-Office: FA 235      
-Email: nathancook(at)nevada.unr(dot)edu     
 
 [Paul Hurtado](http://pauljhurtado.com/)  
 Department of Mathematics and Statistics     
@@ -79,11 +82,14 @@ Email: [phurtado@unr.edu](phurtado@unr.edu)
 
 ## About
 
-The statistical programming software "R" is one of the fundamental tools of modern science, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of quality figures) will make graduate research much more manageable! Because many incoming graduate students have limited prior experience with R, we are offering short R/programming “bootcamps” during the first two Saturdays of the fall semester (Sep 1 and 8, 1pm to 5pm, in DMSC 103). 
+The statistical programming software “R” is one of the fundamental tools for modern data exploration and analysis, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of quality figures) will make upcoming classes, research, and graduate school less intimidating.
 
-The main goal of these 4-hr workshops will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshops are primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the second workshop, which will delve into more advanced topics. The first bootcamp (Sep 1) will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second bootcamp (Sep 8) will focus on some more advanced programming operations (loops, functions, debugging etc.), vectorized operations (e.g., “apply()” operations), working with large datasets, and (very briefly) running scripts in parallel (e.g., for high-performance computing). 
+We are offering two "bootcamps" to help students get started with using "R". These bootcamps are a joint effort from undergraduate students, graduate students, faculty members, and the Wildlife Society club, and will consist of two 6-hour long sessions offered on consecutive Saturdays -- Nov. 3 and Nov. 10 in DMSC 103, from 10am to 4pm. Pizza will be provided on both days, courtesy of the Nevada chapter of The Wildlife Society! We are asking for a $10 to $15 dollar donation to the UNR Wildlife Society chapter for offering this workshop. 
 
-Each bootcamp will consist of a series of short modules, each of which covers a particular skill (e.g., reading in data, writing functions). Modules will include a quick introduction, a demonstration in R, and some short challenges for you to work through on your own (or with your neighbors!). All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won't need to constantly copy and paste from the web!  
+Each session will consist of a series of short modules, each of which covers a particular skill (e.g., reading in data, writing functions). Each module will entail a short lecture, a demo (worked examples), and then hands-on activities with helpers present if you get lost or have any questions. The main goal of these 6-hr workshops will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshops are primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the second workshop, which will delve into more advanced topics. The first boot camp (Nov 3) will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second boot camp (Nov 10) will focus on some more advanced programming operations (loops, functions, debugging etc.), more advanced graphical visualizations and spatial analyses, and working with large data sets. Note - All are welcome to attend these workshops, but students who have not completed an intro statistics class may struggle with some of the material—especially the material covered in the second workshop on November 10.  
+
+All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won't need to constantly copy and paste from the web!  
+
 
 [--go to first module--](module1_1.html)
 
