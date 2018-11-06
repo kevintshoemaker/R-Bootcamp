@@ -65,7 +65,7 @@ What's yours? Usually the default working directory is your "Documents" folder.
 ### ASIDE: RStudio Projects
 
 If you're using an **RStudio Project** (.Rproj extension) then the default working directory is the directory containing the .Rproj file- which is convenient, because:
-1. That's most likely where the data for that project live anyway
+1. That's most likely where the data for that project live anyway     
 2. If you're collaborating with someone else on the project, you can both open the project and immediately read/write data to that directory (without having to set the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!
 
 To start a new RStudio Project, just click on "File->New Project" in RStudio's menu bar.  
@@ -81,7 +81,7 @@ You can easily set a new working directory using the "setwd()" function. To sele
 
 # for example...
 
-# setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, is not supported by R
+# setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
 
 # Open finder to set directory
 setwd(file.choose())
@@ -108,12 +108,12 @@ What's in your working directory?
 There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And people are always inventing new ways to read and write to/from R. But here are the basics.   
 
 - read.table      
-     - reads any table, you can specify which format (very general)    
+     - reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)        
 - read.csv        
-     - fields are separated by a comma (this is still probably the most common way to read in data)       
-- read.csv2       
-     - fields are separated by semicolons       
-- read.delim       
+     - fields are separated by a comma (this is still probably the most common way to read in data)        
+- read.csv2        
+     - fields are separated by semicolons         
+- read.delim        
      - tab delimited files        
 - read.delim2      
      - tab delimited with periods as commas      
@@ -152,7 +152,7 @@ Now let's read them into R!!
 # ?readLines
 
 # read.table with tab delimited file (default is sep = "" (one of several common delimiters, including any type of whitespace))
-data.tab.df <- read.table("data2.txt", header=TRUE)
+data.tab.df <- read.table("data.dat", header=TRUE, sep="")
 
 head(data.tab.df)    # display the first few lines of the data frame
 
@@ -221,13 +221,13 @@ str(Titanic)    # examine the structure of this data object
 
 ### Aside: Tips on good data management in R
 1. No spaces within object names (same for column names in data files, use . or _ instead)       
-2. Try not to name an object similar/same as a function (e.g. don't name your data "data.frame")        
+2. Try not to name an object with a similar/same as a function (e.g. don't name your data "data.frame"). NOTE: this can be hard- there are so many functions in base R!           
 3. Can't start object names with a number      
 
 ## Basic data checking
-As you've already seen, objects can be vectors, matrices, arrays, data frames, lists, and factors.
+As you've already seen, data objects can be vectors, matrices, arrays, data frames, and lists.
 
-*Elements* of vectors and matrices can be numbers (numeric), characters, logicals (TRUE/FALSE), etc. 
+*Elements* of vectors, matrices, etc. can be coded as numbers (numeric), characters, logicals (TRUE/FALSE), factors etc. 
 
 You can use the "class()" function to see what kind of object you're working with:
 
@@ -238,17 +238,17 @@ You can use the "class()" function to see what kind of object you're working wit
 #### Check/explore data object
 #### 
 
-# ?class: tells you what type of object you have
+# ?class: tells you what type of data object you have
 class(data.df)
 
 
 ```
 
-Okay, we have a data frame. We know that!  What about the internals of the data frame? For this we can use the "str()" function, which tells us some more about what's IN our object:
+Okay, we have a data frame. We know that!  What about the internals of the data frame? For this we can use the "str()" function, which tells us some more about what's IN our data object:
 
 ```{r}
 
-# ?str: displays the internal structure of the object
+# ?str: displays the internal structure of the data object
 str(data.df)
 
 ```
@@ -290,7 +290,7 @@ write.table(data.df[,c("Country","Export")], file="data_export.csv", sep=",", co
 
 ### Saving (and loading) data
 
-The data loaded in your **R workspace** are stored in your computers RAM as **binary** representations that are efficient but not particulary human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data outside of R.
+The data loaded in your **R workspace** are stored in your computers RAM as **binary** representations that are efficient but not particulary human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data *outside* of R.
 
 To do this we can use the "save()" (or "save.image()") and "load()" functions in R:
 
@@ -326,6 +326,7 @@ NOTE: If you're using an RStudio Project (.Rproj), then the contents of your wor
 Sometimes your workspace can get cluttered with objects. In these cases, it can really help to clear the workspace. Let's try this!
 
 ```{r}
+
 ##############
 # Clear the workspace (and load it back in!)
 
@@ -394,6 +395,8 @@ Y < Z
 # Wrong!
 data.df[,2]=74     # sets entire second column equal to 74!
 
+data.df <- read.csv("data.csv")  ## correct our mistake in the previous line and revert to the original data!
+
 # Right
 data.df[,2]==74    # tests each element of column to see whether it is equal to 74
 
@@ -423,7 +426,7 @@ which((data.df[,2]<74)|(data.df[,2]==91))   # use the OR operator
 
 data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
-data.df[data.df[,2]<74,2]    # alternative form without using "which()"... 
+data.df[data.df[,2]<74,2]    # alternative syntax without using "which()"... 
 
 
 sub.countries<-c("Chile","Colombia","Mexico")    # create vector of character strings
@@ -480,14 +483,14 @@ mean(turtles.df$weight[which(turtles.df$sex =="female")])
 
 # Using subset to correct data entry problems
 unique(turtles.df$sex)
-table(turtles.df$sex)
+table(turtles.df$sex)   # do you notice the data entry problem here?    
+
+turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the sex variable
 
 # Try using the "subset()" function, which can make subsetting a data frame even easier!
 female.turtles <- subset(turtles.df,sex=="female")              # use the "subset()" function!
 female.turtles <- subset(turtles.df,sex!="male")                # alternative     
 female.turtles <- turtles.df[which(turtles.df$sex!="male"),]    # alternative
-
-turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the 
 
 subset.turtles.df <- subset(turtles.df, weight >= 10)
 head(subset.turtles.df)
@@ -693,7 +696,7 @@ detach(data.df)   # Remember to detach
 BUT this just leads to problems in the end. My recommendation: just don't use it!!
 
 
-2. When reading in data, R automatically codes character data (any column containing even one character element) as a **factor**. This often leads to problems, since factor data (while useful) are actually integers and can confuse novice (and non-novice) users. This is one of the most common problems that new R users face! 
+2. When reading in data, R automatically codes character data (any column containing even one character element) as a **factor**. This often leads to problems, since factor data (while useful) are actually integers and can confuse novice and expert R users alike. This is one of the most common problems that new R users face! 
 
 My recommendation is that, when reading in data, use the function argument "stringsAsFactors=FALSE" so that R reads these variables in as character strings rather than as factors: 
 

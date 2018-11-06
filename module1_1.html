@@ -972,7 +972,7 @@ factorial(5)     # factorial
 <div id="challenge-exercises" class="section level2">
 <h2>Challenge exercises!</h2>
 <ol style="list-style-type: decimal">
-<li>Create a 3 by 2 matrix equivalent to d.mat by binding rows, using the following as rows:</li>
+<li>Create a 3 by 2 matrix equivalent to d.mat by binding rows (HINT: use the “rbind()” function), using the following as rows:</li>
 </ol>
 <pre class="r"><code>############
 ### CHALLENGE EXERCISES
@@ -996,10 +996,10 @@ c(1,4) </code></pre>
 <p>HINT: you don’t need to type each location in by hand!</p>
 <p>To make sure you got it right, use the following commands in R:</p>
 <p>Don’t worry if you don’t understand the code- we’ll talk about plotting soon enough!</p>
-<pre><code>
-plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
-abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)
-</code></pre>
+<pre class="r"><code>plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
+abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>It should look something like this (above)!</p>
 <p><a href="module1_2.html">–go to next module–</a></p>
 </div>
 <div class="footnotes">
