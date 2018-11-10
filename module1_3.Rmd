@@ -533,7 +533,7 @@ summary(sculpin.df) # provides a set of summary statistics for all columns in a 
 
 ```
 
-If your data have missing values (NA), some statistical functions won't work properly unless you specify an "na.rm=TRUE" argument:
+If your data have missing values (coded as 'NA' in R), some statistical functions won't work properly unless you specify an "na.rm=TRUE" argument (click [here](data_missing.txt) if you don't already have the test dataset with missing values):
 
 ```{r}
 

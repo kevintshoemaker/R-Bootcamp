@@ -399,9 +399,9 @@ div.tocify {
 <h2>Plotting!</h2>
 <p>Let’s get started with plotting in R!</p>
 <p>We’ll start with the ‘trees’ dataset, which is built into R. It describes the girth, height, and volume of 31 felled black cherry trees.</p>
-<pre class="r"><code>?trees      # description of built in dataset
-
-dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
+<pre class="r"><code>?trees      # description of built in dataset</code></pre>
+<pre><code>## starting httpd help server ... done</code></pre>
+<pre class="r"><code>dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
 <pre><code>## [1] 31  3</code></pre>
 <pre class="r"><code>str(trees)   # Show the structure of the trees dataframe</code></pre>
 <pre><code>## &#39;data.frame&#39;:    31 obs. of  3 variables:
@@ -800,7 +800,7 @@ summary(sculpin.df) # provides a set of summary statistics for all columns in a 
 ##  Mean   :30.36   Mean   : 76.55  
 ##  3rd Qu.:38.50   3rd Qu.: 91.50  
 ##  Max.   :42.00   Max.   :100.00</code></pre>
-<p>If your data have missing values (NA), some statistical functions won’t work properly unless you specify an “na.rm=TRUE” argument:</p>
+<p>If your data have missing values (coded as ‘NA’ in R), some statistical functions won’t work properly unless you specify an “na.rm=TRUE” argument (click <a href="data_missing.txt">here</a> if you don’t already have the test dataset with missing values):</p>
 <pre class="r"><code>###########
 # Deal with missing data
 
