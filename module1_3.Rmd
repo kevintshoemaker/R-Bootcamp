@@ -416,7 +416,20 @@ head(ToothGrowth)
 
 ```
 
-![](toothplot1.png)
+```{r, echo=FALSE}
+
+plot.colors <- c("red", "blue")
+# subset the colors in plot.colors based on the variable iris$Species
+# iris$Species is a factor variable that has 3 levels
+color.vector <- plot.colors[ToothGrowth$supp]
+
+plot(x=ToothGrowth$dose, y=ToothGrowth$len, pch=19, col=color.vector, 
+     main="Tooth Growth vs. Vitamin C Dose", xlab="Viatmin C Dose (mg)", 
+     ylab="Tooth Growth (mm)", las=1)
+
+# First legend
+legend("topleft", pch=19, col=plot.colors, legend=unique(ToothGrowth$supp))
+```
 
 
 #### Bar Plots Challenge
