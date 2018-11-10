@@ -690,10 +690,7 @@ head(ToothGrowth)</code></pre>
 ## 4  5.8   VC  0.5
 ## 5  6.4   VC  0.5
 ## 6 10.0   VC  0.5</code></pre>
-<div class="figure">
-<img src="toothplot1.png" />
-
-</div>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="bar-plots-challenge" class="section level4">
 <h4>Bar Plots Challenge</h4>
@@ -822,9 +819,9 @@ mean(newdf$Export)</code></pre>
 #####
 
 hist(sculpin.df$NUMEGGS)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
 </div>
 <div id="linear-regression" class="section level3">
 <h3>Linear Regression</h3>
@@ -874,7 +871,7 @@ m1                                      # view estimates of intercept and slope 
 <pre><code>## [1] 86.00155</code></pre>
 <pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
 abline(m1)                                           # plot line of best fit</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <pre class="r"><code>########
 # Use the &quot;predict()&quot; function!
 
@@ -927,7 +924,7 @@ abline(m2,col=&quot;red&quot;)                                       # plot inte
 FEMWT.pred &lt;- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
 NUMEGGS.pred &lt;- predict(m3,newdata=FEMWT.pred)             # make prediction using &quot;predict()&quot; function
 points(FEMWT.pred$FEMWT,NUMEGGS.pred,col=&quot;green&quot;,typ=&quot;l&quot;)  # plot sqrt model (note the use of the &quot;points()&quot; function to draw a line!)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 <pre class="r"><code>########
 # Perform model selection!
 
@@ -954,7 +951,7 @@ NUMEGGS.confint &lt;- predict(m3,newdata=FEMWT.pred,interval=&quot;prediction&qu
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;fit&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lwd=2)  # plot fitted sqrt model
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;lwr&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lty=2)  # plot fitted sqrt model
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;upr&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lty=2)  # plot fitted sqrt model</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-32-2.png" width="672" /></p>
 </div>
 <div id="statistics-challenge-exercises" class="section level3">
 <h3>Statistics challenge exercises</h3>
