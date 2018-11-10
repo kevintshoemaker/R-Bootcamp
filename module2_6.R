@@ -20,13 +20,29 @@ rm(list = ls())
 
 # load libraries and set working directory
 library(dplyr)
-library(sp)
+library(spData)
+library(sf)
 library(raster)
 library(rgdal)
 library(rgeos)
-library(ggthemes)
+library(rcartocolor)
 library(magrittr)
 library(leaflet)
+
+
+## a single point
+st_point(c(1, 1))
+
+## multiple points 
+st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+
+## a line
+st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+
+## a polygon
+st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))
+
+## ...etc
 
 
 # create spatial points data frame ----
@@ -34,289 +50,278 @@ library(leaflet)
 reptiles <- readr::read_csv('reptiles.csv')
 
 ## create a SpatialPoints object
-sp_points <- SpatialPoints(
-  coords = reptiles[, c('x', 'y')]
-)
+sf_points <- st_as_sf(x = reptiles, 
+                      coords = c('x', 'y'), 
+                      crs = '+init=epsg:26911')
 
 ## inspect the SpatialPoints object
-str(sp_points)
+str(sf_points)
 
 
-# add a projection to a spatial object ----
-## create a CRS object
-utm <- CRS('+init=epsg:26911')
+# inspecting the sf object ----
+## checking the projection of the sf object 
+st_crs(sf_points)
 
-## add the projection to sp_points
-sp_points@proj4string <- utm
+## summary funciton
+summary(sf_points)
 
-## inspect SpatialPoints
-str(sp_points)
+## what type is the geometry column
+class(sf_points$geometry)
 
+head(sf_points)
 
-# add data to sp_points ----
-spdf_points <- SpatialPointsDataFrame(coords = sp_points, data = reptiles)
-
-## inspect the data
-str(spdf_points)
-
-
-# subset a SpatialPointsDataFrame ----
-## first, inspect the data in the @data slo
-head(spdf_points@data)
-
-## great, it looks just like a data.frame
-## lets look at the species column, I'll only return the first 10
-spdf_points@data$species[1:10]
-
-## another way to do this
-spdf_points$species[1:10]
-
-## or, another method
-spdf_points@data[1:10, 'species']
-
-## cool, this thing behaves just like a data frame. Lets subset it.
-## create a variable to hold our species of interest
-phpl <- 'Phrynosoma platyrhinos'
-
-## then subset the data...
-phpl_spdf <- spdf_points[spdf_points$species == phpl, ]
+# subset an sf object ----
+phpl <- sf_points[sf_points$species == 'Phrynosoma platyrhinos', ]
+head(phpl)
 
 ## check to see that there is only one species in the data.frame
-phpl_spdf %>% magrittr::extract2('species') %>% unique()
+phpl %>% magrittr::extract2('species') %>% unique()
 
 
-# one step to create a SpatialPointsDataFrame ----
-spdf1 <- SpatialPointsDataFrame(
-  coords = reptiles[, c('x', 'y')],
-  data = reptiles,
-  proj4string = utm
-)
- # str(spdf1, max.level = 2)
+## we can filter using dplyr syntax
+sf_points %>% 
+  dplyr::filter(species == 'Phrynosoma platyrhinos') %>% 
+  head()
 
-## and lets clean up the global env
-rm(phpl_spdf, reptiles, sp_points, spdf1, phpl)
 
+## plot with sf::plot
+plot(head(sf_points, n = 100))
+
+
+plot(head(sf_points['year'], n = 100))
+
+## the plot function also uses this syntax to select a single row to plot
+## plot(head(sf_points['year'], n = 100))
+
+## and if you don't want to color the plot by feature you can use 0
+## to specify plotting 0 attributes
+## note, this is plotting all the points
+plot(sf_points[0], col = 'purple')
 
 #############
 # Nevada Counties example...
 
 # read in nv county shapefile ----
-counties <- shapefile('data/nv_counties/NV_Admin_Counties.shp')
+counties <- st_read(dsn = 'data/nv_counties/NV_Admin_Counties.shp')
+
 
 ## once finished check the structure
-# str(counties, max.level = 3)
+str(counties, max.level = 3)
 
 ## some data management
-### check the proj4string
-counties@proj4string
+### check the contents of the geometry field
+counties$geometry
 
-### this proj4string, while encoding the same projection isn't identical to 
-### the proj4string of spdf_points
-spdf_points@proj4string
+### let's double check that projection of the counties
+st_crs(counties)
 
-identicalCRS(counties, spdf_points)
+### How does this projection compare to the sf_points object?
+### double check the sf_points projection
+st_crs(sf_points)
 
-### let's coerce the points to our desired CRS, utm
-### this will throw a warning because we counties already has a projection
-### and we are forcing a new (albeit same) projection onto it. This isn't
-### the same as reprojecting, which we will get to later
-proj4string(counties) <- utm
+### then explicitly compare them using boolean logic
+st_crs(counties) == st_crs(sf_points)
+
+### let's reproject the points to our desired CRS, utm
+### we will go into more detail on reprojections later
+counties <- st_transform(counties, st_crs(sf_points))
+
+### double check they are equal
+st_crs(counties) == st_crs(sf_points)
 
 
 ## check structure of a polygon within a SpatialPolygonsDataFrame
-str(counties@polygons[[1]])
+str(counties)
+
+## check the geometry type
+class(counties$geometry)
+
+## print the first few rows for inspection
+head(counties, n = 4)
 
 
 ## plot a spatial polygon
-plot(counties, col = 'springgreen', border = 'purple', lwd = 3)
+plot(counties)
+
+## we don't wan't to color by any feature
+## st_geometry returns just the geometry column
+plot(st_geometry(counties))
 
 ## we can plot certain polygons...
-layout(matrix(1:3, ncol = 3, nrow = 1))
+## which has a plotting behavior we aren't used to
+## this will plot every attribute for the first county
 plot(counties[1, ])
-plot(counties[1:4, ])
-plot(counties[counties$CNTYNAME == 'Clark', ])
+
+## if we only want to include the outline, the following will work
+plot(st_geometry(counties)[1])
+
+## multiple at once
+layout(matrix(1:3, ncol = 3, nrow = 1))
+plot(st_geometry(counties)[1])
+plot(st_geometry(counties)[1:4])
+plot(st_geometry(counties)[counties$CNTYNAME == 'Clark'])
+
 
 ## we can even plot our reptile points ontop of the counties
 layout(matrix(1))
-plot(counties)
-points(spdf_points, pch = 1, cex = .5, col = 'purple')
+plot(st_geometry(counties))
+plot(st_geometry(sf_points), pch = 1, cex = .5, col = 'purple', add = TRUE)
 
 
 # Spatial joins ----
 
 ## use the %over% funcstion, which is the same as over(spdf_points, counties)
-rslt <- spdf_points %over% counties
+rslt <- st_join(sf_points, counties)
 
 ## what does rslt look like?
 str(rslt)
 
-
-## bind data in rslt to spdf_points
-spdf_points$county <- rslt$CNTYNAME
-
-## remember back to one of our plot above that some points
-## fall outside nevada
-plot(counties)
-points(spdf_points, col = 'purple')
-
-## lets remove those from our dataset, as we shouldn't have any collections
-## outside nevada and these are data entry mistakes
-spdf_points <- spdf_points[!(is.na(spdf_points$county)), ]
-
-## now lets plot, for fun
-plot(counties)
-points(spdf_points[spdf_points$county == 'Clark', ], col = 'springgreen', cex = .5)
+## how about summary
+summary(rslt)
 
 
-# create a study grid ----
-bb <- counties@bbox
-
-## this code is used to create a SpatialPolygonsDataFrame grid
-## it isn't important that you understand it right now
-grd <- GridTopology(
-  cellcentre.offset = c(bb[1, 1] + 50000, bb[2, 1]), 
-  cellsize = c(150000, 150000),
-  cells.dim = c(4, 6)
-)
-
-p_grd <- SpatialPolygonsDataFrame(
-  Sr = as.SpatialPolygons.GridTopology(grd),
-  data = data.frame('study_area' = 1:24),
-  match.ID = F)
-proj4string(p_grd) <- utm
-
-## plot the  grid and counties
-layout(matrix(1:2, nrow = 1, ncol = 2))
-plot(p_grd)
-text(coordinates(p_grd), label = row.names(p_grd))
-
-plot(counties)
-text(coordinates(counties), label = counties$CNTYNAME, cex = .75)
-
-
-# intersect 2 polygon geometries ----
-## a little data management to make the intersection easier
-row.names(counties) <- counties$COV_NAME
-
-## intersect the geometries
-intersect <- gIntersection(counties, p_grd, byid = T)
-
-## plot the result, color to show that they are separate
-plot(intersect, col = blues9)
-
-## check the structure
-str(intersect, max.level = 2)
-
-
-# getting our data back from the intersection ----
-## check the row.names of these polygons
-row.names(intersect)
-
-## these appear to be a concat of the first geometries row.names, and 
-## the second geometries row.names. We can work with that to get our data
-## strsplit returns a list
-tmp <- strsplit(row.names(intersect), split = ' ')
-
-
-## iterate over the list to get either the 1st or 2nd element
-county_name <- sapply(tmp, '[[', 1)
-study_area <- sapply(tmp, '[[', 2)
-
-## now we now which county and study area each polygon belongs to
-## store this data in a data.frame
-df_names <- data.frame(county_name = county_name, study_area = study_area, row.names = row.names(intersect))
-
-## let's add the area of each polygon to this data.frame
-## remember that the area for each polygon is stored
-## with each Polygon object, and is in square meters
-## below we will get the area and convert it to square kilometers
-intersect@polygons[[1]]@area / 1e6
-
-## lets iterate over the object to get this data
-parea <- sapply(seq_along(intersect), function (i) intersect@polygons[[i]]@area / 1e6)
-df_names$area <- parea
-
-## finally, create a SpatialPolygonsDataFrame
-new_polys <- SpatialPolygonsDataFrame(Sr = intersect, data = df_names)
-
-## and just for completions sake... plot it
-layout(matrix(1:3, nrow = 1, ncol = 3))
-### plot colored by county
-plot(new_polys, col = ggthemes::gdocs_pal()(17)[new_polys$county_name])
-
-### plot colored by study area
-plot(new_polys, col = ggthemes::gdocs_pal()(20)[new_polys$study_area])
-
-### plot differentiating each polygon
-plot(new_polys, col = blues9)
-
-
-# Everything in R is a function call, almost ----
-## are the following equal?
-1 + 1 == `+`(1, 1)
-
-## how about these?
-county_name[[1]] == `[[`(county_name, 1)
+## what happens if you change the order of the input objects?
+summary(st_join(counties, sf_points))
 
 
 # unioning polygons ----
 ## all of these function come from the rgeos package.
 ## select two counties to union
-plot(counties[2:3, ])
+plot(st_geometry(counties)[2:3])
 
 ## union them
-nnv <- gUnion(counties[2, ], counties[3, ])
-
-## plot the result
-plot(nnv)
-
-## inspect
-str(nnv)
-
-rm(nnv)
+plot(st_union(st_geometry(counties)[2:3]))
 
 # union all interior polygons ----
 ## we ccan do the same thing to get a the border of NV
-## use a different function, but same idea
-nv <- gUnaryUnion(counties)
+## the following uses the pipe (%>%) to increase code readability
+nv <- counties %>% st_geometry() %>% st_union()
 plot(nv)
+
+# topological relations ----
+
+# create a polygon
+a_poly = st_polygon(list(rbind(c(-1, -1), c(1, -1), c(1, 1), c(-1, -1))))
+a = st_sfc(a_poly)
+# create a line
+l_line = st_linestring(x = matrix(c(-1, -1, -0.5, 1), ncol = 2))
+l = st_sfc(l_line)
+# create points
+p_matrix = matrix(c(0.5, 1, -1, 0, 0, 1, 0.5, 1), ncol = 2)
+p_multi = st_multipoint(x = p_matrix)
+p = st_cast(st_sfc(p_multi), "POINT")
+
+## plot
+par(pty = "s")
+plot(a, border = "red", col = "gray", axes = TRUE)
+plot(l, add = TRUE)
+plot(p, add = TRUE, lab = 1:4)
+text(p_matrix[, 1] + 0.04, p_matrix[, 2] - 0.06, 1:4, cex = 1.3)
+st_within(p[1], a, sparse = F)
+st_within(p[2], a, sparse = F)
+st_touches(p[2], a, sparse = F)
+st_intersects(p[1:2], a, sparse = F)
+st_intersects(p[3:4], a, sparse = F)
+
+# remove points outside
+sparse <- st_intersects(rslt, nv)
+sel_logical <- lengths(sparse) > 0
+
+sf_points <- rslt[sel_logical, ]
+
+## check the results by uncommenting this code, and running
+# plot(nv)
+# plot(st_geometry(sf_points), col = 'purple', add = T)
 
 
 # spTranform ----
-## reproject
-wgs_pts <- spTransform(spdf_points, CRS('+init=epsg:4326'))
+## we will use a data set from the spData package
+## the epsg id for this data is 4269
+us_states <- spData::us_states
 
-## inspect coordinates
-wgs_pts@coords[1:5, 1:2]
+## check the CRS
+st_crs(us_states)
 
-## we can do this to polygons too
-wgs_counties <- spTransform(counties, CRS('+init=epsg:4326'))
+plot(st_geometry(us_states), 
+     col = 'white',
+     graticule = st_crs(us_states), 
+     axes = T, main = 'Initial, EPSG = 4269')
 
-## then we can plot the two counties projection side by side
-layout(matrix(1:2, nrow=1, ncol=2))
-
-plot(counties, main = 'UTM NAD83 zone 11')
-plot(wgs_counties, main = 'WGS84')
+## reproject basics, and replot
+wgs_usa <- st_transform(us_states, crs = '+init=epsg:4326')
+plot(st_geometry(wgs_usa), 
+     col = 'white',
+     graticule = st_crs(wgs_usa), 
+     axes = T, main = 'WGS84')
 
 
 ## we can do this with other reprojections as well so you can really tell a difference
-layout(matrix(1:8, nrow = 2, ncol = 4))
-plot(spTransform(counties, CRS('+proj=aea')), main = 'Albers Equal Area', sub = 'USGS')
-plot(spTransform(counties, CRS('+proj=sinu')), main = 'Van Der Grinten')
-plot(spTransform(counties, CRS('+proj=robin')), main = 'Robinson')
-plot(spTransform(counties, CRS('+proj=isea')), main = 'Icosahedral Snyder', sub = 'Dymaxion, Butterfly not open source')
-plot(spTransform(counties, CRS('+proj=wintri')), main = 'Winkel-Tripel', sub = 'National Geographic')
-plot(spTransform(counties, CRS('+proj=goode')), main = 'Goode Homolosine')
-plot(spTransform(counties, CRS('+proj=eqc')), main = 'Plate Carree')
-plot(spTransform(counties, CRS('+proj=gall')), main = 'Gall-Peters')
+layout(matrix(1:8, nrow = 2))
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=aea') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Albers Equal Area')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=sinu') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Van Der Grinten')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=robin') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Robinson')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=gall') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Gall-Peters')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=eqc') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Plate Carree')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=goode') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Goode Homolosine')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+init=epsg:26911') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'NAD83 Zone 11')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+init=epsg:26921') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'NAD83 Zone 21')
+
+
+## we can also define our own projection
+layout(matrix(1:2, nrow = 2))
+
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=lcc') %>% 
+  plot(col = 'white',
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Lambert Conformal Standard')
+
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=lcc +lat_1=33 +lat_2=45 +lat_0=39 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs') %>% 
+  plot(col = 'white',
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Lambert Conformal USA')
 
 
 # working with raster data ----
 ## save some data for later
-save(counties, spdf_points, wgs_pts, file = 'data/module2_6.RData')
+save(counties, sf_points, rslt, nv, file = 'data/module2_6.RData')
 
 ## let's clean our workspace first
-rm(bb, df_names, grd, intersect, new_polys, nnv, p_grd, rslt, tmp, wgs_counties, county_name, parea, study_area, counties, spdf_points, wgs_pts)
+rm(list = ls())
+load('data/module2_6.RData')
 
 ## load a raster
 dem <- raster('data/nv_dem_coarse.grd')
@@ -329,18 +334,18 @@ dem@data@inmemory
 
 
 ## plot raster
+terrain_colors <- rcartocolor::carto_pal(7, 'TealRose')
 plot(dem)
 
-## or
-image(dem, asp = 1)
+## or, with a new set of more aesthetic colors!
+image(dem, asp = 1, col = terrain_colors)
 
 
 # load a second raster, distance to roads ----
 road_rast <- raster('data/road_dist.grd')
 
 ## plot
-plot(road_rast)
-
+plot(road_rast, col = rcartocolor::carto_pal(7, 'Mint'))
 
 ## use the raster::projection function
 projection(road_rast)
@@ -348,20 +353,10 @@ projection(dem)
 identicalCRS(road_rast, dem)
 
 ## compare to nv SpatialPolygonsDataFrame
-identicalCRS(dem, nv)
-projection(nv)
+identicalCRS(dem, as(nv, 'Spatial'))
 
 ## proof these are the same crs
-plot(dem)
-plot(nv, lwd = 3, add = T)
-
-## coerce projection
-dem@crs <- nv@proj4string
-road_rast@crs <- nv@proj4string
-identicalCRS(dem, nv)
-
-## check that we haven't screwed things up
-plot(dem)
+plot(dem, col = terrain_colors)
 plot(nv, lwd = 3, add = T)
 
 
@@ -370,10 +365,10 @@ road_dist <- distance(road_rast, filename = "road_dist.grd", overwrite = T)
 
 ## cool, what does this look like?
 plot(road_dist)
-
+plot(nv, lwd = 3, add = T)
 
 ## mask raster to NV border. This will set all values outside NV to NA
-nv_road_dist <- mask(road_dist, mask = nv, filename = 'nv_road_dist.grd', overwrite = T)
+nv_road_dist <- mask(road_dist, mask = as(nv, 'Spatial'), filename = 'nv_road_dist.grd', overwrite = T)
 
 ## plot our new raster, with nevada border
 plot(nv_road_dist)
@@ -387,64 +382,53 @@ summary(nv_road_dist)
 # raster extraction ----
 ## global env setup
 rm(road_dist, road_rast)
-load('data/module2_3.RData')
-## the following command might not do anything, however there may be some additional data in the .RData file that we don't need
-rm(counties, wgs_pts)
-
-
-## create an extent object to limit the size of our raster plot
-## wubset the points so we can see them
-bounds <- extent(spdf_points[spdf_points$county == 'Humboldt', ])
-
-## extend the extent object so all the points fit on the map
-plot(dem, ext = extend(bounds, 10000))
-points(spdf_points[spdf_points$county == 'Humboldt', ])
 
 
 ## extract values from the dem
-## this returns a vector of length = nrow(spdf_points)
-elevation <- raster::extract(dem, spdf_points)
+## this returns a vector of length = nrow(sf_points)
+elevation <- raster::extract(dem, as(sf_points, 'Spatial'))
 summary(elevation)
 
 ## this can be combined with our data
 ## and yes, this can be done in one step instead of 2
-spdf_points$elevation <- elevation
+sf_points$elevation <- elevation
 
 
 ## and now, we can figure out the distribution of elevations in our data!
-hist(spdf_points$elevation * 3.28, main = 'Distribution of Elevation', xlab = 'Elevation (ft)', freq = F)
+hist(sf_points$elevation * 3.28, main = 'Distribution of Elevation', xlab = 'Elevation (ft)', freq = T)
 
 ## what about those NAs?
-na_points <- spdf_points[is.na(spdf_points$elevation), ]
+na_points <- sf_points[is.na(sf_points$elevation), ]
 ## honestly, this 2000 number is purely experimental, 
 ## change values till you get what you want on the map
-bounds <- extend(extent(na_points), 2000)
+bounds <- extend(extent(as(na_points, 'Spatial')), 2000)
 
 ## plot the map, zoom in on these points in the map
-plot(dem, ext = bounds)
-points(na_points)
+raster::plot(dem, ext = bounds, col = terrain_colors)
+plot(st_geometry(na_points), col = 'black', add = T)
 plot(nv, add = T)
 
 
 load("data/module2_6.RData")
+wgs_pts <- sf_points[1:100, ] %>% st_transform(4326)
 
 library(leaflet)
 # interactive mapping ----
-leaflet::leaflet(wgs_pts[1:100, ]) %>% 
+leaflet::leaflet(wgs_pts) %>% 
   addTiles() %>% 
   addCircleMarkers(radius = 5)
 
 
 ## leaflet provider tiles
-leaflet::leaflet(wgs_pts[1:100, ]) %>% 
+leaflet::leaflet(wgs_pts) %>% 
   addProviderTiles(providers$Esri.WorldTopoMap) %>% 
   addCircleMarkers(radius = 5)
 
 
 ## and popups
-leaflet::leaflet(wgs_pts[1:100, ]) %>% 
+leaflet::leaflet(wgs_pts) %>% 
   addTiles() %>% 
-  addCircleMarkers(radius = 5, popup = paste(wgs_pts$species[1:100]))
+  addCircleMarkers(radius = 5, popup = paste(wgs_pts$species))
 
 
 ###########
@@ -471,4 +455,18 @@ leaflet::leaflet(wgs_pts[1:100, ]) %>%
 
 ## etc ...
 
+
+
+# SpatialLines solution ----
+## read data
+
+
+## reproject
+
+
+## plot counties
+
+## intersect
+
+## etc ...
 

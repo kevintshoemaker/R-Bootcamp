@@ -24,3 +24,6 @@ raster
 rgdal
 rgeos
 magrittr
+spData
+sf
+rcartocolor

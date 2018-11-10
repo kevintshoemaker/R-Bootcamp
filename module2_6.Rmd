@@ -1,7 +1,7 @@
 ---
 title: "Module 2.6"
 author: "Introduction to Spatial Data (Mitch Gritts)"
-date: "September 2018"
+date: "November 2018"
 output:
   html_document:
     theme: journal
@@ -90,7 +90,7 @@ There are two ways to model geographic data: as vectors or rasters. In the secti
 
 ### Vector Data
 
-Vector [^vector] data represenst the world as points with a geographic refence (they are somewhere on the earth). These points can be linked together to form more complex geometries such as lines and polygons.
+Vector [^vector] data represents the world as points with a geographic refence (they are somewhere on the earth). These points can be linked together to form more complex geometries such as lines and polygons.
 
 [^vector]: In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will almost always be refering to the geographic data .
 
@@ -901,7 +901,7 @@ Lines are very similar to polygons. See if you can load a shapefile of lines and
 
 ```
 
-```{r spatial_lines_solution, echo=FALSE}
+```{r spatial_lines_solution}
 
 # SpatialLines solution ----
 ## read data
