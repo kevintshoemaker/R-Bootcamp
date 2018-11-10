@@ -426,6 +426,13 @@ Spatial data analysis combines several different data types and methods in an at
 # before starting make sure we have a clean global environment
 rm(list = ls())
 
+# install.packages(c(&#39;dplyr&#39;, &#39;spData&#39;, &#39;sf&#39;, &#39;raster&#39;, &#39;rgdal&#39;, &#39;rgeos&#39;, &#39;rcartocolor&#39;, &#39;magrittr&#39;, &#39;leaflet&#39;))   # run this line if you haven&#39;t already installed these packages!
+
+file_name &lt;- &#39;http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/data.zip&#39;
+download.file(file_name, destfile = &#39;data.zip&#39;)
+unzip(zipfile = &#39;data.zip&#39;, exdir = &#39;.&#39;)
+
+
 # load libraries and set working directory
 library(dplyr)
 library(spData)

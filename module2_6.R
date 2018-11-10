@@ -18,6 +18,13 @@
 # before starting make sure we have a clean global environment
 rm(list = ls())
 
+# install.packages(c('dplyr', 'spData', 'sf', 'raster', 'rgdal', 'rgeos', 'rcartocolor', 'magrittr', 'leaflet'))   # run this line if you haven't already installed these packages!
+
+file_name <- 'http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/data.zip'
+download.file(file_name, destfile = 'data.zip')
+unzip(zipfile = 'data.zip', exdir = '.')
+
+
 # load libraries and set working directory
 library(dplyr)
 library(spData)
