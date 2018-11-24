@@ -476,7 +476,7 @@ But, R is an environment developed for statistical computing, so let's run some 
 
 ### Load data
 
-First, download the sculpin eggs data [here]("sculpineggs.csv") and save this to your working directory.
+First, download the sculpin eggs data [here](sculpineggs.csv) and save this to your working directory.
 
 
 ```{r}
