@@ -2,4 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.Rproj.user/shared/notebooks/paths
+
+.DS_Store
+.Rhistory

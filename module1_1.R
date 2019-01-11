@@ -14,7 +14,9 @@
 ########################
 
 
-Batmans_bulter <- 'Alfred Pennyworth'
+
+Batmans_butler <- 'Alfred Pennyworth'
+
 
 ##################
 ####  Create R Objects 

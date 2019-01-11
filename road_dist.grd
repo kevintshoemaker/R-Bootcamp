@@ -1,6 +1,6 @@
 [general]
 creator=R package 'raster'
-created=2018-09-07 21:56:45
+created=2018-11-10 09:17:16
 [georeference]
 nrows=389
 ncols=263
@@ -8,7 +8,7 @@ xmin=240120.276955463
 ymin=3875610.62303524
 xmax=766120.276955463
 ymax=4653610.62303524
-projection=+init=epsg:26911 +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0
+projection=+proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
 [data]
 datatype=FLT4S
 byteorder=little

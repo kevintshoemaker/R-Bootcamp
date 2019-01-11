@@ -67,7 +67,9 @@ The R console is located in the left half or bottom left of the RStudio interfac
 Objects are assigned a value using R's **assignment operator**, which looks like a left arrow (`<-`). Type the following statement into the console:
 
 ```{r results=F}
-Batmans_bulter <- 'Alfred Pennyworth'
+
+Batmans_butler <- 'Alfred Pennyworth'
+
 ```
 
 Then hit "Enter". What does R return? 

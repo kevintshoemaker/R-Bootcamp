@@ -21,6 +21,10 @@ NOTE: this workshop series was organized by the UNR student chapter of The Wildl
  
 ## Facilitators
 
+Krymsen Hernandez       
+Department of Natural Resources and Environmental Science       
+Email: krymsen21(at)gmail(dot)com        
+
 [Kevin Shoemaker](http://naes.unr.edu/shoemaker/)		 
 Department of Natural Resources and Environmental Science       
 Office: Fleischmann Agriculture 220E					
@@ -29,10 +33,6 @@ Email: [kshoemaker@cabnr.unr.edu](kshoemaker@cabnr.unr.edu)
 [Mitchell Gritts](http://mgritts.github.io/cv/)     
 Nevada Department of Wildlife          
 Email: mgritts(at)ndow(dot)org      
-
-Krymsen Hernandez       
-Department of Natural Resources and Environmental Science       
-Email: krymsen21(at)gmail(dot)com        
 
 Jonathan DeBoer       
 Department of Geography       
