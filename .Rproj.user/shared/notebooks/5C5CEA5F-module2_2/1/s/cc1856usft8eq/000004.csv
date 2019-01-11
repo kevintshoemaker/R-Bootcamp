@@ -1,6 +1,0 @@
-"0","# gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column."
-"0","gather_clim_vars <- gather(clim_data, "
-"0","                           key = climvar_station, "
-"0","                           value = value, "
-"0","                           -Date)"
-"0","gather_clim_vars"

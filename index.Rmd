@@ -154,12 +154,12 @@ rmd2rscript2 <- function(infile="LECTURE2.Rmd"){    # function for converting ma
 
 ```{r echo=FALSE, eval=FALSE}
 
-rmd2rscript("module1_1.Rmd")
-rmd2rscript("module1_2.Rmd")
-rmd2rscript("module1_3.Rmd")
-rmd2rscript("module2_1.Rmd")
-rmd2rscript("module2_2.Rmd")
-rmd2rscript("module2_3.Rmd")
+rmd2rscript2("module1_1.Rmd")
+rmd2rscript2("module1_2.Rmd")
+rmd2rscript2("module1_3.Rmd")
+rmd2rscript2("module2_1.Rmd")
+rmd2rscript2("module2_2.Rmd")
+rmd2rscript2("module2_3.Rmd")
 rmd2rscript2("module2_4.Rmd")
 rmd2rscript2("module2_5.Rmd")
 rmd2rscript2("module2_6.Rmd")
@@ -182,15 +182,6 @@ rmarkdown::render("module1_2.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("module1_3.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("module1_4.Rmd",rmarkdown::pdf_document())  # latex_engine="xelatex"
 
-
-rmarkdown::render('LECTURE3.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LAB1.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LAB2.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LAB3.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LAB4.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LAB5.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LAB6.Rmd',rmarkdown::pdf_document())
-rmarkdown::render('LAB7.Rmd',rmarkdown::pdf_document())
 
 
 ```

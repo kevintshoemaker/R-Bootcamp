@@ -1,4 +1,0 @@
-"0","# ?rownames"
-"0","# Try to do similar manipulations with the row names!"
-"0","rownames(data.df) <- paste(""obs"",1:nrow(data.df),sep="""")"
-"0","head(data.df)"

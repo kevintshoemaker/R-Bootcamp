@@ -94,6 +94,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -412,10 +415,10 @@ div.tocify {
 <div id="lets-create-our-first-object" class="section level3">
 <h3>Let’s create our first object</h3>
 <p>Objects are assigned a value using R’s <strong>assignment operator</strong>, which looks like a left arrow (<code>&lt;-</code>). Type the following statement into the console:</p>
-<pre class="r"><code>Batmans_bulter &lt;- &#39;Alfred Pennyworth&#39;</code></pre>
+<pre class="r"><code>Batmans_butler &lt;- &#39;Alfred Pennyworth&#39;</code></pre>
 <p>Then hit “Enter”. What does R return?</p>
 <p>NOTHING!</p>
-<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface). You should see that you now have a new <strong>object</strong> in your environment, called “Batmans_butler”, and storing a value of “Alfred Pennyworth”.</p>
+<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface). You should see that you now have a new <strong>object</strong> in your environment, called “Batmans_butler”, which stores a <strong>text string</strong>: “Alfred Pennyworth”.</p>
 <p>Now type <code>print(Batmans_butler)</code><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> into the R console and hit “Enter”. What happens? <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
 <p>If you enter the name of an object at the command line, R automatically prints the value of the object- you don’t need to use the <code>print()</code> function… Try it: type <code>Batmans_butler</code> into the R console and hit “Enter”. R dutifully returns the name of Bruce Wayne’s loyal and tireless butler, best friend and surrogate father figure.</p>
 </div>
@@ -432,19 +435,20 @@ div.tocify {
 </div>
 <div id="r-objects" class="section level2">
 <h2>R Objects</h2>
-<p>R has many different types of objects (sometimes refered to as data types). These are the building blocks of the language. They include scalars, vectors, matrices, lists, data frames, and functions.</p>
+<p>R has many different types of objects (sometimes refered to as data types). These are the building blocks of the language. They include <em>scalars</em>, <em>vectors</em>, <em>matrices</em>, <em>lists</em>, <em>data frames</em>, and <em>functions</em>.</p>
 <div id="workspace-management" class="section level3">
 <h3>Workspace management</h3>
-<p>The workspace (environment) panel window in R can become cluttered as we create variables and assignments in R. As we work through the modules in this bootcamp it will be helpful to clear the workspace everyonce in a while to maintain our sanity. Earlier we assigned the value “Alfred Pennworth” to the variable <code>Batmans_butler</code>. Let’s remove that from the workspace. There are several ways to do this.</p>
+<p>The workspace (environment) panel window in R can become cluttered as we create variables and assignments in R. As we work through the modules in this bootcamp it will be helpful to clear the workspace every once in a while to maintain our sanity. Earlier we assigned the value “Alfred Pennyworth” to the variable <code>Batmans_butler</code>. Let’s remove that from the workspace. There are several ways to do this.</p>
 <ol style="list-style-type: decimal">
-<li>In the environment panel there is a little broom. If you click that it will clear the entire workspace.</li>
+<li>In the ‘environment’ panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire workspace.<br />
+</li>
 <li>Use <code>rm(Batmans_butler)</code> to clear just the <code>Batmans_butler</code> variable.</li>
 <li>Use this handy one-liner <code>rm(list=ls())</code> to clear the entire workspace.</li>
 </ol>
 </div>
 <div id="scalars" class="section level3">
 <h3>Scalars</h3>
-<p>Scalars are the simplest objects in R. A scalar is just a single value. Remember the when we assigned Alfred Pennyworth to the <code>Batmans_butler</code> object? When we did that we created a scalar. Scalars can be any single value.</p>
+<p>Scalars are the simplest objects in R. A scalar is just a single value. Remember the when we assigned the text string ‘Alfred Pennyworth’ to the <code>Batmans_butler</code> object? When we did that we created a scalar. Scalars can be any single value.</p>
 <pre class="r"><code>##################
 ####  Create R Objects 
 ##################
@@ -480,7 +484,7 @@ scalar_2 + scalar_4</code></pre>
 <div id="vectors" class="section level3">
 <h3>Vectors</h3>
 <p>Vectors are combinations of scalars stored as a single object. Let’s create some vectors.</p>
-<p>There are many different ways to create a vector. You’ll learn more about that later in the bootcamp. Look (or print) some of the vecotrs in the workspace. Each vector is comprised of several scalars. Each of these scalars is called an element of the vector. You can still check the types of the objects with the <code>typeof()</code> function (try it yourself).</p>
+<p>There are many different ways to create a vector. You’ll learn more about that later in the bootcamp. Look (or print) some of the vectors in the workspace. Each vector is comprised of several scalars. Each of these scalars is called an <strong>element</strong> of the vector. You can still check the types of the objects with the <code>typeof()</code> function (try it yourself).</p>
 <p>What happened with <code>vector2</code> and <code>vector4</code>? We supplied a mix of numeric types and character, but the resulting vector is all characters? This is because vectors cannot contain multiple different types. R will convert (coerce) all types to a type that the data can be coerced to. Check <code>vector5</code>. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. <code>TRUE</code> maps to 1 and <code>FALSE</code> maps to 0.</p>
 <p>In the code above we use another function called <code>c()</code>. I find it easiest to think of it as a concatenate or combine. It takes several objects, and combines them together into a vector. We can even use <code>c()</code> to combine scalar objects, like below.</p>
 <pre class="r"><code>a &lt;- 1
@@ -509,8 +513,8 @@ d4    # returns: 2 4 4</code></pre>
 </div>
 <div id="functions" class="section level3">
 <h3>Functions</h3>
-<p>Functions are an essential building block in R. Without functions we would need to write out every bit of logic for everything we want to accomplish in R. We’ve already used a few functions (<code>typeof</code>, <code>c</code>) without fully understanding what they are. That is about to change!</p>
-<p>Just like in algebra, functions are essentially machines that take any number inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. They basic syntax looks like the code snippet below.</p>
+<p>Functions<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> are an essential building block in R. Without functions we would need to write out every bit of logic for everything we want to accomplish in R. We’ve already used a few functions (<code>typeof</code>, <code>c</code>) without fully understanding what they are. That is about to change!</p>
+<p>Just like in algebra, functions are essentially machines that take any inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. They basic syntax looks like the code snippet below.</p>
 <pre><code>## function syntax
 functionName(inputs)</code></pre>
 <p>Let’s use another function called <code>sum()</code>. This function takes a set of several values and computes the sum of those numbers.</p>
@@ -524,30 +528,17 @@ sum(1, 2, 3, 10)    # returns: 15
 sum(vector1)        # returns: 10.3</code></pre>
 <p>If you ever forget the arguments of a function, or how it works there are several ways to get help. There is a built in function called <code>help()</code> that will takes a function name as an argument, and looks up the help documents for the given function. The <code>?</code> is an alternative to the <code>help</code> function.</p>
 <pre class="r"><code>help(sum)
-?sum</code></pre>
-<p>One important concept to understand is that functions can be treated like regular objects in R. This is actually a very important concept in programming in general, and a feature of many programming languages. This feature, when objects can be treated as regular objects, is refered to <a href="https://en.wikipedia.org/wiki/First-class_function">first-class functions</a>. In practice this means that we can assign functions to values, use them as arguments in other functions, and return functions from functions. This sounds complicated, but work through the code below for some insight.</p>
-<pre class="r"><code>########
-## first class functions
-
-## assign functions to values
-sum2 &lt;- sum
-sum2(1, 2, 3, 10)    # use the value sum2 as a function!
-
-## use functions as arguments in other functions
-## lets compute the average length of some of the vectors we&#39;ve created
-## this should return 3.66
-mean(c(length(vector1), length(vector2), length(vector3)))</code></pre>
-<p>Let’s walk through this last line of code together. We are use 3 different functions: <code>c</code>, <code>length</code>, <code>mean</code>. <code>length</code> is calculating the length of each vector. We are then taking the results of length and creating a vector with the <code>c</code> functions. The result of this is then used as the argument for the <code>mean</code> function.</p>
-<p>Throughout your R journey you will see these properties used many times. Maybe not so much when first starting. But they are important concepts. Especially the fact that the R has first-class functions. Functions are often used as arguments to other functions as a shortcut. It saves the intermediate step of saving the results to another variable, then providing that variable as an argument. It also tends to save memory, as we are no longer storing that variable in memory.</p>
+?sum    # this is an alternative to &#39;help(sum)&#39;!</code></pre>
 </div>
 <div id="matrix-objects-in-r" class="section level3">
 <h3>Matrix objects in R</h3>
-<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together! To form a matrix, the vectors must be of the same length and the same <strong>class</strong> (class is another term for type, you’ll learn more about classes soon). If different types are provided R will attempt to coerce the elements into a common type. A matrix has two <strong>dimensions</strong>: rows and columns.</p>
+<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together! To form a matrix, the vectors must be of the same length and the same <strong>class</strong> (class is another word for type). If different types are provided R will attempt to coerce the elements into a common type. A matrix has two <strong>dimensions</strong>: rows and columns.</p>
 <p>Let’s make our first matrix. One simple way to make a matrix is just by joining two vectors using the function <code>cbind</code> (bind vectors or matrices together by column) or <code>rbind</code> (bind vectors or matrices together by row)</p>
 <pre class="r"><code>#############
 ### MATRICES
 #############
-d.mat &lt;- cbind(d1,d2)        # create a matrix by binding vectors
+
+d.mat &lt;- cbind(d1,d2)        # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
 d.mat</code></pre>
 <pre><code>##      d1 d2
 ## [1,]  1  4
@@ -557,6 +548,18 @@ d.mat</code></pre>
 <pre><code>## [1] &quot;matrix&quot;</code></pre>
 <p>And there are other ways to make a matrix in R. For instance, we can use the function “matrix”:</p>
 <pre class="r"><code>d.mat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way
+d.mat</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6</code></pre>
+<pre class="r"><code>d.mat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way
+d.mat</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    2
+## [2,]    3    4
+## [3,]    5    6</code></pre>
+<pre class="r"><code>d.mat &lt;- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way
 d.mat</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    4
@@ -978,6 +981,10 @@ factorial(5)     # factorial
 ### CHALLENGE EXERCISES
 ############
 
+### Challenge 1: Create a 3 by 2 matrix equivalent to d.mat by binding rows 
+
+# (HINT: use the &quot;rbind()&quot; function), using the following as rows:
+
 c(1,4) </code></pre>
 <pre><code>## [1] 1 4</code></pre>
 <pre class="r"><code>c(2,5) </code></pre>
@@ -990,25 +997,49 @@ c(1,4) </code></pre>
 <li><p>Create a 3 by 1 (3 rows, 1 column) matrix called ‘d.mat3’ with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command ‘1:3’)? HINT: use the “dim()” function, which returns the dimensionality of an object.</p></li>
 <li><p>Take your matrix ‘d.mat2’ and convert it to a vector containing all elements in the matrix. HINT: use the “as.vector()” function.</p></li>
 </ol>
-<p>6: Create a list named ‘d.list’ that includes a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).</p>
+<p>6: Create a list named ‘d.list’ that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).</p>
 <p>7: Extract (subset) the 2nd row of the 3rd matrix in the array in ‘d.list’ (the list created in challenge 6 above).</p>
 <p>8: (extra challenging!) Create a data frame named ‘df_spatial’ that contains 25 locations, with ‘long’ and ‘lat’ as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1].</p>
 <p>HINT: you don’t need to type each location in by hand!</p>
 <p>To make sure you got it right, use the following commands in R:</p>
 <p>Don’t worry if you don’t understand the code- we’ll talk about plotting soon enough!</p>
-<pre class="r"><code>plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
+<pre class="r"><code>########
+# Code for visualizing the results from challenge problem 8
+
+plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <p>It should look something like this (above)!</p>
+<div id="finally-some-more-advanced-exploration-of-functions" class="section level4">
+<h4>Finally: some more advanced exploration of functions</h4>
+<p>Here is some code to help you get more familiar with some of the less intuitive aspects of R functions:</p>
+<pre class="r"><code>#################
+# More advanced exploration of functions!
+
+########
+## first class functions
+
+## assign functions to values
+sum2 &lt;- sum
+sum2(1, 2, 3, 10)    # use the value sum2 as a function!
+
+## use functions as arguments in other functions
+## lets compute the average length of some of the vectors we&#39;ve created
+## this should return 3.66
+mean(c(length(vector1), length(vector2), length(vector3)))</code></pre>
+<p>Let’s walk through this last line of code together. We are use 3 different functions: <code>c</code>, <code>length</code>, <code>mean</code>. <code>length</code> is calculating the length of each vector. We are then taking the results of length and creating a vector with the <code>c</code> functions. The result of this is then used as the argument for the <code>mean</code> function.</p>
+<p>Throughout your R journey you will see these properties used many times. Maybe not so much when first starting. But they are important concepts. Especially the fact that the R has first-class functions. Functions are often used as arguments to other functions as a shortcut. It saves the intermediate step of saving the results to another variable, then providing that variable as an argument. It also tends to save memory, as we are no longer storing that variable in memory.</p>
 <p><a href="module1_2.html">–go to next module–</a></p>
+</div>
 </div>
 <div class="footnotes">
 <hr />
 <ol>
 <li id="fn1"><p>NOTE: <code>print()</code> is an <strong>R function</strong> that comes with base R. It takes the name of an object as its <strong>argument</strong> and it responds by printing the contents of that object. We’ll get more into R functions shortly.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you’ve typed the first couple letters, RStudio will suggest “Batmans_butler” and you can just hit “Enter” to complete the object name!<a href="#fnref2">↩</a></p></li>
+<li id="fn2"><p>RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you’ve typed the first couple letters (e.g., “bat”), RStudio will suggest “Batmans_butler” and you can just hit “Enter” to complete the object name! The auto-type feature, unlike R, is not case sensitive!<a href="#fnref2">↩</a></p></li>
 <li id="fn3"><p>RStudio has several helpful keyboard shortcuts to make running lines of code easier. <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">Check this website</a> for a comprehensive set of keyboard shortcuts<a href="#fnref3">↩</a></p></li>
 <li id="fn4"><p>Functions are essentially machines that take inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>One important concept to understand is that functions can be treated like regular objects in R. This is actually a very important concept in programming in general, and a feature of many programming languages. This feature, when objects can be treated as regular objects, is refered to <a href="https://en.wikipedia.org/wiki/First-class_function">first-class functions</a>. In practice this means that we can assign functions to variables, use them as arguments in other functions, and return functions from functions. This sounds complicated, but work through the code at the end of the module for some insight.<a href="#fnref5">↩</a></p></li>
 </ol>
 </div>
 

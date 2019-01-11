@@ -64,9 +64,9 @@ What's yours? Usually the default working directory is your "Documents" folder.
 
 ### ASIDE: RStudio Projects
 
-If you're using an **RStudio Project** (.Rproj extension) then the default working directory is the directory containing the .Rproj file- which is convenient, because:
+If you're using an **RStudio Project** (.Rproj extension) then the default working directory is the directory where the .Rproj file lives- which is convenient, because:
 1. That's most likely where the data for that project live anyway     
-2. If you're collaborating with someone else on the project, you can both open the project and immediately read/write data to that directory (without having to set the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!
+2. If you're collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and immediately read/write data to that directory (without having to set the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!
 
 To start a new RStudio Project, just click on "File->New Project" in RStudio's menu bar.  
 
