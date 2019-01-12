@@ -1,6 +1,6 @@
 ---
-title: "Module 2.3"
-author: "Parallel processing in R (J. Greenberg)"
+title: "Module 2.4"
+author: "The Tidyverse and Data Wrangling in R (C. Albano)"
 date: "September 2018"
 output: 
   html_document: 
@@ -9,9 +9,8 @@ output:
     toc_float: yes
 ---
 
-```{r GlobalOptions, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-options(knitr.duplicate.label = 'allow')
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE)
 ```
 
 ```{r echo=FALSE}
@@ -24,670 +23,420 @@ options(knitr.duplicate.label = 'allow')
 ####                                          #### 
 ##################################################
 
-##################################################
-####  Parallel processing in R                ####
-####  Facilitator: Jonathan Greenberg         ####
-####     jgreenberg@unr.edu                   ####
-##################################################
+
+#########################################
+####  Data Wrangling with Tidyverse  ####
+####                                 ####
+####  Author: Christine Albano       ####
+#########################################
 
 
 ```
 
-**Guest presenter**: Jonathan Greenberg (who also pulled this module together: email jgreenberg_at_unr.edu)  
+**Guest presenter**: Christine Albano (who also pulled this module together!)
 
-This is the first of the modules that really go *beyond the basics*. Modules 2.3 to 2.6 provide a "whirlwhind" tour of more advanced things you can do in R, from high performance computing, to sophisticated visualizations to geographic analysis.  
+# Load script for module #2.3
+1. Click [here](module2_3.R) to download the script! Save the script to a convenient folder on your laptop.
 
-## Load script for module #2.3
+2. Load your script in RStudio.
 
-1. Click [here](module2_3.R) to download the script! Save the script to a convenient folder on your laptop. [alternative: [load Jonathan's original script](greenberg_code.R)]
+In this tutorial we introduce the 'Tidyverse' set of packages, which were designed to facilitate everyday data management and visualization tasks in R using a consistent data structure and syntax. Much of the content in this tutorial is based on the online resource [R for Data Science](http://r4ds.had.co.nz/) by Garrett Grolemund and Hadley Wickham. 
 
-2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar. 
+![](http://r4ds.had.co.nz/diagrams/data-science-wrangle.png)
 
-Let's get started with parallel processing in R!
+The core tidyverse set of packages includes all of the below (plus a handfull of others). For now, just focused on the first four for data wrangling:
 
-## Running R in parallel!
+* dplyr, for data manipulation
 
-This is a huge topic, but the basic concept of parallel programming is the following:
+* tidyr, for data tidying
 
-Given some problem X that can be divided into subproblems x1, x2, x3, each subproblem can be sent to a different "worker" processor (which may be located on a different physical computer).  
+* readr, for data import
 
-Each processor then sends the results of its subproblem back to a central "master". The master often then pieces the subproblems back together to return to the user.
+* tibble, for tibbles, a modern re-imagining of data frames
 
-Parallel computing is not a cure-all, and not all problems will benefit from it.  We'll come back to this issue in a bit.
+* ggplot2, for data visualisation
 
-There are a lot of packages to realize parallel computing within R, and current versions of R even come with some parallel computing packages built-in.  A full list can be found [here](http://cran.r-project.org/web/views/HighPerformanceComputing.html).
+* purrr, for functional programming
 
-I will be following the examples from [http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf](http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf). 
+* stringr, for strings
+
+* forcats, for factors
 
 
-### Set up your workspace
+# Learning goals
 
-First, let's set up our workspace to run an example using a genomics data set. This example uses [bioconductor](https://www.bioconductor.org/), which provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses R and is open source and open development.
+  * Use *Tidyverse* grammar (piping) and data structures to perform basic data manipulation tasks 
+  
+  * Use *tidyr* and *dplyr* data transformation verbs to wrangle data
+      
+  * Work with and parse dates using *lubridate*
 
-Installing the packages for this module can take a while, so hopefully you have already had a chance to do this prior to coming to this workshop! 
 
-```{r eval=FALSE}
 
-################
-# Set up the workspace (can take a surprisingly long time!)
 
-# examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
+```{r setupworkspace}
 
-# First, load this script directly from the web (which also installs required packages for you!):
-source("http://bioconductor.org/biocLite.R")
-biocLite("Biobase")
-
-```
-
-NOTE: if you had trouble running the above code, you can just load the example dataset [here](geneData.csv)
-
-We are going to run a test using gene expression data-- let's load the example dataset! 
-
-```{r}
-
-data(geneData, package = "Biobase")   # load example data from Biobase package between all pairs of genes across all samples.
-# This data represents 500 genes (organized by rows)
-# with expression data (numerical). 
-
-# The goal is to calculate the correlation coefficient
-# between all pairs of genes across all samples.  For example,
-# to test gene 12 vs 13:
+# install.packages("tidyverse")
+library(tidyverse)
 
 ```
 
+# Using the pipe operator `%>%` in R
+The 'tidyverse' set of packages takes advantage of the pipe operator `%>%`, which provides a clean and intuitive way to structure code and perform sequential operations in R.
 
-### Example: A simple yet computationally intensive problem
+Key advantages include:
 
-This data represents 500 genes (organized by rows) with expression data (numerical). The goal is to calculate the correlation coefficient between all pairs of genes across all samples. 
+* code is more readable and intuitive --  reads left to right, rather than inside out as is the case for nested function
 
-For example, let's examine the correlation between gene 12 vs 13:
+* perform multiple operations without creating a bunch of intermediate (temporary) datasets
 
-```{r eval=FALSE}
-
-?cor    # view help page for "cor()" function
-geneData[12,]
-geneData[13,]
+This operator originally comes from the *magrittr* package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m. When reading code out loud, use 'then' for the pipe. For example the command here:
 
 ```
 
-
-```{r}
-
-plot(geneData[12,],geneData[13,])    # plot the correlation between two genes
-cor(geneData[12,],geneData[13,])
+x %>% log() %>% round(digits=2)
 
 ```
 
+can be interpreted as follows:
 
-The total number of paired correlations will be 500 x 499 / 2 = **124,750 correlations**!
+> Take the object "x", THEN take its natural logarithm, THEN round that value to 2 significant figures 
 
-We can identify all combinations in a vector using the "combn() function:
 
-```{r eval=FALSE}
+The structure is simple. Start with the object you want to manipulate, and apply actions (e.g., functions) to that object in the order in which you want to apply them. 
 
-?combn    # function to determine all combination ids
+Here is a quick example.
 
-```
-
-
-We are going to leave this as a list, for now...
-
-```{r}
-
-pair <- combn(1:nrow(geneData),2,simplify=F)   #leave this as a list, for now...
-
-length(pair)
-head(pair,n=3)     # note that the "head()" and "tail()" functions can be used on lists in addition to data frames...
-tail(pair,n=3)
-
-```
-
-
-It often makes sense to break a problem like this down a set of repeated tasks, each of which is expressed as a function. 
-
-Let's write (and test) a function to accept a pair in the database and returns the correlation:
-
-```{r}
-
-############
-# New function: accepts a gene pair and the database as arguments and returns
-# the correlation:
-
-geneCor <- function(pair,gene=geneData){
-  cor(gene[pair[1],],gene[pair[2],])
-}
-
-# Test the function:
-cor(geneData[12,],geneData[13,])
-geneCor(pair=c(12,13),gene=geneData)    # should be the same result as the previous command...
-
-```
-
-We left our pairs as a list, so we can use *lapply*!  Recall that *lapply* takes each element in a list (in sequence), applies a specified function to that element, and returns the results from the function in another list.  
-
-Let's just test the first 3 pairs:
-
-
-```{r}
-
-########
-# use "lapply" to run our function on the first three gene pairs
-
-pair[1:3]
-outcor <- lapply(pair[1:3],geneCor)
-outcor
-
-```
-
-Now let's do the whole calculation.  First, open your task manager by hitting control-alt-delete (on Windows) and choosing "Start Task Manager". 
-Click the "Performance" tab.  Notice you have a few graphs next to "CPU Usage", which shows each processor you have on your machine.
-
-Type the following in R and watch the CPU Usage History graph. Note the use of the "system.time()" function, which allows us to keep track of processing time for one or more R commands. Processing time can vary substantially among machines. 
-
-```{r}
-
-#################
-# Examine processor use and speed
-
-# First, open your task manager to view processor usage (see website for more details).
-
-system.time(outcor <- lapply(pair,geneCor))
-
-# Notice ONE CPU spiked.  Make note of how long it took to run.
-
-```
-
-Notice ONE CPU spiked.  Make note of how long it took to run. 
-
-Now let's make an even bigger dataset (just repeating geneData four times), making 26 x 4 = 104 columns:
-
-```{r}
-
-fakeData <- cbind(geneData,geneData,geneData,geneData)    # make an even bigger dataset!
-
-```
-
-
-Now lets make a more complex, computationally intensive function that calculates the 95% confidence intervals of the correlation coefficients through a process of *bootstrapping*:
-
-
-```{r}
-
-###########
-# New, more complex function that generates bootstrap confidence intervals for correlation coefficients
-
-library(boot)   # load the "boot" library for performing bootstrapping analysis
-
-# 'x' represents vector with two elements, indicating the pair of genes to compare
-# 'gene' represents a gene expression database
-
-geneCor2 <- function(x, gene = fakeData){
-  mydata <- cbind(gene[x[1], ], gene[x[2], ])      # extract the rows (genes) to compare
-  mycor <- function(x, i) cor(x[i,1], x[i,2])     # function (correlation) to perform bootstrap analysis with
-  boot.out <- boot(mydata, mycor, 1000)           # perform bootstrap analysis (1000 iterations)
-  boot.ci(boot.out, type = "bca")$bca[4:5]         # extract and return the bootstrap confidence interval
-}
-
-```
-
-How long would it take to run correlation analyses using this new function for just 10 gene pairs?
-
-```{r}
-
-# Test how long 10 pairs would take:
-genCor2_system_time <- system.time(outcor <- lapply(pair[1:10],geneCor2))
-genCor2_system_time["elapsed"] 
-
-```
-
-What did you get? On my machine this operation (for 10 pairs) took around 1.2 seconds...
-
-Let's use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again? 
-
-```{r}
-
-length(pair)   # how many pairs were there again?
-
-```
-
-Okay, so there are 124,750 pairs...  So let's figure out how long 124,750 pairs will take:
-
-
-```{r}
-
-############
-# estimate time to run 124,750 pairs
-
-genCor2_system_time["elapsed"]      # time it took to run 10 pairs, in seconds
-
-genCor2_system_time["elapsed"] *(124750/10)     # time it would take to run 124750 pairs, in seconds 
-genCor2_system_time["elapsed"] *(124750/10/60/60)    # in hours...
-
-```
-
-
-Ouch!  This is a good candidate for parallel processing! 
-
-### Running in Parallel!
-
-Let's take a subsample of all the pairs for exploring this further:
-
-```{r}
-
-###########
-# Explore parallel processing vs sequential processing
-
-pair2 <- sample(pair,300)    # first extract a subsamble of all the pairs
-
-```
-
-
-The opposite of parallel processing is "sequential processing". Let's first test a sequential version of this task:
-
-```{r}
-
-# Let's test a sequential version of this:
-system.time(outcor <- lapply(pair2,geneCor2))
-
-# Note the elapsed time.
-
-```
-
-Now, we can explore implementing this operation in parallel. To do this, we will use the "parallel" package in R. 
-
-#### 'parallel' package
-
-Parallel's basic concept is to launch "worker" instances of R on other processors, and then send the subproblems to each R instance. This means that if you want to use 4 processors ("cores"), after you start a parallel cluster, you will have 5 copies of R running: the master copy (the one you are typing into) and 4 worker copies.  
-
-The "cluster" of processors can be either a single computer with multiple computers (like the one you are working on), or a network of computers linked by some clustering framework.   
-
-The basic order of ops with using 'parallel' is as follows:
-1. library("parallel")   
-2. Make a parallel cluster using makeCluster(...)   
-3. Load packages that your function needs into the workers using clusterEvalQ(cl=...,library(...))    
-4. Load objects (data) from the master environment into the worker environments using clusterExport(cl=...)    
-5. Following basic lapply() semantics, use e.g. clusterApplyLB(cl=...) to apply your function to an input list, where each iteration of the "loop" will be sent to an available processor. The output is usually a list.    
-6. Shut down your cluster using stopCluster(...)    
-
-
-So the first step is to load the 'parallel' package:
-
-```{r}
-
-###########
-# Run this operation in parallel!!
-
-### parallel: built-in parallel computation package.
-library("parallel")       # load the package (comes with basic R installation)
-
-```
-
-We're also going to grab the "future" package for later use:
-
-```{r eval=FALSE}
-install.packages("future")    # install "future" package, which we will use later
-```
-
-```{r  eval=FALSE}
-library("future")
-
-```
-
-
-The way parallel works, is we first have to make an R cluster via "makeCluster()":   
-
-```{r eval=FALSE}
-
-?makeCluster    # learn more about "makeCluster()"
-
-```
-
-
-We are going to create a cluster with 4 cpus of type "PSOCK". 
-
-Click the task manager "Processes" (Windows) or Activity Monitor (mac), and scroll down to the "R"s:
-
-```{r}
-
-########
-# Make a cluster
-
-myCluster <- parallel::makeCluster(spec=4,type="PSOCK")    # make cluster with 4 cpus of type "PSOCK"
-myCluster
-
-length(myCluster) # One entry per "worker".
-
-myCluster[[1]]    # more info about this "worker"
-
-```
-
-Notice you now have multiple instances of Rscript.exe running now!
-
-
-We can stop the cluster by using the "stopCluster()" function:
-
-```{r eval=FALSE}
-
-?stopCluster
-```
-
-```{r eval=FALSE}
-parallel::stopCluster(myCluster)
-
-```
-
-
-Now let's make a new cluster using all available cores.
-
-```{r  eval=FALSE}
-
-######
-# Make a cluster with all available cores
-
-mycorenum <- availableCores()   # determine number of available cores
-myCluster <- parallel::makeCluster(spec=mycorenum,type="PSOCK")
-
-```
-
-
-We can send the same function to each node (worker) in the cluster using "clusterCall()":
-
-```{r eval=FALSE}
-
-######
-# Run a function on each cluster:
-
-?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster
-
-```
-
-For example, we might run the "date()" function on each cluster! Note that the results get returned as lists:
-
-```{r}
-
-date()    # run the "date()" function
-
-workerDates <- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the "date()" function on all clusters 
-class(workerDates)
-length(workerDates) # One list element per worker.
-
-```
-
-You need to remember that each worker instance of R that is running is essentially "empty" -- it won't, be default, have access to the environment of the master.  Thus, we need to send some commands/data to them in anticipation of running the code.  
-
-For example, the "search()" function tells us what packages and data are loaded (attached). Let's explore what packages are loaded in our worker environments:
-
-```{r eval=FALSE}
+```{r piping1}
 
 ####
-# explore packages loaded in our worker environments
+####  Using the pipe operator %>% (ctrl-shift-m)
+####
 
-search()      # packages loaded in global environment
-workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)     # .. and worker environments
-# workerPackages
+# start with a simple example
+x <- 3
 
-```
+# calculate the log of x
+log(x) # form f(x) is equivalent to
 
+x %>% log() # form x %>% f
 
-We are using a package called "boot" in our function, so we need to load up this package on every worker using the "clusterEvalQ()" function:
+# example of multiple steps in pipe
+round(log(x), digits=2) # form g(f(x)) is equivalent to
 
-```{r eval=FALSE}
-
-#########
-# load required packages on every worker:
-
-?clusterEvalQ
-```
-
-```{r}
-loadOnCls <- parallel::clusterEvalQ(cl=myCluster,library("boot"))   
+x %>% log() %>% round(digits=2) # form x %>% f %>%  g
 
 ```
 
-```{r eval=FALSE}
-# We can confirm the boot package is now loaded:
-parallel::clusterCall(cl=myCluster,fun=search)
+# Importing data into *R* using *readr*
+
+Here, we import meteorological data from Hungry Horse and Polson Kerr Dams in Montana as a *tibble* dataframe. The *readr* package imports data as a special type of dataframe called a *tibble*. The *tibble* dataframe has several advantages over the 'regular' dataframe, including nicely formatted printing, more useful defaults, faster imports, and it also flags potential issues in your dataset early on -- which can save you a lot of time later! All this said, tibble and regular dataframes are readily converted to one type vs. the other if the need arises.
+
+
+## Download an example dataset
+
+The next few examples use meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams. You can download this data set by clicking [here](MTMetStations.csv).  
+
+## Import as a *tibble*
+
+```{r dataimport}
+
+####
+####  Import data as a Tibble dataframe and take a quick glance
+####
+
+# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
+clim_data <- read_csv("MTMetStations.csv")
+
+# display tibble - note nice formatting and variable info, entire dataset is not displayed as is case in read.csv
+clim_data
+
+ # display the last few lines of the data frame
+tail(clim_data)
 
 ```
 
-Next, we will export the dataset "fakeData" to each worker using the "clusterExport()" function. 
+#  Making data tidy using *tidyr*
 
-First, look at the worker Rs and note how much memory they are using (in task manager).
+All of the tidyverse set of packages are designed to work with *Tidy* formatted data.
 
-```{r eval=FALSE}
+This means:
 
-########
-# Load required data on every worker
+  - Each variable must have its own column.
+  - Each observation must have its own row.
+  - Each value must have its own cell.
+ 
+ This is what it looks like:
+  
+  
+  ![](http://r4ds.had.co.nz/images/tidy-1.png)
 
-?clusterExport
-```
+The *tidyr* package has several functions to help you get your data into this format.
 
-```{r}
-loadData <- parallel::clusterExport(cl=myCluster,"fakeData")
-```
+Use "gather()" to get all of the values and variables into a single column.
 
-```{r eval=FALSE}
-parallel::clusterEvalQ(cl=myCluster,ls())   # Check the environment on each worker- make sure data are loaded
+![](http://r4ds.had.co.nz/images/tidy-9.png)
 
-```
+Use "separate()" to separate a single column into two separate columns. "unite()" does the opposite
 
-Check the memory now. Note that each worker is using more memory, since we loaded the fakeData into each of those worker Rs.
+![](http://r4ds.had.co.nz/images/tidy-17.png)
 
-Note we could send the entire Global environment over to the workers! To do this, we could use the "ls()" function:
+Use "spread()" to distribute two variables in a single ('key') column into separate columns, with their data values('value')
 
-```{r  eval=FALSE}
+![](http://r4ds.had.co.nz/images/tidy-8.png)
 
-#### alternatively, load all data in our environment into each worker:
-loadData <- parallel::clusterExport(cl=myCluster,ls())
-```
+```{r make data tidy}
 
-```{r eval=FALSE}
-parallel::clusterEvalQ(cl=myCluster,ls())
+####
+####  Use Tidyr verbs to make data 'tidy'
+####
 
-```
+# look at clim_data -- is it in tidy format? What do we need to do to get it there?
+head(clim_data)
 
+# gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column.
+gather_clim_vars <- gather(clim_data, 
+                           key = climvar_station, 
+                           value = value, 
+                           -Date)
 
-#### Finally: run corrlation analysis in parallel!
+gather_clim_vars
 
-Now comes the actual function call. To do this, we use the "clusterApplyLB()" function:
+# separate the climvar_station column into two separate columns that identify the climate variable and the station
+separate_clim_vars <- gather_clim_vars %>%
+  separate(climvar_station, 
+           into = c("Station","climvar"))
 
-```{r eval=FALSE}
+separate_clim_vars
 
-############
-# Spread function calls across workers using an "lapply"-like function
+# spread distributes the clim_var column into separate columns, with the data values from the 'value' column
+tidy_clim_data <- spread(separate_clim_vars, 
+                        key = climvar, 
+                        value = value)
 
-?clusterApplyLB     # function for performing the actual function call
+tidy_clim_data
 
-```
-
-This is VERY similar to an 'lapply' statement, except we identify the cluster to send the command to. Let's call the "geneCor2()" function for each gene pair, using parallel processing. We can compare the speed of the parallel vs sequential processing using the "system.time()" function.
-
-Let's call the "geneCor2()" function for each gene pair, using parallel processing!
-
-Watch your Performance tab as your cores light up:
-
-```{r}
-
-#######
-# Call the "geneCor2()" function for each gene pair, using parallel processing
-
-system.time(outcor2 <- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   
-```
-
-```{r}
-
-# vs the non-clustered version:
-system.time(outcor <- lapply(pair2,geneCor2))   # takes much longer!
-
-```
-
-
-We got a big performance boost here!
-
-Don't forget to shut down your cluster:
-
-```{r  eval=FALSE}
-
-stopCluster(myCluster)   # finally, stop the cluster..
+  
+# repeat above as single pipe series without creation of intermediate datasets
+  
+tidy_clim_data <- clim_data %>% 
+  gather(key = climvar_station,
+         value = value,
+         -Date) %>% 
+  separate(climvar_station, 
+           into = c("Station","climvar")) %>% 
+  spread(key = climvar,
+         value = value)
+  
+tidy_clim_data
 
 ```
 
+# Using dplyr -- the data wrangling workhorse
 
-### 'foreach': making parallel computing EVEN EASIER
+dplyr is by far one of the most useful packages in all of the tidyverse as it allows you to quickly and easily summarize and manipulate your data once you have it in tidy form. The basic dplyr verbs include:
 
-There are multiple parallel "backends" to R, including 'parallel', 'snow', 'multicore', 'Rmpi', to name a few.
+      * grouping data with *group_by()*
 
-'foreach' is a meta-wrapper that works on many parallel backends. What this means is you can write one set of code, and not have to modify it if the user prefers to use Rmpi instead of parallel (in which case the commands are very different).
+      * filtering rows with *filter()*
+      
+      * creating new variables with *mutate()*
+      
+      * summarizing with *summarize()*
+      
+      * selecting columns with *select()*
+      
+      * sorting columns by row with *arrange()*
 
-The basic order of ops with using 'foreach' is as follows:
+you can add variants _all (affects all variables), _at (affects selected variables), _if (affects variables that meet criteria) to most of these verbs
 
-1. library("foreach")       
-2. Load a parallel backend and foreach registration package        
-    e.g. library("doParallel")      
-3. Start a parallel backend with e.g. makeCluster(...)      
-4. Register the parallel backend with foreach,      
-    e.g.: registerDoParallel(...)      
-5. Use foreach(...) %dopar% function() to run your function in parallel.       
-6. Use '.packages' parameter in foreach(...) to load needed packages.     
-7. Stop your cluster using e.g. stopCluster(...)      
-8. Register the sequential backend to foreach using registerDoSEQ()         
+```{r dplyr verbs}
 
-```{r eval=FALSE}
 
-##########
-# Parallel processing using 'foreach'
+####
+####  Use dplyr verbs to wrangle data
+####
 
-install.packages("foreach")
-# Install the parallel backend to foreach:
-install.packages("doParallel")
+# example of simple data selection and summary using group_by, summarize, and mutate verbs
 
+# take tidy_clim_data, then
+# group data by station, then 
+# calculate summaries and put in columns with names mean.precip.in, mean.TMax.F, and mean.Tmin.F, then 
+# transform to metric and put in new columns mean.precip.in, mean.TMax.F, and mean.Tmin.F
+
+station_mean1 <- tidy_clim_data %>%
+  group_by(Station) %>% 
+  summarize(
+    mean.precip.in = mean(PrcpIN, na.rm=TRUE),
+    mean.TMax.F = mean(TMaxF, na.rm=TRUE),
+    mean.TMin.F = mean(TMinF, na.rm=TRUE)) %>%
+  mutate(
+    mean.precip.mm = mean.precip.in * 25.4,
+    mean.TMax.C = (mean.TMax.F - 32) * 5 / 9,
+    mean.TMin.C = (mean.TMin.F - 32) * 5 / 9
+  )
+  
+station_mean1
+  
+# using variants
+
+# take tidy_clim_data, then
+# group data by station, then 
+# calculate summary (mean of all non-NA values) for numeric data only, then 
+# transform temp data (.) from F to C, then
+# transform precip data (.) from in to mm
+
+
+station_mean2 <- tidy_clim_data %>%
+  group_by(Station) %>% 
+  summarize_if(is.numeric, mean, na.rm=TRUE) %>%
+  mutate_at(vars(TMaxF, TMinF), funs(C=(.-32)*5/9)) %>% 
+  mutate_at(vars(PrcpIN), funs(Prcp.mm=.*25.4))
+
+station_mean2
+  
 ```
 
-```{r}
+#  Working with Dates with *lubridate* - Date from character string
+Dates can be tricky to work with and we often want to eventually get to the point that we can summarize our data by years, seasons, months, or even day of the year. The *lubridate* package in R (also part of the tidyverse) is very useful for creating and parsing dates for this purpose. Date/time data often comes as strings in a variety of orders/formats. Lubridate is useful because it automatically works out the date format once you specify the order of the components. To to do this, identify the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date. For example:
 
-library("foreach")
-library("doParallel")
+```{r lubridate1}
 
+#### 
+####  Using lubridate to format and create date data types
+####
+
+library(lubridate)
+
+date_string <- ("2017-01-31")
+
+# convert date string into date format by identifing the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date
+
+date_dtformat <- ymd(date_string)
+
+# note the different formats of the date_string and date_dtformat objects in the environment window.
+
+# a variety of other formats/orders can also be accommodated. Note how each of these are reformatted to "2017-01-31" A timezone can be specified using tz=
+
+mdy("January 31st, 2017")
+dmy("31-Jan-2017")
+ymd(20170131)
+ymd(20170131, tz = "UTC")
+
+# can also make a date from components. this is useful if you have columns for year, month, day in a dataframe
+year<-2017
+month<-1
+day<-31
+make_date(year, month, day)
+
+
+# times can be included as well. Note that unless otherwise specified, R assumes UTC time
+
+ymd_hms("2017-01-31 20:11:59")
+mdy_hm("01/31/2017 08:01")
+
+# we can also have R tell us the current time or date
+
+now()
+now(tz = "UTC")
+today()
 ```
 
-```{r eval=FALSE}
+#  Working with Dates with lubridate - Parsing Dates
+Once dates are in date format, we can easily pull out their individual components like this:
 
-?foreach
+```{r lubridate components}
+####
+####  Parsing dates with lubridate
+####
+
+datetime <- ymd_hms("2016-07-08 12:34:56")
+
+# year
+year(datetime)
+
+# month as numeric
+month(datetime)
+
+# month as name
+month(datetime, label = TRUE)
+
+# day of month
+mday(datetime)
+
+# day of year (julian day)
+yday(datetime)
+
+# day of week
+wday(datetime)
+wday(datetime, label = TRUE, abbr = FALSE)
 ```
 
-Try running in sequential mode...
+##  Working with Dates - Parsing Dates Example
+We can use lubridate and dplyr to make new columns from a date for year, month, day of month, and day of year
 
-```{r}
+first we convert the character string date into date format. Here we are naming the new column "Date", so R will replace character string with date formatted dates
 
-# sequential mode:
-registerDoSEQ() # Avoids warnings
+```{r lubridate3}
 
-system.time(
-  outcor <- foreach(
-    p = pair2, 
-    .packages="boot", 
-    .combine="rbind") %dopar% { 
-      return(geneCor2(p)) 
-    }
+#### 
+####  Using lubridate with dataframes and dplyr verbs
+####
+
+# going back to our tidy_clim_data dataset we see that the date column is formatted as character, not date
+head(tidy_clim_data)
+
+# change format of date column
+tidy_clim_data <- tidy_clim_data %>% 
+  mutate(Date = mdy(Date))
+tidy_clim_data
+```
+
+now we can use mutate to create individual columns for the date components
+
+```{r mutate date}
+# parse date into year, month, day, and day of year columns
+tidy_clim_data <- tidy_clim_data %>% mutate(
+  Year = year(Date),
+  Month = month(Date),
+  Day = mday(Date),
+  Yday = yday(Date))
+
+tidy_clim_data
+
+# calculate total annual precipitation by station and year
+annual_sum_precip_by_station <- tidy_clim_data %>%
+  group_by(Station, Year) %>%
+  summarise(PrecipSum = sum(PrcpIN))
+
+annual_sum_precip_by_station 
+```
+
+
+#  Challenge Exercises
+
+#  Exercise 1 - make data tidy
+
+- Create a tibble dataframe using the code below and make it tidy. Do you need to spread or gather? What are the variables? what are the observations?
+ 
+``` 
+pregnancy <- tribble(         
+    ~pregnant, ~male, ~female,          
+    "yes",     NA,    10,           
+    "no",      20,    12        
 )
-
 ```
+  
+#  Exercise 2 - data summary with dplyr
 
+- use the dplyr verbs and the tidy_clim_data dataset you created above to calculate monthly average Tmin and Tmax for each station
 
+# Exercise 3 - make and parse a date with lubridate
 
-And now with a parallel backend!
+make a date object out of a character string of your birthday and find the day of year it occurs on.
 
-```{r eval=FALSE}
-
-# Parallel mode (use a parallel backend):
-
-# Create a cluster using parallel:
-myCluster <- makeCluster(spec=4,type="PSOCK")
-```
-
-
-```{r}
-
-# Register the backend with foreach (doParallel):
-registerDoParallel(myCluster)
-# Run our code! Notice I didn't change the foreach call at all:
-
-loadData <- parallel::clusterExport(cl=myCluster,"geneCor2")   # KTS: I added this to make it run - was this necessary for others? 
-
-system.time(
-  outcor <- foreach(
-    p = pair2, 
-    .packages="boot",
-    .combine="rbind") %dopar% {
-      return(geneCor2(p)) 
-    }
-)
-
-```
-
-
-Some things to notice:     
-- we explicitly define what packages are to be sent over using the .packages parameter    
-- foreach calls have access to the master's global environment.
-- we can use specific functions to join the data once its done (e.g. rbind)
-
-Don't forget to stop the cluster:
-
-```{r}
-
-stopCluster(myCluster)     # Don't forget to stop the cluster:
-
-```
-
-You should also register the default, non-parallel backend for 'foreach'. Otherwise the next time you use 'foreach' it will not work.
-
-```{r eval=FALSE}
-
-registerDoSEQ()    # register the default, non-parallel backend for foreach
-
-```
-
-
-### Sources of overhead
-
-Parallel computing, optimally, should be linear in terms of number of processors vs. time.  However, this is never the case.  A process running on one core does not take twice the time as a process running on two cores.  There are losses along the way from various sources.  These need to be thought about when writing the most efficient code.
-
-First, many programs will have parallel and non-parallel components. If your non-parallel components take X amount of time, no matter how many processors you have available, you will never run faster than X amount of time.
-
-#### Chunking
-Chunking is one of the most important considerations.  So far, we've been iterating one "row" at a time.  For faster computations, this may not be very efficient, as the overhead of sending/receiving/managing the parallel cluster swamps out gains from the processing. We can get more clever with this by sending MULTIPLE rows at one time to a worker.  This optimization of the chunk size (number of rows to send at one time to a single worker) can dramatically speed up your computation, at the cost of heavier RAM usage.
-
-#### Shared-memory machines
-A single computer like the one you are working on is a "shared memory machine" -- each processor has access to the same physical RAM.  When two processors "ask" for an R object in RAM they must compete against each other.  One process will have to wait until the other process are done reading that area of memory.  Memory access, thus, can be a bottleneck.
-
-####Networked systems of computers
-A cluster computer ("supercomputer") is really just a bunch of individual computers networked together. Each individual computer ("node" in cluster terminology) has its own set of processors, memory, and hard drive space.  When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer.  This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.  
-
-For instance, you could copy the data the function will work on to each node in a cluster, so the data does not have to be transferred from the master R to the worker Rs.
-
-Note that two nodes in a cluster do not share memory.
-
-#### Other things to worry about
-
-**RACE CONDITIONS.** This comes in to play if your workers are all writing to the same output file (say, a raster file).  As we discussed before, in general only one "thread" (worker) can write to a file at a time, otherwise the file may get corrupt.  In parallel computing, we can increase the chance that this might happen if we aren't careful.  This often requires a programmer to be able to "lock" a file -- i.e. before a worker tries to write to a file, it 1) checks if the file is "locked", 2) if it finds it unlocked it first locks the file itself, 3) it opens/writes/close to the file, 4) it unlocks the file for other workers.
-
-**Embarrassingly parallel applications and those that aren't:** the term "embarrassingly parallel" refers to problems that are absolutely trivial to parallelize.  The function we've been looking at is embarassingly parallel.  Each iteration takes (basically) the same amount of time, uses the same amount of memory, doesn't require cross-talk between workers, etc.  Raster processing, as we will see, is often an embarrassingly parallel problem -- we process an image one line at a time, sending each line to a different processor.
-
-Vector based processing, on the other hand, is often not embarrassingly parallel, and takes a lot more thought to properly parallelize a function.
-
-Parallel computing takes a lot of practice and understanding of the underlying systems to get good at.  Other issues start popping up such as load balancing (what if the functions take non-constant amounts of time on each processor), optimization of the chunk size, and a host of other issues.
-
-Debugging can also be tricky, as the various parallel backends do not typically allows workers to print to your main screen, so you have to have them dump their outputs to a file that you then do a post-mortem on.  'foreach' makes this a bit easier, since you can test a function on a single node (using registerDoSEQ()), debug it, and once it works on one node, try it out on a cluster.
 
 [--go to next module--](module2_4.html)
-
-
-
-
-
-
-
-
 
 
 

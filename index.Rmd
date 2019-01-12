@@ -1,7 +1,7 @@
 ---
 title: "Welcome to R Bootcamp!"
 author: "A hopefully more-or-less painless introduction to R"
-date: "Spring 2019"
+date: "February 2019"
 output:
   html_document:
     theme: journal
@@ -141,14 +141,15 @@ rmd2rscript2 <- function(infile="LECTURE2.Rmd"){    # function for converting ma
 rmd2rscript2("module1_1.Rmd")
 rmd2rscript2("module1_2.Rmd")
 rmd2rscript2("module1_3.Rmd")
+rmd2rscript2("module1_4.Rmd")
 rmd2rscript2("module2_1.Rmd")
 rmd2rscript2("module2_2.Rmd")
 rmd2rscript2("module2_3.Rmd")
 rmd2rscript2("module2_4.Rmd")
 rmd2rscript2("module2_5.Rmd")
-rmd2rscript2("module2_6.Rmd")
+#rmd2rscript2("module2_6.Rmd")
 
-
+## TODO: make sure there are pdf copies of all the modules... 
 
 rmarkdown::render('index.Rmd', 'word_document')
 rmarkdown::render('schedule.Rmd', 'word_document')

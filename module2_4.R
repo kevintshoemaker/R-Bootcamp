@@ -8,224 +8,206 @@
 ##################################################
 
 
-#########################################
-####  Data Wrangling with Tidyverse  ####
-####                                 ####
-####  Author: Christine Albano       ####
-#########################################
+#############################################
+####  Data Visualization with 'ggplot2'  ####
+####                                     ####
+####  Author: Stephanie Freund           ####
+#############################################
 
 
+########
+# Load packages!
 
-# install.packages("tidyverse")
+## note: if you don't already have these packages you will need to install them first!
+
 library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(carData)
+library(DAAG)
+library(RColorBrewer)
+library(leaflet)
 
 
-####
-####  Using the pipe operator %>% (ctrl-shift-m)
-####
+##############
+# Load the example data!
 
-# start with a simple example
-x <- 3
+data(Soils,package = "carData")    # load example data
 
-# calculate the log of x
-log(x) # form f(x) is equivalent to
-
-x %>% log() # form x %>% f
-
-# example of multiple steps in pipe
-round(log(x), digits=2) # form g(f(x)) is equivalent to
-
-x %>% log() %>% round(digits=2) # form x %>% f %>%  g
+#See what variables it contains...
+soil <- data.frame(Soils)
+head(soil)
 
 
-####
-####  Import data as a Tibble dataframe and take a quick glance
-####
+########
+# basic boxplot...
 
-# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
-clim_data <- read_csv("MTMetStations.csv")
-
-# display tibble - note nice formatting and variable info, entire dataset is not displayed as is case in read.csv
-clim_data
-
- # display the last few lines of the data frame
-tail(clim_data)
+ggplot(soil) +
+  geom_boxplot(aes(x=Contour, y=pH))
 
 
-####
-####  Use Tidyr verbs to make data 'tidy'
-####
+###########
+# basic scatterplot
 
-# look at clim_data -- is it in tidy format? What do we need to do to get it there?
-head(clim_data)
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca))
 
-# gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column.
-gather_clim_vars <- gather(clim_data, 
-                           key = climvar_station, 
-                           value = value, 
-                           -Date)
 
-gather_clim_vars
+########
+# Color the points by depth
 
-# separate the climvar_station column into two separate columns that identify the climate variable and the station
-separate_clim_vars <- gather_clim_vars %>%
-  separate(climvar_station, 
-           into = c("Station","climvar"))
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, color=Depth))
 
-separate_clim_vars
+##########
+# make additional alterations (outside the "aes" function)
 
-# spread distributes the clim_var column into separate columns, with the data values from the 'value' column
-tidy_clim_data <- spread(separate_clim_vars, 
-                        key = climvar, 
-                        value = value)
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5)
 
-tidy_clim_data
 
+######
+# Plot several relationships on same graphics window
+
+ggplot(soil, aes(x=pH)) +
+  geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Mg), shape=21, fill="blue", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Na), shape=21, fill="gray30", color="black", size=4, stroke=1.5)
+
+
+#########
+# Use 'tidyverse' tricks to simplify the syntax for ggplot to color by nutrient
+
+soil.nut <- gather(soil, nutrient, value, c(10,11,13))
+ggplot(soil.nut) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+
+
+######
+# or if we wanted to plot different nutrients...
+
+soil.nut2 <- gather(soil, nutrient, value, c(10,11,12))
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+
+
+##########
+# plot with facets, scales, and themes!
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+    
+
+############
+# Playing with colors in ggplot!
+
+display.brewer.all()
+
+
+#########
+# Choose a new color palette from the RColorBrewer package
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
+
+
+#########
+# Choose your own palette!
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
+
+
+##########
+# add trendlines
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  geom_smooth(aes(x=pH, y=value), method="lm", color="black") +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+    
+
+###########
+# Adding density/smooth curves to plots
+
+   ## first produce some histograms
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value), color="black", fill="white", bins=15) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+########
+# Then add density curves
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  geom_density(aes(x=value,color=nutrient), size=1.5) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+
+###########
+# And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  stat_function(fun = dnorm, color = "blue", size = 1.5,
+                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+
+#######
+# add error bars and other stat summaries (e.g., mean) to boxplot
+
+ggplot(soil, aes(x=Contour, y=pH)) +
+  stat_boxplot(geom="errorbar", width=0.2) +  
+  geom_boxplot() +
+  stat_summary(fun.y=mean, geom="point", size=5, color="black")
   
-# repeat above as single pipe series without creation of intermediate datasets
-  
-tidy_clim_data <- clim_data %>% 
-  gather(key = climvar_station,
-         value = value,
-         -Date) %>% 
-  separate(climvar_station, 
-           into = c("Station","climvar")) %>% 
-  spread(key = climvar,
-         value = value)
-  
-tidy_clim_data
 
+##########
+# use leaflet for interactive mapping!
 
+leaflet(possumsites) %>%
+  addTiles() %>% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
 
-####
-####  Use dplyr verbs to wrangle data
-####
-
-# example of simple data selection and summary using group_by, summarize, and mutate verbs
-
-# take tidy_clim_data, then
-# group data by station, then 
-# calculate summaries and put in columns with names mean.precip.in, mean.TMax.F, and mean.Tmin.F, then 
-# transform to metric and put in new columns mean.precip.in, mean.TMax.F, and mean.Tmin.F
-
-station_mean1 <- tidy_clim_data %>%
-  group_by(Station) %>% 
-  summarize(
-    mean.precip.in = mean(PrcpIN, na.rm=TRUE),
-    mean.TMax.F = mean(TMaxF, na.rm=TRUE),
-    mean.TMin.F = mean(TMinF, na.rm=TRUE)) %>%
-  mutate(
-    mean.precip.mm = mean.precip.in * 25.4,
-    mean.TMax.C = (mean.TMax.F - 32) * 5 / 9,
-    mean.TMin.C = (mean.TMin.F - 32) * 5 / 9
-  )
-  
-station_mean1
-  
-# using variants
-
-# take tidy_clim_data, then
-# group data by station, then 
-# calculate summary (mean of all non-NA values) for numeric data only, then 
-# transform temp data (.) from F to C, then
-# transform precip data (.) from in to mm
-
-
-station_mean2 <- tidy_clim_data %>%
-  group_by(Station) %>% 
-  summarize_if(is.numeric, mean, na.rm=TRUE) %>%
-  mutate_at(vars(TMaxF, TMinF), funs(C=(.-32)*5/9)) %>% 
-  mutate_at(vars(PrcpIN), funs(Prcp.mm=.*25.4))
-
-station_mean2
-  
-
-#### 
-####  Using lubridate to format and create date data types
-####
-
-library(lubridate)
-
-date_string <- ("2017-01-31")
-
-# convert date string into date format by identifing the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date
-
-date_dtformat <- ymd(date_string)
-
-# note the different formats of the date_string and date_dtformat objects in the environment window.
-
-# a variety of other formats/orders can also be accommodated. Note how each of these are reformatted to "2017-01-31" A timezone can be specified using tz=
-
-mdy("January 31st, 2017")
-dmy("31-Jan-2017")
-ymd(20170131)
-ymd(20170131, tz = "UTC")
-
-# can also make a date from components. this is useful if you have columns for year, month, day in a dataframe
-year<-2017
-month<-1
-day<-31
-make_date(year, month, day)
-
-
-# times can be included as well. Note that unless otherwise specified, R assumes UTC time
-
-ymd_hms("2017-01-31 20:11:59")
-mdy_hm("01/31/2017 08:01")
-
-# we can also have R tell us the current time or date
-
-now()
-now(tz = "UTC")
-today()
-####
-####  Parsing dates with lubridate
-####
-
-datetime <- ymd_hms("2016-07-08 12:34:56")
-
-# year
-year(datetime)
-
-# month as numeric
-month(datetime)
-
-# month as name
-month(datetime, label = TRUE)
-
-# day of month
-mday(datetime)
-
-# day of year (julian day)
-yday(datetime)
-
-# day of week
-wday(datetime)
-wday(datetime, label = TRUE, abbr = FALSE)
-
-#### 
-####  Using lubridate with dataframes and dplyr verbs
-####
-
-# going back to our tidy_clim_data dataset we see that the date column is formatted as character, not date
-head(tidy_clim_data)
-
-# change format of date column
-tidy_clim_data <- tidy_clim_data %>% 
-  mutate(Date = mdy(Date))
-tidy_clim_data
-# parse date into year, month, day, and day of year columns
-tidy_clim_data <- tidy_clim_data %>% mutate(
-  Year = year(Date),
-  Month = month(Date),
-  Day = mday(Date),
-  Yday = yday(Date))
-
-tidy_clim_data
-
-# calculate total annual precipitation by station and year
-annual_sum_precip_by_station <- tidy_clim_data %>%
-  group_by(Station, Year) %>%
-  summarise(PrecipSum = sum(PrcpIN))
-
-annual_sum_precip_by_station 

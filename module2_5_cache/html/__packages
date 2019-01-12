@@ -19,3 +19,15 @@ lattice
 DAAG
 RColorBrewer
 leaflet
+boot
+foreach
+iterators
+doParallel
+spData
+sf
+sp
+raster
+rgdal
+rgeos
+rcartocolor
+magrittr

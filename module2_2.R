@@ -1,3 +1,4 @@
+
 ##################################################
 ####                                          ####  
 ####  R Bootcamp #2, Module 2                 ####
@@ -6,128 +7,278 @@
 ####                                          #### 
 ##################################################
 
+##################################################
+####  Parallel processing in R                ####
+####  Developed by: Jonathan Greenberg         ####
+####     jgreenberg@unr.edu                   ####
+##################################################
 
-###################################################
-####  Expanding R functionality: packages etc. ####
-###################################################
-
-
-
-##############
-# PACKAGES!
-##############
-
-install.packages("modeest")    # run this if you haven't yet installed the package from CRAN!
-
-
-library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
-
-
-library(help = "modeest")    # get overview of package
-
-
-newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
-
-?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
-
-  # lets find the most frequent value(s) in the "Export" column:
-mlv(newdf$Export, method="mfv", na.rm = T)    
-
-
-detach("modeest")  # remove the package from the workspace
-
-
-#########
-# 3D Plotting example 
-#########
-
-#########
-# Data: dog barks per day (and two explanatory variables)
-
-Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
-        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
-Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
-        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
-        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
-        0.272, 0.098, 0.415)
-Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
-       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
-
-
-install.packages("car")
-library(car)
-
-
-##########
-# interactive 3-D graphics!
-
-car::scatter3d(Bark~Food+Cars,surface=TRUE)
-
-
-###########
-# install package from GitHub:
-
- # install.packages("devtools")    # run this if you haven't already installed the "devtools" package
-library(devtools)
-install_github("kbroman/broman")  # install a random package from GitHub!
-
-
-###########
-# Learning more about packages
-###########
-
-###########
-# Package overview
-
-library(help = "car")    # help file for the useful "car" package for applied regression
-
-
-##########
-# package vignette
-
-browseVignettes('car')
-vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
 
 
 ################
-#### GENERAL TIPS
-################
+# Set up the workspace (can take a surprisingly long time!)
 
-#############
-# 1. Use code examples provided by others
+# examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
 
-install.packages("dismo")     # install "dismo" for species distribution modeling
+# First, load this script directly from the web (which also installs required packages for you!):
+source("http://bioconductor.org/biocLite.R")
+biocLite("Biobase")
 
-browseVignettes('dismo')
-vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.
-vignette('brt','dismo')      # and another one!
+
+data(geneData, package = "Biobase")   # load example data from Biobase package between all pairs of genes across all samples.
+# This data represents 500 genes (organized by rows)
+# with expression data (numerical). 
+
+# The goal is to calculate the correlation coefficient
+# between all pairs of genes across all samples.  For example,
+# to test gene 12 vs 13:
+
+
+?cor    # view help page for "cor()" function
+geneData[12,]
+geneData[13,]
+
+
+plot(geneData[12,],geneData[13,])    # plot the correlation between two genes
+cor(geneData[12,],geneData[13,])
+
+
+?combn    # function to determine all combination ids
+
+
+pair <- combn(1:nrow(geneData),2,simplify=F)   #leave this as a list, for now...
+
+length(pair)
+head(pair,n=3)     # note that the "head()" and "tail()" functions can be used on lists in addition to data frames...
+tail(pair,n=3)
+
+
+############
+# New function: accepts a gene pair and the database as arguments and returns
+# the correlation:
+
+geneCor <- function(pair,gene=geneData){
+  cor(gene[pair[1],],gene[pair[2],])
+}
+
+# Test the function:
+cor(geneData[12,],geneData[13,])
+geneCor(pair=c(12,13),gene=geneData)    # should be the same result as the previous command...
 
 
 ########
-# package demo
+# use "lapply" to run our function on the first three gene pairs
 
-demo(package="stats")    # list all demos for package 'stats', which is included in base R
-demo('nlm','stats')
+pair[1:3]
+outcor <- lapply(pair[1:3],geneCor)
+outcor
+
+
+#################
+# Examine processor use and speed
+
+# First, open your task manager to view processor usage (see website for more details).
+
+system.time(outcor <- lapply(pair,geneCor))
+
+# Notice ONE CPU spiked.  Make note of how long it took to run.
+
+
+fakeData <- cbind(geneData,geneData,geneData,geneData)    # make an even bigger dataset!
 
 
 ###########
-# Load html documentation for R and all installed packages
+# New, more complex function that generates bootstrap confidence intervals for correlation coefficients
 
-help.start()
+library(boot)   # load the "boot" library for performing bootstrapping analysis
+
+# 'x' represents vector with two elements, indicating the pair of genes to compare
+# 'gene' represents a gene expression database
+
+geneCor2 <- function(x, gene = fakeData){
+  mydata <- cbind(gene[x[1], ], gene[x[2], ])      # extract the rows (genes) to compare
+  mycor <- function(x, i) cor(x[i,1], x[i,2])     # function (correlation) to perform bootstrap analysis with
+  boot.out <- boot(mydata, mycor, 1000)           # perform bootstrap analysis (1000 iterations)
+  boot.ci(boot.out, type = "bca")$bca[4:5]         # extract and return the bootstrap confidence interval
+}
 
 
-#########
-# Built-in examples
+# Test how long 10 pairs would take:
+genCor2_system_time <- system.time(outcor <- lapply(pair[1:10],geneCor2))
+genCor2_system_time["elapsed"] 
 
-example(lm)   # run examples for "lm" function (included in base R)
+
+length(pair)   # how many pairs were there again?
+
+
+############
+# estimate time to run 124,750 pairs
+
+genCor2_system_time["elapsed"]      # time it took to run 10 pairs, in seconds
+
+genCor2_system_time["elapsed"] *(124750/10)     # time it would take to run 124750 pairs, in seconds 
+genCor2_system_time["elapsed"] *(124750/10/60/60)    # in hours...
+
+
+###########
+# Explore parallel processing vs sequential processing
+
+pair2 <- sample(pair,300)    # first extract a subsamble of all the pairs
+
+
+# Let's test a sequential version of this:
+system.time(outcor <- lapply(pair2,geneCor2))
+
+# Note the elapsed time.
+
+
+###########
+# Run this operation in parallel!!
+
+### parallel: built-in parallel computation package.
+library("parallel")       # load the package (comes with basic R installation)
+
+install.packages("future")    # install "future" package, which we will use later
+library("future")
+
+
+?makeCluster    # learn more about "makeCluster()"
 
 
 ########
-# package citations
+# Make a cluster
 
-citation('car')   # citation for the 'car' package
+myCluster <- parallel::makeCluster(spec=4,type="PSOCK")    # make cluster with 4 cpus of type "PSOCK"
+myCluster
 
-citation()    # and here's the citation for R in general- useful for when you use R for manuscripts
+length(myCluster) # One entry per "worker".
+
+myCluster[[1]]    # more info about this "worker"
 
 
+?stopCluster
+parallel::stopCluster(myCluster)
+
+
+######
+# Make a cluster with all available cores
+
+mycorenum <- availableCores()   # determine number of available cores
+myCluster <- parallel::makeCluster(spec=mycorenum,type="PSOCK")
+
+
+######
+# Run a function on each cluster:
+
+?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster
+
+
+date()    # run the "date()" function
+
+workerDates <- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the "date()" function on all clusters 
+class(workerDates)
+length(workerDates) # One list element per worker.
+
+
+####
+# explore packages loaded in our worker environments
+
+search()      # packages loaded in global environment
+workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)     # .. and worker environments
+# workerPackages
+
+
+#########
+# load required packages on every worker:
+
+?clusterEvalQ
+loadOnCls <- parallel::clusterEvalQ(cl=myCluster,library("boot"))   
+
+# We can confirm the boot package is now loaded:
+parallel::clusterCall(cl=myCluster,fun=search)
+
+
+########
+# Load required data on every worker
+
+?clusterExport
+loadData <- parallel::clusterExport(cl=myCluster,"fakeData")
+parallel::clusterEvalQ(cl=myCluster,ls())   # Check the environment on each worker- make sure data are loaded
+
+
+#### alternatively, load all data in our environment into each worker:
+loadData <- parallel::clusterExport(cl=myCluster,ls())
+parallel::clusterEvalQ(cl=myCluster,ls())
+
+
+############
+# Spread function calls across workers using an "lapply"-like function
+
+?clusterApplyLB     # function for performing the actual function call
+
+
+#######
+# Call the "geneCor2()" function for each gene pair, using parallel processing
+
+system.time(outcor2 <- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   
+
+# vs the non-clustered version:
+system.time(outcor <- lapply(pair2,geneCor2))   # takes much longer!
+
+
+stopCluster(myCluster)   # finally, stop the cluster..
+
+
+##########
+# Parallel processing using 'foreach'
+
+install.packages("foreach")
+# Install the parallel backend to foreach:
+install.packages("doParallel")
+
+
+library("foreach")
+library("doParallel")
+
+
+?foreach
+
+# sequential mode:
+registerDoSEQ() # Avoids warnings
+
+system.time(
+  outcor <- foreach(
+    p = pair2, 
+    .packages="boot", 
+    .combine="rbind") %dopar% { 
+      return(geneCor2(p)) 
+    }
+)
+
+
+# Parallel mode (use a parallel backend):
+
+# Create a cluster using parallel:
+myCluster <- makeCluster(spec=4,type="PSOCK")
+
+# Register the backend with foreach (doParallel):
+registerDoParallel(myCluster)
+# Run our code! Notice I didn't change the foreach call at all:
+
+loadData <- parallel::clusterExport(cl=myCluster,"geneCor2")   # KTS: I added this to make it run - was this necessary for others? 
+
+system.time(
+  outcor <- foreach(
+    p = pair2, 
+    .packages="boot",
+    .combine="rbind") %dopar% {
+      return(geneCor2(p)) 
+    }
+)
+
+
+stopCluster(myCluster)     # Don't forget to stop the cluster:
+
+
+registerDoSEQ()    # register the default, non-parallel backend for foreach
 

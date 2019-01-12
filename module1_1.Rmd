@@ -1,7 +1,7 @@
 ---
 title: "Module 1.1"
 author: "Getting started: working with objects"
-date: "September 2018"
+date: "February 2019"
 output: 
   html_document: 
     theme: journal

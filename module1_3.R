@@ -1,3 +1,4 @@
+
 ##################################################
 ####                                          ####  
 ####  R Bootcamp #1, Module 3                 ####
@@ -235,18 +236,6 @@ pairs(iris)
 ?ToothGrowth
 head(ToothGrowth)
 
-
-plot.colors <- c("red", "blue")
-# subset the colors in plot.colors based on the variable iris$Species
-# iris$Species is a factor variable that has 3 levels
-color.vector <- plot.colors[ToothGrowth$supp]
-
-plot(x=ToothGrowth$dose, y=ToothGrowth$len, pch=19, col=color.vector, 
-     main="Tooth Growth vs. Vitamin C Dose", xlab="Viatmin C Dose (mg)", 
-     ylab="Tooth Growth (mm)", las=1)
-
-# First legend
-legend("topleft", pch=19, col=plot.colors, legend=unique(ToothGrowth$supp))
 
 prop <- c(0.18, 0.25, 0.13, 0.05)
 asympLCL <- c(0.14, 0.20, 0.11, 0.035)

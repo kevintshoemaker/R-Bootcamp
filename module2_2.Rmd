@@ -1,6 +1,6 @@
 ---
 title: "Module 2.2"
-author: "R packages: expanding your skill set"
+author: "Parallel processing in R"
 date: "September 2018"
 output: 
   html_document: 
@@ -9,8 +9,9 @@ output:
     toc_float: yes
 ---
 
-```{r setup, include=FALSE}
+```{r GlobalOptions, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+options(knitr.duplicate.label = 'allow')
 ```
 
 ```{r echo=FALSE}
@@ -23,332 +24,663 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ####                                          #### 
 ##################################################
 
-
-###################################################
-####  Expanding R functionality: packages etc. ####
-###################################################
+##################################################
+####  Parallel processing in R                ####
+####  Developed by: Jonathan Greenberg         ####
+####     jgreenberg@unr.edu                   ####
+##################################################
 
 
 ```
 
+NOTE: Jonathan Greenberg (https://naes.unr.edu/gears/) developed this module  
 
-In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed **packages** (also called *libraries*). 
-
-Whether you are an expert or a novice, you will always encounter situations where you don't know exactly what to do. The great thing about R is that there is *nearly always a way to do it* (whether in base R or via **packages** contributed by R users from around the world), and once you get familiar with the basics, it's usually not that hard to figure out how to accomplish your analysis objectives!
-
-![](tech_support_cheat_sheet.jpg)
+This is the first of the modules that really go *beyond the basics*. Modules 2.3 to 2.6 provide a "whirlwhind" tour of more advanced things you can do in R, from high performance computing, to sophisticated visualizations to geographic analysis.  
 
 ## Load script for module #2.2
 
-1. Click [here](module2_2.R) to download the script! Save the script to a convenient folder on your laptop.
+1. Click [here](module2_2.R) to download the script! Save the script to a convenient folder on your laptop. [alternative: [load Jonathan's original script](greenberg_code.R)]
 
-2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
+2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar. 
 
-## Packages
+Let's get started with parallel processing in R!
 
-How is it possible to have so many features implemented in a single programming environment? 
+## Running R in parallel!
 
-The answer is that you have a whole community of researchers adding new functionality _all the time_! This new functionality is implemented in the form of **R Packages**, also known as **libraries**. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).
+This is a huge topic, but the basic concept of parallel programming is the following:
 
-### Mode example
+Given some problem X that can be divided into subproblems x1, x2, x3, each subproblem can be sent to a different "worker" processor (which may be located on a different physical computer).  
 
-For a simple example (borrowed from [Prelude in R](https://preludeinr.com)), base R does not include a function for computing the *mode* of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called "modeest", and made the package available in the CRAN repository. 
+Each processor then sends the results of its subproblem back to a central "master". The master often then pieces the subproblems back together to return to the user.
 
-Packages in the CRAN repository can be installed using the function "install.packages()":
+Parallel computing is not a cure-all, and not all problems will benefit from it.  We'll come back to this issue in a bit.
 
-```{r eval=FALSE}
+There are a lot of packages to realize parallel computing within R, and current versions of R even come with some parallel computing packages built-in.  A full list can be found [here](http://cran.r-project.org/web/views/HighPerformanceComputing.html).
 
-##############
-# PACKAGES!
-##############
+I will be following the examples from [http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf](http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf). 
 
-install.packages("modeest")    # run this if you haven't yet installed the package from CRAN!
 
-```
+### Set up your workspace
 
-```{r}
+First, let's set up our workspace to run an example using a genomics data set. This example uses [bioconductor](https://www.bioconductor.org/), which provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses R and is open source and open development.
 
-library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
-
-```
-
-Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax: 
-
-```{r eval=FALSE}
-
-library(help = "modeest")    # get overview of package
-
-```
-
-Can you use the package overview to identify a function for computing the mode of a data vector?
-
-Let's try to use it! If you haven't already loaded the "data.missing.txt" dataset, download it [here](data_missing.txt) and save to your working directory.
-
-```{r}
-
-newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
-
-?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
-
-  # lets find the most frequent value(s) in the "Export" column:
-mlv(newdf$Export, method="mfv", na.rm = T)    
-
-```
-
-#### Removing a package from your environment
-Not that you need to do this very often, but if you want to remove a package from your current session, you can use the "detach()" function:
-
-```{r eval=FALSE}
-
-detach("modeest")  # remove the package from the workspace
-
-```
-
-
-### 3d scatterplot example!
-
-Before we move on, the "car" package (_c_ompanion to _a_pplied _r_egression) gives us an example of the endless, amazing things we can do with R packages. Here we will make our own interactive 3d plot! (example from "prelude in R").
-
-Here is a data set that represents the number of times a dog barks in a day, and two potential explanatory factors: food given (in lbs) and cars passing by the house. 
-
-```{r}
-
-#########
-# 3D Plotting example 
-#########
-
-#########
-# Data: dog barks per day (and two explanatory variables)
-
-Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
-        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
-Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
-        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
-        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
-        0.272, 0.098, 0.415)
-Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
-       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
-
-```
-
-
-Let's install and load the "car" package:
-
-```{r eval=FALSE}
-
-install.packages("car")
-library(car)
-
-```
-
-Now for the fun part- interactive 3-D graphics! Run the following code and take a minute to play around with the resulting scatterplot. 
-
-```{r eval=FALSE}
-
-##########
-# interactive 3-D graphics!
-
-car::scatter3d(Bark~Food+Cars,surface=TRUE)
-
-```
-
-### Loading packages from GitHub
-
-More and more package developers are bypassing the CRAN repository, and instead using [GitHub](https://github.com/). In some cases, the version available on CRAN is not the latest version- for the latest version, you need to use GitHub. Also, many packages that are in development are only found on GitHub. There are actually some good reasons to put an R package on GitHub:
-
-1. It's easier for others to peruse your code.     
-2. People can actually fix the problem and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, "There’s a typo in your documentation" they can say "Here, I’ve fixed a typo in your documentation."        
-3. With the install_github() function in Hadley Wickham’s devtools package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)      
-
-
-The syntax for using "install_github()" is just install_github("[author]/[package]") Here's an example using the "install_github()" function:
-
-```{r eval=FALSE}
-
-###########
-# install package from GitHub:
-
- # install.packages("devtools")    # run this if you haven't already installed the "devtools" package
-library(devtools)
-install_github("kbroman/broman")  # install a random package from GitHub!
-
-```
-
-
-### Finding the right package for the job
-
-Usually a Google search is the best way to find out about packages! But you may also read about new packages in a journal (e.g., [Methods in Ecology and Evolution](https://besjournals.onlinelibrary.wiley.com/journal/2041210X)) or textbook, or conference, or just talking with other researchers! 
-
-### Learning more about how a package works
-
-It's not always perfectly obvious how to get started in actually using a new package. Here are three tips. 
-
-#### Built-in package overview
-
-We've already seen this one- just use the following syntax to pull up an overview of any package:
-
-```
-
-library(help = "[package name]")
-
-```
-
-For example,
-
-```{r eval=FALSE}
-
-###########
-# Learning more about packages
-###########
-
-###########
-# Package overview
-
-library(help = "car")    # help file for the useful "car" package for applied regression
-
-```
-
-#### Package vignettes
-
-"Vignettes" are provided in many packages, and are tremendously useful, providing worked examples. Usually the package overview (above) will tell you which vignettes are available (see above). Use the following syntax to pull up a vignette:
-
-```
-
-vignette('[name of vignette]', '[name of package]')
-
-```
-
-For example,
-
-```{r eval=FALSE}
-
-##########
-# package vignette
-
-browseVignettes('car')
-vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
-
-```
-
-Or let's take a look at the "dismo" package, which is for species distribution modeling in R:
+Installing the packages for this module can take a while, so hopefully you have already had a chance to do this prior to coming to this workshop! 
 
 ```{r eval=FALSE}
 
 ################
-#### GENERAL TIPS
-################
+# Set up the workspace (can take a surprisingly long time!)
 
-#############
-# 1. Use code examples provided by others
+# examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
 
-install.packages("dismo")     # install "dismo" for species distribution modeling
+# First, load this script directly from the web (which also installs required packages for you!):
+source("http://bioconductor.org/biocLite.R")
+biocLite("Biobase")
 
-browseVignettes('dismo')
-vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.
-vignette('brt','dismo')      # and another one!
+```
+
+NOTE: if you had trouble running the above code, you can just load the example dataset [here](geneData.csv)
+
+We are going to run a test using gene expression data-- let's load the example dataset! 
+
+```{r}
+
+data(geneData, package = "Biobase")   # load example data from Biobase package between all pairs of genes across all samples.
+# This data represents 500 genes (organized by rows)
+# with expression data (numerical). 
+
+# The goal is to calculate the correlation coefficient
+# between all pairs of genes across all samples.  For example,
+# to test gene 12 vs 13:
 
 ```
 
 
-#### Package demos
+### Example: A simple yet computationally intensive problem
 
-Some packages include "demos", which are a bit more interactive than the built-in examples. Here's an example:
+This data represents 500 genes (organized by rows) with expression data (numerical). The goal is to calculate the correlation coefficient between all pairs of genes across all samples. 
+
+For example, let's examine the correlation between gene 12 vs 13:
 
 ```{r eval=FALSE}
 
-########
-# package demo
-
-demo(package="stats")    # list all demos for package 'stats', which is included in base R
-demo('nlm','stats')
+?cor    # view help page for "cor()" function
+geneData[12,]
+geneData[13,]
 
 ```
 
 
-#### Package documentation (html or PDF)
+```{r}
 
-The 'master' documentation for any package is often packaged as a PDF file that can be downloaded from CRAN (each package on the CRAN repository has its own webpage- for example, here's the one for the [raster package](https://cran.r-project.org/web/packages/raster/index.html)) 
+plot(geneData[12,],geneData[13,])    # plot the correlation between two genes
+cor(geneData[12,],geneData[13,])
 
-Also, you can load the documentation for any package you have installed using the "help.start()" function:
+```
+
+
+The total number of paired correlations will be 500 x 499 / 2 = **124,750 correlations**!
+
+We can identify all combinations in a vector using the "combn() function:
 
 ```{r eval=FALSE}
 
-###########
-# Load html documentation for R and all installed packages
-
-help.start()
+?combn    # function to determine all combination ids
 
 ```
 
-#### Learning by example!
 
-To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written. 
+We are going to leave this as a list, for now...
 
-One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using 'help()' or '?'). You can also run these examples using the "example()" function. For example:
+```{r}
 
-```{r eval=FALSE}
+pair <- combn(1:nrow(geneData),2,simplify=F)   #leave this as a list, for now...
 
-#########
-# Built-in examples
-
-example(lm)   # run examples for "lm" function (included in base R)
+length(pair)
+head(pair,n=3)     # note that the "head()" and "tail()" functions can be used on lists in addition to data frames...
+tail(pair,n=3)
 
 ```
 
-Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples! 
 
-#### Package citations
+It often makes sense to break a problem like this down a set of repeated tasks, each of which is expressed as a function. 
 
-Most packages include one or more citations, which are often peer-reviewed papers that document the novel algorithms included in the package, often in more detail than the help files. These are also the papers you should cite if you use the package for a manuscript. You can find these citations using the "citation()" function:
+Let's write (and test) a function to accept a pair in the database and returns the correlation:
+
+```{r}
+
+############
+# New function: accepts a gene pair and the database as arguments and returns
+# the correlation:
+
+geneCor <- function(pair,gene=geneData){
+  cor(gene[pair[1],],gene[pair[2],])
+}
+
+# Test the function:
+cor(geneData[12,],geneData[13,])
+geneCor(pair=c(12,13),gene=geneData)    # should be the same result as the previous command...
+
+```
+
+We left our pairs as a list, so we can use *lapply*!  Recall that *lapply* takes each element in a list (in sequence), applies a specified function to that element, and returns the results from the function in another list.  
+
+Let's just test the first 3 pairs:
+
 
 ```{r}
 
 ########
-# package citations
+# use "lapply" to run our function on the first three gene pairs
 
-citation('car')   # citation for the 'car' package
+pair[1:3]
+outcor <- lapply(pair[1:3],geneCor)
+outcor
 
-citation()    # and here's the citation for R in general- useful for when you use R for manuscripts
+```
 
+Now let's do the whole calculation.  First, open your task manager by hitting control-alt-delete (on Windows) and choosing "Start Task Manager". 
+Click the "Performance" tab.  Notice you have a few graphs next to "CPU Usage", which shows each processor you have on your machine.
 
+Type the following in R and watch the CPU Usage History graph. Note the use of the "system.time()" function, which allows us to keep track of processing time for one or more R commands. Processing time can vary substantially among machines. 
+
+```{r}
+
+#################
+# Examine processor use and speed
+
+# First, open your task manager to view processor usage (see website for more details).
+
+system.time(outcor <- lapply(pair,geneCor))
+
+# Notice ONE CPU spiked.  Make note of how long it took to run.
+
+```
+
+Notice ONE CPU spiked.  Make note of how long it took to run. 
+
+Now let's make an even bigger dataset (just repeating geneData four times), making 26 x 4 = 104 columns:
+
+```{r}
+
+fakeData <- cbind(geneData,geneData,geneData,geneData)    # make an even bigger dataset!
 
 ```
 
 
-#### Online forums
-In some cases you may run into issues with a particular package that you just can't seem to solve. It's still likely that others have had this problem! If you use some appropriate keywords in a google search you may find a link to an online forum (like [stackoverflow](https://stackoverflow.com/)) where someone has answered a similar question. It's amazing how many knowledgeable people are answering questions on these forums - they are a tremendously valuable resource!
-
-And of couse, if you still can't find an answer to your question, you can ask your question on [one of these online forums](https://r-dir.com/community/forums.html). The best ones are probably [Nabble](http://r.789695.n4.nabble.com/), [Stack Overflow](https://stackoverflow.com/), and [Cross Validated](https://stats.stackexchange.com/questions/tagged/r).
+Now lets make a more complex, computationally intensive function that calculates the 95% confidence intervals of the correlation coefficients through a process of *bootstrapping*:
 
 
-#### Ask the package author!!
+```{r}
 
-When all else fails, you can always reach out to the package author! The author's name and contact info are listed in the package overview, and I have found they are generally very responsive and willing to help!! 
- 
+###########
+# New, more complex function that generates bootstrap confidence intervals for correlation coefficients
 
-## 'Cheat sheets'
+library(boot)   # load the "boot" library for performing bootstrapping analysis
 
-There are lots of "cheat sheets" available for reminding you of basic R functionality. It can be useful to tape these to the wall next to your desk!
+# 'x' represents vector with two elements, indicating the pair of genes to compare
+# 'gene' represents a gene expression database
 
-For example, [here](https://cran.r-project.org/doc/contrib/Short-refcard.pdf) is a good cheat sheet for using base R. 
+geneCor2 <- function(x, gene = fakeData){
+  mydata <- cbind(gene[x[1], ], gene[x[2], ])      # extract the rows (genes) to compare
+  mycor <- function(x, i) cor(x[i,1], x[i,2])     # function (correlation) to perform bootstrap analysis with
+  boot.out <- boot(mydata, mycor, 1000)           # perform bootstrap analysis (1000 iterations)
+  boot.ci(boot.out, type = "bca")$bca[4:5]         # extract and return the bootstrap confidence interval
+}
 
-see [Links page](Links.html) for more resources, including cheat sheets! 
+```
 
-## *Google!* 
+How long would it take to run correlation analyses using this new function for just 10 gene pairs?
 
-I don't even understand why it works so well to google R help ('r' is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work (and some cheat sheets by your desk), and the internet, you can pretty much always find a solution! 
+```{r}
+
+# Test how long 10 pairs would take:
+genCor2_system_time <- system.time(outcor <- lapply(pair[1:10],geneCor2))
+genCor2_system_time["elapsed"] 
+
+```
+
+What did you get? On my machine this operation (for 10 pairs) took around 1.2 seconds...
+
+Let's use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again? 
+
+```{r}
+
+length(pair)   # how many pairs were there again?
+
+```
+
+Okay, so there are 124,750 pairs...  So let's figure out how long 124,750 pairs will take:
 
 
-More helpful links for going further with R are provided on the [Links](Links.html) page. 
+```{r}
+
+############
+# estimate time to run 124,750 pairs
+
+genCor2_system_time["elapsed"]      # time it took to run 10 pairs, in seconds
+
+genCor2_system_time["elapsed"] *(124750/10)     # time it would take to run 124750 pairs, in seconds 
+genCor2_system_time["elapsed"] *(124750/10/60/60)    # in hours...
+
+```
 
 
-## Any questions???
+Ouch!  This is a good candidate for parallel processing! 
+
+### Running in Parallel!
+
+Let's take a subsample of all the pairs for exploring this further:
+
+```{r}
+
+###########
+# Explore parallel processing vs sequential processing
+
+pair2 <- sample(pair,300)    # first extract a subsamble of all the pairs
+
+```
+
+
+The opposite of parallel processing is "sequential processing". Let's first test a sequential version of this task:
+
+```{r}
+
+# Let's test a sequential version of this:
+system.time(outcor <- lapply(pair2,geneCor2))
+
+# Note the elapsed time.
+
+```
+
+Now, we can explore implementing this operation in parallel. To do this, we will use the "parallel" package in R. 
+
+#### 'parallel' package
+
+Parallel's basic concept is to launch "worker" instances of R on other processors, and then send the subproblems to each R instance. This means that if you want to use 4 processors ("cores"), after you start a parallel cluster, you will have 5 copies of R running: the master copy (the one you are typing into) and 4 worker copies.  
+
+The "cluster" of processors can be either a single computer with multiple computers (like the one you are working on), or a network of computers linked by some clustering framework.   
+
+The basic order of ops with using 'parallel' is as follows:
+1. library("parallel")   
+2. Make a parallel cluster using makeCluster(...)   
+3. Load packages that your function needs into the workers using clusterEvalQ(cl=...,library(...))    
+4. Load objects (data) from the master environment into the worker environments using clusterExport(cl=...)    
+5. Following basic lapply() semantics, use e.g. clusterApplyLB(cl=...) to apply your function to an input list, where each iteration of the "loop" will be sent to an available processor. The output is usually a list.    
+6. Shut down your cluster using stopCluster(...)    
+
+
+So the first step is to load the 'parallel' package:
+
+```{r}
+
+###########
+# Run this operation in parallel!!
+
+### parallel: built-in parallel computation package.
+library("parallel")       # load the package (comes with basic R installation)
+
+```
+
+We're also going to grab the "future" package for later use:
+
+```{r eval=FALSE}
+install.packages("future")    # install "future" package, which we will use later
+```
+
+```{r  eval=FALSE}
+library("future")
+
+```
+
+
+The way parallel works, is we first have to make an R cluster via "makeCluster()":   
+
+```{r eval=FALSE}
+
+?makeCluster    # learn more about "makeCluster()"
+
+```
+
+
+We are going to create a cluster with 4 cpus of type "PSOCK". 
+
+Click the task manager "Processes" (Windows) or Activity Monitor (mac), and scroll down to the "R"s:
+
+```{r}
+
+########
+# Make a cluster
+
+myCluster <- parallel::makeCluster(spec=4,type="PSOCK")    # make cluster with 4 cpus of type "PSOCK"
+myCluster
+
+length(myCluster) # One entry per "worker".
+
+myCluster[[1]]    # more info about this "worker"
+
+```
+
+Notice you now have multiple instances of Rscript.exe running now!
+
+
+We can stop the cluster by using the "stopCluster()" function:
+
+```{r eval=FALSE}
+
+?stopCluster
+```
+
+```{r eval=FALSE}
+parallel::stopCluster(myCluster)
+
+```
+
+
+Now let's make a new cluster using all available cores.
+
+```{r  eval=FALSE}
+
+######
+# Make a cluster with all available cores
+
+mycorenum <- availableCores()   # determine number of available cores
+myCluster <- parallel::makeCluster(spec=mycorenum,type="PSOCK")
+
+```
+
+
+We can send the same function to each node (worker) in the cluster using "clusterCall()":
+
+```{r eval=FALSE}
+
+######
+# Run a function on each cluster:
+
+?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster
+
+```
+
+For example, we might run the "date()" function on each cluster! Note that the results get returned as lists:
+
+```{r}
+
+date()    # run the "date()" function
+
+workerDates <- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the "date()" function on all clusters 
+class(workerDates)
+length(workerDates) # One list element per worker.
+
+```
+
+You need to remember that each worker instance of R that is running is essentially "empty" -- it won't, be default, have access to the environment of the master.  Thus, we need to send some commands/data to them in anticipation of running the code.  
+
+For example, the "search()" function tells us what packages and data are loaded (attached). Let's explore what packages are loaded in our worker environments:
+
+```{r eval=FALSE}
+
+####
+# explore packages loaded in our worker environments
+
+search()      # packages loaded in global environment
+workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)     # .. and worker environments
+# workerPackages
+
+```
+
+
+We are using a package called "boot" in our function, so we need to load up this package on every worker using the "clusterEvalQ()" function:
+
+```{r eval=FALSE}
+
+#########
+# load required packages on every worker:
+
+?clusterEvalQ
+```
+
+```{r}
+loadOnCls <- parallel::clusterEvalQ(cl=myCluster,library("boot"))   
+
+```
+
+```{r eval=FALSE}
+# We can confirm the boot package is now loaded:
+parallel::clusterCall(cl=myCluster,fun=search)
+
+```
+
+Next, we will export the dataset "fakeData" to each worker using the "clusterExport()" function. 
+
+First, look at the worker Rs and note how much memory they are using (in task manager).
+
+```{r eval=FALSE}
+
+########
+# Load required data on every worker
+
+?clusterExport
+```
+
+```{r}
+loadData <- parallel::clusterExport(cl=myCluster,"fakeData")
+```
+
+```{r eval=FALSE}
+parallel::clusterEvalQ(cl=myCluster,ls())   # Check the environment on each worker- make sure data are loaded
+
+```
+
+Check the memory now. Note that each worker is using more memory, since we loaded the fakeData into each of those worker Rs.
+
+Note we could send the entire Global environment over to the workers! To do this, we could use the "ls()" function:
+
+```{r  eval=FALSE}
+
+#### alternatively, load all data in our environment into each worker:
+loadData <- parallel::clusterExport(cl=myCluster,ls())
+```
+
+```{r eval=FALSE}
+parallel::clusterEvalQ(cl=myCluster,ls())
+
+```
+
+
+#### Finally: run corrlation analysis in parallel!
+
+Now comes the actual function call. To do this, we use the "clusterApplyLB()" function:
+
+```{r eval=FALSE}
+
+############
+# Spread function calls across workers using an "lapply"-like function
+
+?clusterApplyLB     # function for performing the actual function call
+
+```
+
+This is VERY similar to an 'lapply' statement, except we identify the cluster to send the command to. Let's call the "geneCor2()" function for each gene pair, using parallel processing. We can compare the speed of the parallel vs sequential processing using the "system.time()" function.
+
+Let's call the "geneCor2()" function for each gene pair, using parallel processing!
+
+Watch your Performance tab as your cores light up:
+
+```{r}
+
+#######
+# Call the "geneCor2()" function for each gene pair, using parallel processing
+
+system.time(outcor2 <- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   
+```
+
+```{r}
+
+# vs the non-clustered version:
+system.time(outcor <- lapply(pair2,geneCor2))   # takes much longer!
+
+```
+
+
+We got a big performance boost here!
+
+Don't forget to shut down your cluster:
+
+```{r  eval=FALSE}
+
+stopCluster(myCluster)   # finally, stop the cluster..
+
+```
+
+
+### 'foreach': making parallel computing EVEN EASIER
+
+There are multiple parallel "backends" to R, including 'parallel', 'snow', 'multicore', 'Rmpi', to name a few.
+
+'foreach' is a meta-wrapper that works on many parallel backends. What this means is you can write one set of code, and not have to modify it if the user prefers to use Rmpi instead of parallel (in which case the commands are very different).
+
+The basic order of ops with using 'foreach' is as follows:
+
+1. library("foreach")       
+2. Load a parallel backend and foreach registration package        
+    e.g. library("doParallel")      
+3. Start a parallel backend with e.g. makeCluster(...)      
+4. Register the parallel backend with foreach,      
+    e.g.: registerDoParallel(...)      
+5. Use foreach(...) %dopar% function() to run your function in parallel.       
+6. Use '.packages' parameter in foreach(...) to load needed packages.     
+7. Stop your cluster using e.g. stopCluster(...)      
+8. Register the sequential backend to foreach using registerDoSEQ()         
+
+```{r eval=FALSE}
+
+##########
+# Parallel processing using 'foreach'
+
+install.packages("foreach")
+# Install the parallel backend to foreach:
+install.packages("doParallel")
+
+```
+
+```{r}
+
+library("foreach")
+library("doParallel")
+
+```
+
+```{r eval=FALSE}
+
+?foreach
+```
+
+Try running in sequential mode...
+
+```{r}
+
+# sequential mode:
+registerDoSEQ() # Avoids warnings
+
+system.time(
+  outcor <- foreach(
+    p = pair2, 
+    .packages="boot", 
+    .combine="rbind") %dopar% { 
+      return(geneCor2(p)) 
+    }
+)
+
+```
 
 
 
+And now with a parallel backend!
 
+```{r eval=FALSE}
+
+# Parallel mode (use a parallel backend):
+
+# Create a cluster using parallel:
+myCluster <- makeCluster(spec=4,type="PSOCK")
+```
+
+
+```{r}
+
+# Register the backend with foreach (doParallel):
+registerDoParallel(myCluster)
+# Run our code! Notice I didn't change the foreach call at all:
+
+loadData <- parallel::clusterExport(cl=myCluster,"geneCor2")   # KTS: I added this to make it run - was this necessary for others? 
+
+system.time(
+  outcor <- foreach(
+    p = pair2, 
+    .packages="boot",
+    .combine="rbind") %dopar% {
+      return(geneCor2(p)) 
+    }
+)
+
+```
+
+
+Some things to notice:     
+- we explicitly define what packages are to be sent over using the .packages parameter    
+- foreach calls have access to the master's global environment.
+- we can use specific functions to join the data once its done (e.g. rbind)
+
+Don't forget to stop the cluster:
+
+```{r}
+
+stopCluster(myCluster)     # Don't forget to stop the cluster:
+
+```
+
+You should also register the default, non-parallel backend for 'foreach'. Otherwise the next time you use 'foreach' it will not work.
+
+```{r eval=FALSE}
+
+registerDoSEQ()    # register the default, non-parallel backend for foreach
+
+```
+
+
+### Sources of overhead
+
+Parallel computing, optimally, should be linear in terms of number of processors vs. time.  However, this is never the case.  A process running on one core does not take twice the time as a process running on two cores.  There are losses along the way from various sources.  These need to be thought about when writing the most efficient code.
+
+First, many programs will have parallel and non-parallel components. If your non-parallel components take X amount of time, no matter how many processors you have available, you will never run faster than X amount of time.
+
+#### Chunking
+Chunking is one of the most important considerations.  So far, we've been iterating one "row" at a time.  For faster computations, this may not be very efficient, as the overhead of sending/receiving/managing the parallel cluster swamps out gains from the processing. We can get more clever with this by sending MULTIPLE rows at one time to a worker.  This optimization of the chunk size (number of rows to send at one time to a single worker) can dramatically speed up your computation, at the cost of heavier RAM usage.
+
+#### Shared-memory machines
+A single computer like the one you are working on is a "shared memory machine" -- each processor has access to the same physical RAM.  When two processors "ask" for an R object in RAM they must compete against each other.  One process will have to wait until the other process are done reading that area of memory.  Memory access, thus, can be a bottleneck.
+
+####Networked systems of computers
+A cluster computer ("supercomputer") is really just a bunch of individual computers networked together. Each individual computer ("node" in cluster terminology) has its own set of processors, memory, and hard drive space.  When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer.  This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.  
+
+For instance, you could copy the data the function will work on to each node in a cluster, so the data does not have to be transferred from the master R to the worker Rs.
+
+Note that two nodes in a cluster do not share memory.
+
+#### Other things to worry about
+
+**RACE CONDITIONS.** This comes in to play if your workers are all writing to the same output file (say, a raster file).  As we discussed before, in general only one "thread" (worker) can write to a file at a time, otherwise the file may get corrupt.  In parallel computing, we can increase the chance that this might happen if we aren't careful.  This often requires a programmer to be able to "lock" a file -- i.e. before a worker tries to write to a file, it 1) checks if the file is "locked", 2) if it finds it unlocked it first locks the file itself, 3) it opens/writes/close to the file, 4) it unlocks the file for other workers.
+
+**Embarrassingly parallel applications and those that aren't:** the term "embarrassingly parallel" refers to problems that are absolutely trivial to parallelize.  The function we've been looking at is embarassingly parallel.  Each iteration takes (basically) the same amount of time, uses the same amount of memory, doesn't require cross-talk between workers, etc.  Raster processing, as we will see, is often an embarrassingly parallel problem -- we process an image one line at a time, sending each line to a different processor.
+
+Vector based processing, on the other hand, is often not embarrassingly parallel, and takes a lot more thought to properly parallelize a function.
+
+Parallel computing takes a lot of practice and understanding of the underlying systems to get good at.  Other issues start popping up such as load balancing (what if the functions take non-constant amounts of time on each processor), optimization of the chunk size, and a host of other issues.
+
+Debugging can also be tricky, as the various parallel backends do not typically allows workers to print to your main screen, so you have to have them dump their outputs to a file that you then do a post-mortem on.  'foreach' makes this a bit easier, since you can test a function on a single node (using registerDoSEQ()), debug it, and once it works on one node, try it out on a cluster.
 
 [--go to next module--](module2_3.html)
+
 
 
 

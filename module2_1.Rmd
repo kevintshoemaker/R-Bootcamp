@@ -1,6 +1,6 @@
 ---
 title: "Module 2.1"
-author: "Basic programming in R"
+author: "R packages: expanding your skill set"
 date: "September 2018"
 output: 
   html_document: 
@@ -15,7 +15,6 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE}
 
-
 ##################################################
 ####                                          ####  
 ####  R Bootcamp #2, Module 1                 ####
@@ -24,19 +23,20 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ####                                          #### 
 ##################################################
 
-##################################################
-####  PROGRAMMING: FUNCTIONS AND MORE         ####
-####  Facilitator: Perry Williams             ####
-##################################################
 
-## NOTE: this module borrows heavily from an R short-course developed by a team at Colorado State University. 
+###################################################
+####  Expanding R functionality: packages etc. ####
+###################################################
 
 
 ```
 
-NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
-    
-**Guest presenter**: Perry Williams (who also pulled this module together, and was a part of the CSU team that put many of these materials toghether and graciously allowed us to borrow them- thanks!!!)
+
+In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed **packages** (also called *libraries*). 
+
+Whether you are an expert or a novice, you will always encounter situations where you don't know exactly what to do. The great thing about R is that there is *nearly always a way to do it* (whether in base R or via **packages** contributed by R users from around the world), and once you get familiar with the basics, it's usually not that hard to figure out how to accomplish your analysis objectives!
+
+![](tech_support_cheat_sheet.jpg)
 
 ## Load script for module #2.1
 
@@ -44,695 +44,311 @@ NOTE: this module borrows heavily from an R short course developed by a team at 
 
 2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
 
-Let's get started with basic programming in R!
+## Packages
 
+How is it possible to have so many features implemented in a single programming environment? 
 
-## Functions in R
+The answer is that you have a whole community of researchers adding new functionality _all the time_! This new functionality is implemented in the form of **R Packages**, also known as **libraries**. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).
 
-Everything in R can be boiled down to this one sentence: data are expressed as *vectors*, and vectors are managed, manipulated, and visualized via **functions**. Functions are absolutely central to R!
+### Mode example
 
-Let's start with a blank workspace: 
+For a simple example (borrowed from [Prelude in R](https://preludeinr.com)), base R does not include a function for computing the *mode* of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called "modeest", and made the package available in the CRAN repository. 
 
-```{r}
+Packages in the CRAN repository can be installed using the function "install.packages()":
 
-#######
-# Start with blank workspace
-
-rm(list=ls())
-
-
-```
-
-As we have seen, base R already includes lots of functions, and thousands more functions are available in packages that you can install. Nonetheless, it's really useful to know how to write your own functions! For example, we might write our own function if we have to repeat certain sets of operations over and over in different contexts. 
-
-We use the following syntax when we are writing our own functions:
-
-```
-
-my.function <- function(inputs){         # function takes various arguments, or inputs
-    
-    ## Algorithm: Do something useful with the inputs
-    
-    return(output)             # optionally, return some output
-    
-}
-
-```
-
-### First function: "Hello, world!"
-
-Let's try to write our first function, which prints out a message: "Hello, world!"
-
-```{r}
-
-####
-####  Functions
-####
-
-my.function = function(){       # this function has no arguments
-  message <- "Hello, world!"
-  print(message)
-}
-
-```
-
-
-Now we can run the function!
-
-```{r}
-
-my.function()
-
-```
-
-### 'Mean' function
-
-Let's write a function to compute the mean of a vector. Okay fine, base R already has the "mean()" function, but let's do it anyway!
-
-```{r}
-
-## We can write our own functions. Useful if we have to repeat operations over and over.
-my.mean <- function(x){
-    m <- sum(x)/length(x)
-    return(m)
-}
-
-foo <- c(2, 4, 6, 8)
-my.mean(foo)
-
-
-```
-
-### 'Square' function
-
-How about a function to square the arguments?
-
-```{r}
-
-## A function to square the arguments.
-square <- function(x){
-    x^2
-}
-
-## Square a single value (scaler).
-square(2)
-
-## Square a vector.
-square(1:10)
-
-
-```
-
-### 'Logit' function
-
-The logit operation (log-odds) is not included in the base R package. Let's write it ourselves!
-
-```{r}
-
-## Often, we need to write functions that are not included in the base R package e.g., the logit function.
-## Calculate the log-odds (logit).
-logit <- function(x){
-    log(x/(1-x))
-}
-
-## Calculate logit of 0.9.
-logit(.9)
-
-## Sequence between 0 and 1.
-x <- seq(from = 0, to = 1, by = 0.01)
-
-## Caclulate the logit of a vector.
-logit.x <- logit(x)
-logit.x
-
-## Plot x on x-axis, and logit(x) on y axis.
-par(mfrow = c(1, 1))
-plot(x, logit.x, type = 'l')    # View the output graphically.
-
-```
-
-### 'Expit' function
-
-A useful, related function is the inverse-logit, or "expit" function:
-
-```{r}
-
-## The expit (or inverse logit) funtion.
-expit <- function(x){
-    exp(x)/(1+exp(x))
-}
-
-## Calculate the inverse-logit of logit(0.9) = 2.197225.
-expit(2.197225)
-
-expit.logit.x <- expit(logit.x)    # Return to original x values.
-
-## Plot x on x-axis, and expit(logit(x)) = x on y axis.
-plot(x, expit.logit.x, type = 'l')
-
-## Plot "logistic" curve
-plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type="l")
-
-
-```
-
-### Kaplan Meier survival function
-
-Finally, let's develop a function to compute the maximum-likelihood estimator for a Kaplan-Meier survival analysis:
-
-```{r}
-
-## Kaplan Meier known-fate maximum likelihood estimator.
-## n is the number of animals fitted with ratio transmitters being monitored.
-## d is the number of n that died.
-survival.mle <- function(n, d){
-    (n-d)/n
-}
-
-## One year of data.
-survival.mle(n = 10, d = 5)
-
-## Many years of data.
-d <- sample(0:50, 10, replace = TRUE)
-n <- c(100, 100-d)
-(surv <- survival.mle(n = n[1:10], d = d))
-
-## Plot year-specific survival rate.
-plot(1:10, surv, type = 'l')
-
-```
-
-
-## Conditional statements 
-
-Conditional, or logical, operations (IF [condition] THEN [do something] ELSE [do something]) are a basic building block of computer programming. 
-
-### if...else statements in R
-
-The basic syntax for if...else statements in R is as follows:
-
-```
-
-if([some condition]){               ## if some condition is met
-  [execute some commands]
-}else if ([some other condition]){   ## if some other condition is met (often not necessary)
-  [execute some other commands]
-}else{                               ## if none of the above conditions are met (otherwise...)
-  [execute some other commands]
-}
-
-```
-
-NOTE: you can include any number of "else if(...)" statements- and most of the time you can omit these entirely!   
-
-Let's try it!
-
-```{r}
-
-####
-####  if...else statements
-####
-
-########
-# Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
-n.samples <- 1
-p <- 0.7
-x <- rbinom(n = n.samples, size = 1, prob = p)
-
-if (x > 0) {
-    print("Detected")
-} else {
-    print("Not detected")
-}
-
-
-```
-
-### ifelse() function
-
-Note that "if...else" only works for testing one condition at a time. If we have a spreadsheet with lots of data, we need something else -- somethign "vectorized" -- like the "ifelse()" function:
-
-```{r}
-
-####
-####  ifelse()
-####
-
-## Note if...else only works for testing one value. If we have a spreadsheet with lots of data, need something else.
-n.samples <- 100
-set.seed(2017)
-
-## 100 samples from a binomial disribution with detection probability = p = 0.7.
-y <- rbinom(n = n.samples, size = 1, prob = p)
-y
-
-## incorrect usage
-if (y == 1) {
-    print("Detected")
-} else {
-    print("Not detected")
-}   # PRINTS A WARNING MESSAGE!
-
-## Use ifelse instead.
-detection.history <- ifelse(y == 1, print("Detected"), print("Not detected"))
-detection.history
-
-## Going the other direction.
-ifelse(detection.history == "Detected", 1, 0)
-
-xt  <-  cbind(rbinom(10, 1, .5), rbinom(10, 1, .6))
-xt
-ifelse(xt[, 1] > 0 & xt[, 2] > 0, print("Detected twice"),
-       print("Not detected twice"))
-
-
-```
-
-
-## Iterating!
-
-Iterating, or running the same operation over and over sequentially, is another fundamental computer programming tool. Computers are great at performing multiple computations really, really fast! **Loops** are a good way to take advantage of computers! 
-
-The basic syntax for iterating in R is called a "FOR loop", and looks like this:
-
-```
-
-for([placeholder variable] in [iteration vector of length x]){
-  [perform specified operation(s) x times, with the placeholder variable alternately set at each value of the iteration vector]
-}
-
-```
-
-For example... 
-
-```{r}
-
-####
-####  for loops
-####
-
-n.iter <- 10
-count <- 0
-for(i in 1:n.iter){
-  count <- count+1            # assign a new value of count equal to the old value of count + 1
-  print(count)
-}
-
-
-```
-
-
-Here, "i" is the *placeholder variable* and "1:n.iter" is the *iteration vector*: 
-
-```{r}
-
-  # closer look at iteration vector:
-1:n.iter
-
-```
-
-
-Essentially, R starts this FOR loop by setting the value of the *placeholder variable* "i" to the first value of the *iteration vector* (i.e., the value 1). It then runs the two commands in the body of the for loop [count <- count+1; print(count)]. Then, it sets the placeholder variable "i" to the next value in the *iteration vector* (i.e., the value 2) and runs the commands again. It keeps doing this until it reaches the end of the iteration vector, at which point it stops!  
-
-Often, we use the placeholder variable directly within the FOR loop. Here are some examples:
-
-```{r}
-
-## Using the placeholder variable "i" within the for loop:
-
-count <- 0
-for(i in 1:n.iter){
-    count <- count+i            # assign a new value of count equal to the old value of count + i
-    print(count)
-}
-
-## A for-loop for dependent sequence (here, the Fibonacci sequence)
-n.iter <- 10
-x <- rep(0, n.iter)            # set up vector of all zeros
-x[1] <- 1                     # assign x_1  <-  1
-x[2] <- 1                     # assign x_2 = 0
-x
-
-for(i in 3:n.iter){
-    x[i] <- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
-}
-x
-
-
-```
-
-
-### Iterating using the "apply() family of functions in R"
-
-```{r}
-
-###
-### apply (A more efficient, vectorized way to iterate)
-###
-
-W <- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
-W
-
-## Calculate the row means.
-apply(W, 1, mean)
-
-## Calculate the column means.
-apply(W, 2, mean)
-
-## Identify the column that has the largest value.
-apply(W, 1, which.max)
-
-## Apply your own functions to each row in a matrix.
-MyFunc <- function(x){
-    2+sum(x/5)-3/2*mean(x)^2
-}
-apply(W, 1, MyFunc)
-
-
-```
-
-
-## Practice exercises
-
-### Using conditional statements
-
-#### Reject null hypothesis
-
-In traditional statistics, one of the primary goals is to compare a test statistic with a "critical value": if the test statistic exceeds the critical value, you can reject a null hypothesis with a reasonable degree of certainty (such that the rate at which you incorrectly reject the null hypothesis remains at or below a pre-specified value, called the "alpha-level").
-
-In the example below, we simulate data (n=100) from a normal distribution with mean of 1, and we use a Student's t-test to assess whether or not we can reject the null hypothesis that the data were derived from a distribution with mean of zero. Here, the *test statistic* is the t-statistic (representing the standardized difference of the sample mean from zero), and the *critical value* is determined as a pre-specified quantile of the "t" distribution (here, we use a two-tailed test holding alpha=0.05).
-
-The act of rejecting or failing to reject a null hypothesis is an instance of conditional logic (if...then...else). Let's see how we might implement this test in R:
-
-
-```{r}
-
-####################
-####  Exercises ####
-####################
-
-
-###
-### Perform hypothesis test using if...then...else
-###
-
-n.samples <- 100
-x <- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
-mu <- mean(x)                               # Compute the sample mean.
-s <- sd(x)                                  # Compute the sample standard deviation.
-t <- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
-t.crit <- qt(p = 0.975, df = 99)            # Calculate critical value for test (above which we can reject the null hypothesis with acceptable type-I error)
-if (t > t.crit) {
-    print("reject")                        # Reject if condition holds.
-} else {
-    print("fail to reject")                # Fail to reject otherwise.
-}
-
-```
-
-Did you successfully reject the null hypothesis? What if you set the mean to zero when you simulate the data? 
-
-#### Cleaning up messy data
-
-Sometimes (like all the time) your data will be "messy" - that is, it will have some errors (e.g., incorrect data entry) that need to be fixed prior to running an analysis. Take this example of "messy" data from a simulated occupancy study:
-
-```{r}
-
-###
-### Clean up messy matrix using ifelse
-###
-
-## Simulate data.
-observations <- matrix(sample(c("Detected", "NotDetected", 1, 0), 20*3, replace = TRUE), 20, 3)    # simulate detection/non-detection data over three sampling occasions
-
-habitat <- rnorm(20, 0, 2)    # simulate environmental covariate
-Data <- cbind(observations, habitat)       # bind into single matrix.
-Data
-
-```
-
-As you can see, non-detections are coded here as both "NotDetected" and "0", and likewise, detection events also have two alternative codes. To clean up this data set, let's do the following:     
-
-- Make sure that detections and non-detections are coded in a consistent manner!     
-- Reduce the significant digits of the environmental covariate "Habitat".    
-- Finally, we probably want to add column names to our matrix. 
-
-Note the use of the "ifelse()" function here, which is a convenient and efficient way to perform a test consecutively on an entire vector using a single line of code!
-
-```{r}
-
-## Clean-up data using "ifelse()" function
-NewObs <- ifelse( (Data[, 1:3] == "Detected") | (Data[, 1:3] == "1"), 1, 0) #  The "|" means "or." Similarly "&" means "and"
-NewHabitat <- as.numeric(Data[, 4])  # as.numeric gets rid of quotes around habitat data.
-NewHabitat <- round(NewHabitat, 2)   # round rounds to number of decimals specified.
-NewData <- cbind(NewObs, NewHabitat) # bind the columns to form a matrix.
-colnames(NewData) <- c("obs1", "obs2", "obs3", "Habitat")  # provide column names
-NewData
-
-```
-
-Looks a lot better now, right!
-
-### Using FOR loops
-
-Iteration is one of the things computers do best, and harnessing this ability is endlessly useful! Here are some examples:
-
-#### View a landscape from multiple angles
-
-In this example, we use a FOR loop to view the topography of a rugged landscape (using the built-in "volcano" dataset in R) from multiple perspectives. 
-
-```{r}
-
-###
-### FOR loop examples
-###
-
-#############
-## EXAMPLE 1: Plot a 3D surface using data already stored in R.
-
-Z <- 2 * volcano        # Exaggerate the relief (multiply the elevation by 2)   
-
-X <- 10 * (1:nrow(Z))   # set horizontal coordinates -- 10 meter spacing (S to N)     
-
-Y <- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to W)
-
-# Z   # make sure the elevation matrix looks right
-
-par(mfrow = c(2,1), bg = "white")
-persp(X,  Y, Z, theta = 135, phi = 30, col = "green3",    # "persp()" produces a 3D "perspective plot"
-      scale = FALSE, ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
-
-```
-
-
-Now let's view from an alternative angle!
-
-```{r}
-
-## change the value of theta from 135 to 90 to change the viewing angle
-persp(X, Y, Z, theta = 90, phi = 30, col = "green3",
-      scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
-
-```
-
-
-Now we can use a FOR loop to view this landscape from many angles. Try it!
-
-
-```{r eval = FALSE}
-
-## Use a for-loop to help view many angles.
-par(mfrow = c(1,1))
-for(i in 1:18){
-    persp(X, Y, Z, theta = i*20, phi = 30, col = "green3",
-          scale = FALSE,  ltheta = -120, shade = 0.75,
-          border = NA, box = FALSE)
-    print(i*20)
-    readline()                               # Pauses the for-loop until [enter] is pushed
-}
-
-
-
-```
-
-#### Test the Central Limit Theorem!
-
-In this example, we test the famous [Central Limit Theorem (CLT)](https://en.wikipedia.org/wiki/Central_limit_theorem) using repeated simulations.  
-
-Specifically, as we collect more samples from an arbitrary distribution, the sample mean (e.g., the mean of all the sample means) should converge on the true mean (here, equal to 5).
-
-To test this, let's first write some *pseudocode* for how to perform this operation:
-
-1. Specify the number of hypothetical repeat samples to draw    
-2. Specify the sample size for each hypothetical repeat sample   
-3. Specify the mean and variance of the "true" population from which we will sample 
-4. For each hypothetical sampling experiment:      
-    a. Draw a random sample from the known distribution      
-    b. Compute and store the sample mean     
-5. Visualize the distribution of sample means. Evaluate whether the sample means tend toward the true mean...  
-
-Here we translate the pseudocode into real R code!  
-
-
-```{r}
-
-##################
-## EXAMPLE 2: Use a FOR loop to create a simulation to test the central limit theorem (CLT).
-
-n.iter <- 1000                                # large number of hypothetical "repeat samples."
-sample.size <- 30                             # Sample size of 30 from each repeat sample.
-mu <- 5                                       # True population mean of 5.
-sd <- 2                                       # True standard deviation of 2.
-means <- numeric(n.iter)                      # Initialize empty vector to store the sample means.
-for(i in 1:n.iter){                           # For each of the repeat samples...
-    sample <- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
-    means[i] <- mean(sample)                # and store the sample mean.
-}
-hist(means)                                # Histogram of all the means.
-abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.
-plot(density(means), main = "")
-abline(v = mean(means), col = 2, lwd = 4)
-mean(means)                                # Close to true mean of 5
-sd(means)*sqrt(30)                         # Close to true sd of 2
-
-```
-
-
-### Practice putting it all together! 
-
-To make sure we can apply the fundamental components of programming (iterative loops and functions), let's work out an example that uses both!
-
-#### Logistic population growth example
-
-Here we model the growth/dynamics of a wild population using a classical *logistic* (S-shaped) population growth model: 
-
-To get some more practice with functions, let's first write a function to compute the expected rate of population growth on the basis of $r$ (intrinsic rate of population growth), $K$ (carrying capacity), and $P_0$ (current population size). The logistic growth equation can be written mathematically as:
-
-$P_{t+1}=P_t+r\cdot P0 \cdot (1-\frac{P0}{K})$   
-
-Let's implement this equation as a function in R: 
-
-```{r}
-
+```{r eval=FALSE}
 
 ##############
-##  Logistic population growth example (uses function and for loop)
+# PACKAGES!
+##############
 
-
-## Logistic growth function: calculate population size using logistic growth model.
-  # K = carrying capacity.
-  # r = intrinsic growth rate
-  # P0 = initial population size
-
-logistic.growth <- function(r, P0, K){            
-    dpdt <- r*P0*(1-P0/K)                   # implement logistic growth equation
-    P0+dpdt                                   
-}                                           
-logistic.growth(r = .5, P0 = 10, K = 100)   # try out the new function!
+install.packages("modeest")    # run this if you haven't yet installed the package from CRAN!
 
 ```
-
-
-Now, we can use a FOR loop simulate population growth over many years:
 
 ```{r}
 
-## Logistic growth function within a for-loop
-
-years <- 20                                   # How many years we want to calc population size.
-pop.size <- numeric(years)                    # Empty vector to store population size.
-pop.size[1] <- 5                              # Starting population size (P0).
-for(i in 1:(years-1)){                     # Function within a FOR loop!
-    pop.size[i+1] <- logistic.growth(r = 0.5, P0 = pop.size[i], K = 100)
-}
-plot(1:years, pop.size, type = 'l',
-     xlab = "Years", ylab = "Population Size")
+library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
 
 ```
 
-And finally, we could wrap this all up in a more complex function that simulates across years and produces a plot! That way, we could run an entire population simulation with a single line of code. Let's try it!  
+Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax: 
 
+```{r eval=FALSE}
+
+library(help = "modeest")    # get overview of package
+
+```
+
+Can you use the package overview to identify a function for computing the mode of a data vector?
+
+Let's try to use it! If you haven't already loaded the "data.missing.txt" dataset, download it [here](data_missing.txt) and save to your working directory.
 
 ```{r}
 
-## A more complex function that ouputs a plot.
-plot.logistic.growth <- function(r, P, K, years){
-    pop.size[1] <- P
-    for(i in 1:(years-1)){
-        pop.size[i+1] <- P+r*P*(1-P/K)
-        P <- pop.size[i+1]
-    }
-    plot(1:years, pop.size, type = 'l', xlab = "Years",
-         ylab = "Population Size",
-         main = paste("r = ", r, "K = ", K))
-}
+newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)
-par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))                  # Multi-figure (mf) plot with 2 rows and 2 columns.
-plot.logistic.growth(r = 0.1, P = 10, K = 100, years = 20)   # Change the values of r and quickly print plots.
-plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)
-par(mfrow = c(1, 1))                               # Return to a 1X1 plot.
+?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
+
+  # lets find the most frequent value(s) in the "Export" column:
+mlv(newdf$Export, method="mfv", na.rm = T)    
+
+```
+
+#### Removing a package from your environment
+Not that you need to do this very often, but if you want to remove a package from your current session, you can use the "detach()" function:
+
+```{r eval=FALSE}
+
+detach("modeest")  # remove the package from the workspace
 
 ```
 
 
+### 3d scatterplot example!
 
-## Challenge problems!
+Before we move on, the "car" package (_c_ompanion to _a_pplied _r_egression) gives us an example of the endless, amazing things we can do with R packages. Here we will make our own interactive 3d plot! (example from "prelude in R").
 
-1. Create a function to calculate the value of $y$ for the equation $y = \beta_0 + \beta_1*x$ for any value of $\beta_0$, $\beta_1$ and $x$.   
+Here is a data set that represents the number of times a dog barks in a day, and two potential explanatory factors: food given (in lbs) and cars passing by the house. 
 
-2. Using the function in part 1, with $\beta_0 = 2$, and $\beta_1= -1$ use a FOR loop to calculate $y$ for the values of $x$ = 1,...,10. Plot the results.
+```{r}
 
-3. Write a function that conducts a two-sided t test for a given null hypothesis. Here is a code skeleton to get you started!! 
+#########
+# 3D Plotting example 
+#########
+
+#########
+# Data: dog barks per day (and two explanatory variables)
+
+Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
+        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
+Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
+        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
+        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
+        0.272, 0.098, 0.415)
+Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
+       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
+
+```
+
+
+Let's install and load the "car" package:
+
+```{r eval=FALSE}
+
+install.packages("car")
+library(car)
+
+```
+
+Now for the fun part- interactive 3-D graphics! Run the following code and take a minute to play around with the resulting scatterplot. 
 
 ```{r eval=FALSE}
 
 ##########
-# Challenge problem 3: code skeleton to get you started!   
+# interactive 3-D graphics!
 
-get.t.test <- function(data, mu0, alpha = 0.05) {
-    n <- length(data)
-    mu <- mean(____)
-    s <- ____(data)
-    t <- (mu-mu0)/(s/sqrt(n))
-    t.crit <- qt(p = (1-alpha/2), df = n-1)        # get the critical value
-    if (abs(t)>t.crit) {
-        answer = "_______"
-    } ____ {
-        answer = "Fail to reject"
-    }
-    print(answer)
-}
+car::scatter3d(Bark~Food+Cars,surface=TRUE)
 
 ```
 
-4. Calculate the standard deviation as an index of ruggedness from the rows of the volcano elevation data "Z", using the "apply()" function. Which row has the most rugged terrain?
+### Loading packages from GitHub
+
+More and more package developers are bypassing the CRAN repository, and instead using [GitHub](https://github.com/). In some cases, the version available on CRAN is not the latest version- for the latest version, you need to use GitHub. Also, many packages that are in development are only found on GitHub. There are actually some good reasons to put an R package on GitHub:
+
+1. It's easier for others to peruse your code.     
+2. People can actually fix the problem and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, "There’s a typo in your documentation" they can say "Here, I’ve fixed a typo in your documentation."        
+3. With the install_github() function in Hadley Wickham’s devtools package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)      
 
 
-5: Wrap the code below in a FOR loop to simulate the sun rising and setting over the volcano data by looping over values of "lphi" (the light angle). Try replacing "readline()" with "Sys.sleep(.5)" from the example above.
-
+The syntax for using "install_github()" is just install_github("[author]/[package]") Here's an example using the "install_github()" function:
 
 ```{r eval=FALSE}
 
-#######
-# Example code to get you started with challenge problem 5... 
+###########
+# install package from GitHub:
 
-persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?,
-                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
-print(?)
-readline()
+ # install.packages("devtools")    # run this if you haven't already installed the "devtools" package
+library(devtools)
+install_github("kbroman/broman")  # install a random package from GitHub!
 
 ```
+
+
+### Finding the right package for the job
+
+Usually a Google search is the best way to find out about packages! But you may also read about new packages in a journal (e.g., [Methods in Ecology and Evolution](https://besjournals.onlinelibrary.wiley.com/journal/2041210X)) or textbook, or conference, or just talking with other researchers! 
+
+### Learning more about how a package works
+
+It's not always perfectly obvious how to get started in actually using a new package. Here are three tips. 
+
+#### Built-in package overview
+
+We've already seen this one- just use the following syntax to pull up an overview of any package:
+
+```
+
+library(help = "[package name]")
+
+```
+
+For example,
+
+```{r eval=FALSE}
+
+###########
+# Learning more about packages
+###########
+
+###########
+# Package overview
+
+library(help = "car")    # help file for the useful "car" package for applied regression
+
+```
+
+#### Package vignettes
+
+"Vignettes" are provided in many packages, and are tremendously useful, providing worked examples. Usually the package overview (above) will tell you which vignettes are available (see above). Use the following syntax to pull up a vignette:
+
+```
+
+vignette('[name of vignette]', '[name of package]')
+
+```
+
+For example,
+
+```{r eval=FALSE}
+
+##########
+# package vignette
+
+browseVignettes('car')
+vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
+
+```
+
+Or let's take a look at the "dismo" package, which is for species distribution modeling in R:
+
+```{r eval=FALSE}
+
+################
+#### GENERAL TIPS
+################
+
+#############
+# 1. Use code examples provided by others
+
+install.packages("dismo")     # install "dismo" for species distribution modeling
+
+browseVignettes('dismo')
+vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.
+vignette('brt','dismo')      # and another one!
+
+```
+
+
+#### Package demos
+
+Some packages include "demos", which are a bit more interactive than the built-in examples. Here's an example:
+
+```{r eval=FALSE}
+
+########
+# package demo
+
+demo(package="stats")    # list all demos for package 'stats', which is included in base R
+demo('nlm','stats')
+
+```
+
+
+#### Package documentation (html or PDF)
+
+The 'master' documentation for any package is often packaged as a PDF file that can be downloaded from CRAN (each package on the CRAN repository has its own webpage- for example, here's the one for the [raster package](https://cran.r-project.org/web/packages/raster/index.html)) 
+
+Also, you can load the documentation for any package you have installed using the "help.start()" function:
+
+```{r eval=FALSE}
+
+###########
+# Load html documentation for R and all installed packages
+
+help.start()
+
+```
+
+#### Learning by example!
+
+To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written. 
+
+One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using 'help()' or '?'). You can also run these examples using the "example()" function. For example:
+
+```{r eval=FALSE}
+
+#########
+# Built-in examples
+
+example(lm)   # run examples for "lm" function (included in base R)
+
+```
+
+Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples! 
+
+#### Package citations
+
+Most packages include one or more citations, which are often peer-reviewed papers that document the novel algorithms included in the package, often in more detail than the help files. These are also the papers you should cite if you use the package for a manuscript. You can find these citations using the "citation()" function:
+
+```{r}
+
+########
+# package citations
+
+citation('car')   # citation for the 'car' package
+
+citation()    # and here's the citation for R in general- useful for when you use R for manuscripts
+
+
+
+```
+
+
+#### Online forums
+In some cases you may run into issues with a particular package that you just can't seem to solve. It's still likely that others have had this problem! If you use some appropriate keywords in a google search you may find a link to an online forum (like [stackoverflow](https://stackoverflow.com/)) where someone has answered a similar question. It's amazing how many knowledgeable people are answering questions on these forums - they are a tremendously valuable resource!
+
+And of couse, if you still can't find an answer to your question, you can ask your question on [one of these online forums](https://r-dir.com/community/forums.html). The best ones are probably [Nabble](http://r.789695.n4.nabble.com/), [Stack Overflow](https://stackoverflow.com/), and [Cross Validated](https://stats.stackexchange.com/questions/tagged/r).
+
+
+#### Ask the package author!!
+
+When all else fails, you can always reach out to the package author! The author's name and contact info are listed in the package overview, and I have found they are generally very responsive and willing to help!! 
+ 
+
+## 'Cheat sheets'
+
+There are lots of "cheat sheets" available for reminding you of basic R functionality. It can be useful to tape these to the wall next to your desk!
+
+For example, [here](https://cran.r-project.org/doc/contrib/Short-refcard.pdf) is a good cheat sheet for using base R. 
+
+see [Links page](Links.html) for more resources, including cheat sheets! 
+
+## *Google!* 
+
+I don't even understand why it works so well to google R help ('r' is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work (and some cheat sheets by your desk), and the internet, you can pretty much always find a solution! 
+
+
+More helpful links for going further with R are provided on the [Links](Links.html) page. 
+
+
+## Any questions???
+
+
 
 
 
 [--go to next module--](module2_2.html)
-
 
 
 

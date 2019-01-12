@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Basic programming in R" />
+<meta name="author" content="R packages: expanding your skill set" />
 
 
 <title>Module 2.1</title>
@@ -295,6 +295,9 @@ div.tocify {
     <li>
       <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
     </li>
+    <li>
+      <a href="module1_4.html">Module 1.4: Programming in R</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -305,22 +308,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module2_1.html">Module 2.1: Programming in R</a>
+      <a href="module2_1.html">Module 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Module 2.2: R packages</a>
+      <a href="module2_2.html">Module 2.2: Parallel computing in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Module 2.3: Parallel computing in R</a>
+      <a href="module2_3.html">Module 2.3: Using the 'tidyvierse'</a>
     </li>
     <li>
-      <a href="module2_4.html">Module 2.4: Using the 'tidyvierse'</a>
+      <a href="module2_4.html">Module 2.4: Plotting with 'ggplot'</a>
     </li>
     <li>
-      <a href="module2_5.html">Module 2.5: Plotting with 'ggplot'</a>
-    </li>
-    <li>
-      <a href="module2_6.html">Module 2.6: Spatial analysis</a>
+      <a href="module2_5.html">Module 2.5: Spatial analysis</a>
     </li>
   </ul>
 </li>
@@ -379,673 +379,256 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Module 2.1</h1>
-<h4 class="author"><em>Basic programming in R</em></h4>
+<h4 class="author"><em>R packages: expanding your skill set</em></h4>
 <h4 class="date"><em>September 2018</em></h4>
 
 </div>
 
 
-<p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University.</p>
-<p><strong>Guest presenter</strong>: Perry Williams (who also pulled this module together, and was a part of the CSU team that put many of these materials toghether and graciously allowed us to borrow them- thanks!!!)</p>
+<p>In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed <strong>packages</strong> (also called <em>libraries</em>).</p>
+<p>Whether you are an expert or a novice, you will always encounter situations where you don’t know exactly what to do. The great thing about R is that there is <em>nearly always a way to do it</em> (whether in base R or via <strong>packages</strong> contributed by R users from around the world), and once you get familiar with the basics, it’s usually not that hard to figure out how to accomplish your analysis objectives!</p>
+<div class="figure">
+<img src="tech_support_cheat_sheet.jpg" />
+
+</div>
 <div id="load-script-for-module-2.1" class="section level2">
 <h2>Load script for module #2.1</h2>
 <ol style="list-style-type: decimal">
 <li><p>Click <a href="module2_1.R">here</a> to download the script! Save the script to a convenient folder on your laptop.</p></li>
 <li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script.</p></li>
 </ol>
-<p>Let’s get started with basic programming in R!</p>
 </div>
-<div id="functions-in-r" class="section level2">
-<h2>Functions in R</h2>
-<p>Everything in R can be boiled down to this one sentence: data are expressed as <em>vectors</em>, and vectors are managed, manipulated, and visualized via <strong>functions</strong>. Functions are absolutely central to R!</p>
-<p>Let’s start with a blank workspace:</p>
-<pre class="r"><code>#######
-# Start with blank workspace
+<div id="packages" class="section level2">
+<h2>Packages</h2>
+<p>How is it possible to have so many features implemented in a single programming environment?</p>
+<p>The answer is that you have a whole community of researchers adding new functionality <em>all the time</em>! This new functionality is implemented in the form of <strong>R Packages</strong>, also known as <strong>libraries</strong>. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).</p>
+<div id="mode-example" class="section level3">
+<h3>Mode example</h3>
+<p>For a simple example (borrowed from <a href="https://preludeinr.com">Prelude in R</a>), base R does not include a function for computing the <em>mode</em> of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called “modeest”, and made the package available in the CRAN repository.</p>
+<p>Packages in the CRAN repository can be installed using the function “install.packages()”:</p>
+<pre class="r"><code>##############
+# PACKAGES!
+##############
 
-rm(list=ls())</code></pre>
-<p>As we have seen, base R already includes lots of functions, and thousands more functions are available in packages that you can install. Nonetheless, it’s really useful to know how to write your own functions! For example, we might write our own function if we have to repeat certain sets of operations over and over in different contexts.</p>
-<p>We use the following syntax when we are writing our own functions:</p>
-<pre><code>
-my.function &lt;- function(inputs){         # function takes various arguments, or inputs
-    
-    ## Algorithm: Do something useful with the inputs
-    
-    return(output)             # optionally, return some output
-    
-}
-</code></pre>
-<div id="first-function-hello-world" class="section level3">
-<h3>First function: “Hello, world!”</h3>
-<p>Let’s try to write our first function, which prints out a message: “Hello, world!”</p>
-<pre class="r"><code>####
-####  Functions
-####
+install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet installed the package from CRAN!</code></pre>
+<pre class="r"><code>library(modeest)    # load the package: This is package &#39;modeest&#39; written by P. PONCET.</code></pre>
+<pre><code>## 
+## This is package &#39;modeest&#39; written by P. PONCET.
+## For a complete list of functions, use &#39;library(help = &quot;modeest&quot;)&#39; or &#39;help.start()&#39;.</code></pre>
+<p>Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax:</p>
+<pre class="r"><code>library(help = &quot;modeest&quot;)    # get overview of package</code></pre>
+<p>Can you use the package overview to identify a function for computing the mode of a data vector?</p>
+<p>Let’s try to use it! If you haven’t already loaded the “data.missing.txt” dataset, download it <a href="data_missing.txt">here</a> and save to your working directory.</p>
+<pre class="r"><code>newdf &lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)
 
-my.function = function(){       # this function has no arguments
-  message &lt;- &quot;Hello, world!&quot;
-  print(message)
-}</code></pre>
-<p>Now we can run the function!</p>
-<pre class="r"><code>my.function()</code></pre>
-<pre><code>## [1] &quot;Hello, world!&quot;</code></pre>
-</div>
-<div id="mean-function" class="section level3">
-<h3>‘Mean’ function</h3>
-<p>Let’s write a function to compute the mean of a vector. Okay fine, base R already has the “mean()” function, but let’s do it anyway!</p>
-<pre class="r"><code>## We can write our own functions. Useful if we have to repeat operations over and over.
-my.mean &lt;- function(x){
-    m &lt;- sum(x)/length(x)
-    return(m)
-}
-
-foo &lt;- c(2, 4, 6, 8)
-my.mean(foo)</code></pre>
-<pre><code>## [1] 5</code></pre>
-</div>
-<div id="square-function" class="section level3">
-<h3>‘Square’ function</h3>
-<p>How about a function to square the arguments?</p>
-<pre class="r"><code>## A function to square the arguments.
-square &lt;- function(x){
-    x^2
-}
-
-## Square a single value (scaler).
-square(2)</code></pre>
-<pre><code>## [1] 4</code></pre>
-<pre class="r"><code>## Square a vector.
-square(1:10)</code></pre>
-<pre><code>##  [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
-</div>
-<div id="logit-function" class="section level3">
-<h3>‘Logit’ function</h3>
-<p>The logit operation (log-odds) is not included in the base R package. Let’s write it ourselves!</p>
-<pre class="r"><code>## Often, we need to write functions that are not included in the base R package e.g., the logit function.
-## Calculate the log-odds (logit).
-logit &lt;- function(x){
-    log(x/(1-x))
-}
-
-## Calculate logit of 0.9.
-logit(.9)</code></pre>
-<pre><code>## [1] 2.197225</code></pre>
-<pre class="r"><code>## Sequence between 0 and 1.
-x &lt;- seq(from = 0, to = 1, by = 0.01)
-
-## Caclulate the logit of a vector.
-logit.x &lt;- logit(x)
-logit.x</code></pre>
-<pre><code>##   [1]        -Inf -4.59511985 -3.89182030 -3.47609869 -3.17805383
-##   [6] -2.94443898 -2.75153531 -2.58668934 -2.44234704 -2.31363493
-##  [11] -2.19722458 -2.09074110 -1.99243016 -1.90095876 -1.81528997
-##  [16] -1.73460106 -1.65822808 -1.58562726 -1.51634749 -1.45001018
-##  [21] -1.38629436 -1.32492541 -1.26566637 -1.20831121 -1.15267951
-##  [26] -1.09861229 -1.04596856 -0.99462258 -0.94446161 -0.89538405
-##  [31] -0.84729786 -0.80011930 -0.75377180 -0.70818506 -0.66329422
-##  [36] -0.61903921 -0.57536414 -0.53221681 -0.48954823 -0.44731222
-##  [41] -0.40546511 -0.36396538 -0.32277339 -0.28185115 -0.24116206
-##  [46] -0.20067070 -0.16034265 -0.12014431 -0.08004271 -0.04000533
-##  [51]  0.00000000  0.04000533  0.08004271  0.12014431  0.16034265
-##  [56]  0.20067070  0.24116206  0.28185115  0.32277339  0.36396538
-##  [61]  0.40546511  0.44731222  0.48954823  0.53221681  0.57536414
-##  [66]  0.61903921  0.66329422  0.70818506  0.75377180  0.80011930
-##  [71]  0.84729786  0.89538405  0.94446161  0.99462258  1.04596856
-##  [76]  1.09861229  1.15267951  1.20831121  1.26566637  1.32492541
-##  [81]  1.38629436  1.45001018  1.51634749  1.58562726  1.65822808
-##  [86]  1.73460106  1.81528997  1.90095876  1.99243016  2.09074110
-##  [91]  2.19722458  2.31363493  2.44234704  2.58668934  2.75153531
-##  [96]  2.94443898  3.17805383  3.47609869  3.89182030  4.59511985
-## [101]         Inf</code></pre>
-<pre class="r"><code>## Plot x on x-axis, and logit(x) on y axis.
-par(mfrow = c(1, 1))
-plot(x, logit.x, type = &#39;l&#39;)    # View the output graphically.</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-</div>
-<div id="expit-function" class="section level3">
-<h3>‘Expit’ function</h3>
-<p>A useful, related function is the inverse-logit, or “expit” function:</p>
-<pre class="r"><code>## The expit (or inverse logit) funtion.
-expit &lt;- function(x){
-    exp(x)/(1+exp(x))
-}
-
-## Calculate the inverse-logit of logit(0.9) = 2.197225.
-expit(2.197225)</code></pre>
-<pre><code>## [1] 0.9</code></pre>
-<pre class="r"><code>expit.logit.x &lt;- expit(logit.x)    # Return to original x values.
-
-## Plot x on x-axis, and expit(logit(x)) = x on y axis.
-plot(x, expit.logit.x, type = &#39;l&#39;)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>## Plot &quot;logistic&quot; curve
-plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type=&quot;l&quot;)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
-</div>
-<div id="kaplan-meier-survival-function" class="section level3">
-<h3>Kaplan Meier survival function</h3>
-<p>Finally, let’s develop a function to compute the maximum-likelihood estimator for a Kaplan-Meier survival analysis:</p>
-<pre class="r"><code>## Kaplan Meier known-fate maximum likelihood estimator.
-## n is the number of animals fitted with ratio transmitters being monitored.
-## d is the number of n that died.
-survival.mle &lt;- function(n, d){
-    (n-d)/n
-}
-
-## One year of data.
-survival.mle(n = 10, d = 5)</code></pre>
-<pre><code>## [1] 0.5</code></pre>
-<pre class="r"><code>## Many years of data.
-d &lt;- sample(0:50, 10, replace = TRUE)
-n &lt;- c(100, 100-d)
-(surv &lt;- survival.mle(n = n[1:10], d = d))</code></pre>
-<pre><code>##  [1] 0.7000000 0.4428571 0.4918033 0.7391304 1.0000000 0.8600000 0.9302326
-##  [8] 0.6808511 0.5000000 0.7076923</code></pre>
-<pre class="r"><code>## Plot year-specific survival rate.
-plot(1:10, surv, type = &#39;l&#39;)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?</code></pre>
+<pre><code>## starting httpd help server ... done</code></pre>
+<pre class="r"><code>  # lets find the most frequent value(s) in the &quot;Export&quot; column:
+mlv(newdf$Export, method=&quot;mfv&quot;, na.rm = T)    </code></pre>
+<pre><code>## Mode (most frequent value): 0 
+## Bickel&#39;s modal skewness: 0.8333333 
+## Call: mlv.integer(x = newdf$Export, na.rm = T, method = &quot;mfv&quot;)</code></pre>
+<div id="removing-a-package-from-your-environment" class="section level4">
+<h4>Removing a package from your environment</h4>
+<p>Not that you need to do this very often, but if you want to remove a package from your current session, you can use the “detach()” function:</p>
+<pre class="r"><code>detach(&quot;modeest&quot;)  # remove the package from the workspace</code></pre>
 </div>
 </div>
-<div id="conditional-statements" class="section level2">
-<h2>Conditional statements</h2>
-<p>Conditional, or logical, operations (IF [condition] THEN [do something] ELSE [do something]) are a basic building block of computer programming.</p>
-<div id="ifelse-statements-in-r" class="section level3">
-<h3>if…else statements in R</h3>
-<p>The basic syntax for if…else statements in R is as follows:</p>
-<pre><code>
-if([some condition]){               ## if some condition is met
-  [execute some commands]
-}else if ([some other condition]){   ## if some other condition is met (often not necessary)
-  [execute some other commands]
-}else{                               ## if none of the above conditions are met (otherwise...)
-  [execute some other commands]
-}
-</code></pre>
-<p>NOTE: you can include any number of “else if(…)” statements- and most of the time you can omit these entirely!</p>
-<p>Let’s try it!</p>
-<pre class="r"><code>####
-####  if...else statements
-####
+<div id="d-scatterplot-example" class="section level3">
+<h3>3d scatterplot example!</h3>
+<p>Before we move on, the “car” package (_c_ompanion to _a_pplied _r_egression) gives us an example of the endless, amazing things we can do with R packages. Here we will make our own interactive 3d plot! (example from “prelude in R”).</p>
+<p>Here is a data set that represents the number of times a dog barks in a day, and two potential explanatory factors: food given (in lbs) and cars passing by the house.</p>
+<pre class="r"><code>#########
+# 3D Plotting example 
+#########
 
-########
-# Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
-n.samples &lt;- 1
-p &lt;- 0.7
-x &lt;- rbinom(n = n.samples, size = 1, prob = p)
+#########
+# Data: dog barks per day (and two explanatory variables)
 
-if (x &gt; 0) {
-    print(&quot;Detected&quot;)
-} else {
-    print(&quot;Not detected&quot;)
-}</code></pre>
-<pre><code>## [1] &quot;Detected&quot;</code></pre>
+Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
+        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
+Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
+        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
+        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
+        0.272, 0.098, 0.415)
+Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
+       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)</code></pre>
+<p>Let’s install and load the “car” package:</p>
+<pre class="r"><code>install.packages(&quot;car&quot;)
+library(car)</code></pre>
+<p>Now for the fun part- interactive 3-D graphics! Run the following code and take a minute to play around with the resulting scatterplot.</p>
+<pre class="r"><code>##########
+# interactive 3-D graphics!
+
+car::scatter3d(Bark~Food+Cars,surface=TRUE)</code></pre>
 </div>
-<div id="ifelse-function" class="section level3">
-<h3>ifelse() function</h3>
-<p>Note that “if…else” only works for testing one condition at a time. If we have a spreadsheet with lots of data, we need something else – somethign “vectorized” – like the “ifelse()” function:</p>
-<pre class="r"><code>####
-####  ifelse()
-####
-
-## Note if...else only works for testing one value. If we have a spreadsheet with lots of data, need something else.
-n.samples &lt;- 100
-set.seed(2017)
-
-## 100 samples from a binomial disribution with detection probability = p = 0.7.
-y &lt;- rbinom(n = n.samples, size = 1, prob = p)
-y</code></pre>
-<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0
-##  [36] 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1
-##  [71] 0 1 1 0 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
-<pre class="r"><code>## incorrect usage
-if (y == 1) {
-    print(&quot;Detected&quot;)
-} else {
-    print(&quot;Not detected&quot;)
-}   # PRINTS A WARNING MESSAGE!</code></pre>
-<pre><code>## Warning in if (y == 1) {: the condition has length &gt; 1 and only the first
-## element will be used</code></pre>
-<pre><code>## [1] &quot;Not detected&quot;</code></pre>
-<pre class="r"><code>## Use ifelse instead.
-detection.history &lt;- ifelse(y == 1, print(&quot;Detected&quot;), print(&quot;Not detected&quot;))</code></pre>
-<pre><code>## [1] &quot;Detected&quot;
-## [1] &quot;Not detected&quot;</code></pre>
-<pre class="r"><code>detection.history</code></pre>
-<pre><code>##   [1] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##   [5] &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;    
-##   [9] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [13] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [17] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Not detected&quot;
-##  [21] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
-##  [25] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;    
-##  [29] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [33] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [37] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [41] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [45] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [49] &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
-##  [53] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [57] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
-##  [61] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [65] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [69] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [73] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;    
-##  [77] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [81] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
-##  [85] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [89] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [93] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [97] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;</code></pre>
-<pre class="r"><code>## Going the other direction.
-ifelse(detection.history == &quot;Detected&quot;, 1, 0)</code></pre>
-<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0
-##  [36] 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1
-##  [71] 0 1 1 0 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
-<pre class="r"><code>xt  &lt;-  cbind(rbinom(10, 1, .5), rbinom(10, 1, .6))
-xt</code></pre>
-<pre><code>##       [,1] [,2]
-##  [1,]    1    1
-##  [2,]    1    1
-##  [3,]    0    0
-##  [4,]    0    1
-##  [5,]    1    0
-##  [6,]    0    0
-##  [7,]    0    1
-##  [8,]    1    1
-##  [9,]    0    1
-## [10,]    0    1</code></pre>
-<pre class="r"><code>ifelse(xt[, 1] &gt; 0 &amp; xt[, 2] &gt; 0, print(&quot;Detected twice&quot;),
-       print(&quot;Not detected twice&quot;))</code></pre>
-<pre><code>## [1] &quot;Detected twice&quot;
-## [1] &quot;Not detected twice&quot;</code></pre>
-<pre><code>##  [1] &quot;Detected twice&quot;     &quot;Detected twice&quot;     &quot;Not detected twice&quot;
-##  [4] &quot;Not detected twice&quot; &quot;Not detected twice&quot; &quot;Not detected twice&quot;
-##  [7] &quot;Not detected twice&quot; &quot;Detected twice&quot;     &quot;Not detected twice&quot;
-## [10] &quot;Not detected twice&quot;</code></pre>
-</div>
-</div>
-<div id="iterating" class="section level2">
-<h2>Iterating!</h2>
-<p>Iterating, or running the same operation over and over sequentially, is another fundamental computer programming tool. Computers are great at performing multiple computations really, really fast! <strong>Loops</strong> are a good way to take advantage of computers!</p>
-<p>The basic syntax for iterating in R is called a “FOR loop”, and looks like this:</p>
-<pre><code>
-for([placeholder variable] in [iteration vector of length x]){
-  [perform specified operation(s) x times, with the placeholder variable alternately set at each value of the iteration vector]
-}
-</code></pre>
-<p>For example…</p>
-<pre class="r"><code>####
-####  for loops
-####
-
-n.iter &lt;- 10
-count &lt;- 0
-for(i in 1:n.iter){
-  count &lt;- count+1            # assign a new value of count equal to the old value of count + 1
-  print(count)
-}</code></pre>
-<pre><code>## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10</code></pre>
-<p>Here, “i” is the <em>placeholder variable</em> and “1:n.iter” is the <em>iteration vector</em>:</p>
-<pre class="r"><code>  # closer look at iteration vector:
-1:n.iter</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<p>Essentially, R starts this FOR loop by setting the value of the <em>placeholder variable</em> “i” to the first value of the <em>iteration vector</em> (i.e., the value 1). It then runs the two commands in the body of the for loop [count &lt;- count+1; print(count)]. Then, it sets the placeholder variable “i” to the next value in the <em>iteration vector</em> (i.e., the value 2) and runs the commands again. It keeps doing this until it reaches the end of the iteration vector, at which point it stops!</p>
-<p>Often, we use the placeholder variable directly within the FOR loop. Here are some examples:</p>
-<pre class="r"><code>## Using the placeholder variable &quot;i&quot; within the for loop:
-
-count &lt;- 0
-for(i in 1:n.iter){
-    count &lt;- count+i            # assign a new value of count equal to the old value of count + i
-    print(count)
-}</code></pre>
-<pre><code>## [1] 1
-## [1] 3
-## [1] 6
-## [1] 10
-## [1] 15
-## [1] 21
-## [1] 28
-## [1] 36
-## [1] 45
-## [1] 55</code></pre>
-<pre class="r"><code>## A for-loop for dependent sequence (here, the Fibonacci sequence)
-n.iter &lt;- 10
-x &lt;- rep(0, n.iter)            # set up vector of all zeros
-x[1] &lt;- 1                     # assign x_1  &lt;-  1
-x[2] &lt;- 1                     # assign x_2 = 0
-x</code></pre>
-<pre><code>##  [1] 1 1 0 0 0 0 0 0 0 0</code></pre>
-<pre class="r"><code>for(i in 3:n.iter){
-    x[i] &lt;- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
-}
-x</code></pre>
-<pre><code>##  [1]  1  1  2  3  5  8 13 21 34 55</code></pre>
-<div id="iterating-using-the-apply-family-of-functions-in-r" class="section level3">
-<h3>Iterating using the “apply() family of functions in R”</h3>
-<pre class="r"><code>###
-### apply (A more efficient, vectorized way to iterate)
-###
-
-W &lt;- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
-W</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]   12    5
-## [2,]   10    8</code></pre>
-<pre class="r"><code>## Calculate the row means.
-apply(W, 1, mean)</code></pre>
-<pre><code>## [1] 8.5 9.0</code></pre>
-<pre class="r"><code>## Calculate the column means.
-apply(W, 2, mean)</code></pre>
-<pre><code>## [1] 11.0  6.5</code></pre>
-<pre class="r"><code>## Identify the column that has the largest value.
-apply(W, 1, which.max)</code></pre>
-<pre><code>## [1] 1 1</code></pre>
-<pre class="r"><code>## Apply your own functions to each row in a matrix.
-MyFunc &lt;- function(x){
-    2+sum(x/5)-3/2*mean(x)^2
-}
-apply(W, 1, MyFunc)</code></pre>
-<pre><code>## [1] -102.975 -115.900</code></pre>
-</div>
-</div>
-<div id="practice-exercises" class="section level2">
-<h2>Practice exercises</h2>
-<div id="using-conditional-statements" class="section level3">
-<h3>Using conditional statements</h3>
-<div id="reject-null-hypothesis" class="section level4">
-<h4>Reject null hypothesis</h4>
-<p>In traditional statistics, one of the primary goals is to compare a test statistic with a “critical value”: if the test statistic exceeds the critical value, you can reject a null hypothesis with a reasonable degree of certainty (such that the rate at which you incorrectly reject the null hypothesis remains at or below a pre-specified value, called the “alpha-level”).</p>
-<p>In the example below, we simulate data (n=100) from a normal distribution with mean of 1, and we use a Student’s t-test to assess whether or not we can reject the null hypothesis that the data were derived from a distribution with mean of zero. Here, the <em>test statistic</em> is the t-statistic (representing the standardized difference of the sample mean from zero), and the <em>critical value</em> is determined as a pre-specified quantile of the “t” distribution (here, we use a two-tailed test holding alpha=0.05).</p>
-<p>The act of rejecting or failing to reject a null hypothesis is an instance of conditional logic (if…then…else). Let’s see how we might implement this test in R:</p>
-<pre class="r"><code>####################
-####  Exercises ####
-####################
-
-
-###
-### Perform hypothesis test using if...then...else
-###
-
-n.samples &lt;- 100
-x &lt;- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
-mu &lt;- mean(x)                               # Compute the sample mean.
-s &lt;- sd(x)                                  # Compute the sample standard deviation.
-t &lt;- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
-t.crit &lt;- qt(p = 0.975, df = 99)            # Calculate critical value for test (above which we can reject the null hypothesis with acceptable type-I error)
-if (t &gt; t.crit) {
-    print(&quot;reject&quot;)                        # Reject if condition holds.
-} else {
-    print(&quot;fail to reject&quot;)                # Fail to reject otherwise.
-}</code></pre>
-<pre><code>## [1] &quot;reject&quot;</code></pre>
-<p>Did you successfully reject the null hypothesis? What if you set the mean to zero when you simulate the data?</p>
-</div>
-<div id="cleaning-up-messy-data" class="section level4">
-<h4>Cleaning up messy data</h4>
-<p>Sometimes (like all the time) your data will be “messy” - that is, it will have some errors (e.g., incorrect data entry) that need to be fixed prior to running an analysis. Take this example of “messy” data from a simulated occupancy study:</p>
-<pre class="r"><code>###
-### Clean up messy matrix using ifelse
-###
-
-## Simulate data.
-observations &lt;- matrix(sample(c(&quot;Detected&quot;, &quot;NotDetected&quot;, 1, 0), 20*3, replace = TRUE), 20, 3)    # simulate detection/non-detection data over three sampling occasions
-
-habitat &lt;- rnorm(20, 0, 2)    # simulate environmental covariate
-Data &lt;- cbind(observations, habitat)       # bind into single matrix.
-Data</code></pre>
-<pre><code>##                                                 habitat             
-##  [1,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;Detected&quot;    &quot;1.1651537695756&quot;   
-##  [2,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;-0.613816554750075&quot;
-##  [3,] &quot;0&quot;           &quot;NotDetected&quot; &quot;0&quot;           &quot;2.21824770751705&quot;  
-##  [4,] &quot;NotDetected&quot; &quot;1&quot;           &quot;NotDetected&quot; &quot;-1.41476041128591&quot; 
-##  [5,] &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;0&quot;           &quot;1.67620138721813&quot;  
-##  [6,] &quot;0&quot;           &quot;Detected&quot;    &quot;1&quot;           &quot;2.91765526282092&quot;  
-##  [7,] &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;4.86943597273634&quot;  
-##  [8,] &quot;NotDetected&quot; &quot;0&quot;           &quot;NotDetected&quot; &quot;3.13166254497207&quot;  
-##  [9,] &quot;NotDetected&quot; &quot;1&quot;           &quot;Detected&quot;    &quot;1.17810663231691&quot;  
-## [10,] &quot;Detected&quot;    &quot;1&quot;           &quot;0&quot;           &quot;1.40889464651772&quot;  
-## [11,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-1.31838013069218&quot; 
-## [12,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;1&quot;           &quot;-0.959218095366536&quot;
-## [13,] &quot;1&quot;           &quot;1&quot;           &quot;Detected&quot;    &quot;2.31665529967448&quot;  
-## [14,] &quot;0&quot;           &quot;Detected&quot;    &quot;1&quot;           &quot;-0.600024626226216&quot;
-## [15,] &quot;0&quot;           &quot;0&quot;           &quot;1&quot;           &quot;-1.19162607148504&quot; 
-## [16,] &quot;Detected&quot;    &quot;0&quot;           &quot;NotDetected&quot; &quot;0.952650163756112&quot; 
-## [17,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;Detected&quot;    &quot;3.31960806917777&quot;  
-## [18,] &quot;1&quot;           &quot;1&quot;           &quot;NotDetected&quot; &quot;-2.82432188658575&quot; 
-## [19,] &quot;0&quot;           &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;2.00889649628675&quot;  
-## [20,] &quot;0&quot;           &quot;0&quot;           &quot;1&quot;           &quot;3.37380275696964&quot;</code></pre>
-<p>As you can see, non-detections are coded here as both “NotDetected” and “0”, and likewise, detection events also have two alternative codes. To clean up this data set, let’s do the following:</p>
-<ul>
-<li>Make sure that detections and non-detections are coded in a consistent manner!<br />
+<div id="loading-packages-from-github" class="section level3">
+<h3>Loading packages from GitHub</h3>
+<p>More and more package developers are bypassing the CRAN repository, and instead using <a href="https://github.com/">GitHub</a>. In some cases, the version available on CRAN is not the latest version- for the latest version, you need to use GitHub. Also, many packages that are in development are only found on GitHub. There are actually some good reasons to put an R package on GitHub:</p>
+<ol style="list-style-type: decimal">
+<li>It’s easier for others to peruse your code.<br />
 </li>
-<li>Reduce the significant digits of the environmental covariate “Habitat”.<br />
+<li>People can actually fix the problem and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, “There’s a typo in your documentation” they can say “Here, I’ve fixed a typo in your documentation.”<br />
 </li>
-<li>Finally, we probably want to add column names to our matrix.</li>
-</ul>
-<p>Note the use of the “ifelse()” function here, which is a convenient and efficient way to perform a test consecutively on an entire vector using a single line of code!</p>
-<pre class="r"><code>## Clean-up data using &quot;ifelse()&quot; function
-NewObs &lt;- ifelse( (Data[, 1:3] == &quot;Detected&quot;) | (Data[, 1:3] == &quot;1&quot;), 1, 0) #  The &quot;|&quot; means &quot;or.&quot; Similarly &quot;&amp;&quot; means &quot;and&quot;
-NewHabitat &lt;- as.numeric(Data[, 4])  # as.numeric gets rid of quotes around habitat data.
-NewHabitat &lt;- round(NewHabitat, 2)   # round rounds to number of decimals specified.
-NewData &lt;- cbind(NewObs, NewHabitat) # bind the columns to form a matrix.
-colnames(NewData) &lt;- c(&quot;obs1&quot;, &quot;obs2&quot;, &quot;obs3&quot;, &quot;Habitat&quot;)  # provide column names
-NewData</code></pre>
-<pre><code>##       obs1 obs2 obs3 Habitat
-##  [1,]    0    1    1    1.17
-##  [2,]    0    0    1   -0.61
-##  [3,]    0    0    0    2.22
-##  [4,]    0    1    0   -1.41
-##  [5,]    0    0    0    1.68
-##  [6,]    0    1    1    2.92
-##  [7,]    0    0    0    4.87
-##  [8,]    0    0    0    3.13
-##  [9,]    0    1    1    1.18
-## [10,]    1    1    0    1.41
-## [11,]    0    1    0   -1.32
-## [12,]    1    0    1   -0.96
-## [13,]    1    1    1    2.32
-## [14,]    0    1    1   -0.60
-## [15,]    0    0    1   -1.19
-## [16,]    1    0    0    0.95
-## [17,]    1    1    1    3.32
-## [18,]    1    1    0   -2.82
-## [19,]    0    0    0    2.01
-## [20,]    0    0    1    3.37</code></pre>
-<p>Looks a lot better now, right!</p>
+<li>With the install_github() function in Hadley Wickham’s devtools package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)</li>
+</ol>
+<p>The syntax for using “install_github()” is just install_github(“[author]/[package]”) Here’s an example using the “install_github()” function:</p>
+<pre class="r"><code>###########
+# install package from GitHub:
+
+ # install.packages(&quot;devtools&quot;)    # run this if you haven&#39;t already installed the &quot;devtools&quot; package
+library(devtools)
+install_github(&quot;kbroman/broman&quot;)  # install a random package from GitHub!</code></pre>
 </div>
+<div id="finding-the-right-package-for-the-job" class="section level3">
+<h3>Finding the right package for the job</h3>
+<p>Usually a Google search is the best way to find out about packages! But you may also read about new packages in a journal (e.g., <a href="https://besjournals.onlinelibrary.wiley.com/journal/2041210X">Methods in Ecology and Evolution</a>) or textbook, or conference, or just talking with other researchers!</p>
 </div>
-<div id="using-for-loops" class="section level3">
-<h3>Using FOR loops</h3>
-<p>Iteration is one of the things computers do best, and harnessing this ability is endlessly useful! Here are some examples:</p>
-<div id="view-a-landscape-from-multiple-angles" class="section level4">
-<h4>View a landscape from multiple angles</h4>
-<p>In this example, we use a FOR loop to view the topography of a rugged landscape (using the built-in “volcano” dataset in R) from multiple perspectives.</p>
-<pre class="r"><code>###
-### FOR loop examples
-###
+<div id="learning-more-about-how-a-package-works" class="section level3">
+<h3>Learning more about how a package works</h3>
+<p>It’s not always perfectly obvious how to get started in actually using a new package. Here are three tips.</p>
+<div id="built-in-package-overview" class="section level4">
+<h4>Built-in package overview</h4>
+<p>We’ve already seen this one- just use the following syntax to pull up an overview of any package:</p>
+<pre><code>
+library(help = &quot;[package name]&quot;)
+</code></pre>
+<p>For example,</p>
+<pre class="r"><code>###########
+# Learning more about packages
+###########
+
+###########
+# Package overview
+
+library(help = &quot;car&quot;)    # help file for the useful &quot;car&quot; package for applied regression</code></pre>
+</div>
+<div id="package-vignettes" class="section level4">
+<h4>Package vignettes</h4>
+<p>“Vignettes” are provided in many packages, and are tremendously useful, providing worked examples. Usually the package overview (above) will tell you which vignettes are available (see above). Use the following syntax to pull up a vignette:</p>
+<pre><code>
+vignette(&#39;[name of vignette]&#39;, &#39;[name of package]&#39;)
+</code></pre>
+<p>For example,</p>
+<pre class="r"><code>##########
+# package vignette
+
+browseVignettes(&#39;car&#39;)
+vignette(&#39;embedding&#39;,&#39;car&#39;)   # pull up the &quot;embedding&quot; vignette in the &#39;car&#39; package</code></pre>
+<p>Or let’s take a look at the “dismo” package, which is for species distribution modeling in R:</p>
+<pre class="r"><code>################
+#### GENERAL TIPS
+################
 
 #############
-## EXAMPLE 1: Plot a 3D surface using data already stored in R.
+# 1. Use code examples provided by others
 
-Z &lt;- 2 * volcano        # Exaggerate the relief (multiply the elevation by 2)   
+install.packages(&quot;dismo&quot;)     # install &quot;dismo&quot; for species distribution modeling
 
-X &lt;- 10 * (1:nrow(Z))   # set horizontal coordinates -- 10 meter spacing (S to N)     
-
-Y &lt;- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to W)
-
-# Z   # make sure the elevation matrix looks right
-
-par(mfrow = c(2,1), bg = &quot;white&quot;)
-persp(X,  Y, Z, theta = 135, phi = 30, col = &quot;green3&quot;,    # &quot;persp()&quot; produces a 3D &quot;perspective plot&quot;
-      scale = FALSE, ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p>Now let’s view from an alternative angle!</p>
-<pre class="r"><code>## change the value of theta from 135 to 90 to change the viewing angle
-persp(X, Y, Z, theta = 90, phi = 30, col = &quot;green3&quot;,
-      scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p>Now we can use a FOR loop to view this landscape from many angles. Try it!</p>
-<pre class="r"><code>## Use a for-loop to help view many angles.
-par(mfrow = c(1,1))
-for(i in 1:18){
-    persp(X, Y, Z, theta = i*20, phi = 30, col = &quot;green3&quot;,
-          scale = FALSE,  ltheta = -120, shade = 0.75,
-          border = NA, box = FALSE)
-    print(i*20)
-    readline()                               # Pauses the for-loop until [enter] is pushed
-}</code></pre>
+browseVignettes(&#39;dismo&#39;)
+vignette(&#39;sdm&#39;,&#39;dismo&#39;)      # pull up one of the helpful vignettes from the &#39;dismo&#39; package, with useful code examples! Many packages have built-in vignettes.
+vignette(&#39;brt&#39;,&#39;dismo&#39;)      # and another one!</code></pre>
 </div>
-<div id="test-the-central-limit-theorem" class="section level4">
-<h4>Test the Central Limit Theorem!</h4>
-<p>In this example, we test the famous <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">Central Limit Theorem (CLT)</a> using repeated simulations.</p>
-<p>Specifically, as we collect more samples from an arbitrary distribution, the sample mean (e.g., the mean of all the sample means) should converge on the true mean (here, equal to 5).</p>
-<p>To test this, let’s first write some <em>pseudocode</em> for how to perform this operation:</p>
-<ol style="list-style-type: decimal">
-<li>Specify the number of hypothetical repeat samples to draw<br />
-</li>
-<li>Specify the sample size for each hypothetical repeat sample<br />
-</li>
-<li>Specify the mean and variance of the “true” population from which we will sample</li>
-<li>For each hypothetical sampling experiment:
-<ol style="list-style-type: lower-alpha">
-<li>Draw a random sample from the known distribution<br />
-</li>
-<li>Compute and store the sample mean<br />
-</li>
-</ol></li>
-<li>Visualize the distribution of sample means. Evaluate whether the sample means tend toward the true mean…</li>
-</ol>
-<p>Here we translate the pseudocode into real R code!</p>
-<pre class="r"><code>##################
-## EXAMPLE 2: Use a FOR loop to create a simulation to test the central limit theorem (CLT).
+<div id="package-demos" class="section level4">
+<h4>Package demos</h4>
+<p>Some packages include “demos”, which are a bit more interactive than the built-in examples. Here’s an example:</p>
+<pre class="r"><code>########
+# package demo
 
-n.iter &lt;- 1000                                # large number of hypothetical &quot;repeat samples.&quot;
-sample.size &lt;- 30                             # Sample size of 30 from each repeat sample.
-mu &lt;- 5                                       # True population mean of 5.
-sd &lt;- 2                                       # True standard deviation of 2.
-means &lt;- numeric(n.iter)                      # Initialize empty vector to store the sample means.
-for(i in 1:n.iter){                           # For each of the repeat samples...
-    sample &lt;- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
-    means[i] &lt;- mean(sample)                # and store the sample mean.
-}
-hist(means)                                # Histogram of all the means.
-abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<pre class="r"><code>plot(density(means), main = &quot;&quot;)
-abline(v = mean(means), col = 2, lwd = 4)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
-<pre class="r"><code>mean(means)                                # Close to true mean of 5</code></pre>
-<pre><code>## [1] 5.009089</code></pre>
-<pre class="r"><code>sd(means)*sqrt(30)                         # Close to true sd of 2</code></pre>
-<pre><code>## [1] 1.983313</code></pre>
+demo(package=&quot;stats&quot;)    # list all demos for package &#39;stats&#39;, which is included in base R
+demo(&#39;nlm&#39;,&#39;stats&#39;)</code></pre>
 </div>
+<div id="package-documentation-html-or-pdf" class="section level4">
+<h4>Package documentation (html or PDF)</h4>
+<p>The ‘master’ documentation for any package is often packaged as a PDF file that can be downloaded from CRAN (each package on the CRAN repository has its own webpage- for example, here’s the one for the <a href="https://cran.r-project.org/web/packages/raster/index.html">raster package</a>)</p>
+<p>Also, you can load the documentation for any package you have installed using the “help.start()” function:</p>
+<pre class="r"><code>###########
+# Load html documentation for R and all installed packages
+
+help.start()</code></pre>
 </div>
-<div id="practice-putting-it-all-together" class="section level3">
-<h3>Practice putting it all together!</h3>
-<p>To make sure we can apply the fundamental components of programming (iterative loops and functions), let’s work out an example that uses both!</p>
-<div id="logistic-population-growth-example" class="section level4">
-<h4>Logistic population growth example</h4>
-<p>Here we model the growth/dynamics of a wild population using a classical <em>logistic</em> (S-shaped) population growth model:</p>
-<p>To get some more practice with functions, let’s first write a function to compute the expected rate of population growth on the basis of <span class="math inline">\(r\)</span> (intrinsic rate of population growth), <span class="math inline">\(K\)</span> (carrying capacity), and <span class="math inline">\(P_0\)</span> (current population size). The logistic growth equation can be written mathematically as:</p>
-<p><span class="math inline">\(P_{t+1}=P_t+r\cdot P0 \cdot (1-\frac{P0}{K})\)</span></p>
-<p>Let’s implement this equation as a function in R:</p>
-<pre class="r"><code>##############
-##  Logistic population growth example (uses function and for loop)
+<div id="learning-by-example" class="section level4">
+<h4>Learning by example!</h4>
+<p>To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written.</p>
+<p>One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using ‘help()’ or ‘?’). You can also run these examples using the “example()” function. For example:</p>
+<pre class="r"><code>#########
+# Built-in examples
 
+example(lm)   # run examples for &quot;lm&quot; function (included in base R)</code></pre>
+<p>Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples!</p>
+</div>
+<div id="package-citations" class="section level4">
+<h4>Package citations</h4>
+<p>Most packages include one or more citations, which are often peer-reviewed papers that document the novel algorithms included in the package, often in more detail than the help files. These are also the papers you should cite if you use the package for a manuscript. You can find these citations using the “citation()” function:</p>
+<pre class="r"><code>########
+# package citations
 
-## Logistic growth function: calculate population size using logistic growth model.
-  # K = carrying capacity.
-  # r = intrinsic growth rate
-  # P0 = initial population size
-
-logistic.growth &lt;- function(r, P0, K){            
-    dpdt &lt;- r*P0*(1-P0/K)                   # implement logistic growth equation
-    P0+dpdt                                   
-}                                           
-logistic.growth(r = .5, P0 = 10, K = 100)   # try out the new function!</code></pre>
-<pre><code>## [1] 14.5</code></pre>
-<p>Now, we can use a FOR loop simulate population growth over many years:</p>
-<pre class="r"><code>## Logistic growth function within a for-loop
-
-years &lt;- 20                                   # How many years we want to calc population size.
-pop.size &lt;- numeric(years)                    # Empty vector to store population size.
-pop.size[1] &lt;- 5                              # Starting population size (P0).
-for(i in 1:(years-1)){                     # Function within a FOR loop!
-    pop.size[i+1] &lt;- logistic.growth(r = 0.5, P0 = pop.size[i], K = 100)
-}
-plot(1:years, pop.size, type = &#39;l&#39;,
-     xlab = &quot;Years&quot;, ylab = &quot;Population Size&quot;)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>And finally, we could wrap this all up in a more complex function that simulates across years and produces a plot! That way, we could run an entire population simulation with a single line of code. Let’s try it!</p>
-<pre class="r"><code>## A more complex function that ouputs a plot.
-plot.logistic.growth &lt;- function(r, P, K, years){
-    pop.size[1] &lt;- P
-    for(i in 1:(years-1)){
-        pop.size[i+1] &lt;- P+r*P*(1-P/K)
-        P &lt;- pop.size[i+1]
-    }
-    plot(1:years, pop.size, type = &#39;l&#39;, xlab = &quot;Years&quot;,
-         ylab = &quot;Population Size&quot;,
-         main = paste(&quot;r = &quot;, r, &quot;K = &quot;, K))
-}
-
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
-<pre class="r"><code>par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))                  # Multi-figure (mf) plot with 2 rows and 2 columns.
-plot.logistic.growth(r = 0.1, P = 10, K = 100, years = 20)   # Change the values of r and quickly print plots.
-plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
-<pre class="r"><code>par(mfrow = c(1, 1))                               # Return to a 1X1 plot.</code></pre>
+citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
+<pre><code>## 
+## To cite the car package in publications use:
+## 
+##   John Fox and Sanford Weisberg (2011). An {R} Companion to
+##   Applied Regression, Second Edition. Thousand Oaks CA: Sage. URL:
+##   http://socserv.socsci.mcmaster.ca/jfox/Books/Companion
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Book{,
+##     title = {An {R} Companion to Applied Regression},
+##     edition = {Second},
+##     author = {John Fox and Sanford Weisberg},
+##     year = {2011},
+##     publisher = {Sage},
+##     address = {Thousand Oaks {CA}},
+##     url = {http://socserv.socsci.mcmaster.ca/jfox/Books/Companion},
+##   }</code></pre>
+<pre class="r"><code>citation()    # and here&#39;s the citation for R in general- useful for when you use R for manuscripts</code></pre>
+<pre><code>## 
+## To cite R in publications use:
+## 
+##   R Core Team (2018). R: A language and environment for
+##   statistical computing. R Foundation for Statistical Computing,
+##   Vienna, Austria. URL https://www.R-project.org/.
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Manual{,
+##     title = {R: A Language and Environment for Statistical Computing},
+##     author = {{R Core Team}},
+##     organization = {R Foundation for Statistical Computing},
+##     address = {Vienna, Austria},
+##     year = {2018},
+##     url = {https://www.R-project.org/},
+##   }
+## 
+## We have invested a lot of time and effort in creating R, please
+## cite it when using it for data analysis. See also
+## &#39;citation(&quot;pkgname&quot;)&#39; for citing R packages.</code></pre>
+</div>
+<div id="online-forums" class="section level4">
+<h4>Online forums</h4>
+<p>In some cases you may run into issues with a particular package that you just can’t seem to solve. It’s still likely that others have had this problem! If you use some appropriate keywords in a google search you may find a link to an online forum (like <a href="https://stackoverflow.com/">stackoverflow</a>) where someone has answered a similar question. It’s amazing how many knowledgeable people are answering questions on these forums - they are a tremendously valuable resource!</p>
+<p>And of couse, if you still can’t find an answer to your question, you can ask your question on <a href="https://r-dir.com/community/forums.html">one of these online forums</a>. The best ones are probably <a href="http://r.789695.n4.nabble.com/">Nabble</a>, <a href="https://stackoverflow.com/">Stack Overflow</a>, and <a href="https://stats.stackexchange.com/questions/tagged/r">Cross Validated</a>.</p>
+</div>
+<div id="ask-the-package-author" class="section level4">
+<h4>Ask the package author!!</h4>
+<p>When all else fails, you can always reach out to the package author! The author’s name and contact info are listed in the package overview, and I have found they are generally very responsive and willing to help!!</p>
 </div>
 </div>
 </div>
-<div id="challenge-problems" class="section level2">
-<h2>Challenge problems!</h2>
-<ol style="list-style-type: decimal">
-<li><p>Create a function to calculate the value of <span class="math inline">\(y\)</span> for the equation <span class="math inline">\(y = \beta_0 + \beta_1*x\)</span> for any value of <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(x\)</span>.</p></li>
-<li><p>Using the function in part 1, with <span class="math inline">\(\beta_0 = 2\)</span>, and <span class="math inline">\(\beta_1= -1\)</span> use a FOR loop to calculate <span class="math inline">\(y\)</span> for the values of <span class="math inline">\(x\)</span> = 1,…,10. Plot the results.</p></li>
-<li><p>Write a function that conducts a two-sided t test for a given null hypothesis. Here is a code skeleton to get you started!!</p></li>
-</ol>
-<pre class="r"><code>##########
-# Challenge problem 3: code skeleton to get you started!   
-
-get.t.test &lt;- function(data, mu0, alpha = 0.05) {
-    n &lt;- length(data)
-    mu &lt;- mean(____)
-    s &lt;- ____(data)
-    t &lt;- (mu-mu0)/(s/sqrt(n))
-    t.crit &lt;- qt(p = (1-alpha/2), df = n-1)        # get the critical value
-    if (abs(t)&gt;t.crit) {
-        answer = &quot;_______&quot;
-    } ____ {
-        answer = &quot;Fail to reject&quot;
-    }
-    print(answer)
-}</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Calculate the standard deviation as an index of ruggedness from the rows of the volcano elevation data “Z”, using the “apply()” function. Which row has the most rugged terrain?</li>
-</ol>
-<p>5: Wrap the code below in a FOR loop to simulate the sun rising and setting over the volcano data by looping over values of “lphi” (the light angle). Try replacing “readline()” with “Sys.sleep(.5)” from the example above.</p>
-<pre class="r"><code>#######
-# Example code to get you started with challenge problem 5... 
-
-persp(X, Y, Z, theta = 30, phi = 30, col = &quot;green3&quot;,  lphi = ?,
-                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
-print(?)
-readline()</code></pre>
+<div id="cheat-sheets" class="section level2">
+<h2>‘Cheat sheets’</h2>
+<p>There are lots of “cheat sheets” available for reminding you of basic R functionality. It can be useful to tape these to the wall next to your desk!</p>
+<p>For example, <a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">here</a> is a good cheat sheet for using base R.</p>
+<p>see <a href="Links.html">Links page</a> for more resources, including cheat sheets!</p>
+</div>
+<div id="google" class="section level2">
+<h2><em>Google!</em></h2>
+<p>I don’t even understand why it works so well to google R help (‘r’ is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work (and some cheat sheets by your desk), and the internet, you can pretty much always find a solution!</p>
+<p>More helpful links for going further with R are provided on the <a href="Links.html">Links</a> page.</p>
+</div>
+<div id="any-questions" class="section level2">
+<h2>Any questions???</h2>
 <p><a href="module2_2.html">–go to next module–</a></p>
 </div>
 

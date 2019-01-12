@@ -1,3 +1,4 @@
+
 ##################################################
 ####                                          ####  
 ####  R Bootcamp #1, Module 1                 ####
@@ -43,17 +44,6 @@ typeof(scalar5)    # returns: logical
 scalar_2 + scalar_4
 
 
-#############
-### VECTORS
-#############
-
-vector1 <- c(1.1, 2.1, 3.1, 4)
-vector2 <- c('a', 'b', 'c')
-vector3 <- c(1, 'a', 2, 'b')
-vector4 <- c(TRUE, 'a', 1)
-vector5 <- c(TRUE, 1.2, FALSE)
-
-
 a <- 1
 b <- 2
 c <- 3
@@ -61,10 +51,6 @@ c <- 3
 d.vec <- c(a, b, c)
 d.vec
 
-
-
-d.vec <- c(1,2,3)            # another way to construct the vector "d.vec"
-d.vec = c(1,2,3)           # the "equals" sign can also be an assignment operator
 
 
 length(d.vec)    # the "length()" function returns the number of elements in a vector (or list, matrix etc.)
@@ -92,31 +78,25 @@ sum(vector1)        # returns: 10.3
 
 
 help(sum)
-?sum
-
-
-########
-## first class functions
-
-## assign functions to values
-sum2 <- sum
-sum2(1, 2, 3, 10)    # use the value sum2 as a function!
-
-## use functions as arguments in other functions
-## lets compute the average length of some of the vectors we've created
-## this should return 3.66
-mean(c(length(vector1), length(vector2), length(vector3)))
+?sum    # this is an alternative to 'help(sum)'!
 
 
 #############
 ### MATRICES
 #############
-d.mat <- cbind(d1,d2)        # create a matrix by binding vectors
+
+d.mat <- cbind(d1,d2)        # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
 d.mat
 class(d.mat)   # confirm that the new object "d.mat" is a matrix!
 
 
 d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way
+d.mat
+
+d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way
+d.mat
+
+d.mat <- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way
 d.mat
 
 
@@ -337,16 +317,34 @@ factorial(5)     # factorial
 ### CHALLENGE EXERCISES
 ############
 
+### Challenge 1: Create a 3 by 2 matrix equivalent to d.mat by binding rows 
+
+# (HINT: use the "rbind()" function), using the following as rows:
+
 c(1,4) 
 c(2,5) 
 c(3,6)
 
 
-x <- rep(seq(-1,1,length=5),each=5)
-y <- rep(seq(-1,1,length=5),times=5)
-df_spatial <- data.frame(long=x,lat=y)
-
+########
+# Code for visualizing the results from challenge problem 8
 
 plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
+
+
+#################
+# More advanced exploration of functions!
+
+########
+## first class functions
+
+## assign functions to values
+sum2 <- sum
+sum2(1, 2, 3, 10)    # use the value sum2 as a function!
+
+## use functions as arguments in other functions
+## lets compute the average length of some of the vectors we've created
+## this should return 3.66
+mean(c(length(vector1), length(vector2), length(vector3)))
 

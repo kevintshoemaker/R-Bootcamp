@@ -7,408 +7,128 @@
 ####                                          #### 
 ##################################################
 
-##################################################
-####  PROGRAMMING: FUNCTIONS AND MORE         ####
-####  Facilitator: Perry Williams             ####
-##################################################
 
-## NOTE: this module borrows heavily from an R short-course developed by a team at Colorado State University. 
-
-
-
-#######
-# Start with blank workspace
-
-rm(list=ls())
-
-
-
-####
-####  Functions
-####
-
-my.function = function(){       # this function has no arguments
-  message <- "Hello, world!"
-  print(message)
-}
-
-
-my.function()
-
-
-## We can write our own functions. Useful if we have to repeat operations over and over.
-my.mean <- function(x){
-    m <- sum(x)/length(x)
-    return(m)
-}
-
-foo <- c(2, 4, 6, 8)
-my.mean(foo)
-
-
-
-## A function to square the arguments.
-square <- function(x){
-    x^2
-}
-
-## Square a single value (scaler).
-square(2)
-
-## Square a vector.
-square(1:10)
-
-
-
-## Often, we need to write functions that are not included in the base R package e.g., the logit function.
-## Calculate the log-odds (logit).
-logit <- function(x){
-    log(x/(1-x))
-}
-
-## Calculate logit of 0.9.
-logit(.9)
-
-## Sequence between 0 and 1.
-x <- seq(from = 0, to = 1, by = 0.01)
-
-## Caclulate the logit of a vector.
-logit.x <- logit(x)
-logit.x
-
-## Plot x on x-axis, and logit(x) on y axis.
-par(mfrow = c(1, 1))
-plot(x, logit.x, type = 'l')    # View the output graphically.
-
-
-## The expit (or inverse logit) funtion.
-expit <- function(x){
-    exp(x)/(1+exp(x))
-}
-
-## Calculate the inverse-logit of logit(0.9) = 2.197225.
-expit(2.197225)
-
-expit.logit.x <- expit(logit.x)    # Return to original x values.
-
-## Plot x on x-axis, and expit(logit(x)) = x on y axis.
-plot(x, expit.logit.x, type = 'l')
-
-## Plot "logistic" curve
-plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type="l")
-
-
-
-## Kaplan Meier known-fate maximum likelihood estimator.
-## n is the number of animals fitted with ratio transmitters being monitored.
-## d is the number of n that died.
-survival.mle <- function(n, d){
-    (n-d)/n
-}
-
-## One year of data.
-survival.mle(n = 10, d = 5)
-
-## Many years of data.
-d <- sample(0:50, 10, replace = TRUE)
-n <- c(100, 100-d)
-(surv <- survival.mle(n = n[1:10], d = d))
-
-## Plot year-specific survival rate.
-plot(1:10, surv, type = 'l')
-
-
-####
-####  if...else statements
-####
-
-########
-# Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
-n.samples <- 1
-p <- 0.7
-x <- rbinom(n = n.samples, size = 1, prob = p)
-
-if (x > 0) {
-    print("Detected")
-} else {
-    print("Not detected")
-}
-
-
-
-####
-####  ifelse()
-####
-
-## Note if...else only works for testing one value. If we have a spreadsheet with lots of data, need something else.
-n.samples <- 100
-set.seed(2017)
-
-## 100 samples from a binomial disribution with detection probability = p = 0.7.
-y <- rbinom(n = n.samples, size = 1, prob = p)
-y
-
-## incorrect usage
-if (y == 1) {
-    print("Detected")
-} else {
-    print("Not detected")
-}   # PRINTS A WARNING MESSAGE!
-
-## Use ifelse instead.
-detection.history <- ifelse(y == 1, print("Detected"), print("Not detected"))
-detection.history
-
-## Going the other direction.
-ifelse(detection.history == "Detected", 1, 0)
-
-xt  <-  cbind(rbinom(10, 1, .5), rbinom(10, 1, .6))
-xt
-ifelse(xt[, 1] > 0 & xt[, 2] > 0, print("Detected twice"),
-       print("Not detected twice"))
-
-
-
-####
-####  for loops
-####
-
-n.iter <- 10
-count <- 0
-for(i in 1:n.iter){
-  count <- count+1            # assign a new value of count equal to the old value of count + 1
-  print(count)
-}
-
-
-
-  # closer look at iteration vector:
-1:n.iter
-
-
-## Using the placeholder variable "i" within the for loop:
-
-count <- 0
-for(i in 1:n.iter){
-    count <- count+i            # assign a new value of count equal to the old value of count + i
-    print(count)
-}
-
-## A for-loop for dependent sequence (here, the Fibonacci sequence)
-n.iter <- 10
-x <- rep(0, n.iter)            # set up vector of all zeros
-x[1] <- 1                     # assign x_1  <-  1
-x[2] <- 1                     # assign x_2 = 0
-x
-
-for(i in 3:n.iter){
-    x[i] <- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
-}
-x
-
-
-
-###
-### apply (A more efficient, vectorized way to iterate)
-###
-
-W <- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
-W
-
-## Calculate the row means.
-apply(W, 1, mean)
-
-## Calculate the column means.
-apply(W, 2, mean)
-
-## Identify the column that has the largest value.
-apply(W, 1, which.max)
-
-## Apply your own functions to each row in a matrix.
-MyFunc <- function(x){
-    2+sum(x/5)-3/2*mean(x)^2
-}
-apply(W, 1, MyFunc)
-
-
-
-####################
-####  Exercises ####
-####################
-
-
-###
-### Perform hypothesis test using if...then...else
-###
-
-n.samples <- 100
-x <- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
-mu <- mean(x)                               # Compute the sample mean.
-s <- sd(x)                                  # Compute the sample standard deviation.
-t <- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
-t.crit <- qt(p = 0.975, df = 99)            # Calculate critical value for test (above which we can reject the null hypothesis with acceptable type-I error)
-if (t > t.crit) {
-    print("reject")                        # Reject if condition holds.
-} else {
-    print("fail to reject")                # Fail to reject otherwise.
-}
-
-
-###
-### Clean up messy matrix using ifelse
-###
-
-## Simulate data.
-observations <- matrix(sample(c("Detected", "NotDetected", 1, 0), 20*3, replace = TRUE), 20, 3)    # simulate detection/non-detection data over three sampling occasions
-
-habitat <- rnorm(20, 0, 2)    # simulate environmental covariate
-Data <- cbind(observations, habitat)       # bind into single matrix.
-Data
-
-
-## Clean-up data using "ifelse()" function
-NewObs <- ifelse( (Data[, 1:3] == "Detected") | (Data[, 1:3] == "1"), 1, 0) #  The "|" means "or." Similarly "&" means "and"
-NewHabitat <- as.numeric(Data[, 4])  # as.numeric gets rid of quotes around habitat data.
-NewHabitat <- round(NewHabitat, 2)   # round rounds to number of decimals specified.
-NewData <- cbind(NewObs, NewHabitat) # bind the columns to form a matrix.
-colnames(NewData) <- c("obs1", "obs2", "obs3", "Habitat")  # provide column names
-NewData
-
-
-###
-### FOR loop examples
-###
-
-#############
-## EXAMPLE 1: Plot a 3D surface using data already stored in R.
-
-Z <- 2 * volcano        # Exaggerate the relief (multiply the elevation by 2)   
-
-X <- 10 * (1:nrow(Z))   # set horizontal coordinates -- 10 meter spacing (S to N)     
-
-Y <- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to W)
-
-# Z   # make sure the elevation matrix looks right
-
-par(mfrow = c(2,1), bg = "white")
-persp(X,  Y, Z, theta = 135, phi = 30, col = "green3",    # "persp()" produces a 3D "perspective plot"
-      scale = FALSE, ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
-
-
-## change the value of theta from 135 to 90 to change the viewing angle
-persp(X, Y, Z, theta = 90, phi = 30, col = "green3",
-      scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
-
-
-## Use a for-loop to help view many angles.
-par(mfrow = c(1,1))
-for(i in 1:18){
-    persp(X, Y, Z, theta = i*20, phi = 30, col = "green3",
-          scale = FALSE,  ltheta = -120, shade = 0.75,
-          border = NA, box = FALSE)
-    print(i*20)
-    readline()                               # Pauses the for-loop until [enter] is pushed
-}
-
-
-
-
-##################
-## EXAMPLE 2: Use a FOR loop to create a simulation to test the central limit theorem (CLT).
-
-n.iter <- 1000                                # large number of hypothetical "repeat samples."
-sample.size <- 30                             # Sample size of 30 from each repeat sample.
-mu <- 5                                       # True population mean of 5.
-sd <- 2                                       # True standard deviation of 2.
-means <- numeric(n.iter)                      # Initialize empty vector to store the sample means.
-for(i in 1:n.iter){                           # For each of the repeat samples...
-    sample <- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
-    means[i] <- mean(sample)                # and store the sample mean.
-}
-hist(means)                                # Histogram of all the means.
-abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.
-plot(density(means), main = "")
-abline(v = mean(means), col = 2, lwd = 4)
-mean(means)                                # Close to true mean of 5
-sd(means)*sqrt(30)                         # Close to true sd of 2
+###################################################
+####  Expanding R functionality: packages etc. ####
+###################################################
 
 
 
 ##############
-##  Logistic population growth example (uses function and for loop)
+# PACKAGES!
+##############
+
+install.packages("modeest")    # run this if you haven't yet installed the package from CRAN!
 
 
-## Logistic growth function: calculate population size using logistic growth model.
-  # K = carrying capacity.
-  # r = intrinsic growth rate
-  # P0 = initial population size
-
-logistic.growth <- function(r, P0, K){            
-    dpdt <- r*P0*(1-P0/K)                   # implement logistic growth equation
-    P0+dpdt                                   
-}                                           
-logistic.growth(r = .5, P0 = 10, K = 100)   # try out the new function!
+library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
 
 
-## Logistic growth function within a for-loop
-
-years <- 20                                   # How many years we want to calc population size.
-pop.size <- numeric(years)                    # Empty vector to store population size.
-pop.size[1] <- 5                              # Starting population size (P0).
-for(i in 1:(years-1)){                     # Function within a FOR loop!
-    pop.size[i+1] <- logistic.growth(r = 0.5, P0 = pop.size[i], K = 100)
-}
-plot(1:years, pop.size, type = 'l',
-     xlab = "Years", ylab = "Population Size")
+library(help = "modeest")    # get overview of package
 
 
-## A more complex function that ouputs a plot.
-plot.logistic.growth <- function(r, P, K, years){
-    pop.size[1] <- P
-    for(i in 1:(years-1)){
-        pop.size[i+1] <- P+r*P*(1-P/K)
-        P <- pop.size[i+1]
-    }
-    plot(1:years, pop.size, type = 'l', xlab = "Years",
-         ylab = "Population Size",
-         main = paste("r = ", r, "K = ", K))
-}
+newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)
-par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))                  # Multi-figure (mf) plot with 2 rows and 2 columns.
-plot.logistic.growth(r = 0.1, P = 10, K = 100, years = 20)   # Change the values of r and quickly print plots.
-plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)
-par(mfrow = c(1, 1))                               # Return to a 1X1 plot.
+?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
+
+  # lets find the most frequent value(s) in the "Export" column:
+mlv(newdf$Export, method="mfv", na.rm = T)    
+
+
+detach("modeest")  # remove the package from the workspace
+
+
+#########
+# 3D Plotting example 
+#########
+
+#########
+# Data: dog barks per day (and two explanatory variables)
+
+Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
+        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
+Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
+        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
+        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
+        0.272, 0.098, 0.415)
+Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
+       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
+
+
+install.packages("car")
+library(car)
 
 
 ##########
-# Challenge problem 3: code skeleton to get you started!   
+# interactive 3-D graphics!
 
-get.t.test <- function(data, mu0, alpha = 0.05) {
-    n <- length(data)
-    mu <- mean(____)
-    s <- ____(data)
-    t <- (mu-mu0)/(s/sqrt(n))
-    t.crit <- qt(p = (1-alpha/2), df = n-1)        # get the critical value
-    if (abs(t)>t.crit) {
-        answer = "_______"
-    } ____ {
-        answer = "Fail to reject"
-    }
-    print(answer)
-}
+car::scatter3d(Bark~Food+Cars,surface=TRUE)
 
 
-#######
-# Example code to get you started with challenge problem 5... 
+###########
+# install package from GitHub:
 
-persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?,
-                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
-print(?)
-readline()
+ # install.packages("devtools")    # run this if you haven't already installed the "devtools" package
+library(devtools)
+install_github("kbroman/broman")  # install a random package from GitHub!
+
+
+###########
+# Learning more about packages
+###########
+
+###########
+# Package overview
+
+library(help = "car")    # help file for the useful "car" package for applied regression
+
+
+##########
+# package vignette
+
+browseVignettes('car')
+vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
+
+
+################
+#### GENERAL TIPS
+################
+
+#############
+# 1. Use code examples provided by others
+
+install.packages("dismo")     # install "dismo" for species distribution modeling
+
+browseVignettes('dismo')
+vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.
+vignette('brt','dismo')      # and another one!
+
+
+########
+# package demo
+
+demo(package="stats")    # list all demos for package 'stats', which is included in base R
+demo('nlm','stats')
+
+
+###########
+# Load html documentation for R and all installed packages
+
+help.start()
+
+
+#########
+# Built-in examples
+
+example(lm)   # run examples for "lm" function (included in base R)
+
+
+########
+# package citations
+
+citation('car')   # citation for the 'car' package
+
+citation()    # and here's the citation for R in general- useful for when you use R for manuscripts
+
+
 

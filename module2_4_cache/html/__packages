@@ -13,3 +13,13 @@ stringr
 forcats
 bindrcpp
 lubridate
+boot
+foreach
+iterators
+doParallel
+ggthemes
+carData
+lattice
+DAAG
+RColorBrewer
+leaflet
