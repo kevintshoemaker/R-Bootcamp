@@ -1,7 +1,7 @@
 ---
 title: "Welcome to R Bootcamp!"
 author: "A hopefully more-or-less painless introduction to R"
-date: "Fall 2018"
+date: "Spring 2019"
 output:
   html_document:
     theme: journal
@@ -13,17 +13,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
- * **When?** First two saturdays in November 2018: Nov 3 and Nov. 10, from 10 to 4pm (pizza lunch at noon) 
- * **Where?** DMSC 103 (Davidson Math and Science Center, first floor)  
+ * **When?** Monday, February 4, 2019:  8:30am – 5:30pm 
+ * **Where?** TBD  
  * **What to prepare?** Please bring your laptop computer! If possible, install R and RStudio prior to coming to the first bootcamp (see [links](Links.html)). 
  
-NOTE: this workshop series was organized by the UNR student chapter of The Wildlife Society (TWS)-- _a \$10-\$15 donation is suggested_     
- 
 ## Facilitators
-
-Krymsen Hernandez       
-Department of Natural Resources and Environmental Science       
-Email: krymsen21(at)gmail(dot)com        
 
 [Kevin Shoemaker](http://naes.unr.edu/shoemaker/)		 
 Department of Natural Resources and Environmental Science       
@@ -33,14 +27,6 @@ Email: [kshoemaker@cabnr.unr.edu](kshoemaker@cabnr.unr.edu)
 [Mitchell Gritts](http://mgritts.github.io/cv/)     
 Nevada Department of Wildlife          
 Email: mgritts(at)ndow(dot)org      
-
-Jonathan DeBoer       
-Department of Geography       
-Email: jdeboer(at)nevada(dot)unr(dot)edu      
-
-Thomas Riecke      
-Department of Natural Resources and Environmental Science       
-Email: triecke(at)cabnr(dot)unr(dot)edu       
 
 
 ## Contributors
@@ -84,9 +70,7 @@ Email: [phurtado@unr.edu](phurtado@unr.edu)
 
 The statistical programming software “R” is one of the fundamental tools for modern data exploration and analysis, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of quality figures) will make upcoming classes, research, and graduate school less intimidating.
 
-We are offering two "bootcamps" to help students get started with using "R". These bootcamps are a joint effort from undergraduate students, graduate students, faculty members, and the Wildlife Society club, and will consist of two 6-hour long sessions offered on consecutive Saturdays -- Nov. 3 and Nov. 10 in DMSC 103, from 10am to 4pm. Pizza will be provided on both days, courtesy of the Nevada chapter of The Wildlife Society! We are asking for a $10 to $15 dollar donation to the UNR Wildlife Society chapter for offering this workshop. 
-
-Each session will consist of a series of short modules, each of which covers a particular skill (e.g., reading in data, writing functions). Each module will entail a short lecture, a demo (worked examples), and then hands-on activities with helpers present if you get lost or have any questions. The main goal of these 6-hr workshops will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshops are primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the second workshop, which will delve into more advanced topics. The first boot camp (Nov 3) will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second boot camp (Nov 10) will focus on some more advanced programming operations (loops, functions, debugging etc.), more advanced graphical visualizations and spatial analyses, and working with large data sets. Note - All are welcome to attend these workshops, but students who have not completed an intro statistics class may struggle with some of the material—especially the material covered in the second workshop on November 10.  
+This 'bootcamp' consists of a series of short modules, each of which covers a particular skill (e.g., reading in data, writing functions). Each module will entail a short lecture, a demo (worked examples), and then hands-on activities with helpers present if you get lost or have any questions. The main goal of this workshop will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshop is primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the second workshop, which will delve into more advanced topics. The first modules will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second bset of modules will focus on some more advanced programming operations (loops, functions, debugging etc.), more advanced graphical visualizations and spatial analyses, and working with large data sets. We may not get through all modules in the allotted time, but participants are encouraged to work through the remaining material on their own. Note - All are welcome to attend these workshops, but students who have not completed an intro statistics class may struggle with some of the material—especially the material covered in the final modules.  
 
 All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won't need to constantly copy and paste from the web!  
 
