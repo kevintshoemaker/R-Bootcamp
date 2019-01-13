@@ -74,6 +74,21 @@ This 'bootcamp' consists of a series of short modules, each of which covers a pa
 
 All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won't need to constantly copy and paste from the web!  
 
+## Before we get started...
+
+Before we dig in and get started with the modules, you should have installed R and RStudio. Here are some links to help you get started:
+
+[Download and install R](https://cran.r-project.org/)        
+[Download and install RStudio](https://www.rstudio.com/products/rstudio/download/)    (use free version!)      
+
+
+Also, it can be very helpful to print out an R 'cheat sheet' and bring that with you (we will also have some available at the workshop!). Here are some links:
+
+[Base R Cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)           
+[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)         
+
+Okay, now we're ready to go!
+
 
 [--go to first module--](module1_1.html)
 

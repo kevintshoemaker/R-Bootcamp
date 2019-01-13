@@ -8,15 +8,77 @@
 ##################################################
 
 ## NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
-   # Thanks to Perry Williams for allowing us to use these materials!!
+   # Thanks to Perry Williams at UNR for allowing us to use these materials!!
 
-########################
-####  R objects     ####
-########################
+##################################################
+####  Getting started with R: the basics      ####
+##################################################
 
 
 
 Batmans_butler <- 'Alfred Pennyworth'
+
+
+###############
+# R DEMO: 
+###############
+
+#  don't worry if you don't understand this just yet- this is just a taste of where we are going!
+
+#########
+# load a built-in dataset
+
+data(trees)
+
+
+#########
+# explore the data object
+
+summary(trees)
+str(trees)
+
+
+#########
+# visualize the data
+
+   # histograms:
+layout(matrix(1:3,nrow=1,byrow = T))
+hist(trees$Height)
+hist(trees$Girth)
+hist(trees$Volume)
+
+   # scatterplots:
+
+layout(matrix(1:2,nrow=1,byrow = T))
+plot(trees$Volume~trees$Girth)
+plot(trees$Volume~trees$Height)
+
+pairs(trees)    # plots all scatterplots together as a scatterplot matrix!
+
+
+
+##########
+# perform linear regression analysis
+
+model1 <- lm(Volume~Girth,data=trees)
+
+summary(model1)    # examine the results
+
+
+#########
+# visualize the results!
+
+xvals <- seq(5,30,0.5)
+pred <- predict(model1,newdata=data.frame(Girth=xvals),interval = "confidence",level = 0.99)
+
+plot(trees$Volume~trees$Girth,xlab="Girth (inches)",ylab="Volume (cubic feet)",main="Black Cherry",
+     xlim=range(xvals),ylim=c(0,100))
+
+abline(model1,lwd=2,col="green")
+lines(xvals,pred[,"upr"],col="green",lty=2)
+lines(xvals,pred[,"lwr"],col="green",lty=2)
+text(10,80,sprintf("Volume = %s + %s*Girth",round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))
+text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3)))
 
 
 ##################

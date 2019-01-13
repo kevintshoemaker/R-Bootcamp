@@ -387,11 +387,20 @@ div.tocify {
 
 <p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. - Thanks to Perry Williams for allowing us to use these materials!!</p>
 <p>Welcome to the 2018 R bootcamps! Let’s get started!!</p>
+<div id="get-materials-for-this-module" class="section level2">
+<h2>Get materials for this module</h2>
+<ul>
+<li>I recommend having a printed copy of a good base R “cheatsheet” as you get started (we will have copies to pass out at the workshop!). You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! ‘Cheatsheets’ like this can quickly and easily refresh your memory. So print out the cheatsheet and don’t worry if you don’t memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to use R and learn new things in R!</li>
+</ul>
+<p>Here are links to good base R “cheatsheets”:</p>
+<p><a href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf">Base R Cheat sheet</a><br />
+<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R reference card</a></p>
+</div>
 <div id="load-script-for-module-1.1" class="section level2">
 <h2>Load script for module #1.1</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module1_1.R">here</a> to download the script! Save the script to a convenient folder on your laptop. I recommend making a new folder to store all your scripts from this bootcamp!</p></li>
-<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. Your RStudio interface should be divided into four quadrants. On the top left is your <strong>script</strong>, on the bottom left is your <strong>console</strong>, on the top right is your <strong>Environment</strong>, and on the bottom left are some helper interfaces that let you get help, load packages, view plots, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!</p></li>
+<li><p>Click <a href="module1_1.R">here</a> to download the script for this module! I recommend right-clicking (or ctrl-clicking for Macs) on the link and selecting the “Save As” option from the context menu. Save the script to a convenient folder on your laptop, which will ultimately serve as your <strong>working directory</strong> for this bootcamp. I recommend creating a new folder to store all the scripts, data sets and other materials from these modules!</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. Your RStudio interface should now be divided into four quadrants. On the top left is your <strong>script</strong> (a set of written commands that R can recognize and execute), on the bottom left is your <strong>console</strong> (your direct connection with R- prints errors and stores a record of commands that have already been run), on the top right is your <strong>Environment</strong> (a record of all the objects – data, variables, functions– that you have defined in your current <strong>session</strong>), and on the bottom left are some helper interfaces that let you view helpfiles, load packages, view graphical plots, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!</p></li>
 </ol>
 <p>Let’s get started!!!</p>
 <div class="figure">
@@ -401,37 +410,130 @@ div.tocify {
 </div>
 <div id="explore-the-r-console" class="section level2">
 <h2>Explore the R console</h2>
-<p>The R console (what you see if you opened R directly without going through RStudio) is a <strong>command line</strong> interface. That means you give R a command to run and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make the most effective use of the console! In fact, after this short demo you will rarely interact directly with the console!</p>
+<p>The R console (what you see if you opened R directly without going through RStudio) is a <strong>command line</strong> interface, and is <em>your direct connection with the R statistical programming language</em>. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make the most effective use of the console! In fact, after this short demo you will rarely interact directly with the console!</p>
 <p>The R console is located in the left half or bottom left of the RStudio interface (see figure above).</p>
 <ol style="list-style-type: decimal">
 <li><p>Click on the console just to the right of one of the “&gt;” prompts.</p></li>
 <li><p>You can use the console like a calculator. For example, type <code>2+2</code> at the prompt and hit enter. What does R do?</p></li>
-<li><p>Now hit the “up” arrow. The R console remembers all previous commands in this <strong>session</strong>, which allows you to re-run commands relatively easily. However, if you accidentally hit the “up” arrow you lose everything you had been typing!</p></li>
+<li><p>Now hit the “up” arrow. The R console remembers all previous commands that it has executed in this <strong>session</strong>, which allows you to re-run commands relatively easily. However, if you accidentally hit the “up” arrow you lose everything you had been typing!</p></li>
 <li><p>Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing <code># 2+2</code> and hitting “Enter”. Nothing happens, right?</p></li>
 </ol>
 <div id="lets-create-our-first-object" class="section level3">
 <h3>Let’s create our first object</h3>
-<p>Objects are assigned a value using R’s <strong>assignment operator</strong>, which looks like a left arrow (<code>&lt;-</code>). Type the following statement into the console:</p>
+<p>Objects are assigned a value using R’s <strong>assignment operator</strong>, which looks like a left arrow (<code>&lt;-</code>). Type the following statement directly into the console:</p>
 <pre class="r"><code>Batmans_butler &lt;- &#39;Alfred Pennyworth&#39;</code></pre>
 <p>Then hit “Enter”. What does R return?</p>
 <p>NOTHING!</p>
-<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface). You should see that you now have a new <strong>object</strong> in your environment, called “Batmans_butler”, which stores a <strong>text string</strong>: “Alfred Pennyworth”.</p>
+<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface). You should see that you now have a new <strong>object</strong> in your environment, called “Batmans_butler”, which stores a <strong>text string</strong> (“Alfred Pennyworth”).</p>
 <p>Now type <code>print(Batmans_butler)</code><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> into the R console and hit “Enter”. What happens? <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
 <p>If you enter the name of an object at the command line, R automatically prints the value of the object- you don’t need to use the <code>print()</code> function… Try it: type <code>Batmans_butler</code> into the R console and hit “Enter”. R dutifully returns the name of Bruce Wayne’s loyal and tireless butler, best friend and surrogate father figure.</p>
 </div>
 </div>
 <div id="graduating-to-r-scripts" class="section level2">
 <h2>Graduating to R Scripts</h2>
-<p>You will quickly realize that although the command-line R console is nice for some things, there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the “.R” extension) is called an <strong>R script</strong>. The top left quadrant of the RStudio interface is dedicated to developing R scripts. The file you downloaded at the beginning of this module is an R script.</p>
-<p>The first few lines (commands) of the script are preceded by pound signs. R doesn’t do anything with these commands- they are called <strong>comments</strong>, and they help to keep code clear, organized and understandable to human readers. <em>use comments early and often- they are tremendously valuable</em>.</p>
+<p>You will quickly realize that although the command-line R console is nice for some things, there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the “.R” extension) is called an <strong>R script</strong>. The top left quadrant of the RStudio interface is dedicated to developing R scripts.</p>
+<p>The file you downloaded at the beginning of this module is an R script!</p>
+<p>If you want, you can create a new R script by clicking on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script).</p>
+<p>The first few lines (commands) of the script for this module are preceded by pound signs. R doesn’t do anything with these commands- they are called <strong>comments</strong>, and they help to keep code clear, organized and understandable to human readers. <em>use comments early and often- they are tremendously valuable</em>.</p>
 <ol style="list-style-type: decimal">
-<li><p>Click on the top of the script (first line of comments). To <strong>run</strong> a line of code, press the “Ctrl” key (or the “Command” key) and hit “Enter”. R will then run that line through the console. But of course, nothing happens because it’s a comment and not meant to be interpreted by a machine<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>.</p></li>
-<li><p>Click on a blank line in the script and type <code>2+2</code>. Now hit “Ctrl+Enter” (or “Command+Enter”) to run the line of code.</p></li>
+<li><p>Click on the top of the script (first line of comments). To <strong>run</strong> a line of code, press the “Ctrl” key (or the “Command” key) and hit “Enter”. R will then run that line through the console. But of course, nothing happens because it’s a comment and not meant to be interpreted by your machine<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>.</p></li>
+<li><p>Click on a blank line in the script (or just create some blank space at the top of the script) and type <code>2+2</code>. Now hit “Ctrl+Enter” (or “Command+Enter”) to run the line of code.</p></li>
 </ol>
 <p>Now you know the basics of how to use R scripts.</p>
 </div>
-<div id="r-objects" class="section level2">
-<h2>R Objects</h2>
+<div id="a-quick-r-demo" class="section level2">
+<h2>A quick R demo</h2>
+<p>Before we get into the basics, let’s just run through some of what R can do! Don’t worry if you don’t understand something- we will go over all of this in much greater detail later!</p>
+<p>To get started quickly, we will first load a data set that is built into R!</p>
+<pre class="r"><code>###############
+# R DEMO: 
+###############
+
+#  don&#39;t worry if you don&#39;t understand this just yet- this is just a taste of where we are going!
+
+#########
+# load a built-in dataset
+
+data(trees)</code></pre>
+<p>Next, we can examine the data object in r. Again, we will get into this in much more detail later!</p>
+<pre class="r"><code>#########
+# explore the data object
+
+summary(trees)</code></pre>
+<pre><code>##      Girth           Height       Volume     
+##  Min.   : 8.30   Min.   :63   Min.   :10.20  
+##  1st Qu.:11.05   1st Qu.:72   1st Qu.:19.40  
+##  Median :12.90   Median :76   Median :24.20  
+##  Mean   :13.25   Mean   :76   Mean   :30.17  
+##  3rd Qu.:15.25   3rd Qu.:80   3rd Qu.:37.30  
+##  Max.   :20.60   Max.   :87   Max.   :77.00</code></pre>
+<pre class="r"><code>str(trees)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    31 obs. of  3 variables:
+##  $ Girth : num  8.3 8.6 8.8 10.5 10.7 10.8 11 11 11.1 11.2 ...
+##  $ Height: num  70 65 63 72 81 83 66 75 80 75 ...
+##  $ Volume: num  10.3 10.3 10.2 16.4 18.8 19.7 15.6 18.2 22.6 19.9 ...</code></pre>
+<p>Now let’s visualize the data and start to get a sense for what patterns we can detect.</p>
+<pre class="r"><code>#########
+# visualize the data
+
+   # histograms:
+layout(matrix(1:3,nrow=1,byrow = T))
+hist(trees$Height)
+hist(trees$Girth)
+hist(trees$Volume)</code></pre>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>   # scatterplots:
+
+layout(matrix(1:2,nrow=1,byrow = T))
+plot(trees$Volume~trees$Girth)
+plot(trees$Volume~trees$Height)</code></pre>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>pairs(trees)    # plots all scatterplots together as a scatterplot matrix!</code></pre>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<p>Now we can perform some basic statistics, like a regression analysis:</p>
+<pre class="r"><code>##########
+# perform linear regression analysis
+
+model1 &lt;- lm(Volume~Girth,data=trees)
+
+summary(model1)    # examine the results</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Volume ~ Girth, data = trees)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -8.065 -3.107  0.152  3.495  9.587 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -36.9435     3.3651  -10.98 7.62e-12 ***
+## Girth         5.0659     0.2474   20.48  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.252 on 29 degrees of freedom
+## Multiple R-squared:  0.9353, Adjusted R-squared:  0.9331 
+## F-statistic: 419.4 on 1 and 29 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>And finally, let’s visualize the results:</p>
+<pre class="r"><code>#########
+# visualize the results!
+
+xvals &lt;- seq(5,30,0.5)
+pred &lt;- predict(model1,newdata=data.frame(Girth=xvals),interval = &quot;confidence&quot;,level = 0.99)
+
+plot(trees$Volume~trees$Girth,xlab=&quot;Girth (inches)&quot;,ylab=&quot;Volume (cubic feet)&quot;,main=&quot;Black Cherry&quot;,
+     xlim=range(xvals),ylim=c(0,100))
+
+abline(model1,lwd=2,col=&quot;green&quot;)
+lines(xvals,pred[,&quot;upr&quot;],col=&quot;green&quot;,lty=2)
+lines(xvals,pred[,&quot;lwr&quot;],col=&quot;green&quot;,lty=2)
+text(10,80,sprintf(&quot;Volume = %s + %s*Girth&quot;,round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))
+text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;Pr(&gt;|t|)&quot;][2],3)))</code></pre>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="back-to-basics-r-objects" class="section level2">
+<h2>Back to basics! R Objects</h2>
 <p>R has many different types of objects (sometimes refered to as data types). These are the building blocks of the language. They include <em>scalars</em>, <em>vectors</em>, <em>matrices</em>, <em>lists</em>, <em>data frames</em>, and <em>functions</em>.</p>
 <div id="workspace-management" class="section level3">
 <h3>Workspace management</h3>
@@ -1005,7 +1107,7 @@ c(1,4) </code></pre>
 
 plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <p>It should look something like this (above)!</p>
 <div id="finally-some-more-advanced-exploration-of-functions" class="section level4">
 <h4>Finally: some more advanced exploration of functions</h4>
