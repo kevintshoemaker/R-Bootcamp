@@ -532,11 +532,8 @@ text(10,80,sprintf(&quot;Volume = %s + %s*Girth&quot;,round(coefficients(model1)
 text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;Pr(&gt;|t|)&quot;][2],3)))</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
-<div id="back-to-basics-r-objects" class="section level2">
-<h2>Back to basics! R Objects</h2>
-<p>R has many different types of objects (sometimes refered to as data types). These are the building blocks of the language. They include <em>scalars</em>, <em>vectors</em>, <em>matrices</em>, <em>lists</em>, <em>data frames</em>, and <em>functions</em>.</p>
-<div id="workspace-management" class="section level3">
-<h3>Workspace management</h3>
+<div id="workspace-management" class="section level2">
+<h2>Workspace management</h2>
 <p>The workspace (environment) panel window in R can become cluttered as we create variables and assignments in R. As we work through the modules in this bootcamp it will be helpful to clear the workspace every once in a while to maintain our sanity. Earlier we assigned the value “Alfred Pennyworth” to the variable <code>Batmans_butler</code>. Let’s remove that from the workspace. There are several ways to do this.</p>
 <ol style="list-style-type: decimal">
 <li>In the ‘environment’ panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire workspace.<br />
@@ -545,8 +542,27 @@ text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;
 <li>Use this handy one-liner <code>rm(list=ls())</code> to clear the entire workspace.</li>
 </ol>
 </div>
-<div id="scalars" class="section level3">
-<h3>Scalars</h3>
+<div id="back-to-basics-r-objects" class="section level2">
+<h2>Back to basics! R Objects</h2>
+<p>R has many different kinds of objects. These are the building blocks of the language.</p>
+<p>Object classes that enable storage of information and data are: <em>scalars</em>, <em>vectors</em>, <em>matrices</em>, <em>lists</em>, and <em>data frames</em>.</p>
+<p>Objects that transform data and perform data operations/statistics etc. are called <em>functions</em>.</p>
+<div id="data-types" class="section level3">
+<h3>Data types</h3>
+<p>It is important to note that all R data objects have a property called <strong>type</strong> (sometimes refered to as data types), which describes the type of data that is stored within the object. The most common data types in R are:</p>
+<ul>
+<li>“numeric” (numbers)<br />
+</li>
+<li>“character” (text strings)</li>
+<li>“logical” (TRUE/FALSE)<br />
+</li>
+<li>“factor” (categorical)</li>
+</ul>
+</div>
+<div id="data-storage-objects" class="section level3">
+<h3>Data storage objects</h3>
+<div id="scalars" class="section level4">
+<h4>Scalars</h4>
 <p>Scalars are the simplest objects in R. A scalar is just a single value. Remember the when we assigned the text string ‘Alfred Pennyworth’ to the <code>Batmans_butler</code> object? When we did that we created a scalar. Scalars can be any single value.</p>
 <pre class="r"><code>##################
 ####  Create R Objects 
@@ -580,11 +596,13 @@ typeof(scalar5)    # returns: logical</code></pre>
 scalar_2 + scalar_4</code></pre>
 <p>This error can be common in R. Remember that <code>scalar4</code> is a character, R cannot perform mathematical operations on character types. Double check your types with the <code>typeof()</code> function.</p>
 </div>
-<div id="vectors" class="section level3">
-<h3>Vectors</h3>
-<p>Vectors are combinations of scalars stored as a single object. Let’s create some vectors.</p>
-<p>There are many different ways to create a vector. You’ll learn more about that later in the bootcamp. Look (or print) some of the vectors in the workspace. Each vector is comprised of several scalars. Each of these scalars is called an <strong>element</strong> of the vector. You can still check the types of the objects with the <code>typeof()</code> function (try it yourself).</p>
-<p>What happened with <code>vector2</code> and <code>vector4</code>? We supplied a mix of numeric types and character, but the resulting vector is all characters? This is because vectors cannot contain multiple different types. R will convert (coerce) all types to a type that the data can be coerced to. Check <code>vector5</code>. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. <code>TRUE</code> maps to 1 and <code>FALSE</code> maps to 0.</p>
+<div id="vectors" class="section level4">
+<h4>Vectors</h4>
+<p>Vectors are combinations of scalars stored as a single object.</p>
+<p>NOTE: strictly speaking, there are no true scalars in R- scalars are just vectors with 1 element!</p>
+<p>Let’s create some vectors:</p>
+<p>There are many different ways to create a vector. You’ll learn more about that later in the bootcamp. Check out some of the vectors you just created. Each vector is comprised of several scalars. Each of these scalars is called an <strong>element</strong> of the vector. You can still check the types of the objects with the <code>typeof()</code> function (try it yourself).</p>
+<p>What happened with <code>vector2</code> and <code>vector4</code>? We supplied a mix of numeric types and character, but the resulting vector is all characters? This is because <em>all elements of a vector must be the same type</em>. R will attempt to convert (coerce) all elements to a single type. Check <code>vector5</code>. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. <code>TRUE</code> maps to 1 and <code>FALSE</code> maps to 0.</p>
 <p>In the code above we use another function called <code>c()</code>. I find it easiest to think of it as a concatenate or combine. It takes several objects, and combines them together into a vector. We can even use <code>c()</code> to combine scalar objects, like below.</p>
 <pre class="r"><code>a &lt;- 1
 b &lt;- 2
@@ -610,28 +628,9 @@ d3    # returns: 5 7 9
 d4    # returns: 2 4 4</code></pre>
 <p><em>NOTE: the last command we ran, “d1+c(1,2)”, produced a <strong>warning message</strong>. Remember to take warning messages seriously- a warning message means “the command ran but the results might not make sense”! In this case, the warning was that we tried to add two vectors of different length. R’s default is to repeat the shorter vector until it matches the length of the longer vector.</em></p>
 </div>
-<div id="functions" class="section level3">
-<h3>Functions</h3>
-<p>Functions<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> are an essential building block in R. Without functions we would need to write out every bit of logic for everything we want to accomplish in R. We’ve already used a few functions (<code>typeof</code>, <code>c</code>) without fully understanding what they are. That is about to change!</p>
-<p>Just like in algebra, functions are essentially machines that take any inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. They basic syntax looks like the code snippet below.</p>
-<pre><code>## function syntax
-functionName(inputs)</code></pre>
-<p>Let’s use another function called <code>sum()</code>. This function takes a set of several values and computes the sum of those numbers.</p>
-<pre class="r"><code>#############
-### functions
-#############
-
-sum(1, 2, 3, 10)    # returns: 15
-
-## sum can be used with one of the vectors we created
-sum(vector1)        # returns: 10.3</code></pre>
-<p>If you ever forget the arguments of a function, or how it works there are several ways to get help. There is a built in function called <code>help()</code> that will takes a function name as an argument, and looks up the help documents for the given function. The <code>?</code> is an alternative to the <code>help</code> function.</p>
-<pre class="r"><code>help(sum)
-?sum    # this is an alternative to &#39;help(sum)&#39;!</code></pre>
-</div>
-<div id="matrix-objects-in-r" class="section level3">
-<h3>Matrix objects in R</h3>
-<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together! To form a matrix, the vectors must be of the same length and the same <strong>class</strong> (class is another word for type). If different types are provided R will attempt to coerce the elements into a common type. A matrix has two <strong>dimensions</strong>: rows and columns.</p>
+<div id="matrix-objects-in-r" class="section level4">
+<h4>Matrix objects in R</h4>
+<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together! To form a matrix, the vectors must be of the same length and the same <strong>type</strong>. If different types are provided R will attempt to coerce the elements into a common type. A matrix has two <strong>dimensions</strong>: rows and columns.</p>
 <p>Let’s make our first matrix. One simple way to make a matrix is just by joining two vectors using the function <code>cbind</code> (bind vectors or matrices together by column) or <code>rbind</code> (bind vectors or matrices together by row)</p>
 <pre class="r"><code>#############
 ### MATRICES
@@ -675,17 +674,106 @@ d.mat</code></pre>
 ## [1,] 0.04761905 0.1904762
 ## [2,] 0.09523810 0.2380952
 ## [3,] 0.14285714 0.2857143</code></pre>
+<p>We can structure information in more than two dimensions using objects of the “array” class. Again, all elements of an array must be of the same data type.</p>
+<pre class="r"><code>############
+### ARRAYS!
+############
+
+d.array=array(0,dim=c(3,2,4))       # create 3 by 2 by 4 array full of zeros
+d.array             # see what it looks like</code></pre>
+<pre><code>## , , 1
+## 
+##      [,1] [,2]
+## [1,]    0    0
+## [2,]    0    0
+## [3,]    0    0
+## 
+## , , 2
+## 
+##      [,1] [,2]
+## [1,]    0    0
+## [2,]    0    0
+## [3,]    0    0
+## 
+## , , 3
+## 
+##      [,1] [,2]
+## [1,]    0    0
+## [2,]    0    0
+## [3,]    0    0
+## 
+## , , 4
+## 
+##      [,1] [,2]
+## [1,]    0    0
+## [2,]    0    0
+## [3,]    0    0</code></pre>
+<pre class="r"><code>d.mat=matrix(1:6,nrow=3)
+d.array[,,1]=d.mat          # enter d as the first slice of the array
+d.array[,,2]=d.mat*2        # enter d*2 as the second slide...
+d.array[,,3]=d.mat*3
+d.array[,,4]=d.mat*4
+d.array             # view the array </code></pre>
+<pre><code>## , , 1
+## 
+##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6
+## 
+## , , 2
+## 
+##      [,1] [,2]
+## [1,]    2    8
+## [2,]    4   10
+## [3,]    6   12
+## 
+## , , 3
+## 
+##      [,1] [,2]
+## [1,]    3   12
+## [2,]    6   15
+## [3,]    9   18
+## 
+## , , 4
+## 
+##      [,1] [,2]
+## [1,]    4   16
+## [2,]    8   20
+## [3,]   12   24</code></pre>
+<pre class="r"><code>d.array[1,2,4]</code></pre>
+<pre><code>## [1] 16</code></pre>
 </div>
-<div id="data-frames" class="section level3">
-<h3>Data frames</h3>
-<p><strong>Data frame</strong> objects are just a bunch of vectors grouped together! In this way they seem a lot like matrices! However, they are really much more general than matrices. In data frames, all the vectors must be the same length, but they no longer need to be the same <strong>class</strong>. A data frame, like a matrix, has two <strong>dimensions</strong>: rows and columns.</p>
-<p><em>Data frames are the basic data storage structure in R</em>. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation unit and each column represents a different measurement taken on that observation unit.</p>
-<p>NOTE: All R objects have a <strong>property</strong> called <strong>class</strong>, which describes the type of object it is. Common classes in R are “numeric” (numbers and vectors of numbers), “character” (text strings and vectors of text strings), “logical” (TRUE/FALSE data), and “factor” (categorical descriptors)</p>
+<div id="lists" class="section level4">
+<h4>Lists</h4>
+<p><strong>List objects</strong> are far more general than either matrices or arrays. <strong>List</strong> objects are just a bunch of potentially unrelated objects grouped together! The elements of a list don’t even need to be the same length or the same <strong>type</strong>. The elements of a list can be vectors, arrays, matrices, functions, or other lists - they could be literally any type of R object. In this way,</p>
+<p>Let’s make our first list:</p>
+<pre class="r"><code>#############
+### LISTS
+#############
+
+d.list &lt;- list()        # create empty list
+d.list[[1]] &lt;- c(1,2,3)     # note the double brackets- this is one way to reference a specified list element. 
+d.list[[2]] &lt;- c(4,5)
+d.list[[3]] &lt;- &quot;Alfred Pennyworth&quot;
+d.list</code></pre>
+<pre><code>## [[1]]
+## [1] 1 2 3
+## 
+## [[2]]
+## [1] 4 5
+## 
+## [[3]]
+## [1] &quot;Alfred Pennyworth&quot;</code></pre>
+<div id="data-frames-a-very-special-kind-of-list" class="section level5">
+<h5>Data frames (a very special kind of list)</h5>
+<p><strong>Data frame</strong> objects are a special type of <strong>list</strong> in which each element of the list is a <em>vector</em> object. Importantly, in a data frame object, <em>all of the component vectors must have the same number of elements</em>. The <em>j</em>th element (vector object) of a data frame is also known as the <em>j</em>th <em>column</em>. The <em>row</em> of a data frame refers to the <em>i</em>th element of each of the <em>j</em> vectors. Data frames superficially resemble matrices, since both types of objects have two <strong>dimensions</strong>: rows and columns. However, data frames are really much more general than matrices; in data frames, unlike matrices, the columns of a data frame can represent different <strong>types</strong> (i.e., character, logical, numeric, factor), and can thereby code for very different types of information!</p>
+<p><em>Data frames are the basic data storage structure in R</em>. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on that observation unit.</p>
 <p>Let’s make our first data frame. We will use the function “data.frame()”.</p>
 <pre class="r"><code>#############
 ### DATA FRAMES
 #############
-d.df &lt;- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create a ‘data frame’ with two columns
+d.df &lt;- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create a ‘data frame’ with two columns. Each column is a vector of length 3
 d.df</code></pre>
 <pre><code>##   d1 d2
 ## 1  1  4
@@ -699,7 +787,7 @@ d.df</code></pre>
 ## 1  1  4
 ## 2  2  5
 ## 3  3  6</code></pre>
-<p>We can use the “names()” function to see the variable names, or to change the variable names!</p>
+<p>We can use the “names()” function to see the names of each element of a list or data frame (column of a data frame), or to change these names!</p>
 <pre class="r"><code>names(d.df)          # view or change column names</code></pre>
 <pre><code>## [1] &quot;X1&quot; &quot;X2&quot;</code></pre>
 <pre class="r"><code>names(d.df)=c(&quot;meas_1&quot;,&quot;meas_2&quot;)        # provide new names for columns
@@ -708,7 +796,7 @@ d.df</code></pre>
 ## 1      1      4
 ## 2      2      5
 ## 3      3      6</code></pre>
-<p>And we can view or change the row names using the “rownames()” function:</p>
+<p>And we can view or change the row names of a data frame (or matrix) using the “rownames()” function:</p>
 <pre class="r"><code>rownames(d.df) &lt;- c(&quot;obs1&quot;,&quot;obs2&quot;,&quot;obs3&quot;)
 d.df</code></pre>
 <pre><code>##      meas_1 meas_2
@@ -716,32 +804,32 @@ d.df</code></pre>
 ## obs2      2      5
 ## obs3      3      6</code></pre>
 </div>
-<div id="lists" class="section level3">
-<h3>Lists</h3>
-<p><strong>List</strong> objects are just a bunch of objects grouped together! In this way they seem a lot like matrices and data frames! However, they are really much more general than either matrices or data frames. In lists, the objects don’t even need to be the same length, never mind the same <strong>class</strong>. They don’t even need to be vectors- they could be any type of R object. Each element of a list could be absolutely anything!</p>
-<p>Let’s make our first list:</p>
+</div>
+</div>
+<div id="functions" class="section level3">
+<h3>Functions</h3>
+<p>Functions are an essential building block in R. Without functions we would need to write out every bit of logic for everything we want to accomplish in R. We’ve already used a few functions (<code>typeof</code>, <code>c</code>) without fully understanding what they are. That is about to change!</p>
+<p>Just like in algebra, functions are essentially machines that take any inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. They basic syntax looks like the code snippet below.</p>
+<pre><code>## function syntax
+functionName(inputs)</code></pre>
+<p>Let’s use another function called <code>sum()</code>. This function takes a set of several values and computes the sum of those numbers.</p>
 <pre class="r"><code>#############
-### LISTS
+### functions
 #############
-d.list &lt;- list()        # create empty list
-d.list[[1]] &lt;- c(1,2,3)
-d.list[[2]] &lt;- c(4,5)
-d.list[[3]] &lt;- &quot;Alfred Pennyworth&quot;
-d.list</code></pre>
-<pre><code>## [[1]]
-## [1] 1 2 3
-## 
-## [[2]]
-## [1] 4 5
-## 
-## [[3]]
-## [1] &quot;Alfred Pennyworth&quot;</code></pre>
+
+sum(1, 2, 3, 10)    # returns: 15
+
+## sum can be used with one of the vectors we created
+sum(vector1)        # returns: 10.3</code></pre>
+<p>If you ever forget the arguments of a function, or how it works there are several ways to get help. There is a built in function called <code>help()</code> that will takes a function name as an argument, and looks up the help documents for the given function. The <code>?</code> is an alternative to the <code>help</code> function.</p>
+<pre class="r"><code>help(sum)
+?sum    # this is an alternative to &#39;help(sum)&#39;!</code></pre>
 </div>
 </div>
-<div id="object-operations" class="section level2">
-<h2>Object operations</h2>
-<div id="generating-sequences" class="section level3">
-<h3>Generating sequences</h3>
+<div id="specifying-new-data-objects" class="section level2">
+<h2>Specifying new data objects</h2>
+<div id="generating-sequences-of-numbers" class="section level3">
+<h3>Generating sequences of numbers</h3>
 <p>One task that comes up a lot is making sequences of numbers. We certainly don’t want to do this entirely by hand! Here are some shortcuts:</p>
 <pre class="r"><code>#############
 ### MAKING UP DATA!
@@ -893,7 +981,7 @@ d</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    2    5
 ## [2,]    3    6</code></pre>
-<p>Subsetting works much the same for data frames and lists. However, now we can reference columns (variables) or list elements using the dollar sign operator:</p>
+<p>Subsetting works much the same for lists and data frames. However, now we can reference columns (variables) and other list elements using the dollar sign operator:</p>
 <pre class="r"><code># $            access component of an object (data frame or list)
 # Z_list[[i]]  access the ith element of list Z
 
@@ -960,7 +1048,7 @@ d.df$Treatment</code></pre>
 <pre class="r"><code>d.df[2,2:3]</code></pre>
 <pre><code>##    Treatment Block
 ## 22         B     2</code></pre>
-<p>Here’s a list of useful R functions for exploring data objects:</p>
+<p>Here are some useful R functions for exploring data objects:</p>
 <pre class="r"><code>###############
 # Other data exploration tricks in R
 
@@ -971,75 +1059,6 @@ names(my.data)    # get names of variables in a data frame (or names of elements
 nrow(my.data)     # get number of rows/observations in a data frame
 ncol(my.data)     # get number of columns/variables in a data frame
 str(my.data)      # look at the &quot;internals&quot; of an object (useful for making sense of complex objects!)</code></pre>
-<p>We can structure information in more than two dimensions using objects of the “array” class.</p>
-<pre class="r"><code>############
-### ARRAYS!
-############
-
-d.array=array(0,dim=c(3,2,4))       # create 3 by 2 by 4 array full of zeros
-d.array             # see what it looks like</code></pre>
-<pre><code>## , , 1
-## 
-##      [,1] [,2]
-## [1,]    0    0
-## [2,]    0    0
-## [3,]    0    0
-## 
-## , , 2
-## 
-##      [,1] [,2]
-## [1,]    0    0
-## [2,]    0    0
-## [3,]    0    0
-## 
-## , , 3
-## 
-##      [,1] [,2]
-## [1,]    0    0
-## [2,]    0    0
-## [3,]    0    0
-## 
-## , , 4
-## 
-##      [,1] [,2]
-## [1,]    0    0
-## [2,]    0    0
-## [3,]    0    0</code></pre>
-<pre class="r"><code>d.mat=matrix(1:6,nrow=3)
-d.array[,,1]=d.mat          # enter d as the first slice of the array
-d.array[,,2]=d.mat*2        # enter d*2 as the second slide...
-d.array[,,3]=d.mat*3
-d.array[,,4]=d.mat*4
-d.array             # view the array </code></pre>
-<pre><code>## , , 1
-## 
-##      [,1] [,2]
-## [1,]    1    4
-## [2,]    2    5
-## [3,]    3    6
-## 
-## , , 2
-## 
-##      [,1] [,2]
-## [1,]    2    8
-## [2,]    4   10
-## [3,]    6   12
-## 
-## , , 3
-## 
-##      [,1] [,2]
-## [1,]    3   12
-## [2,]    6   15
-## [3,]    9   18
-## 
-## , , 4
-## 
-##      [,1] [,2]
-## [1,]    4   16
-## [2,]    8   20
-## [3,]   12   24</code></pre>
-<pre class="r"><code>d.array[1,2,4]</code></pre>
-<pre><code>## [1] 16</code></pre>
 </div>
 </div>
 <div id="basic-mathematical-operations" class="section level2">
@@ -1138,7 +1157,6 @@ mean(c(length(vector1), length(vector2), length(vector3)))</code></pre>
 <li id="fn2"><p>RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you’ve typed the first couple letters (e.g., “bat”), RStudio will suggest “Batmans_butler” and you can just hit “Enter” to complete the object name! The auto-type feature, unlike R, is not case sensitive!<a href="#fnref2">↩</a></p></li>
 <li id="fn3"><p>RStudio has several helpful keyboard shortcuts to make running lines of code easier. <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">Check this website</a> for a comprehensive set of keyboard shortcuts<a href="#fnref3">↩</a></p></li>
 <li id="fn4"><p>Functions are essentially machines that take inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>One important concept to understand is that functions can be treated like regular objects in R. This is actually a very important concept in programming in general, and a feature of many programming languages. This feature, when objects can be treated as regular objects, is refered to <a href="https://en.wikipedia.org/wiki/First-class_function">first-class functions</a>. In practice this means that we can assign functions to variables, use them as arguments in other functions, and return functions from functions. This sounds complicated, but work through the code at the end of the module for some insight.<a href="#fnref5">↩</a></p></li>
 </ol>
 </div>
 

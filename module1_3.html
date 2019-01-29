@@ -388,15 +388,12 @@ div.tocify {
 <p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University.<br />
 - Thanks to Perry Williams for allowing us to use these materials!!<br />
 - Thanks to John Tipton at CSU for developing much of this module (plotting in R)!</p>
-<div id="load-script-for-module-1.3" class="section level2">
-<h2>Load script for module #1.3</h2>
+<div id="load-script-for-module-1.3-plotting" class="section level2">
+<h2>Load script for module #1.3: Plotting</h2>
 <ol style="list-style-type: decimal">
 <li><p>Click <a href="module1_3.R">here</a> to download the script! Save the script to a convenient folder on your laptop.</p></li>
 <li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script.</p></li>
 </ol>
-</div>
-<div id="plotting" class="section level2">
-<h2>Plotting!</h2>
 <p>Let’s get started with plotting in R!</p>
 <p>We’ll start with the ‘trees’ dataset, which is built into R. It describes the girth, height, and volume of 31 felled black cherry trees.</p>
 <pre class="r"><code>?trees      # description of built in dataset</code></pre>
@@ -419,13 +416,13 @@ div.tocify {
 <pre class="r"><code># Access the columns 
 trees$Girth     
 trees$Volume</code></pre>
-<div id="basic-plots" class="section level3">
-<h3>Basic plots</h3>
+</div>
+<div id="basic-plots" class="section level2">
+<h2>Basic plots</h2>
 <p>R’s basic “plot()” function takes an “x” argument (defining coordinates on an x axis) and a “y” argument (defining coordinates on a y axis).</p>
 <p>Here is an example of a <strong>scatterplot</strong> in R:</p>
 <pre class="r"><code>plot(x=trees$Girth, y=trees$Volume)    # use R&#39;s built-in &quot;trees&quot; dataset: ?trees</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-</div>
 <div id="change-plot-type" class="section level3">
 <h3>Change Plot Type</h3>
 <p>Because we’re exploring different ways of plotting, it is useful to include multiple plots in the same image.</p>
@@ -474,8 +471,8 @@ plot(x=trees$Girth, y=trees$Volume, pch=11)     # star</code></pre>
 
 </div>
 </div>
-<div id="title-and-axes" class="section level3">
-<h3>Title and Axes</h3>
+<div id="specify-title-and-axes" class="section level3">
+<h3>Specify Title and Axes</h3>
 <p>We can also add titles, axis labels, and other options to make the plots look pretty. For example, we show below how each plot is changed by the addition of one extra command, starting at the top left corner and moving top-to-bottom:</p>
 <pre class="r"><code>layout(matrix(1:4, 2, 2))
 # main: adds a title
@@ -530,7 +527,7 @@ plot(x=trees$Girth, y=trees$Volume, pch=c(1,19),
 </div>
 <div id="plotting-by-group" class="section level2">
 <h2>Plotting By Group</h2>
-<p>In our previous plot, we alternated colors between points - wouldn’t it be awesome to use color to distinguish between groups in the data? To do this, we look at the <code>iris</code> dataset This dataframe describes the sepal length, sepal width, petal length, petal width, and species for 150 different irises. First we look at the data:</p>
+<p>In our previous plot, we alternated colors between points - wouldn’t it be awesome to use color to distinguish between groups in the data? To do this, we look at the <code>iris</code> dataset. This dataset describes the sepal length, sepal width, petal length, petal width, and species for 150 different irises representing 3 different species (<em>I. setosa</em>, <em>I. versicolor</em>, <em>I. virginica</em>) . First we look at the data:</p>
 <pre class="r"><code>?iris
 head(iris)     # display first few rows of data</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -549,35 +546,57 @@ head(iris)     # display first few rows of data</code></pre>
 ##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
 ##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
 ##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<div id="by-hand" class="section level3">
-<h3>“By Hand”</h3>
-<p>We use the <code>col=</code> option of our <code>plot()</code> function. First, let’s show how to do this the “by hand” way. In general, this is not good programming as you want to make your code general (if you get new data you don’t want to re-write your code) but it is a good starting point. We’ll show how to make this “automatic” later.</p>
-<p>First I define a new object with the three colors that I want to use. You can use any colors you like (Google “R color chart”, or just click <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">here</a>)</p>
-<pre class="r"><code>plot.colors &lt;- c(&quot;violet&quot;, &quot;purple&quot;, &quot;blue&quot;)</code></pre>
-<p>Here’s the cheating bit: I just looked at this dataframe and saw that there are exactly 50 observations for each species. I use the repeat function, <code>rep()</code> and the <code>each=</code> argument, to create a new vector with each element of the vector <code>plot.colors</code> repeated 50 times in turn.</p>
+<p>We will use the <code>col=</code> option of our <code>plot()</code> function.</p>
+<p>First we will define a new object with the three colors that we want to use. You can use any colors you like (Google “R color chart”, or just click <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">here</a>)</p>
+<pre class="r"><code>plot.colors &lt;- c(&quot;violet&quot;, &quot;purple&quot;, &quot;blue&quot;)   # define the colors for representing species ID</code></pre>
+<p>At this point, you could “cheat” if you notice that there are exactly 50 observations for each species in the iris dataset, and that all observations are grouped together neatly by species. That is, you could just use the repeat function, <code>rep()</code> with the argument <code>each=50</code>, to create a new vector with each color in our <code>plot.colors</code> vector repeated 50 times in sequence.</p>
 <pre class="r"><code>color.vector &lt;- rep(x=plot.colors, each=50)
 color.vector
-## color vector is now a list of our colors, each repeated 50 times</code></pre>
-<pre class="r"><code>plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main=&quot;Plot of Iris colored by species&quot;)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>Notice the lengths of the x-vector, the y-vector, and the color vector are all the same. If this is not true, <code>R</code> will make up stuff to force them to be the same length, so make sure these vectors are the same size.</p>
-<pre class="r"><code>length(iris$Petal.Length)
-length(iris$Sepal.Length)
-length(color.vector)</code></pre>
-</div>
-<div id="automatic-grouping" class="section level3">
-<h3>Automatic Grouping</h3>
-<p>What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. We can take advantage of the fact that the ‘Species’ column is a factor (factors are integers in disguise!).</p>
-<pre class="r"><code>plot.colors &lt;- c(&quot;violet&quot;, &quot;purple&quot;, &quot;blue&quot;)
-# subset the colors in plot.colors based on the variable iris$Species
-# iris$Species is a factor variable (integer in disguise) that has 3 levels (represented internally as &#39;1:3&#39;)
-color.vector &lt;- plot.colors[iris$Species]
+## color vector is now a list of our colors, each repeated 50 times
 
 plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
+     main=&quot;Plot of Iris colored by species&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/colorvector-1.png" width="672" /></p>
+<p>NOTE: the length of the color vector must match the length of the x and y vectors (here, Petal.Length and Sepal.Length). If this is not true, <code>R</code> will make up stuff (recycle the shorter vectors) to force them to be the same length, so make sure these vectors are the same size.</p>
+<p>But … <strong>this is not good programming practice!!</strong>. We want to make our code general (if you get new data you don’t want to re-write your code) and fool-proof and the above code is neither general (it applies only to this data set) or fool-proof (there is no guarantee that it is correct- it’s based only on an eyeballing approach!).</p>
+<div id="a-better-method" class="section level3">
+<h3>A better method!</h3>
+<p>What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. Our strategy here is to directly match the ‘Species’ column with the “plot.colors” vector.</p>
+<p>Our first step might be to name each element of our plot colors vector to match the species names:</p>
+<pre class="r"><code>names(plot.colors) &lt;- levels(iris$Species)   # the &quot;levels()&quot; function returns all unique labels for any &quot;factor&quot; variable    
+plot.colors</code></pre>
+<pre><code>##     setosa versicolor  virginica 
+##   &quot;violet&quot;   &quot;purple&quot;     &quot;blue&quot;</code></pre>
+<p>Now, each color is associated with a species. We can now use a logical operation to generate a vector of colors for our plot:</p>
+<pre class="r"><code># generate a vector of colors for our plot (one color for each observation)
+
+indices &lt;- match(iris$Species,names(plot.colors))   # the &quot;match()&quot; function returns the indices of the first vector that match the second vector   
+color.vector2 &lt;- plot.colors[indices]</code></pre>
+<p>Now we can use our new color vector in our plotting!</p>
+<pre class="r"><code>plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector2, 
      main=&quot;Iris sepal length vs. petal length&quot;, xlab=&quot;Petal length&quot;, 
      ylab=&quot;Sepal length&quot;, las=1)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>To illustrate how general our new method is, let’s make a new version of the iris data frame that is neither in order nor has the same number of observations for each species:</p>
+<pre class="r"><code># make a new version of the iris data frame that is neither in order nor has the same number of observations for each species (to illustrate generality of the new method)
+
+iris2 &lt;- iris[sample(1:nrow(iris),replace = T),]   # use the &quot;sample()&quot; function to create a randomized (&quot;bootstrapped&quot;) version of the iris data frame
+
+# now repeat the above steps:
+
+indices &lt;- match(iris2$Species,names(plot.colors))   # the &quot;match()&quot; function returns the indices of the first vector that match the second vector   
+color.vector2 &lt;- plot.colors[indices]
+plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector2, 
+     main=&quot;Iris sepal length vs. petal length&quot;, xlab=&quot;Petal length&quot;, 
+     ylab=&quot;Sepal length&quot;, las=1)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Whereas, if we used our first method, the colors would be all over the map, and not representing species anymore (or any other useful information)!</p>
+<pre class="r"><code>## The old method is NOT general:
+
+color.vector &lt;- rep(x=plot.colors, each=50)
+plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector, 
+     main=&quot;Plot of Iris colored by species (not!)&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="add-a-legend" class="section level3">
 <h3>Add a Legend</h3>
@@ -614,7 +633,7 @@ plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector,
 legend(&quot;topleft&quot;, pch=19, col=plot.colors, 
        legend=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), 
        bty=&quot;n&quot;, text.font=3)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="bar-plots" class="section level3">
 <h3>Bar Plots</h3>
@@ -623,13 +642,13 @@ bar.heights &lt;- tapply(X=iris$Sepal.Length, INDEX=iris$Species, FUN=mean)   #u
 
 # The basic &#39;barplot()&#39; function
 barplot(bar.heights)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>Using the <code>barplot()</code> options (arguments), we can make this look fancier</p>
 <pre class="r"><code># Let&#39;s add some flair
 barplot(bar.heights, names.arg=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), 
         las=1, col=adjustcolor(plot.colors, alpha.f=0.5),
         main=&quot;Sepal length for 3 Irises&quot;, ylab=&quot;Sepal length (cm)&quot;)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="error-bars" class="section level3">
 <h3>Error bars</h3>
@@ -649,7 +668,7 @@ b &lt;- barplot(bar.heights,
 
 # Specify where each arrow starts (x0= and y0=) and ends (x1= and y1=)
 arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <pre class="r"><code># ?arrows</code></pre>
 </div>
 <div id="histograms" class="section level3">
@@ -667,13 +686,13 @@ hist(iris$Sepal.Length, freq=FALSE, main=&quot;Histogram of Sepal Length&quot;,
 ## Add a density estimator
 
 lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="pairs-plots" class="section level3">
 <h3>Pairs Plots</h3>
 <p>The <code>pairs()</code> function allows for quick investigation into relationships between variables. Be careful if your data set is large (e.g., lots of columns), as this can be a slow function.</p>
 <pre class="r"><code>pairs(iris)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 <div id="challenge-yourself-by-recreating-the-following-plots" class="section level3">
 <h3>Challenge Yourself by recreating the following plots:</h3>
@@ -690,7 +709,7 @@ head(ToothGrowth)</code></pre>
 ## 4  5.8   VC  0.5
 ## 5  6.4   VC  0.5
 ## 6 10.0   VC  0.5</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 <div id="bar-plots-challenge" class="section level4">
 <h4>Bar Plots Challenge</h4>
@@ -819,9 +838,9 @@ mean(newdf$Export)</code></pre>
 #####
 
 hist(sculpin.df$NUMEGGS)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
 </div>
 <div id="linear-regression" class="section level3">
 <h3>Linear Regression</h3>
@@ -871,7 +890,7 @@ m1                                      # view estimates of intercept and slope 
 <pre><code>## [1] 86.00155</code></pre>
 <pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
 abline(m1)                                           # plot line of best fit</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <pre class="r"><code>########
 # Use the &quot;predict()&quot; function!
 
@@ -924,7 +943,7 @@ abline(m2,col=&quot;red&quot;)                                       # plot inte
 FEMWT.pred &lt;- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
 NUMEGGS.pred &lt;- predict(m3,newdata=FEMWT.pred)             # make prediction using &quot;predict()&quot; function
 points(FEMWT.pred$FEMWT,NUMEGGS.pred,col=&quot;green&quot;,typ=&quot;l&quot;)  # plot sqrt model (note the use of the &quot;points()&quot; function to draw a line!)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <pre class="r"><code>########
 # Perform model selection!
 
@@ -951,7 +970,7 @@ NUMEGGS.confint &lt;- predict(m3,newdata=FEMWT.pred,interval=&quot;prediction&qu
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;fit&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lwd=2)  # plot fitted sqrt model
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;lwr&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lty=2)  # plot fitted sqrt model
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;upr&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lty=2)  # plot fitted sqrt model</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-32-2.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
 </div>
 <div id="statistics-challenge-exercises" class="section level3">
 <h3>Statistics challenge exercises</h3>

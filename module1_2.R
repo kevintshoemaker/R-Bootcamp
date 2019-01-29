@@ -189,6 +189,8 @@ Z <- 6
 Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
 Y < Z
 
+!(Y < Z)  # the exclamation point reverses any boolean object
+
 # Wrong!
 data.df[,2]=74     # sets entire second column equal to 74!
 
@@ -212,6 +214,16 @@ which((data.df[,2]<74)|(data.df[,2]==91))   # use the OR operator
 
 data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
+#########
+# Alternatively, save the indices as an R object as an intermediate step
+
+indices <- which(data.df[,2]<74)
+data.df[indices,2]               # same as above!
+
+
+#########
+# Alternatively, you don't actually need to use the "which()" function
+
 data.df[data.df[,2]<74,2]    # alternative syntax without using "which()"... 
 
 
@@ -231,7 +243,10 @@ which((data.df[,1] %in% sub.countries) & (data.df[,4]=="N"))   # use AND operato
 which((data.df$Country %in% sub.countries) & (data.df$Product=="N")) 
 
 # What if we don't want the row number, but the actual row(s) of data that meet a particular condition?
-data.df[which(data.df$Country %in% sub.countries),] 
+
+indices <- which(data.df$Country %in% sub.countries)
+
+data.df[indices,] 
 
 
 
@@ -295,7 +310,10 @@ ncol(turtles.df)
 # ?order
 
 # Sort works for ordering along one vector
-sort(turtles.df$carapace_length)
+sort(turtles.df$carapace_length)  
+
+# Order returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
+order(turtles.df$carapace_length)
 
 # To sort a data frame by one vector, use "order()"
 turtles.tag <- turtles.df[order(turtles.df$tag_number),]
@@ -303,7 +321,7 @@ turtles.tag <- turtles.df[order(turtles.df$tag_number),]
 # Order in reverse
 turtles.tag.rev <- turtles.df[rev(order(turtles.df$tag_number)),] 
 
-# Sorting by 2 factors
+# Sorting by 2 columns
 turtles.sex.weight <- turtles.df[order(turtles.df$sex,turtles.df$weight),] 
 
 
@@ -340,6 +358,10 @@ missing.mean.df<- read.table(file="data_missing.txt", sep="\t", header=T)
 missing.mean.df$Export[is.na(missing.mean.df$Export)] <- mean(missing.mean.df$Export,na.rm=T)
 missing.mean.df
 
+# Return only those rows with missing data
+missing.df<- read.table(file="data_missing.txt", sep="\t", header=T)
+missing.df <- missing.df[!complete.cases(missing.df),]
+
 # Can summarize your data and tell you how many NA's per col
 summary(missing.mean.df)
 
@@ -348,7 +370,7 @@ summary(missing.mean.df$Export)
 
 
 ####
-####  Manipulate Headers
+####  Manipulate Headers (variable names)
 ####
 
 # ?names: used to manipulate the column names of a data frame
@@ -419,12 +441,12 @@ df <- read.csv("data.csv", header=T, stringsAsFactors=FALSE)   # avoid reading i
 ##########
 # Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
 
-newmat <- array(c(1:9),dim=c(3,3,3))
+newmat <- matrix(c(1:6),nrow=3,byrow = T)
 class(newmat)
 
-newmat[1,1,]
-class(newmat[1,1,])    # what? why is it no longer an array????
+newmat[1,]
+class(newmat[1,])    # what? why is it no longer a matrix????
 
-newmat[1,1,,drop=FALSE]
-class(newmat[1,1,,drop=FALSE])    # ahhh, now we retain a 3-D array! 
+newmat[1,,drop=FALSE]
+class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
 

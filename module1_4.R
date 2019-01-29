@@ -16,12 +16,10 @@
 ## NOTE: this module borrows heavily from an R short-course developed by a team at Colorado State University. 
 
 
-
 #######
 # Start with blank workspace
 
 rm(list=ls())
-
 
 
 ####
@@ -78,7 +76,6 @@ logit.x <- logit(x)
 logit.x
 
 ## Plot x on x-axis, and logit(x) on y axis.
-par(mfrow = c(1, 1))
 plot(x, logit.x, type = 'l')    # View the output graphically.
 
 
@@ -100,23 +97,22 @@ plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type="l")
 
 
 
-## Kaplan Meier known-fate maximum likelihood estimator.
-## n is the number of animals fitted with ratio transmitters being monitored.
-## d is the number of n that died.
-survival.mle <- function(n, d){
+## n is the number of animals being monitored.
+## d is the number of animals that died.
+survival <- function(n, d){
     (n-d)/n
 }
 
 ## One year of data.
-survival.mle(n = 10, d = 5)
+survival(n = 10, d = 5)
 
-## Many years of data.
-d <- sample(0:50, 10, replace = TRUE)
+## Simulate many years of data.
+d <- sample(0:50, 10, replace = TRUE)   # note use of "sample()" function
 n <- c(100, 100-d)
-(surv <- survival.mle(n = n[1:10], d = d))
+(surv <- survival(n = n[1:10], d = d))
 
 ## Plot year-specific survival rate.
-plot(1:10, surv, type = 'l')
+plot(1:10, surv, type = 'l',xlab="Year",ylab="Survival")
 
 
 ####
@@ -234,7 +230,7 @@ apply(W, 1, MyFunc)
 
 
 ####################
-####  Exercises ####
+####  Practice exercises ####
 ####################
 
 
@@ -291,7 +287,8 @@ Y <- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to W)
 
 # Z   # make sure the elevation matrix looks right
 
-par(mfrow = c(2,1), bg = "white")
+par(bg = "white")
+layout(matrix(c(1,1),nrow=1))
 persp(X,  Y, Z, theta = 135, phi = 30, col = "green3",    # "persp()" produces a 3D "perspective plot"
       scale = FALSE, ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)
@@ -304,7 +301,6 @@ persp(X, Y, Z, theta = 90, phi = 30, col = "green3",
 
 
 ## Use a for-loop to help view many angles.
-par(mfrow = c(1,1))
 for(i in 1:18){
     persp(X, Y, Z, theta = i*20, phi = 30, col = "green3",
           scale = FALSE,  ltheta = -120, shade = 0.75,
@@ -314,6 +310,34 @@ for(i in 1:18){
 }
 
 
+
+
+##########
+# Challenge problem 3: code skeleton to get you started!   
+
+get.t.test <- function(data, mu0, alpha = 0.05) {
+    n <- length(data)
+    mu <- mean(____)
+    s <- ____(data)
+    t <- (mu-mu0)/(s/sqrt(n))
+    t.crit <- qt(p = (1-alpha/2), df = n-1)        # get the critical value
+    if (abs(t)>t.crit) {
+        answer = "_______"
+    } ____ {
+        answer = "Fail to reject"
+    }
+    print(answer)
+}
+
+
+#######
+# Example code to get you started with challenge problem 5... 
+
+persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?,
+                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
+      border = NA, box = FALSE)
+print(?)
+readline()
 
 
 ##################
@@ -384,32 +408,4 @@ plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
 plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
 plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)
 par(mfrow = c(1, 1))                               # Return to a 1X1 plot.
-
-
-##########
-# Challenge problem 3: code skeleton to get you started!   
-
-get.t.test <- function(data, mu0, alpha = 0.05) {
-    n <- length(data)
-    mu <- mean(____)
-    s <- ____(data)
-    t <- (mu-mu0)/(s/sqrt(n))
-    t.crit <- qt(p = (1-alpha/2), df = n-1)        # get the critical value
-    if (abs(t)>t.crit) {
-        answer = "_______"
-    } ____ {
-        answer = "Fail to reject"
-    }
-    print(answer)
-}
-
-
-#######
-# Example code to get you started with challenge problem 5... 
-
-persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?,
-                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
-print(?)
-readline()
 

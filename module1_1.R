@@ -15,7 +15,6 @@
 ##################################################
 
 
-
 Batmans_butler <- 'Alfred Pennyworth'
 
 
@@ -130,20 +129,6 @@ d4    # returns: 2 4 4
 
 
 #############
-### functions
-#############
-
-sum(1, 2, 3, 10)    # returns: 15
-
-## sum can be used with one of the vectors we created
-sum(vector1)        # returns: 10.3
-
-
-help(sum)
-?sum    # this is an alternative to 'help(sum)'!
-
-
-#############
 ### MATRICES
 #############
 
@@ -166,10 +151,37 @@ d.mat + 2
 d.mat/sum(d.mat)
 
 
+############
+### ARRAYS!
+############
+
+d.array=array(0,dim=c(3,2,4))       # create 3 by 2 by 4 array full of zeros
+d.array				# see what it looks like
+d.mat=matrix(1:6,nrow=3)
+d.array[,,1]=d.mat  		# enter d as the first slice of the array
+d.array[,,2]=d.mat*2		# enter d*2 as the second slide...
+d.array[,,3]=d.mat*3
+d.array[,,4]=d.mat*4
+d.array				# view the array 
+
+d.array[1,2,4]
+
+
+#############
+### LISTS
+#############
+
+d.list <- list()        # create empty list
+d.list[[1]] <- c(1,2,3)     # note the double brackets- this is one way to reference a specified list element. 
+d.list[[2]] <- c(4,5)
+d.list[[3]] <- "Alfred Pennyworth"
+d.list
+
+
 #############
 ### DATA FRAMES
 #############
-d.df <- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create a ‘data frame’ with two columns
+d.df <- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create a ‘data frame’ with two columns. Each column is a vector of length 3
 d.df
 
 
@@ -187,13 +199,17 @@ d.df
 
 
 #############
-### LISTS
+### functions
 #############
-d.list <- list()        # create empty list
-d.list[[1]] <- c(1,2,3)
-d.list[[2]] <- c(4,5)
-d.list[[3]] <- "Alfred Pennyworth"
-d.list
+
+sum(1, 2, 3, 10)    # returns: 15
+
+## sum can be used with one of the vectors we created
+sum(vector1)        # returns: 10.3
+
+
+help(sum)
+?sum    # this is an alternative to 'help(sum)'!
 
 
 #############
@@ -331,22 +347,6 @@ names(my.data)    # get names of variables in a data frame (or names of elements
 nrow(my.data)     # get number of rows/observations in a data frame
 ncol(my.data)     # get number of columns/variables in a data frame
 str(my.data)      # look at the "internals" of an object (useful for making sense of complex objects!)
-
-
-############
-### ARRAYS!
-############
-
-d.array=array(0,dim=c(3,2,4))       # create 3 by 2 by 4 array full of zeros
-d.array				# see what it looks like
-d.mat=matrix(1:6,nrow=3)
-d.array[,,1]=d.mat  		# enter d as the first slice of the array
-d.array[,,2]=d.mat*2		# enter d*2 as the second slide...
-d.array[,,3]=d.mat*3
-d.array[,,4]=d.mat*4
-d.array				# view the array 
-
-d.array[1,2,4]
 
 2+3              # addition
           

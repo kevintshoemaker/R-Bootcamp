@@ -70,7 +70,7 @@ If you're using an **RStudio Project** (.Rproj extension) then the default worki
 
 To start a new RStudio Project, just click on "File->New Project" in RStudio's menu bar.  
 
-### Back to basics!
+## Back to basics!
 
 You can easily set a new working directory using the "setwd()" function. To select the directory manually (using standard file navigation) you can use the "file.choose()" function:
 
@@ -108,7 +108,7 @@ What's in your working directory?
 There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And people are always inventing new ways to read and write to/from R. But here are the basics.   
 
 - read.table      
-     - reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)        
+     - reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)       
 - read.csv        
      - fields are separated by a comma (this is still probably the most common way to read in data)        
 - read.csv2        
@@ -392,6 +392,8 @@ Z <- 6
 Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
 Y < Z
 
+!(Y < Z)  # the exclamation point reverses any boolean object
+
 # Wrong!
 data.df[,2]=74     # sets entire second column equal to 74!
 
@@ -426,6 +428,16 @@ which((data.df[,2]<74)|(data.df[,2]==91))   # use the OR operator
 
 data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
+#########
+# Alternatively, save the indices as an R object as an intermediate step
+
+indices <- which(data.df[,2]<74)
+data.df[indices,2]               # same as above!
+
+
+#########
+# Alternatively, you don't actually need to use the "which()" function
+
 data.df[data.df[,2]<74,2]    # alternative syntax without using "which()"... 
 
 
@@ -451,17 +463,22 @@ which((data.df[,1] %in% sub.countries) & (data.df[,4]=="N"))   # use AND operato
 which((data.df$Country %in% sub.countries) & (data.df$Product=="N")) 
 
 # What if we don't want the row number, but the actual row(s) of data that meet a particular condition?
-data.df[which(data.df$Country %in% sub.countries),] 
+
+indices <- which(data.df$Country %in% sub.countries)
+
+data.df[indices,] 
 
 
 ```
 
 
-#### Practice exercise!
+## Practice exercise!
 
 Let's practice some of what we've learned. Here we will use a different data file. Take a couple minutes to make sure you understand this code.  
 
 First, make sure you download the [Turtle Data](turtle_data.txt) and save to your working directory. 
+
+### Subsetting data and correcting errors
 
 ```{r}
 
@@ -504,7 +521,7 @@ bad.turtles.df
 ```
 
 
-#### Data manipulation using subsetting
+### Data manipulation using subsetting
 
 We can use subsetting operations to manipulate (alter) data- for example, to correct some data elements:
 
@@ -527,9 +544,15 @@ ncol(turtles.df)
 ```
 
 
-### Sorting data
+### Sorting/ordering data
 
-Sorting is another common data operation, which helps to visualize and organize data. Here's how you do it in R, continuing with the turtle data example:
+**Sorting** is another common data operation, which helps to visualize and organize data. In R, sorting is typically accomplished using either the "order()" or the "sort()" functions:
+
+**sort**: sorts a vector literally -- i.e., "10,3,22" becomes "3,10,22" (increasing, by default)       
+**order**: returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted (increasing, by default) -- i.e., "10,3,22" becomes "2,1,3".           
+
+Here's how you do it in R, continuing with the turtle data example:
+
 
 ```{r}
 
@@ -541,7 +564,10 @@ Sorting is another common data operation, which helps to visualize and organize 
 # ?order
 
 # Sort works for ordering along one vector
-sort(turtles.df$carapace_length)
+sort(turtles.df$carapace_length)  
+
+# Order returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
+order(turtles.df$carapace_length)
 
 # To sort a data frame by one vector, use "order()"
 turtles.tag <- turtles.df[order(turtles.df$tag_number),]
@@ -549,7 +575,7 @@ turtles.tag <- turtles.df[order(turtles.df$tag_number),]
 # Order in reverse
 turtles.tag.rev <- turtles.df[rev(order(turtles.df$tag_number)),] 
 
-# Sorting by 2 factors
+# Sorting by 2 columns
 turtles.sex.weight <- turtles.df[order(turtles.df$sex,turtles.df$weight),] 
 
 ```
@@ -603,6 +629,10 @@ missing.mean.df<- read.table(file="data_missing.txt", sep="\t", header=T)
 missing.mean.df$Export[is.na(missing.mean.df$Export)] <- mean(missing.mean.df$Export,na.rm=T)
 missing.mean.df
 
+# Return only those rows with missing data
+missing.df<- read.table(file="data_missing.txt", sep="\t", header=T)
+missing.df <- missing.df[!complete.cases(missing.df),]
+
 # Can summarize your data and tell you how many NA's per col
 summary(missing.mean.df)
 
@@ -619,7 +649,7 @@ Sometimes you may want to change the headers (variable names) for your data, per
 ```{r}
 
 ####
-####  Manipulate Headers
+####  Manipulate Headers (variable names)
 ####
 
 # ?names: used to manipulate the column names of a data frame
@@ -693,7 +723,7 @@ detach(data.df)   # Remember to detach
  
 ```
 
-BUT this just leads to problems in the end. My recommendation: just don't use it!!
+BUT this just leads to problems in the end. Our recommendation: just don't use it!!
 
 
 2. When reading in data, R automatically codes character data (any column containing even one character element) as a **factor**. This often leads to problems, since factor data (while useful) are actually integers and can confuse novice and expert R users alike. This is one of the most common problems that new R users face! 
@@ -714,14 +744,14 @@ df <- read.csv("data.csv", header=T, stringsAsFactors=FALSE)   # avoid reading i
 ##########
 # Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
 
-newmat <- array(c(1:9),dim=c(3,3,3))
+newmat <- matrix(c(1:6),nrow=3,byrow = T)
 class(newmat)
 
-newmat[1,1,]
-class(newmat[1,1,])    # what? why is it no longer an array????
+newmat[1,]
+class(newmat[1,])    # what? why is it no longer a matrix????
 
-newmat[1,1,,drop=FALSE]
-class(newmat[1,1,,drop=FALSE])    # ahhh, now we retain a 3-D array! 
+newmat[1,,drop=FALSE]
+class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
 
 ```
 
@@ -729,11 +759,11 @@ This default behavior in R can lead to enormous problems when programming in R- 
 
 ## Challenge Exercises!
 
-1: Create a new data frame by reading in the file ["comm_data.txt"](comm_data.txt) in your module folder (and saving to your working directory). For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: "Class","Downstream", "Upstream".
+1: Create a new data frame by saving the file ["comm_data.txt"](comm_data.txt) to your working directory. For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: "Class","Downstream", "Upstream".
 
 2: Read in the file "turtle_data.txt', and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory. 
   
-3: I am trying to create a data frame with only male turtles using the "which" argument.  Would this command work?
+3: I am trying to create a data frame with only male turtles using the "which()" function.  Would the following command work?
 
 ```
 male_turtles <- turtles[,which(turtles$sex=="male")]

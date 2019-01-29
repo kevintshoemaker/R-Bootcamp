@@ -31,20 +31,17 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ####  Data visualization and statistics ####
 ############################################
 
-
 ```
 
 NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University.    
    - Thanks to Perry Williams for allowing us to use these materials!!      
    - Thanks to John Tipton at CSU for developing much of this module (plotting in R)!    
 
-## Load script for module #1.3
+## Load script for module #1.3: Plotting
 
 1. Click [here](module1_3.R) to download the script! Save the script to a convenient folder on your laptop.
 
 2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
-
-## Plotting!
 
 Let's get started with plotting in R!
 
@@ -70,7 +67,7 @@ trees$Volume
 
 ```
 
-### Basic plots
+## Basic plots
 R's basic "plot()" function takes an "x" argument (defining coordinates on an x axis) and a "y" argument (defining coordinates on a y axis).
 
 Here is an example of a **scatterplot** in R:  
@@ -97,7 +94,6 @@ par()   # view the default graphical parameters (can be kind of overwhelming!)
 
 
 We could change the "mfrow" parameter from c(1,1) to c(2,2): this means that we can fit four plots into a single window. 
-
 
 An even easier solution is to use the convenience function `layout()`. An example using `layout()` is below. 
 
@@ -153,7 +149,7 @@ You might want to remember a couple favorites (for example, I like to use pch=19
 
 ![](points.png)
 
-### Title and Axes
+### Specify Title and Axes
 We can also add titles, axis labels, and other options to make the plots look pretty. For example, we show below how each plot is changed by the addition of one extra command, starting at the top left corner and moving top-to-bottom: 
 
 ```{r}
@@ -213,7 +209,7 @@ plot(x=trees$Girth, y=trees$Volume, pch=c(1,19),
 ```
 
 ## Plotting By Group
-In our previous plot, we alternated colors between points - wouldn't it be awesome to use color to distinguish between groups in the data? To do this, we look at the `iris` dataset This dataframe describes the sepal length, sepal width, petal length, petal width, and species for 150 different irises. First we look at the data:
+In our previous plot, we alternated colors between points - wouldn't it be awesome to use color to distinguish between groups in the data? To do this, we look at the `iris` dataset. This dataset describes the sepal length, sepal width, petal length, petal width, and species for 150 different irises representing 3 different species (*I. setosa*, *I. versicolor*, *I. virginica*)  . First we look at the data:
 
 ```{r}
 
@@ -224,18 +220,17 @@ str(iris)      # details of the data structure
 
 ```
 
-### "By Hand"
-We use the `col=` option of our `plot()` function. First, let's show how to do this the "by hand" way. In general, this is not good programming as you want to make your code general (if you get new data you don't want to re-write your code) but it is a good starting point. We'll show how to make this "automatic" later.
+We will use the `col=` option of our `plot()` function. 
 
-First I define a new object with the three colors that I want to use. You can use any colors you like (Google "R color chart", or just click [here](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf))
+First we will define a new object with the three colors that we want to use. You can use any colors you like (Google "R color chart", or just click [here](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf))
 
 ```{r}
 
-plot.colors <- c("violet", "purple", "blue")
+plot.colors <- c("violet", "purple", "blue")   # define the colors for representing species ID
 
 ```
 
-Here's the cheating bit: I just looked at this dataframe and saw that there are exactly 50 observations for each species. I use the repeat function, `rep()` and the `each=` argument, to create a new vector with each element of the vector `plot.colors` repeated 50 times in turn.
+At this point, you could "cheat" if you notice that there are exactly 50 observations for each species in the iris dataset, and that all observations are grouped together neatly by species. That is, you could just use the repeat function, `rep()` with the argument `each=50`, to create a new vector [^colorvec] with each color in our `plot.colors` vector repeated 50 times in sequence.
 
 ```{r colorvector, results=FALSE}
 
@@ -243,43 +238,84 @@ color.vector <- rep(x=plot.colors, each=50)
 color.vector
 ## color vector is now a list of our colors, each repeated 50 times
 
-```
-
-```{r}
-
 plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
      main="Plot of Iris colored by species")
 
 ```
 
-Notice the lengths of the x-vector, the y-vector, and the color vector are all the same. If this is not true, `R` will make up stuff to force them to be the same length, so make sure these vectors are the same size.
+[^colorvec]: NOTE: the length of the color vector must match the length of the x and y vectors (here, Petal.Length and Sepal.Length). If this is not true, `R` will make up stuff (recycle the shorter vectors) to force them to be the same length, so make sure these vectors are the same size.
 
-```{r eval=FALSE}
 
-length(iris$Petal.Length)
-length(iris$Sepal.Length)
-length(color.vector)
+But ... **this is not good programming practice!!**. We want to make our code general (if you get new data you don't want to re-write your code) and fool-proof and the above code is neither general (it applies only to this data set) nor fool-proof (there is no guarantee that it is correct- it's based only on an eyeballing approach!).
 
-```
 
-### Automatic Grouping
+### A better method!
 
-What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. We can take advantage of the fact that the 'Species' column is a factor (factors are integers in disguise!). 
+What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. Our strategy here is to directly match the 'Species' column with the "plot.colors" vector.
+
+Our first step might be to name each element of our plot colors vector to match the species names:
 
 ```{r}
 
-plot.colors <- c("violet", "purple", "blue")
-# subset the colors in plot.colors based on the variable iris$Species
-# iris$Species is a factor variable (integer in disguise) that has 3 levels (represented internally as '1:3')
-color.vector <- plot.colors[iris$Species]
+names(plot.colors) <- levels(iris$Species)   # the "levels()" function returns all unique labels for any "factor" variable    
+plot.colors
 
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
+```
+
+Now, each color is associated with a species. We can now use a logical operation to generate a vector of colors for our plot:
+
+```{r}
+
+# generate a vector of colors for our plot (one color for each observation)
+
+indices <- match(iris$Species,names(plot.colors))   # the "match()" function returns the indices of the second vector corresponding to each element of the first vector         
+color.vector2 <- plot.colors[indices]
+
+
+```
+
+Now we can use our new color vector in our plotting!
+
+```{r}
+
+plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector2, 
      main="Iris sepal length vs. petal length", xlab="Petal length", 
      ylab="Sepal length", las=1)
 
 ```
 
-### Add a Legend
+To illustrate how general our new method is, let's make a new version of the iris data frame that is neither in order nor has the same number of observations for each species:
+
+```{r}
+
+# make a new version of the iris data frame that is neither in order nor has the same number of observations for each species (to illustrate generality of the new method)
+
+iris2 <- iris[sample(1:nrow(iris),replace = T),]   # use the "sample()" function to create a randomized ("bootstrapped") version of the iris data frame
+
+# now repeat the above steps:
+
+indices <- match(iris2$Species,names(plot.colors))   # the "match()" function returns the indices of the first vector that match the second vector   
+color.vector2 <- plot.colors[indices]
+plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector2, 
+     main="Iris sepal length vs. petal length", xlab="Petal length", 
+     ylab="Sepal length", las=1)
+
+```
+
+Whereas, if we used our first method, the colors would be all over the map, and not representing species anymore (or any other useful information)!
+
+```{r}
+
+## The old method is NOT general:
+
+color.vector <- rep(x=plot.colors, each=50)
+plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector, 
+     main="Plot of Iris colored by species (not!)")
+
+```
+
+
+## Add a Legend
 
 We use the `legend()` function to add a legend to an existing plot. You can customize the legend if you wish. Here I pass a character vector to the `legend=` argument so that I can include the first letter of the genus in the second plot and use the `bty='n'` argument to remove the box around the legend. We can also Italicize the labels in the legend using `text.font=3`, as in the third plot.
 
@@ -320,7 +356,69 @@ legend("topleft", pch=19, col=plot.colors,
 
 ```
 
-### Bar Plots
+
+## Diplaying gradients (continuous data) using color and size
+
+To illustrate some other cool ways to convey information graphically in R, let's turn to the "mtcars" dataset (which comes with base R):
+
+```{r eval=FALSE}
+
+## Diplaying gradients (continuous data) using color and size
+
+?mtcars
+
+head(mtcars)
+
+```
+
+First, let's plot fuel economy (mpg) as a function of vehicle weight:
+
+```{r}
+
+## Plot fuel economy by weight
+
+plot(mpg~wt,  data=mtcars,pch=20,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)")      # note the tilde, which can be read "as a function of" -- i.e., "mpg as a function of wt"   
+ 
+```
+
+
+Now what if we want to look at another factor that might influence fuel economy: gross horsepower. We might imagine that cars with greater horsepower within a weight class will tend to have lower fuel economy. One way to do this is to use the size of the dots to indicate horsepower...
+
+
+```{r}
+
+## Plot fuel economy by weight and horsepower
+
+hp_rescale <- with(mtcars,(hp-min(hp))/diff(range(hp)))    # scale from 0 to 1
+
+plot(mpg~wt,  data=mtcars,pch=1,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)",cex=(hp_rescale+0.6)*1.2)   # plot with different sized points
+
+legend("topright",pch=c(1,1),pt.cex=c(0.6,0.6*1.2),legend=paste(range(mtcars$hp),"horsepower"),bty="n")
+
+
+ 
+```
+
+Another way to display this would be to use colors!
+
+```{r}
+
+## Plot fuel economy by weight and horsepower again- this time by color
+
+colramp <- terrain.colors(125)
+
+colindex <- round(hp_rescale*99+1)
+
+plot(mpg~wt,  data=mtcars,pch=20,cex=2,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)",col=colramp[colindex])   # plot with different sized points
+
+legend("topright",pch=c(20,20),pt.cex=c(2,2),col=c(colramp[1],colramp[100]),legend=paste(range(mtcars$hp),"horsepower"),bty="n")
+
+
+ 
+```
+
+
+## Bar Plots
 
 ```{r}
 
@@ -343,7 +441,7 @@ barplot(bar.heights, names.arg=c("I. setosa", "I. versicolor", "I. virginica"),
 
 ```
 
-### Error bars
+## Error bars
 
 Adding error bars to our barplot. These can be added to scatter plots in a similar way. We'll plot error bars representing 2 standard deviations from the expected value. The object that you called your barplot (`b`) is interpreted by R as the x values in the middle of each bar `b` (which are very hard to guess, as you'll see!). 
 
@@ -371,7 +469,7 @@ arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)
 
 ```
 
-### Histograms
+## Histograms
 
 We can also use histograms to explore our data. 
 ```{r}
@@ -392,7 +490,7 @@ lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate
 ```
 
 
-### Pairs Plots
+## Pairs Plots
 The `pairs()` function allows for quick investigation into relationships between variables. Be careful if your data set is large (e.g., lots of columns), as this can be a slow function.   
 
 ```{r}
@@ -401,11 +499,11 @@ pairs(iris)
 
 ```
 
-### Challenge Yourself by recreating the following plots:
+## Challenge Yourself by recreating the following plots:
 
 Feel free to work in groups!    
 
-#### Using colors
+### Using colors
 
 Using the `ToothGrowth` dataset built into `R`, plot the tooth length (the `len` variable) as a function of the vitamin C dosage (the `dose` variable). Use a different color for each method of administering the vitamin C (the `supp` variable). Try and re-create the plot below:
 
@@ -432,7 +530,7 @@ legend("topleft", pch=19, col=plot.colors, legend=unique(ToothGrowth$supp))
 ```
 
 
-#### Bar Plots Challenge
+### Bar Plots Challenge
 
 The following data represent survivorship of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:
 
@@ -447,7 +545,7 @@ asympUCL <- c(0.24, 0.33, 0.18, 0.09)
 ![](plantsurv1.png)
 
 
-#### Scatterplot Challenge Error Bars
+### Scatterplot Challenge Error Bars
 The randomly generated data below are measurements of the number of the number of angels who get their wings as a function of the number of bells that have been rung. There is some uncertainty in measuring wing acquisition (represented as the offset from the sampled mean). How would you add error bars to a scatter plot? See if you can re-create the plot below: 
 
 ```{r}
