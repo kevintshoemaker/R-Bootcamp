@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
  * **When?** Monday, February 4, 2019:  8:30am – 5:30pm 
- * **Where?** TBD  
+ * **Where?** Tenaya Lodge, Fish Lake CA (TWS-WS conference)  
  * **What to prepare?** Please bring your laptop computer! If possible, install R and RStudio prior to coming to the first bootcamp (see [links](Links.html)). 
  
 ## Facilitators
@@ -70,7 +70,7 @@ Email: [phurtado@unr.edu](phurtado@unr.edu)
 
 The statistical programming software 'R' is one of the fundamental tools for modern data exploration and analysis, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of quality figures) will make upcoming classes, research, and graduate school less intimidating.
 
-This 'bootcamp' consists of a series of short modules, each of which covers a particular skill (e.g., reading in data, writing functions). Each module will entail a short lecture, a demo (worked examples), and then hands-on activities with helpers present if you get lost or have any questions. The main goal of this workshop will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshop is primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the second workshop, which will delve into more advanced topics. The first modules will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second bset of modules will focus on some more advanced programming operations (loops, functions, debugging etc.), more advanced graphical visualizations and spatial analyses, and working with large data sets. We may not get through all modules in the allotted time, but participants are encouraged to work through the remaining material on their own. Note - All are welcome to attend these workshops, but students who have not completed an intro statistics class may struggle with some of the material—especially the material covered in the final modules.  
+This 'bootcamp' consists of a series of short modules, each of which covers a particular skill (e.g., reading in data, writing functions). Each module will entail a short lecture, a demo (worked examples), followed by hands-on activities. The main goal of this workshop will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshop is primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the latter portion, which will delve into more advanced topics. The first modules will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, R packages (loading, getting help), and basic statistical operations. The second set of modules will focus on some more advanced programming operations (loops, functions, debugging etc.), more advanced graphical visualizations and spatial analyses, and working with large data sets. We may not get through all modules in the allotted time, but participants are encouraged to work through the remaining material on their own. Note - All are welcome to attend these workshops, but students who have not completed an intro statistics class may struggle with some of the material—especially the material covered in the final modules.  
 
 All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load up in RStudio. That way you won't need to constantly copy and paste from the web!  
 
@@ -173,7 +173,7 @@ rmarkdown::render("module1_2.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("module1_3.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("module1_4.Rmd",rmarkdown::pdf_document())  # latex_engine="xelatex"
 
-
+rmarkdown::render("module2_1.Rmd",rmarkdown::pdf_document())
 
 ```
 

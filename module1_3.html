@@ -549,7 +549,7 @@ head(iris)     # display first few rows of data</code></pre>
 <p>We will use the <code>col=</code> option of our <code>plot()</code> function.</p>
 <p>First we will define a new object with the three colors that we want to use. You can use any colors you like (Google “R color chart”, or just click <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">here</a>)</p>
 <pre class="r"><code>plot.colors &lt;- c(&quot;violet&quot;, &quot;purple&quot;, &quot;blue&quot;)   # define the colors for representing species ID</code></pre>
-<p>At this point, you could “cheat” if you notice that there are exactly 50 observations for each species in the iris dataset, and that all observations are grouped together neatly by species. That is, you could just use the repeat function, <code>rep()</code> with the argument <code>each=50</code>, to create a new vector with each color in our <code>plot.colors</code> vector repeated 50 times in sequence.</p>
+<p>At this point, you could “cheat” if you notice that there are exactly 50 observations for each species in the iris dataset, and that all observations are grouped together neatly by species. That is, you could just use the repeat function, <code>rep()</code> with the argument <code>each=50</code>, to create a new vector <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> with each color in our <code>plot.colors</code> vector repeated 50 times in sequence.</p>
 <pre class="r"><code>color.vector &lt;- rep(x=plot.colors, each=50)
 color.vector
 ## color vector is now a list of our colors, each repeated 50 times
@@ -557,8 +557,7 @@ color.vector
 plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
      main=&quot;Plot of Iris colored by species&quot;)</code></pre>
 <p><img src="module1_3_files/figure-html/colorvector-1.png" width="672" /></p>
-<p>NOTE: the length of the color vector must match the length of the x and y vectors (here, Petal.Length and Sepal.Length). If this is not true, <code>R</code> will make up stuff (recycle the shorter vectors) to force them to be the same length, so make sure these vectors are the same size.</p>
-<p>But … <strong>this is not good programming practice!!</strong>. We want to make our code general (if you get new data you don’t want to re-write your code) and fool-proof and the above code is neither general (it applies only to this data set) or fool-proof (there is no guarantee that it is correct- it’s based only on an eyeballing approach!).</p>
+<p>But … <strong>this is not good programming practice!!</strong>. We want to make our code general (if you get new data you don’t want to re-write your code) and fool-proof and the above code is neither general (it applies only to this data set) nor fool-proof (there is no guarantee that it is correct- it’s based only on an eyeballing approach!).</p>
 <div id="a-better-method" class="section level3">
 <h3>A better method!</h3>
 <p>What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. Our strategy here is to directly match the ‘Species’ column with the “plot.colors” vector.</p>
@@ -570,7 +569,7 @@ plot.colors</code></pre>
 <p>Now, each color is associated with a species. We can now use a logical operation to generate a vector of colors for our plot:</p>
 <pre class="r"><code># generate a vector of colors for our plot (one color for each observation)
 
-indices &lt;- match(iris$Species,names(plot.colors))   # the &quot;match()&quot; function returns the indices of the first vector that match the second vector   
+indices &lt;- match(iris$Species,names(plot.colors))   # the &quot;match()&quot; function returns the indices of the second vector corresponding to each element of the first vector         
 color.vector2 &lt;- plot.colors[indices]</code></pre>
 <p>Now we can use our new color vector in our plotting!</p>
 <pre class="r"><code>plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector2, 
@@ -598,8 +597,9 @@ plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector,
      main=&quot;Plot of Iris colored by species (not!)&quot;)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
-<div id="add-a-legend" class="section level3">
-<h3>Add a Legend</h3>
+</div>
+<div id="add-a-legend" class="section level2">
+<h2>Add a Legend</h2>
 <p>We use the <code>legend()</code> function to add a legend to an existing plot. You can customize the legend if you wish. Here I pass a character vector to the <code>legend=</code> argument so that I can include the first letter of the genus in the second plot and use the <code>bty='n'</code> argument to remove the box around the legend. We can also Italicize the labels in the legend using <code>text.font=3</code>, as in the third plot.</p>
 <pre class="r"><code># ?legend
 
@@ -635,23 +635,57 @@ legend(&quot;topleft&quot;, pch=19, col=plot.colors,
        bty=&quot;n&quot;, text.font=3)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
-<div id="bar-plots" class="section level3">
-<h3>Bar Plots</h3>
+<div id="diplaying-gradients-continuous-data-using-color-and-size" class="section level2">
+<h2>Diplaying gradients (continuous data) using color and size</h2>
+<p>To illustrate some other cool ways to convey information graphically in R, let’s turn to the “mtcars” dataset (which comes with base R):</p>
+<pre class="r"><code>## Diplaying gradients (continuous data) using color and size
+
+?mtcars
+
+head(mtcars)</code></pre>
+<p>First, let’s plot fuel economy (mpg) as a function of vehicle weight:</p>
+<pre class="r"><code>## Plot fuel economy by weight
+
+plot(mpg~wt,  data=mtcars,pch=20,xlab=&quot;Vehicle weight (1000 lbs)&quot;,ylab=&quot;Fuel economy (mpg)&quot;)      # note the tilde, which can be read &quot;as a function of&quot; -- i.e., &quot;mpg as a function of wt&quot;   </code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>Now what if we want to look at another factor that might influence fuel economy: gross horsepower. We might imagine that cars with greater horsepower within a weight class will tend to have lower fuel economy. One way to do this is to use the size of the dots to indicate horsepower…</p>
+<pre class="r"><code>## Plot fuel economy by weight and horsepower
+
+hp_rescale &lt;- with(mtcars,(hp-min(hp))/diff(range(hp)))    # scale from 0 to 1
+
+plot(mpg~wt,  data=mtcars,pch=1,xlab=&quot;Vehicle weight (1000 lbs)&quot;,ylab=&quot;Fuel economy (mpg)&quot;,cex=(hp_rescale+0.6)*1.2)   # plot with different sized points
+
+legend(&quot;topright&quot;,pch=c(1,1),pt.cex=c(0.6,0.6*1.2),legend=paste(range(mtcars$hp),&quot;horsepower&quot;),bty=&quot;n&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Another way to display this would be to use colors!</p>
+<pre class="r"><code>## Plot fuel economy by weight and horsepower again- this time by color
+
+colramp &lt;- terrain.colors(125)
+
+colindex &lt;- round(hp_rescale*99+1)
+
+plot(mpg~wt,  data=mtcars,pch=20,cex=2,xlab=&quot;Vehicle weight (1000 lbs)&quot;,ylab=&quot;Fuel economy (mpg)&quot;,col=colramp[colindex])   # plot with different sized points
+
+legend(&quot;topright&quot;,pch=c(20,20),pt.cex=c(2,2),col=c(colramp[1],colramp[100]),legend=paste(range(mtcars$hp),&quot;horsepower&quot;),bty=&quot;n&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="bar-plots" class="section level2">
+<h2>Bar Plots</h2>
 <pre class="r"><code>## calculate the mean Sepal Length of for each species
 bar.heights &lt;- tapply(X=iris$Sepal.Length, INDEX=iris$Species, FUN=mean)   #use &quot;tapply()&quot; function, which summarizes a numeric variable by levels of a categorical variable)
 
 # The basic &#39;barplot()&#39; function
 barplot(bar.heights)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>Using the <code>barplot()</code> options (arguments), we can make this look fancier</p>
 <pre class="r"><code># Let&#39;s add some flair
 barplot(bar.heights, names.arg=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), 
         las=1, col=adjustcolor(plot.colors, alpha.f=0.5),
         main=&quot;Sepal length for 3 Irises&quot;, ylab=&quot;Sepal length (cm)&quot;)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
-<div id="error-bars" class="section level3">
-<h3>Error bars</h3>
+<div id="error-bars" class="section level2">
+<h2>Error bars</h2>
 <p>Adding error bars to our barplot. These can be added to scatter plots in a similar way. We’ll plot error bars representing 2 standard deviations from the expected value. The object that you called your barplot (<code>b</code>) is interpreted by R as the x values in the middle of each bar <code>b</code> (which are very hard to guess, as you’ll see!).</p>
 <p>We’ll use the <code>arrows()</code> function to add arrows to an existing plot. With some modifications, our arrows will have an arrowhead at each end (<code>code=3</code>), and the ‘arrowhead’ will actually be perpendicular to the arrow shaft (<code>angle=90</code>)</p>
 <pre class="r"><code>CI &lt;- 2 * by(iris$Sepal.Length, iris$Species, sd)
@@ -668,11 +702,11 @@ b &lt;- barplot(bar.heights,
 
 # Specify where each arrow starts (x0= and y0=) and ends (x1= and y1=)
 arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <pre class="r"><code># ?arrows</code></pre>
 </div>
-<div id="histograms" class="section level3">
-<h3>Histograms</h3>
+<div id="histograms" class="section level2">
+<h2>Histograms</h2>
 <p>We can also use histograms to explore our data.</p>
 <pre class="r"><code>layout(matrix(1:2, 1, 2))
 
@@ -686,19 +720,19 @@ hist(iris$Sepal.Length, freq=FALSE, main=&quot;Histogram of Sepal Length&quot;,
 ## Add a density estimator
 
 lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
-<div id="pairs-plots" class="section level3">
-<h3>Pairs Plots</h3>
+<div id="pairs-plots" class="section level2">
+<h2>Pairs Plots</h2>
 <p>The <code>pairs()</code> function allows for quick investigation into relationships between variables. Be careful if your data set is large (e.g., lots of columns), as this can be a slow function.</p>
 <pre class="r"><code>pairs(iris)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
-<div id="challenge-yourself-by-recreating-the-following-plots" class="section level3">
-<h3>Challenge Yourself by recreating the following plots:</h3>
+<div id="challenge-yourself-by-recreating-the-following-plots" class="section level2">
+<h2>Challenge Yourself by recreating the following plots:</h2>
 <p>Feel free to work in groups!</p>
-<div id="using-colors" class="section level4">
-<h4>Using colors</h4>
+<div id="using-colors" class="section level3">
+<h3>Using colors</h3>
 <p>Using the <code>ToothGrowth</code> dataset built into <code>R</code>, plot the tooth length (the <code>len</code> variable) as a function of the vitamin C dosage (the <code>dose</code> variable). Use a different color for each method of administering the vitamin C (the <code>supp</code> variable). Try and re-create the plot below:</p>
 <pre class="r"><code>?ToothGrowth
 head(ToothGrowth)</code></pre>
@@ -709,10 +743,10 @@ head(ToothGrowth)</code></pre>
 ## 4  5.8   VC  0.5
 ## 5  6.4   VC  0.5
 ## 6 10.0   VC  0.5</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 </div>
-<div id="bar-plots-challenge" class="section level4">
-<h4>Bar Plots Challenge</h4>
+<div id="bar-plots-challenge" class="section level3">
+<h3>Bar Plots Challenge</h3>
 <p>The following data represent survivorship of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:</p>
 <pre class="r"><code>prop &lt;- c(0.18, 0.25, 0.13, 0.05)
 asympLCL &lt;- c(0.14, 0.20, 0.11, 0.035)
@@ -722,8 +756,8 @@ asympUCL &lt;- c(0.24, 0.33, 0.18, 0.09)</code></pre>
 
 </div>
 </div>
-<div id="scatterplot-challenge-error-bars" class="section level4">
-<h4>Scatterplot Challenge Error Bars</h4>
+<div id="scatterplot-challenge-error-bars" class="section level3">
+<h3>Scatterplot Challenge Error Bars</h3>
 <p>The randomly generated data below are measurements of the number of the number of angels who get their wings as a function of the number of bells that have been rung. There is some uncertainty in measuring wing acquisition (represented as the offset from the sampled mean). How would you add error bars to a scatter plot? See if you can re-create the plot below:</p>
 <pre class="r"><code>set.seed(13)
 n &lt;- 20 # Number of experimental trials
@@ -738,7 +772,6 @@ upr &lt;- wings + offset</code></pre>
 <div class="figure">
 <img src="ringswings1.png" />
 
-</div>
 </div>
 </div>
 </div>
@@ -838,9 +871,9 @@ mean(newdf$Export)</code></pre>
 #####
 
 hist(sculpin.df$NUMEGGS)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
 </div>
 <div id="linear-regression" class="section level3">
 <h3>Linear Regression</h3>
@@ -890,7 +923,7 @@ m1                                      # view estimates of intercept and slope 
 <pre><code>## [1] 86.00155</code></pre>
 <pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
 abline(m1)                                           # plot line of best fit</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <pre class="r"><code>########
 # Use the &quot;predict()&quot; function!
 
@@ -943,7 +976,7 @@ abline(m2,col=&quot;red&quot;)                                       # plot inte
 FEMWT.pred &lt;- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
 NUMEGGS.pred &lt;- predict(m3,newdata=FEMWT.pred)             # make prediction using &quot;predict()&quot; function
 points(FEMWT.pred$FEMWT,NUMEGGS.pred,col=&quot;green&quot;,typ=&quot;l&quot;)  # plot sqrt model (note the use of the &quot;points()&quot; function to draw a line!)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <pre class="r"><code>########
 # Perform model selection!
 
@@ -970,7 +1003,7 @@ NUMEGGS.confint &lt;- predict(m3,newdata=FEMWT.pred,interval=&quot;prediction&qu
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;fit&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lwd=2)  # plot fitted sqrt model
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;lwr&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lty=2)  # plot fitted sqrt model
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;upr&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lty=2)  # plot fitted sqrt model</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-38-2.png" width="672" /></p>
 </div>
 <div id="statistics-challenge-exercises" class="section level3">
 <h3>Statistics challenge exercises</h3>
@@ -982,6 +1015,12 @@ points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;upr&quot;],col=&quot;green&quot;,
 <p>How do the predictions compare?</p>
 <p><a href="module2_1.html">–go to next module–</a></p>
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>NOTE: the length of the color vector must match the length of the x and y vectors (here, Petal.Length and Sepal.Length). If this is not true, <code>R</code> will make up stuff (recycle the shorter vectors) to force them to be the same length, so make sure these vectors are the same size.<a href="#fnref1">↩</a></p></li>
+</ol>
 </div>
 
 

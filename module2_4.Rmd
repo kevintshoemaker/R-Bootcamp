@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```
 
 
-**Guest presenter**: Stephanie Freund (who also pulled this module together!)
+Thanks to Stephanie Freund, who pulled this module together!
 
 Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. On Day 1, you learned how to create several types of plots in base R. Base R is great for whipping up some quick plots for initial data exploration, and you can make them quite beautiful looking as well. 
 

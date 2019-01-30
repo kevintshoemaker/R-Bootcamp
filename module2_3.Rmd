@@ -1,6 +1,6 @@
 ---
 title: "Module 2.4"
-author: "The Tidyverse and Data Wrangling in R (C. Albano)"
+author: "The Tidyverse and Data Wrangling in R"
 date: "September 2018"
 output: 
   html_document: 
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE, warning = FALSE, message = FALS
 
 ```
 
-**Guest presenter**: Christine Albano (who also pulled this module together!)
+Thanks to Christine Albano, who pulled this module together!
 
 # Load script for module #2.3
 1. Click [here](module2_3.R) to download the script! Save the script to a convenient folder on your laptop.

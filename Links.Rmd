@@ -39,7 +39,8 @@ Please let me know if there are other links you think should be included on this
 ## R Examples (some people learn best by just playing with existing code!)            
  [R by example](http://www.mayin.org/ajayshah/KB/R/)      
 
-## R reference cards (print 'em out and hang by your office desk!)      
+## R reference cards (print 'em out and hang by your office desk!)       
+ [Base R Cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)              
  [Short Reference Card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
  [More comprehensive reference card](https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf)    
  [Data management reference card](https://sites.ualberta.ca/~ahamann/teaching/renr690/R_Cheat_Data.pdf)      

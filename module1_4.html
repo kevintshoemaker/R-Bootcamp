@@ -496,7 +496,6 @@ logit.x</code></pre>
 ##  [96]  2.94443898  3.17805383  3.47609869  3.89182030  4.59511985
 ## [101]         Inf</code></pre>
 <pre class="r"><code>## Plot x on x-axis, and logit(x) on y axis.
-par(mfrow = c(1, 1))
 plot(x, logit.x, type = &#39;l&#39;)    # View the output graphically.</code></pre>
 <p><img src="module1_4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
@@ -520,27 +519,26 @@ plot(x, expit.logit.x, type = &#39;l&#39;)</code></pre>
 plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type=&quot;l&quot;)</code></pre>
 <p><img src="module1_4_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 </div>
-<div id="kaplan-meier-survival-function" class="section level3">
-<h3>Kaplan Meier survival function</h3>
-<p>Finally, let’s develop a function to compute the maximum-likelihood estimator for a Kaplan-Meier survival analysis:</p>
-<pre class="r"><code>## Kaplan Meier known-fate maximum likelihood estimator.
-## n is the number of animals fitted with ratio transmitters being monitored.
-## d is the number of n that died.
-survival.mle &lt;- function(n, d){
+<div id="wildlife-survival-function" class="section level3">
+<h3>Wildlife survival function</h3>
+<p>Finally, let’s develop a function to compute the survival rate from data collected on wild individuals tracked over time:</p>
+<pre class="r"><code>## n is the number of animals being monitored.
+## d is the number of animals that died.
+survival &lt;- function(n, d){
     (n-d)/n
 }
 
 ## One year of data.
-survival.mle(n = 10, d = 5)</code></pre>
+survival(n = 10, d = 5)</code></pre>
 <pre><code>## [1] 0.5</code></pre>
-<pre class="r"><code>## Many years of data.
-d &lt;- sample(0:50, 10, replace = TRUE)
+<pre class="r"><code>## Simulate many years of data.
+d &lt;- sample(0:50, 10, replace = TRUE)   # note use of &quot;sample()&quot; function
 n &lt;- c(100, 100-d)
-(surv &lt;- survival.mle(n = n[1:10], d = d))</code></pre>
+(surv &lt;- survival(n = n[1:10], d = d))</code></pre>
 <pre><code>##  [1] 0.7000000 0.4428571 0.4918033 0.7391304 1.0000000 0.8600000 0.9302326
 ##  [8] 0.6808511 0.5000000 0.7076923</code></pre>
 <pre class="r"><code>## Plot year-specific survival rate.
-plot(1:10, surv, type = &#39;l&#39;)</code></pre>
+plot(1:10, surv, type = &#39;l&#39;,xlab=&quot;Year&quot;,ylab=&quot;Survival&quot;)</code></pre>
 <p><img src="module1_4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
@@ -765,7 +763,7 @@ apply(W, 1, MyFunc)</code></pre>
 <p>In the example below, we simulate data (n=100) from a normal distribution with mean of 1, and we use a Student’s t-test to assess whether or not we can reject the null hypothesis that the data were derived from a distribution with mean of zero. Here, the <em>test statistic</em> is the t-statistic (representing the standardized difference of the sample mean from zero), and the <em>critical value</em> is determined as a pre-specified quantile of the “t” distribution (here, we use a two-tailed test holding alpha=0.05).</p>
 <p>The act of rejecting or failing to reject a null hypothesis is an instance of conditional logic (if…then…else). Let’s see how we might implement this test in R:</p>
 <pre class="r"><code>####################
-####  Exercises ####
+####  Practice exercises ####
 ####################
 
 
@@ -882,7 +880,8 @@ Y &lt;- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to 
 
 # Z   # make sure the elevation matrix looks right
 
-par(mfrow = c(2,1), bg = &quot;white&quot;)
+par(bg = &quot;white&quot;)
+layout(matrix(c(1,1),nrow=1))
 persp(X,  Y, Z, theta = 135, phi = 30, col = &quot;green3&quot;,    # &quot;persp()&quot; produces a 3D &quot;perspective plot&quot;
       scale = FALSE, ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)</code></pre>
@@ -895,7 +894,6 @@ persp(X, Y, Z, theta = 90, phi = 30, col = &quot;green3&quot;,
 <p><img src="module1_4_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Now we can use a FOR loop to view this landscape from many angles. Try it!</p>
 <pre class="r"><code>## Use a for-loop to help view many angles.
-par(mfrow = c(1,1))
 for(i in 1:18){
     persp(X, Y, Z, theta = i*20, phi = 30, col = &quot;green3&quot;,
           scale = FALSE,  ltheta = -120, shade = 0.75,
@@ -903,110 +901,6 @@ for(i in 1:18){
     print(i*20)
     readline()                               # Pauses the for-loop until [enter] is pushed
 }</code></pre>
-</div>
-<div id="test-the-central-limit-theorem" class="section level4">
-<h4>Test the Central Limit Theorem!</h4>
-<p>In this example, we test the famous <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">Central Limit Theorem (CLT)</a> using repeated simulations.</p>
-<p>Specifically, as we collect more samples from an arbitrary distribution, the sample mean (e.g., the mean of all the sample means) should converge on the true mean (here, equal to 5).</p>
-<p>To test this, let’s first write some <em>pseudocode</em> for how to perform this operation:</p>
-<ol style="list-style-type: decimal">
-<li>Specify the number of hypothetical repeat samples to draw<br />
-</li>
-<li>Specify the sample size for each hypothetical repeat sample<br />
-</li>
-<li>Specify the mean and variance of the “true” population from which we will sample</li>
-<li>For each hypothetical sampling experiment:
-<ol style="list-style-type: lower-alpha">
-<li>Draw a random sample from the known distribution<br />
-</li>
-<li>Compute and store the sample mean<br />
-</li>
-</ol></li>
-<li>Visualize the distribution of sample means. Evaluate whether the sample means tend toward the true mean…</li>
-</ol>
-<p>Here we translate the pseudocode into real R code!</p>
-<pre class="r"><code>##################
-## EXAMPLE 2: Use a FOR loop to create a simulation to test the central limit theorem (CLT).
-
-n.iter &lt;- 1000                                # large number of hypothetical &quot;repeat samples.&quot;
-sample.size &lt;- 30                             # Sample size of 30 from each repeat sample.
-mu &lt;- 5                                       # True population mean of 5.
-sd &lt;- 2                                       # True standard deviation of 2.
-means &lt;- numeric(n.iter)                      # Initialize empty vector to store the sample means.
-for(i in 1:n.iter){                           # For each of the repeat samples...
-    sample &lt;- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
-    means[i] &lt;- mean(sample)                # and store the sample mean.
-}
-hist(means)                                # Histogram of all the means.
-abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<pre class="r"><code>plot(density(means), main = &quot;&quot;)
-abline(v = mean(means), col = 2, lwd = 4)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
-<pre class="r"><code>mean(means)                                # Close to true mean of 5</code></pre>
-<pre><code>## [1] 5.009089</code></pre>
-<pre class="r"><code>sd(means)*sqrt(30)                         # Close to true sd of 2</code></pre>
-<pre><code>## [1] 1.983313</code></pre>
-</div>
-</div>
-<div id="practice-putting-it-all-together" class="section level3">
-<h3>Practice putting it all together!</h3>
-<p>To make sure we can apply the fundamental components of programming (iterative loops and functions), let’s work out an example that uses both!</p>
-<div id="logistic-population-growth-example" class="section level4">
-<h4>Logistic population growth example</h4>
-<p>Here we model the growth/dynamics of a wild population using a classical <em>logistic</em> (S-shaped) population growth model:</p>
-<p>To get some more practice with functions, let’s first write a function to compute the expected rate of population growth on the basis of <span class="math inline">\(r\)</span> (intrinsic rate of population growth), <span class="math inline">\(K\)</span> (carrying capacity), and <span class="math inline">\(P_0\)</span> (current population size). The logistic growth equation can be written mathematically as:</p>
-<p><span class="math inline">\(P_{t+1}=P_t+r\cdot P0 \cdot (1-\frac{P0}{K})\)</span></p>
-<p>Let’s implement this equation as a function in R:</p>
-<pre class="r"><code>##############
-##  Logistic population growth example (uses function and for loop)
-
-
-## Logistic growth function: calculate population size using logistic growth model.
-  # K = carrying capacity.
-  # r = intrinsic growth rate
-  # P0 = initial population size
-
-logistic.growth &lt;- function(r, P0, K){            
-    dpdt &lt;- r*P0*(1-P0/K)                   # implement logistic growth equation
-    P0+dpdt                                   
-}                                           
-logistic.growth(r = .5, P0 = 10, K = 100)   # try out the new function!</code></pre>
-<pre><code>## [1] 14.5</code></pre>
-<p>Now, we can use a FOR loop simulate population growth over many years:</p>
-<pre class="r"><code>## Logistic growth function within a for-loop
-
-years &lt;- 20                                   # How many years we want to calc population size.
-pop.size &lt;- numeric(years)                    # Empty vector to store population size.
-pop.size[1] &lt;- 5                              # Starting population size (P0).
-for(i in 1:(years-1)){                     # Function within a FOR loop!
-    pop.size[i+1] &lt;- logistic.growth(r = 0.5, P0 = pop.size[i], K = 100)
-}
-plot(1:years, pop.size, type = &#39;l&#39;,
-     xlab = &quot;Years&quot;, ylab = &quot;Population Size&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>And finally, we could wrap this all up in a more complex function that simulates across years and produces a plot! That way, we could run an entire population simulation with a single line of code. Let’s try it!</p>
-<pre class="r"><code>## A more complex function that ouputs a plot.
-plot.logistic.growth &lt;- function(r, P, K, years){
-    pop.size[1] &lt;- P
-    for(i in 1:(years-1)){
-        pop.size[i+1] &lt;- P+r*P*(1-P/K)
-        P &lt;- pop.size[i+1]
-    }
-    plot(1:years, pop.size, type = &#39;l&#39;, xlab = &quot;Years&quot;,
-         ylab = &quot;Population Size&quot;,
-         main = paste(&quot;r = &quot;, r, &quot;K = &quot;, K))
-}
-
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
-<pre class="r"><code>par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))                  # Multi-figure (mf) plot with 2 rows and 2 columns.
-plot.logistic.growth(r = 0.1, P = 10, K = 100, years = 20)   # Change the values of r and quickly print plots.
-plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
-<pre class="r"><code>par(mfrow = c(1, 1))                               # Return to a 1X1 plot.</code></pre>
 </div>
 </div>
 </div>
@@ -1046,6 +940,113 @@ persp(X, Y, Z, theta = 30, phi = 30, col = &quot;green3&quot;,  lphi = ?,
 print(?)
 readline()</code></pre>
 <p><a href="module2_1.html">–go to next module–</a></p>
+</div>
+<div id="more-practice-with-programming-in-r" class="section level2">
+<h2>More practice with programming in R</h2>
+<div id="test-the-central-limit-theorem" class="section level4">
+<h4>Test the Central Limit Theorem!</h4>
+<p>In this example, we test the famous <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">Central Limit Theorem (CLT)</a> using repeated simulations.</p>
+<p>Specifically, as we collect more samples from an arbitrary distribution, the sample mean (e.g., the mean of all the sample means) should converge on the true mean (here, equal to 5).</p>
+<p>To test this, let’s first write some <em>pseudocode</em> for how to perform this operation:</p>
+<ol style="list-style-type: decimal">
+<li>Specify the number of hypothetical repeat samples to draw<br />
+</li>
+<li>Specify the sample size for each hypothetical repeat sample<br />
+</li>
+<li>Specify the mean and variance of the “true” population from which we will sample</li>
+<li>For each hypothetical sampling experiment:
+<ol style="list-style-type: lower-alpha">
+<li>Draw a random sample from the known distribution<br />
+</li>
+<li>Compute and store the sample mean<br />
+</li>
+</ol></li>
+<li>Visualize the distribution of sample means. Evaluate whether the sample means tend toward the true mean…</li>
+</ol>
+<p>Here we translate the pseudocode into real R code!</p>
+<pre class="r"><code>##################
+## EXAMPLE 2: Use a FOR loop to create a simulation to test the central limit theorem (CLT).
+
+n.iter &lt;- 1000                                # large number of hypothetical &quot;repeat samples.&quot;
+sample.size &lt;- 30                             # Sample size of 30 from each repeat sample.
+mu &lt;- 5                                       # True population mean of 5.
+sd &lt;- 2                                       # True standard deviation of 2.
+means &lt;- numeric(n.iter)                      # Initialize empty vector to store the sample means.
+for(i in 1:n.iter){                           # For each of the repeat samples...
+    sample &lt;- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
+    means[i] &lt;- mean(sample)                # and store the sample mean.
+}
+hist(means)                                # Histogram of all the means.
+abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="r"><code>plot(density(means), main = &quot;&quot;)
+abline(v = mean(means), col = 2, lwd = 4)</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<pre class="r"><code>mean(means)                                # Close to true mean of 5</code></pre>
+<pre><code>## [1] 5.009089</code></pre>
+<pre class="r"><code>sd(means)*sqrt(30)                         # Close to true sd of 2</code></pre>
+<pre><code>## [1] 1.983313</code></pre>
+</div>
+<div id="practice-putting-it-all-together" class="section level3">
+<h3>Practice putting it all together!</h3>
+<p>To make sure we can apply the fundamental components of programming (iterative loops and functions), let’s work out an example that uses both!</p>
+<div id="logistic-population-growth-example" class="section level4">
+<h4>Logistic population growth example</h4>
+<p>Here we model the growth/dynamics of a wild population using a classical <em>logistic</em> (S-shaped) population growth model:</p>
+<p>To get some more practice with functions, let’s first write a function to compute the expected rate of population growth on the basis of <span class="math inline">\(r\)</span> (intrinsic rate of population growth), <span class="math inline">\(K\)</span> (carrying capacity), and <span class="math inline">\(P_0\)</span> (current population size). The logistic growth equation can be written mathematically as:</p>
+<p><span class="math inline">\(P_{t+1}=P_t+r\cdot P0 \cdot (1-\frac{P0}{K})\)</span></p>
+<p>Let’s implement this equation as a function in R:</p>
+<pre class="r"><code>##############
+##  Logistic population growth example (uses function and for loop)
+
+
+## Logistic growth function: calculate population size using logistic growth model.
+  # K = carrying capacity.
+  # r = intrinsic growth rate
+  # P0 = initial population size
+
+logistic.growth &lt;- function(r, P0, K){            
+    dpdt &lt;- r*P0*(1-P0/K)                   # implement logistic growth equation
+    P0+dpdt                                   
+}                                           
+logistic.growth(r = .5, P0 = 10, K = 100)   # try out the new function!</code></pre>
+<pre><code>## [1] 14.5</code></pre>
+<p>Now, we can use a FOR loop simulate population growth over many years:</p>
+<pre class="r"><code>## Logistic growth function within a for-loop
+
+years &lt;- 20                                   # How many years we want to calc population size.
+pop.size &lt;- numeric(years)                    # Empty vector to store population size.
+pop.size[1] &lt;- 5                              # Starting population size (P0).
+for(i in 1:(years-1)){                     # Function within a FOR loop!
+    pop.size[i+1] &lt;- logistic.growth(r = 0.5, P0 = pop.size[i], K = 100)
+}
+plot(1:years, pop.size, type = &#39;l&#39;,
+     xlab = &quot;Years&quot;, ylab = &quot;Population Size&quot;)</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>And finally, we could wrap this all up in a more complex function that simulates across years and produces a plot! That way, we could run an entire population simulation with a single line of code. Let’s try it!</p>
+<pre class="r"><code>## A more complex function that ouputs a plot.
+plot.logistic.growth &lt;- function(r, P, K, years){
+    pop.size[1] &lt;- P
+    for(i in 1:(years-1)){
+        pop.size[i+1] &lt;- P+r*P*(1-P/K)
+        P &lt;- pop.size[i+1]
+    }
+    plot(1:years, pop.size, type = &#39;l&#39;, xlab = &quot;Years&quot;,
+         ylab = &quot;Population Size&quot;,
+         main = paste(&quot;r = &quot;, r, &quot;K = &quot;, K))
+}
+
+plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))                  # Multi-figure (mf) plot with 2 rows and 2 columns.
+plot.logistic.growth(r = 0.1, P = 10, K = 100, years = 20)   # Change the values of r and quickly print plots.
+plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
+plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
+plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))                               # Return to a 1X1 plot.</code></pre>
+</div>
+</div>
 </div>
 
 
