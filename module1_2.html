@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Getting started: managing data" />
@@ -73,9 +74,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -94,8 +93,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -111,7 +116,6 @@ body {
   padding-top: 66px;
   margin-top: -66px;
 }
-
 .section h2 {
   padding-top: 66px;
   margin-top: -66px;
@@ -131,6 +135,43 @@ body {
 .section h6 {
   padding-top: 66px;
   margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,47 +193,65 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -241,8 +300,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -251,6 +308,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -272,7 +339,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2018</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2019</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -287,16 +354,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module1_1.html">Module 1.1: working with objects</a>
+      <a href="module1_1.html">Submodule 1.1: working with objects</a>
     </li>
     <li>
-      <a href="module1_2.html">Module 1.2: managing data</a>
+      <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
     </li>
     <li>
-      <a href="module1_4.html">Module 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
     </li>
   </ul>
 </li>
@@ -308,19 +375,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module2_1.html">Module 2.1: R packages</a>
+      <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Module 2.2: Parallel computing in R</a>
+      <a href="module2_2.html">Submodule 2.2: Parallel computing in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Module 2.3: Using the 'tidyvierse'</a>
+      <a href="module2_3.html">Submodule 2.3: Using the 'tidyvierse'</a>
     </li>
     <li>
-      <a href="module2_4.html">Module 2.4: Plotting with 'ggplot'</a>
+      <a href="module2_4.html">Submodule 2.4: Plotting with 'ggplot'</a>
     </li>
     <li>
-      <a href="module2_5.html">Module 2.5: Spatial analysis</a>
+      <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
     </li>
   </ul>
 </li>
@@ -379,8 +446,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Module 1.2</h1>
-<h4 class="author"><em>Getting started: managing data</em></h4>
-<h4 class="date"><em>February 2019</em></h4>
+<h4 class="author">Getting started: managing data</h4>
+<h4 class="date">Fall 2019</h4>
 
 </div>
 
@@ -396,7 +463,7 @@ div.tocify {
 </div>
 <div id="working-directory" class="section level2">
 <h2>Working directory</h2>
-<p>To be able to import and export data to/from your R workspace, it makes things a lot easier if you can put all your data files into a single folder and tell R to make that folder your <strong>working directory</strong>. That way, you won’t need to wrangle with complex directory names!</p>
+<p>To be able to import and export data to/from your R workspace, it makes things a lot easier if you can put all your data files into a single folder and tell R to make that folder your <strong>working directory</strong>. That way, you won’t need to wrangle complex directory names!</p>
 <p>A working directory is the folder that R uses for reading or writing files if no other directory information is specified. Every R session has a working directory, whether you specify one or not. Let’s find out what my working directory is right now:</p>
 <pre class="r"><code># Find the directory you&#39;re working in 
 getwd()          # note: the results from running this command on my machine will probably differ from yours!  </code></pre>
@@ -408,25 +475,25 @@ getwd()          # note: the results from running this command on my machine wil
 2. If you’re collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and immediately read/write data to that directory (without having to set the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!</p>
 <p>To start a new RStudio Project, just click on “File-&gt;New Project” in RStudio’s menu bar.</p>
 </div>
-</div>
-<div id="back-to-basics" class="section level2">
-<h2>Back to basics!</h2>
+<div id="set-your-working-directory" class="section level3">
+<h3>Set your working directory</h3>
 <p>You can easily set a new working directory using the “setwd()” function. To select the directory manually (using standard file navigation) you can use the “file.choose()” function:</p>
 <pre class="r"><code># Setting a new working directory in a PC (same as File-&gt;Change dir...)
-#setwd(&quot;filepath with forward slashes&quot;) 
+# setwd(&quot;[filepath with forward slashes]&quot;) 
 
 # for example...
 
 # setwd(&quot;E:/GIT/R-Bootcamp&quot;)   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
 
 # Open finder to set directory
-setwd(file.choose())</code></pre>
+setwd(choose.dir())</code></pre>
 <p><strong>NOTE:</strong> when you put file paths in R, they need to use forward slashes (“/”; or double backslashes, “\\”) – single backslashes (“\”, as seen in Windows) do not work for specifying file paths in R.</p>
 <p>Alternatively, you can (in RStudio) use the top dropdown menus to set the working directory (Session-&gt;Set Working Directory-&gt;Choose Directory).</p>
 <p>Once you have set the working directory, you can use the “dir()” function to see what’s in the directory. If I ran this, we would see the contents of the directory that I’m using to create this R bootcamp website!</p>
 <pre class="r"><code># Names of files in working directory
 dir()</code></pre>
 <p>What’s in your working directory?</p>
+</div>
 </div>
 <div id="importing-data-into-r" class="section level2">
 <h2>Importing data into R!</h2>
@@ -439,41 +506,19 @@ dir()</code></pre>
 </ul></li>
 <li>read.csv
 <ul>
-<li>fields are separated by a comma (this is still probably the most common way to read in data)<br />
-</li>
-</ul></li>
-<li>read.csv2
-<ul>
-<li>fields are separated by semicolons<br />
-</li>
-</ul></li>
-<li>read.delim
-<ul>
-<li>tab delimited files<br />
-</li>
-</ul></li>
-<li>read.delim2
-<ul>
-<li>tab delimited with periods as commas</li>
+<li>fields are separated by a comma (this is still probably the most common way to read in data)</li>
 </ul></li>
 </ul>
 <p>Before we can read data in, we need to put some data files in our working directory!</p>
 <ol style="list-style-type: decimal">
-<li>Download the following data files and store them in a convenient file location (e.g., the R bootcamp folder where your scripts are already!)</li>
-</ol>
+<li><p>Download the following data files and store them in your working directory (i.e., the folder where your scripts are already!)</p>
 <ul>
-<li><a href="data.dat">Tab delimited data file</a><br />
-</li>
 <li><a href="data.txt">Whitespace delimited data file</a><br />
 </li>
 <li><a href="data.csv">Comma delimited data file</a></li>
-</ul>
-<ol start="2" style="list-style-type: decimal">
-<li>Set the directory where the data files are as your working directory! In my case, the R command would look like this:</li>
+</ul></li>
+<li><p>Make sure the data files are stored in your working directory!</p></li>
 </ol>
-<pre class="r"><code>setwd(&quot;E:/GIT/R-Bootcamp&quot;)   # set working directory to the folder with my data!
-
-# note: since I use an R project (.Rproj), this is automatically my working directory when I open the R project in Rstudio. </code></pre>
 <p>Once you have saved these files to your working directory, open one or two of them up (e.g., in Excel or a text editor) to see what’s inside.</p>
 <p>Now let’s read them into R!!</p>
 <pre class="r"><code>####
@@ -482,14 +527,8 @@ dir()</code></pre>
 
 # ?read.table    # some useful functions for reading in data
 # ?read.csv
-# ?readLines
 
-# read.table with tab delimited file (default is sep = &quot;&quot; (one of several common delimiters, including any type of whitespace))
-data.tab.df &lt;- read.table(&quot;data.dat&quot;, header=TRUE, sep=&quot;&quot;)
-
-head(data.tab.df)    # display the first few lines of the data frame
-
-# read.table to import textfile
+# read.table to import textfile (default is sep = &quot;&quot; (one of several common delimiters, including any type of whitespace))
 data.txt.df &lt;- read.table(&quot;data.txt&quot;, header=T, sep=&quot;&quot;)  
 
 # read.table with csv file
@@ -502,8 +541,7 @@ names(data.csv.df)
 data.df &lt;- read.csv(&quot;data.csv&quot;)
 names(data.df) 
 
-# Remove objects we won&#39;t be using
-rm(data.tab.df)
+# Remove redundant objects from memory
 rm(data.txt.df)
 rm(data.csv.df)</code></pre>
 <div id="you-can-also-import-data-from-the-internet-directly" class="section level3">
@@ -527,8 +565,8 @@ data(Titanic)
 
 str(Titanic)    # examine the structure of this data object</code></pre>
 </div>
-<div id="aside-tips-on-good-data-management-in-r" class="section level3">
-<h3>Aside: Tips on good data management in R</h3>
+<div id="aside-tips-on-naming-objects-in-r" class="section level3">
+<h3>Aside: Tips on naming objects in R</h3>
 <ol style="list-style-type: decimal">
 <li>No spaces within object names (same for column names in data files, use . or _ instead)<br />
 </li>
@@ -615,11 +653,7 @@ save(a,b,file=&quot;Module1_2.RData&quot;)
 
 rm(a,b)   # remove these objects from the workspace
 
-load(&quot;Module1_2.RData&quot;)   # load these objects back in!
-
-save.image(file=&quot;Module2.RData&quot;)    # ?save.image: saves entire workspace   
-
-load(file=&quot;Module2.RData&quot;)  # load the workspace from the working directory</code></pre>
+load(&quot;Module1_2.RData&quot;)   # load these objects back in!</code></pre>
 <p>NOTE: If you’re using an RStudio Project (.Rproj), then the contents of your workspace are automatically saved when you close the project, and load again when you open the project file. This allows you to easily pick up where you left off!</p>
 </div>
 <div id="clearing-the-workspace" class="section level3">
@@ -684,7 +718,7 @@ Y &lt; Z
 # Wrong!
 data.df[,2]=74     # sets entire second column equal to 74!
 
-data.df &lt;- read.csv(&quot;data.csv&quot;)  ## correct our mistake in the previous line and revert to the original data!
+data.df &lt;- read.csv(&quot;data.csv&quot;)  ## correct our mistake in the previous line (revert to the original data)!
 
 # Right
 data.df[,2]==74    # tests each element of column to see whether it is equal to 74</code></pre>
@@ -717,7 +751,8 @@ indices &lt;- which(data.df[,2]&lt;74)
 data.df[indices,2]               # same as above!</code></pre>
 <pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
 <pre class="r"><code>#########
-# Alternatively, you don&#39;t actually need to use the &quot;which()&quot; function
+# Alternatively, you can omit the &quot;which()&quot; function entirely- 
+#     R will know that you&#39;re trying to omit &quot;FALSE&quot; elements and keep &quot;TRUE&quot; elements
 
 data.df[data.df[,2]&lt;74,2]    # alternative syntax without using &quot;which()&quot;... </code></pre>
 <pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
@@ -1101,7 +1136,7 @@ class(newmat)</code></pre>
 <div id="challenge-exercises" class="section level2">
 <h2>Challenge Exercises!</h2>
 <p>1: Create a new data frame by saving the file <a href="comm_data.txt">“comm_data.txt”</a> to your working directory. For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: “Class”,“Downstream”, “Upstream”.</p>
-<p>2: Read in the file “turtle_data.txt’, and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory.</p>
+<p>2: Read in the file "turtle_data.txt’, and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory.</p>
 <p>3: I am trying to create a data frame with only male turtles using the “which()” function. Would the following command work?</p>
 <pre><code>male_turtles &lt;- turtles[,which(turtles$sex==&quot;male&quot;)]</code></pre>
 <p>Why or why not?</p>
@@ -1127,6 +1162,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

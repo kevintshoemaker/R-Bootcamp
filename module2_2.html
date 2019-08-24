@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Parallel processing in R" />
@@ -73,9 +74,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -94,8 +93,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -111,7 +116,6 @@ body {
   padding-top: 66px;
   margin-top: -66px;
 }
-
 .section h2 {
   padding-top: 66px;
   margin-top: -66px;
@@ -131,6 +135,43 @@ body {
 .section h6 {
   padding-top: 66px;
   margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,47 +193,65 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -241,8 +300,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -251,6 +308,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -272,7 +339,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2018</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2019</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -287,16 +354,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module1_1.html">Module 1.1: working with objects</a>
+      <a href="module1_1.html">Submodule 1.1: working with objects</a>
     </li>
     <li>
-      <a href="module1_2.html">Module 1.2: managing data</a>
+      <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
     </li>
     <li>
-      <a href="module1_4.html">Module 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
     </li>
   </ul>
 </li>
@@ -308,19 +375,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module2_1.html">Module 2.1: R packages</a>
+      <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Module 2.2: Parallel computing in R</a>
+      <a href="module2_2.html">Submodule 2.2: Parallel computing in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Module 2.3: Using the 'tidyvierse'</a>
+      <a href="module2_3.html">Submodule 2.3: Using the 'tidyvierse'</a>
     </li>
     <li>
-      <a href="module2_4.html">Module 2.4: Plotting with 'ggplot'</a>
+      <a href="module2_4.html">Submodule 2.4: Plotting with 'ggplot'</a>
     </li>
     <li>
-      <a href="module2_5.html">Module 2.5: Spatial analysis</a>
+      <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
     </li>
   </ul>
 </li>
@@ -379,14 +446,14 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Module 2.2</h1>
-<h4 class="author"><em>Parallel processing in R</em></h4>
-<h4 class="date"><em>September 2018</em></h4>
+<h4 class="author">Parallel processing in R</h4>
+<h4 class="date">Fall 2019</h4>
 
 </div>
 
 
 <p>NOTE: Jonathan Greenberg (<a href="https://naes.unr.edu/gears/" class="uri">https://naes.unr.edu/gears/</a>) developed this module</p>
-<p>This is the first of the modules that really go <em>beyond the basics</em>. Modules 2.3 to 2.6 provide a “whirlwhind” tour of more advanced things you can do in R, from high performance computing, to sophisticated visualizations to geographic analysis.</p>
+<p>This is the first of the modules that really go <em>beyond the basics</em>. Modules 2.3 to 2.6 provide a “whirlwhind” tour of more advanced things you can do in R, from parallel computing, to sophisticated visualizations to geographic analysis.</p>
 <div id="load-script-for-module-2.2" class="section level2">
 <h2>Load script for module #2.2</h2>
 <ol style="list-style-type: decimal">
@@ -397,12 +464,12 @@ div.tocify {
 </div>
 <div id="running-r-in-parallel" class="section level2">
 <h2>Running R in parallel!</h2>
-<p>This is a huge topic, but the basic concept of parallel programming is the following:</p>
+<p>This is a huge topic, but the basic concept of parallel computing is the following:</p>
 <p>Given some problem X that can be divided into subproblems x1, x2, x3, each subproblem can be sent to a different “worker” processor (which may be located on a different physical computer).</p>
 <p>Each processor then sends the results of its subproblem back to a central “master”. The master often then pieces the subproblems back together to return to the user.</p>
 <p>Parallel computing is not a cure-all, and not all problems will benefit from it. We’ll come back to this issue in a bit.</p>
 <p>There are a lot of packages to realize parallel computing within R, and current versions of R even come with some parallel computing packages built-in. A full list can be found <a href="http://cran.r-project.org/web/views/HighPerformanceComputing.html">here</a>.</p>
-<p>I will be following the examples from <a href="http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf" class="uri">http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf</a>.</p>
+<p>I will be following the examples from <a href="http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf">http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf</a>.</p>
 <div id="set-up-your-workspace" class="section level3">
 <h3>Set up your workspace</h3>
 <p>First, let’s set up our workspace to run an example using a genomics data set. This example uses <a href="https://www.bioconductor.org/">bioconductor</a>, which provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses R and is open source and open development.</p>
@@ -413,11 +480,16 @@ div.tocify {
 # examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
 
 # First, load this script directly from the web (which also installs required packages for you!):
-source(&quot;http://bioconductor.org/biocLite.R&quot;)
-biocLite(&quot;Biobase&quot;)</code></pre>
+
+if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+    install.packages(&quot;BiocManager&quot;)
+BiocManager::install(&quot;Biobase&quot;)</code></pre>
 <p>NOTE: if you had trouble running the above code, you can just load the example dataset <a href="geneData.csv">here</a></p>
 <p>We are going to run a test using gene expression data– let’s load the example dataset!</p>
 <pre class="r"><code>data(geneData, package = &quot;Biobase&quot;)   # load example data from Biobase package between all pairs of genes across all samples.
+  # geneData &lt;- read.csv(&quot;geneData.csv&quot;)    # alternative!
+
+
 # This data represents 500 genes (organized by rows)
 # with expression data (numerical). 
 
@@ -427,7 +499,7 @@ biocLite(&quot;Biobase&quot;)</code></pre>
 </div>
 <div id="example-a-simple-yet-computationally-intensive-problem" class="section level3">
 <h3>Example: A simple yet computationally intensive problem</h3>
-<p>This data represents 500 genes (organized by rows) with expression data (numerical). The goal is to calculate the correlation coefficient between all pairs of genes across all samples.</p>
+<p>This data represents 500 genes (organized by rows) with expression data (numerical) across 26 samples. The goal is to calculate the correlation coefficient between all pairs of genes across all samples.</p>
 <p>For example, let’s examine the correlation between gene 12 vs 13:</p>
 <pre class="r"><code>?cor    # view help page for &quot;cor()&quot; function
 geneData[12,]
@@ -437,7 +509,7 @@ geneData[13,]</code></pre>
 <pre class="r"><code>cor(geneData[12,],geneData[13,])</code></pre>
 <pre><code>## [1] 0.548477</code></pre>
 <p>The total number of paired correlations will be 500 x 499 / 2 = <strong>124,750 correlations</strong>!</p>
-<p>We can identify all combinations in a vector using the “combn() function:</p>
+<p>We can identify all combinations in a vector using the "combn() function:</p>
 <pre class="r"><code>?combn    # function to determine all combination ids</code></pre>
 <p>We are going to leave this as a list, for now…</p>
 <pre class="r"><code>pair &lt;- combn(1:nrow(geneData),2,simplify=F)   #leave this as a list, for now...
@@ -501,7 +573,8 @@ outcor</code></pre>
 ## 
 ## [[3]]
 ## [1] -0.2125437</code></pre>
-<p>Now let’s do the whole calculation. First, open your task manager by hitting control-alt-delete (on Windows) and choosing “Start Task Manager”. Click the “Performance” tab. Notice you have a few graphs next to “CPU Usage”, which shows each processor you have on your machine.</p>
+<p>Now let’s do the whole calculation. First, open your task manager by hitting control-alt-delete (on Windows) and choosing “Start Task Manager”.</p>
+<p>Click the “Performance” tab. You may also need to click on another link to open the “Resource Monitor”. Notice you have a few graphs next to “CPU Usage”, which shows each processor you have on your machine.</p>
 <p>Type the following in R and watch the CPU Usage History graph. Note the use of the “system.time()” function, which allows us to keep track of processing time for one or more R commands. Processing time can vary substantially among machines.</p>
 <pre class="r"><code>#################
 # Examine processor use and speed
@@ -510,7 +583,7 @@ outcor</code></pre>
 
 system.time(outcor &lt;- lapply(pair,geneCor))</code></pre>
 <pre><code>##    user  system elapsed 
-##   10.07    0.02   10.08</code></pre>
+##    3.36    0.00    3.36</code></pre>
 <pre class="r"><code># Notice ONE CPU spiked.  Make note of how long it took to run.</code></pre>
 <p>Notice ONE CPU spiked. Make note of how long it took to run.</p>
 <p>Now let’s make an even bigger dataset (just repeating geneData four times), making 26 x 4 = 104 columns:</p>
@@ -519,13 +592,9 @@ system.time(outcor &lt;- lapply(pair,geneCor))</code></pre>
 <pre class="r"><code>###########
 # New, more complex function that generates bootstrap confidence intervals for correlation coefficients
 
-library(boot)   # load the &quot;boot&quot; library for performing bootstrapping analysis</code></pre>
-<pre><code>## 
-## Attaching package: &#39;boot&#39;</code></pre>
-<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
-## 
-##     logit</code></pre>
-<pre class="r"><code># &#39;x&#39; represents vector with two elements, indicating the pair of genes to compare
+library(boot)   # load the &quot;boot&quot; library for performing bootstrapping analysis
+
+# &#39;x&#39; represents vector with two elements, indicating the pair of genes to compare
 # &#39;gene&#39; represents a gene expression database
 
 geneCor2 &lt;- function(x, gene = fakeData){
@@ -539,8 +608,8 @@ geneCor2 &lt;- function(x, gene = fakeData){
 genCor2_system_time &lt;- system.time(outcor &lt;- lapply(pair[1:10],geneCor2))
 genCor2_system_time[&quot;elapsed&quot;] </code></pre>
 <pre><code>## elapsed 
-##    1.16</code></pre>
-<p>What did you get? On my machine this operation (for 10 pairs) took around 1.2 seconds…</p>
+##    0.77</code></pre>
+<p>What did you get? On my machine this operation (for 10 pairs) took around 1 second…</p>
 <p>Let’s use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again?</p>
 <pre class="r"><code>length(pair)   # how many pairs were there again?</code></pre>
 <pre><code>## [1] 124750</code></pre>
@@ -550,13 +619,13 @@ genCor2_system_time[&quot;elapsed&quot;] </code></pre>
 
 genCor2_system_time[&quot;elapsed&quot;]      # time it took to run 10 pairs, in seconds</code></pre>
 <pre><code>## elapsed 
-##    1.16</code></pre>
+##    0.77</code></pre>
 <pre class="r"><code>genCor2_system_time[&quot;elapsed&quot;] *(124750/10)     # time it would take to run 124750 pairs, in seconds </code></pre>
 <pre><code>## elapsed 
-##   14471</code></pre>
+## 9605.75</code></pre>
 <pre class="r"><code>genCor2_system_time[&quot;elapsed&quot;] *(124750/10/60/60)    # in hours...</code></pre>
 <pre><code>##  elapsed 
-## 4.019722</code></pre>
+## 2.668264</code></pre>
 <p>Ouch! This is a good candidate for parallel processing!</p>
 </div>
 <div id="running-in-parallel" class="section level3">
@@ -570,14 +639,14 @@ pair2 &lt;- sample(pair,300)    # first extract a subsamble of all the pairs</co
 <pre class="r"><code># Let&#39;s test a sequential version of this:
 system.time(outcor &lt;- lapply(pair2,geneCor2))</code></pre>
 <pre><code>##    user  system elapsed 
-##  189.85   70.90   32.66</code></pre>
+##   21.40    0.72   22.16</code></pre>
 <pre class="r"><code># Note the elapsed time.</code></pre>
 <p>Now, we can explore implementing this operation in parallel. To do this, we will use the “parallel” package in R.</p>
 <div id="parallel-package" class="section level4">
 <h4>‘parallel’ package</h4>
 <p>Parallel’s basic concept is to launch “worker” instances of R on other processors, and then send the subproblems to each R instance. This means that if you want to use 4 processors (“cores”), after you start a parallel cluster, you will have 5 copies of R running: the master copy (the one you are typing into) and 4 worker copies.</p>
-<p>The “cluster” of processors can be either a single computer with multiple computers (like the one you are working on), or a network of computers linked by some clustering framework.</p>
-<p>The basic order of ops with using ‘parallel’ is as follows: 1. library(“parallel”)<br />
+<p>The “cluster” of processors can be either a single computer with multiple processors (like the one you are working on), or a network of computers linked by some clustering framework.</p>
+<p>The basic order of operations with using ‘parallel’ is as follows: 1. library(“parallel”)<br />
 2. Make a parallel cluster using makeCluster(…)<br />
 3. Load packages that your function needs into the workers using clusterEvalQ(cl=…,library(…))<br />
 4. Load objects (data) from the master environment into the worker environments using clusterExport(cl=…)<br />
@@ -605,7 +674,7 @@ myCluster</code></pre>
 <pre class="r"><code>length(myCluster) # One entry per &quot;worker&quot;.</code></pre>
 <pre><code>## [1] 4</code></pre>
 <pre class="r"><code>myCluster[[1]]    # more info about this &quot;worker&quot;</code></pre>
-<pre><code>## node of a socket cluster on host &#39;localhost&#39; with pid 41880</code></pre>
+<pre><code>## node of a socket cluster on host &#39;localhost&#39; with pid 24176</code></pre>
 <p>Notice you now have multiple instances of Rscript.exe running now!</p>
 <p>We can stop the cluster by using the “stopCluster()” function:</p>
 <pre class="r"><code>?stopCluster</code></pre>
@@ -623,7 +692,7 @@ myCluster &lt;- parallel::makeCluster(spec=mycorenum,type=&quot;PSOCK&quot;)</co
 ?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster</code></pre>
 <p>For example, we might run the “date()” function on each cluster! Note that the results get returned as lists:</p>
 <pre class="r"><code>date()    # run the &quot;date()&quot; function</code></pre>
-<pre><code>## [1] &quot;Fri Jan 11 17:34:37 2019&quot;</code></pre>
+<pre><code>## [1] &quot;Fri Aug 23 16:32:46 2019&quot;</code></pre>
 <pre class="r"><code>workerDates &lt;- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the &quot;date()&quot; function on all clusters 
 class(workerDates)</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
@@ -656,8 +725,8 @@ parallel::clusterCall(cl=myCluster,fun=search)</code></pre>
 <p>Check the memory now. Note that each worker is using more memory, since we loaded the fakeData into each of those worker Rs.</p>
 <p>Note we could send the entire Global environment over to the workers! To do this, we could use the “ls()” function:</p>
 <pre class="r"><code>#### alternatively, load all data in our environment into each worker:
-loadData &lt;- parallel::clusterExport(cl=myCluster,ls())</code></pre>
-<pre class="r"><code>parallel::clusterEvalQ(cl=myCluster,ls())</code></pre>
+# loadData &lt;- parallel::clusterExport(cl=myCluster,ls())</code></pre>
+<pre class="r"><code># parallel::clusterEvalQ(cl=myCluster,ls())</code></pre>
 </div>
 <div id="finally-run-corrlation-analysis-in-parallel" class="section level4">
 <h4>Finally: run corrlation analysis in parallel!</h4>
@@ -674,11 +743,11 @@ loadData &lt;- parallel::clusterExport(cl=myCluster,ls())</code></pre>
 
 system.time(outcor2 &lt;- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   </code></pre>
 <pre><code>##    user  system elapsed 
-##    0.06    0.05   13.89</code></pre>
+##    0.05    0.07    5.63</code></pre>
 <pre class="r"><code># vs the non-clustered version:
 system.time(outcor &lt;- lapply(pair2,geneCor2))   # takes much longer!</code></pre>
 <pre><code>##    user  system elapsed 
-##  187.50   68.64   32.16</code></pre>
+##   20.89    0.20   21.14</code></pre>
 <p>We got a big performance boost here!</p>
 <p>Don’t forget to shut down your cluster:</p>
 <pre class="r"><code>stopCluster(myCluster)   # finally, stop the cluster..</code></pre>
@@ -731,7 +800,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  191.53   71.54   33.01</code></pre>
+##   21.84    0.19   22.07</code></pre>
 <p>And now with a parallel backend!</p>
 <pre class="r"><code># Parallel mode (use a parallel backend):
 
@@ -740,8 +809,6 @@ myCluster &lt;- makeCluster(spec=4,type=&quot;PSOCK&quot;)</code></pre>
 <pre class="r"><code># Register the backend with foreach (doParallel):
 registerDoParallel(myCluster)
 # Run our code! Notice I didn&#39;t change the foreach call at all:
-
-loadData &lt;- parallel::clusterExport(cl=myCluster,&quot;geneCor2&quot;)   # KTS: I added this to make it run - was this necessary for others? 
 
 system.time(
   outcor &lt;- foreach(
@@ -752,7 +819,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.84    0.46   13.25</code></pre>
+##    0.15    0.03    5.64</code></pre>
 <p>Some things to notice:<br />
 - we explicitly define what packages are to be sent over using the .packages parameter<br />
 - foreach calls have access to the master’s global environment. - we can use specific functions to join the data once its done (e.g. rbind)</p>
@@ -772,10 +839,7 @@ system.time(
 <div id="shared-memory-machines" class="section level4">
 <h4>Shared-memory machines</h4>
 <p>A single computer like the one you are working on is a “shared memory machine” – each processor has access to the same physical RAM. When two processors “ask” for an R object in RAM they must compete against each other. One process will have to wait until the other process are done reading that area of memory. Memory access, thus, can be a bottleneck.</p>
-</div>
-<div id="networked-systems-of-computers" class="section level4">
-<h4>Networked systems of computers</h4>
-<p>A cluster computer (“supercomputer”) is really just a bunch of individual computers networked together. Each individual computer (“node” in cluster terminology) has its own set of processors, memory, and hard drive space. When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer. This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.</p>
+<p>####Networked systems of computers A cluster computer (“supercomputer”) is really just a bunch of individual computers networked together. Each individual computer (“node” in cluster terminology) has its own set of processors, memory, and hard drive space. When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer. This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.</p>
 <p>For instance, you could copy the data the function will work on to each node in a cluster, so the data does not have to be transferred from the master R to the worker Rs.</p>
 <p>Note that two nodes in a cluster do not share memory.</p>
 </div>
@@ -809,6 +873,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

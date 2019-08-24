@@ -1,7 +1,7 @@
 ---
 title: "Module 1.2"
 author: "Getting started: managing data"
-date: "February 2019"
+date: "Fall 2019"
 output: 
   html_document: 
     theme: journal
@@ -49,7 +49,7 @@ Let's get started with data management in R!
 
 ## Working directory
 
-To be able to import and export data to/from your R workspace, it makes things a lot easier if you can put all your data files into a single folder and tell R to make that folder your **working directory**. That way, you won't need to wrangle with complex directory names!
+To be able to import and export data to/from your R workspace, it makes things a lot easier if you can put all your data files into a single folder and tell R to make that folder your **working directory**. That way, you won't need to wrangle complex directory names!
 
 A working directory is the folder that R uses for reading or writing files if no other directory information is specified. Every R session has a working directory, whether you specify one or not. Let's find out what my working directory is right now:
 
@@ -70,21 +70,21 @@ If you're using an **RStudio Project** (.Rproj extension) then the default worki
 
 To start a new RStudio Project, just click on "File->New Project" in RStudio's menu bar.  
 
-## Back to basics!
+### Set your working directory
 
 You can easily set a new working directory using the "setwd()" function. To select the directory manually (using standard file navigation) you can use the "file.choose()" function:
 
 ```{r eval=FALSE}
 
 # Setting a new working directory in a PC (same as File->Change dir...)
-#setwd("filepath with forward slashes") 
+# setwd("[filepath with forward slashes]") 
 
 # for example...
 
 # setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
 
 # Open finder to set directory
-setwd(file.choose())
+setwd(choose.dir())
 
 ```
 
@@ -111,31 +111,15 @@ There are many ways data can be imported into R. Many types of files can be impo
      - reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)       
 - read.csv        
      - fields are separated by a comma (this is still probably the most common way to read in data)        
-- read.csv2        
-     - fields are separated by semicolons         
-- read.delim        
-     - tab delimited files        
-- read.delim2      
-     - tab delimited with periods as commas      
 
 Before we can read data in, we need to put some data files in our working directory! 
 
-1. Download the following data files and store them in a convenient file location (e.g., the R bootcamp folder where your scripts are already!)
+1. Download the following data files and store them in your working directory (i.e., the folder where your scripts are already!)
 
-   - [Tab delimited data file](data.dat)        
    - [Whitespace delimited data file](data.txt)      
    - [Comma delimited data file](data.csv)      
    
-2. Set the directory where the data files are as your working directory! In my case, the R command would look like this:
-
-```{r eval=FALSE}
-
-setwd("E:/GIT/R-Bootcamp")   # set working directory to the folder with my data!
-
-# note: since I use an R project (.Rproj), this is automatically my working directory when I open the R project in Rstudio. 
-
-```
-
+2. Make sure the data files are stored in your working directory!
    
 Once you have saved these files to your working directory, open one or two of them up (e.g., in Excel or a text editor) to see what's inside. 
 
@@ -149,14 +133,8 @@ Now let's read them into R!!
 
 # ?read.table    # some useful functions for reading in data
 # ?read.csv
-# ?readLines
 
-# read.table with tab delimited file (default is sep = "" (one of several common delimiters, including any type of whitespace))
-data.tab.df <- read.table("data.dat", header=TRUE, sep="")
-
-head(data.tab.df)    # display the first few lines of the data frame
-
-# read.table to import textfile
+# read.table to import textfile (default is sep = "" (one of several common delimiters, including any type of whitespace))
 data.txt.df <- read.table("data.txt", header=T, sep="")  
 
 # read.table with csv file
@@ -169,8 +147,7 @@ names(data.csv.df)
 data.df <- read.csv("data.csv")
 names(data.df) 
 
-# Remove objects we won't be using
-rm(data.tab.df)
+# Remove redundant objects from memory
 rm(data.txt.df)
 rm(data.csv.df)
 
@@ -219,7 +196,7 @@ str(Titanic)    # examine the structure of this data object
 ```
 
 
-### Aside: Tips on good data management in R
+### Aside: Tips on naming objects in R
 1. No spaces within object names (same for column names in data files, use . or _ instead)       
 2. Try not to name an object with a similar/same as a function (e.g. don't name your data "data.frame"). NOTE: this can be hard- there are so many functions in base R!           
 3. Can't start object names with a number      
@@ -313,14 +290,11 @@ rm(a,b)   # remove these objects from the workspace
 
 load("Module1_2.RData")   # load these objects back in!
 
-save.image(file="Module2.RData")    # ?save.image: saves entire workspace   
-
-load(file="Module2.RData")  # load the workspace from the working directory
-
 ```
 
 NOTE: If you're using an RStudio Project (.Rproj), then the contents of your workspace are automatically saved when you close the project, and load again when you open the project file. This allows you to easily pick up where you left off! 
          
+
 ### Clearing the workspace
 
 Sometimes your workspace can get cluttered with objects. In these cases, it can really help to clear the workspace. Let's try this!
@@ -397,7 +371,7 @@ Y < Z
 # Wrong!
 data.df[,2]=74     # sets entire second column equal to 74!
 
-data.df <- read.csv("data.csv")  ## correct our mistake in the previous line and revert to the original data!
+data.df <- read.csv("data.csv")  ## correct our mistake in the previous line (revert to the original data)!
 
 # Right
 data.df[,2]==74    # tests each element of column to see whether it is equal to 74
@@ -436,7 +410,8 @@ data.df[indices,2]               # same as above!
 
 
 #########
-# Alternatively, you don't actually need to use the "which()" function
+# Alternatively, you can omit the "which()" function entirely- 
+#     R will know that you're trying to omit "FALSE" elements and keep "TRUE" elements
 
 data.df[data.df[,2]<74,2]    # alternative syntax without using "which()"... 
 

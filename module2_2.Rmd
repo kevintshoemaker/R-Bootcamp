@@ -1,7 +1,7 @@
 ---
 title: "Module 2.2"
 author: "Parallel processing in R"
-date: "September 2018"
+date: "Fall 2019"
 output: 
   html_document: 
     theme: journal
@@ -35,7 +35,7 @@ options(knitr.duplicate.label = 'allow')
 
 NOTE: Jonathan Greenberg (https://naes.unr.edu/gears/) developed this module  
 
-This is the first of the modules that really go *beyond the basics*. Modules 2.3 to 2.6 provide a "whirlwhind" tour of more advanced things you can do in R, from high performance computing, to sophisticated visualizations to geographic analysis.  
+This is the first of the modules that really go *beyond the basics*. Modules 2.3 to 2.6 provide a "whirlwhind" tour of more advanced things you can do in R, from parallel computing, to sophisticated visualizations to geographic analysis.  
 
 ## Load script for module #2.2
 
@@ -47,11 +47,12 @@ Let's get started with parallel processing in R!
 
 ## Running R in parallel!
 
-This is a huge topic, but the basic concept of parallel programming is the following:
+This is a huge topic, but the basic concept of parallel computing is the following:
 
 Given some problem X that can be divided into subproblems x1, x2, x3, each subproblem can be sent to a different "worker" processor (which may be located on a different physical computer).  
 
 Each processor then sends the results of its subproblem back to a central "master". The master often then pieces the subproblems back together to return to the user.
+
 
 Parallel computing is not a cure-all, and not all problems will benefit from it.  We'll come back to this issue in a bit.
 
@@ -74,8 +75,11 @@ Installing the packages for this module can take a while, so hopefully you have 
 # examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
 
 # First, load this script directly from the web (which also installs required packages for you!):
-source("http://bioconductor.org/biocLite.R")
-biocLite("Biobase")
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("Biobase")
+
 
 ```
 
@@ -86,6 +90,9 @@ We are going to run a test using gene expression data-- let's load the example d
 ```{r}
 
 data(geneData, package = "Biobase")   # load example data from Biobase package between all pairs of genes across all samples.
+  # geneData <- read.csv("geneData.csv")    # alternative!
+
+
 # This data represents 500 genes (organized by rows)
 # with expression data (numerical). 
 
@@ -98,7 +105,7 @@ data(geneData, package = "Biobase")   # load example data from Biobase package b
 
 ### Example: A simple yet computationally intensive problem
 
-This data represents 500 genes (organized by rows) with expression data (numerical). The goal is to calculate the correlation coefficient between all pairs of genes across all samples. 
+This data represents 500 genes (organized by rows) with expression data (numerical) across 26 samples. The goal is to calculate the correlation coefficient between all pairs of genes across all samples. 
 
 For example, let's examine the correlation between gene 12 vs 13:
 
@@ -180,7 +187,8 @@ outcor
 ```
 
 Now let's do the whole calculation.  First, open your task manager by hitting control-alt-delete (on Windows) and choosing "Start Task Manager". 
-Click the "Performance" tab.  Notice you have a few graphs next to "CPU Usage", which shows each processor you have on your machine.
+
+Click the "Performance" tab. You may also need to click on another link to open the "Resource Monitor". Notice you have a few graphs next to "CPU Usage", which shows each processor you have on your machine.
 
 Type the following in R and watch the CPU Usage History graph. Note the use of the "system.time()" function, which allows us to keep track of processing time for one or more R commands. Processing time can vary substantially among machines. 
 
@@ -240,7 +248,7 @@ genCor2_system_time["elapsed"]
 
 ```
 
-What did you get? On my machine this operation (for 10 pairs) took around 1.2 seconds...
+What did you get? On my machine this operation (for 10 pairs) took around 1 second...
 
 Let's use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again? 
 
@@ -299,9 +307,9 @@ Now, we can explore implementing this operation in parallel. To do this, we will
 
 Parallel's basic concept is to launch "worker" instances of R on other processors, and then send the subproblems to each R instance. This means that if you want to use 4 processors ("cores"), after you start a parallel cluster, you will have 5 copies of R running: the master copy (the one you are typing into) and 4 worker copies.  
 
-The "cluster" of processors can be either a single computer with multiple computers (like the one you are working on), or a network of computers linked by some clustering framework.   
+The "cluster" of processors can be either a single computer with multiple processors (like the one you are working on), or a network of computers linked by some clustering framework.   
 
-The basic order of ops with using 'parallel' is as follows:
+The basic order of operations with using 'parallel' is as follows:
 1. library("parallel")   
 2. Make a parallel cluster using makeCluster(...)   
 3. Load packages that your function needs into the workers using clusterEvalQ(cl=...,library(...))    
@@ -478,11 +486,11 @@ Note we could send the entire Global environment over to the workers! To do this
 ```{r  eval=FALSE}
 
 #### alternatively, load all data in our environment into each worker:
-loadData <- parallel::clusterExport(cl=myCluster,ls())
+# loadData <- parallel::clusterExport(cl=myCluster,ls())
 ```
 
 ```{r eval=FALSE}
-parallel::clusterEvalQ(cl=myCluster,ls())
+# parallel::clusterEvalQ(cl=myCluster,ls())
 
 ```
 
@@ -611,8 +619,6 @@ myCluster <- makeCluster(spec=4,type="PSOCK")
 # Register the backend with foreach (doParallel):
 registerDoParallel(myCluster)
 # Run our code! Notice I didn't change the foreach call at all:
-
-loadData <- parallel::clusterExport(cl=myCluster,"geneCor2")   # KTS: I added this to make it run - was this necessary for others? 
 
 system.time(
   outcor <- foreach(

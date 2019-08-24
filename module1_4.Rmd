@@ -1,7 +1,7 @@
 ---
 title: "Module 1.4"
 author: "Basic programming in R"
-date: "February 2019"
+date: "Fall 2019"
 output: 
   html_document: 
     theme: journal
@@ -134,7 +134,7 @@ square <- function(x){
 ## Square a single value (scaler).
 square(2)
 
-## Square a vector.
+## Square all elements of a vector.
 square(1:10)
 
 
@@ -163,7 +163,8 @@ logit.x <- logit(x)
 logit.x
 
 ## Plot x on x-axis, and logit(x) on y axis.
-plot(x, logit.x, type = 'l')    # View the output graphically.
+plot(x, logit.x, type = 'l',xlab="x",ylab="logit(x)")    # View the output graphically.
+
 
 ```
 
@@ -172,6 +173,11 @@ plot(x, logit.x, type = 'l')    # View the output graphically.
 A useful, related function is the inverse-logit, or "expit" function:
 
 ```{r}
+
+## Sequence between 0 and 1.
+x <- seq(from = 0, to = 1, by = 0.01)
+
+logit.x <- logit(x)
 
 ## The expit (or inverse logit) funtion.
 expit <- function(x){
@@ -184,10 +190,10 @@ expit(2.197225)
 expit.logit.x <- expit(logit.x)    # Return to original x values.
 
 ## Plot x on x-axis, and expit(logit(x)) = x on y axis.
-plot(x, expit.logit.x, type = 'l')
+plot(x, expit.logit.x, type = 'l',xlab="x",ylab="expit(logit(x))")
 
 ## Plot "logistic" curve
-plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type="l")
+plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type="l",xlab="x",ylab="expit(x)")
 
 
 ```
@@ -209,10 +215,10 @@ survival(n = 10, d = 5)
 
 ## Simulate many years of data.
 d <- sample(0:50, 10, replace = TRUE)   # note use of "sample()" function
-n <- c(100, 100-d)
+n <- rep(100, times=10)
 (surv <- survival(n = n[1:10], d = d))
 
-## Plot year-specific survival rate.
+## Plot year-specific survival rate (random- will look different every time!)
 plot(1:10, surv, type = 'l',xlab="Year",ylab="Survival")
 
 ```
@@ -259,6 +265,26 @@ if (x > 0) {
 } else {
     print("Not detected")
 }
+
+
+######
+# Make a "safe" version of the "logit" function
+
+logit.safe <- function(x){
+    bad <- ((x<0)|(x>1))
+    if(any(bad)){
+      stop("logit is only defined for x between 0 and 1!")
+    }else{
+      log(x/(1-x))
+    }
+    
+}
+x <- seq(from = -1, to = 2, by = 0.1)
+# logit(x)      # this returns impossible numbers (NaNs)
+# logit.safe(x)   # this will now throw an error!
+
+logit.safe(c(0.15,0.99))
+
 
 
 ```
@@ -382,7 +408,7 @@ x
 ```{r}
 
 ###
-### apply (A more efficient, vectorized way to iterate)
+### apply (A more efficient way to iterate)
 ###
 
 W <- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
@@ -402,6 +428,30 @@ MyFunc <- function(x){
     2+sum(x/5)-3/2*mean(x)^2
 }
 apply(W, 1, MyFunc)
+
+
+##########
+# lapply: apply a function across a list or vector
+
+lapply(1:5,function(x) exp(x)) 
+
+lapply(1:5, function(x) sqrt(trees$Volume[x]))
+
+
+##########
+# sapply: apply a function across a list or vector, and simplify the returned object
+
+sapply(1:5,function(x) exp(x)) 
+
+
+#########
+# tapply: apply a function across a vector that is organized into groups
+
+df.new <- data.frame(
+  var1 = runif(10),
+  group = sample(c("A","B"),10,replace=T)
+)
+tapply(df.new$var1,df.new$group,sum)
 
 
 ```
@@ -621,7 +671,7 @@ To test this, let's first write some *pseudocode* for how to perform this operat
 
 1. Specify the number of hypothetical repeat samples to draw    
 2. Specify the sample size for each hypothetical repeat sample   
-3. Specify the mean and variance of the "true" population from which we will sample 
+3. Specify the min and max of the "true" (uniform) population from which we will sample 
 4. For each hypothetical sampling experiment:      
     a. Draw a random sample from the known distribution      
     b. Compute and store the sample mean     
@@ -637,19 +687,18 @@ Here we translate the pseudocode into real R code!
 
 n.iter <- 1000                                # large number of hypothetical "repeat samples."
 sample.size <- 30                             # Sample size of 30 from each repeat sample.
-mu <- 5                                       # True population mean of 5.
-sd <- 2                                       # True standard deviation of 2.
+min <- 2                                       # True population minimum of 2.
+max <- 6                                       # True population maximum of 6.
 means <- numeric(n.iter)                      # Initialize empty vector to store the sample means.
 for(i in 1:n.iter){                           # For each of the repeat samples...
-    sample <- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
+    sample <- runif(sample.size,min=min,max=max)     # draw a random sample from the true population
     means[i] <- mean(sample)                # and store the sample mean.
 }
 hist(means)                                # Histogram of all the means.
-abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.
+abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 4.
 plot(density(means), main = "")
 abline(v = mean(means), col = 2, lwd = 4)
 mean(means)                                # Close to true mean of 5
-sd(means)*sqrt(30)                         # Close to true sd of 2
 
 ```
 
@@ -711,7 +760,7 @@ And finally, we could wrap this all up in a more complex function that simulates
 
 ```{r}
 
-## A more complex function that ouputs a plot.
+## A more complex function that outputs a plot.
 plot.logistic.growth <- function(r, P, K, years){
     pop.size[1] <- P
     for(i in 1:(years-1)){
