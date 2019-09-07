@@ -306,7 +306,7 @@ What happens when we try and add `scalar2` and `scalar4`? Think about the types 
 ```{r eval=F}
 
 ## what happens when we run this line of code? Think about the types.
-scalar_2 + scalar_4
+scalar2 + scalar4
 
 ```
 
