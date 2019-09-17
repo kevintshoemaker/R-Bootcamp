@@ -1,7 +1,7 @@
 ---
 title: "Module 2.5"
 author: "Introduction to Spatial Data (Mitch Gritts)"
-date: "November 2018"
+date: "Fall 2019"
 output:
   html_document:
     theme: journal
@@ -50,9 +50,11 @@ Spatial analysis allows you to solve complex location-oriented problems and bett
   <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">Spatial data analysis combines several different data types and methods in an attempt to model the real world.</figcaption>
 </div>
 
+The best resource I've found for learning about spatial data in R is [Geocomputation with R](https://geocompr.robinlovelace.net). The book is available free online.
+
 ## Spatial isn't Special (in R)
 
-Spatial data, just like all other data in R, are combinations of vectors, matrices, and lists. These combinations of data are wrapped into specialized classes, and have many specialized methods to make working with them easier. Most of the functionality comes from the `sp` package for vector data, and `raster` package for raster data. In addition to these packages we will use a few other packages:
+Spatial data, just like all other data in R, are combinations of vectors, matrices, and lists. These combinations of data are wrapped into specialized classes, and have many specialized methods to make working with them easier. Most of the functionality comes from the `sf` package for vector data, and `raster` package for raster data. In addition to these packages we will use a few other packages:
 
 1. `rgdal` - an R wrapper to the open source [gdal library](https://www.gdal.org/)
 2. `rgeos` - an R wrapper to the open source [geos library](http://trac.osgeo.org/geos)
@@ -192,19 +194,22 @@ As mentioned above, `sf` has many different types of geometries. Let's create a 
 ```{r sf_intro, results=F}
 
 ## a single point
-st_point(c(1, 1))
+pt <- st_point(c(1, 1))
+plot(pt)
 
 ## multiple points 
-st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+mpt <- st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(mpt)
 
 ## a line
-st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+l <- st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(l, col = 'purple')
 
 ## a polygon
-st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))
+poly <- st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))
+plot(poly, col = 'purple')
 
-## ...etc
-
+## ...etc, multiline and multipolygons
 ```
 
 A comprehensive overview of all the geometry classes can be [found here](https://r-spatial.github.io/sf/articles/sf1.html)
@@ -222,6 +227,8 @@ First, download the following data set and save to your working directory: [rept
 reptiles <- readr::read_csv('reptiles.csv')
 
 ## create a SpatialPoints object
+## provide data (x), the columns that contain the x & y (coords)
+## and the coordinate reference system (crs)
 sf_points <- st_as_sf(x = reptiles, 
                       coords = c('x', 'y'), 
                       crs = '+init=epsg:26911')
@@ -246,6 +253,9 @@ summary(sf_points)
 
 ## what type is the geometry column
 class(sf_points$geometry)
+
+## plot the data
+plot(sf_points[0])
 
 ```
 
@@ -272,6 +282,7 @@ phpl %>% magrittr::extract2('species') %>% unique()
 If you check the class of `sf_points` you'll see a list of different classes. `sf_points` is an object of class `sf`. But it inherits properties of the `tbl_df`, `tbl`, and `data.frame` class. That means that any methods that work on these classes will also work on objects of class `sf`. 
 
 ```{r sf with dplyr}
+class(sf_points)
 
 ## we can filter using dplyr syntax
 sf_points %>% 
@@ -280,7 +291,7 @@ sf_points %>%
 
 ```
 
-Finally, let's plot this data. The plot function provided by `sf` behaves slightly differently than it does for most other classes. It'll create a plot for each attribute column in the `sf` object. 
+Finally, let's plot this data. The plot function provided by `sf` behaves slightly differently than it does for most other classes. It'll create a plot for each attribute column in the `sf` objecct. I think this behavior is strange, I don't like it. But it is handy.
 
 ```{r plotting with sf}
 

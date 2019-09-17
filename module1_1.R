@@ -15,7 +15,7 @@
 ##################################################
 
 
-Batmans_butler <- 'Alfred Pennyworth'
+Batmans_butler <- 'Alfred Pennyworth'  
 
 
 ###############
@@ -41,16 +41,16 @@ str(trees)
 # visualize the data
 
    # histograms:
-layout(matrix(1:3,nrow=1,byrow = T))
-hist(trees$Height)
-hist(trees$Girth)
-hist(trees$Volume)
+layout(matrix(1:3,nrow=1,byrow = T))    # set up a multi-panel graphics device (three plots side by side)
+hist(trees$Height)                       # visualize the distribution of height data
+hist(trees$Girth)                        # visualize the distribution of girth data
+hist(trees$Volume)                       # visualize the distribution of volume data
 
    # scatterplots:
 
-layout(matrix(1:2,nrow=1,byrow = T))
-plot(trees$Volume~trees$Girth)
-plot(trees$Volume~trees$Height)
+layout(matrix(1:2,nrow=1,byrow = T))      # set graphics device with 2 plots side by side
+plot(trees$Volume~trees$Girth)            # scatterplot of volume against girth
+plot(trees$Volume~trees$Height)           # scatterplot of volume against height
 
 pairs(trees)    # plots all scatterplots together as a scatterplot matrix!
 
@@ -59,7 +59,7 @@ pairs(trees)    # plots all scatterplots together as a scatterplot matrix!
 ##########
 # perform linear regression analysis
 
-model1 <- lm(Volume~Girth,data=trees)
+model1 <- lm(Volume~Girth,data=trees)        # regress Volume on Girth
 
 summary(model1)    # examine the results
 
@@ -67,17 +67,17 @@ summary(model1)    # examine the results
 #########
 # visualize the results!
 
-xvals <- seq(5,30,0.5)
-pred <- predict(model1,newdata=data.frame(Girth=xvals),interval = "confidence",level = 0.99)
+xvals <- seq(5,30,0.5)            # set the range of "Girth" values over which you want to make predictions about "Volume"
+pred <- predict(model1,newdata=data.frame(Girth=xvals),interval = "confidence",level = 0.99)   # use the linear model to make predictions about "Volume"
 
 plot(trees$Volume~trees$Girth,xlab="Girth (inches)",ylab="Volume (cubic feet)",main="Black Cherry",
-     xlim=range(xvals),ylim=c(0,100))
+     xlim=range(xvals),ylim=c(0,100))         # Make a pretty scatterplot
 
-abline(model1,lwd=2,col="green")
-lines(xvals,pred[,"upr"],col="green",lty=2)
-lines(xvals,pred[,"lwr"],col="green",lty=2)
-text(10,80,sprintf("Volume = %s + %s*Girth",round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))
-text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3)))
+abline(model1,lwd=2,col="green")                # Add the regression line
+lines(xvals,pred[,"upr"],col="green",lty=2)       # Add the upper bound of the confidence interval
+lines(xvals,pred[,"lwr"],col="green",lty=2)       #      ... and the lower bound
+text(10,80,sprintf("Volume = %s + %s*Girth",round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))       # Add the regression coefficients
+text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3)))     # Add the p-value
 
 
 ##################
@@ -105,16 +105,32 @@ typeof(scalar5)    # returns: logical
 scalar_2 + scalar_4
 
 
+#############
+### VECTORS
+#############
+
+vector1 <- c(1.1, 2.1, 3.1, 4)
+vector2 <- c('a', 'b', 'c')
+vector3 <- c(1, 'a', 2, 'b')
+vector4 <- c(TRUE, 'a', 1)
+vector5 <- c(TRUE, 1.2, FALSE)
+
+
 a <- 1
 b <- 2
-c <- 3
+c <- c(3,4)
 
 d.vec <- c(a, b, c)
 d.vec
 
 
 
-length(d.vec)    # the "length()" function returns the number of elements in a vector (or list, matrix etc.)
+d.vec <- c(1,2,3,4)            # another way to construct the vector "d.vec"
+d.vec = c(1,2,3,4)             # the "equals" sign can also be an assignment operator
+d.vec <- 1:4                   # we can use the colon operator as a shorthand for creating a sequence of integers
+
+
+length(d.vec)    # the "length()" function returns the number of elements in a vector
 
 d1 <- d.vec           # copy the vector "d.vec"
 d2 <- d.vec+3         # add 3 to all elements of the vector "d.vec"
@@ -156,15 +172,16 @@ d.mat/sum(d.mat)
 ############
 
 d.array=array(0,dim=c(3,2,4))       # create 3 by 2 by 4 array full of zeros
-d.array				# see what it looks like
+d.array				                      # see what it looks like
 d.mat=matrix(1:6,nrow=3)
-d.array[,,1]=d.mat  		# enter d as the first slice of the array
-d.array[,,2]=d.mat*2		# enter d*2 as the second slide...
+d.array[,,1]=d.mat  		            # enter d as the first slice of the array
+d.array[,,2]=d.mat*2		            # enter d*2 as the second slide...
 d.array[,,3]=d.mat*3
 d.array[,,4]=d.mat*4
-d.array				# view the array 
+d.array				                      # view the array 
 
-d.array[1,2,4]
+d.array[1,2,4]  # view an element of the array
+d.array[1,,]    # view a slice of the array
 
 
 #############
@@ -314,25 +331,23 @@ d[2:3,]        # 2nd and 3rd rows of d in a matrix
 d.df=my.data[21:30,]  # only take 10 observations
 d.df
 
-
-d.df$Germination      # Subsetting a data frame
-d.df[,4]              # same thing!
-d.df[[4]]             # same thing!
-d.df[,"Germination"]           # same thing!
+## many ways of accessing a particular column of a data frame
+d.df$Germination           # Subsetting a data frame
+d.df[["Germination"]]      # same thing!
+d.df[,4]                   # same thing!
+d.df[[4]]                  # same thing!
+d.df[,"Germination"]       # same thing!
+d.df["Germination"]        # same thing!  (or is it...)
 
 
 d.df$AvgHeight
 d.df$AvgHeight[3]  # subset an element of a data frame
 
 
-# Columns and rows of data frame
-d.df$Treatment
+# Data frame can be indexed just like a matrix
 d.df[,2]
-
-d.df[,2:3]
-cbind(ID=d.df$Obs.Id,Height=d.df$AvgHeight)    # make new data frame 
-
 d.df[2,]
+d.df[,2:3]
 d.df[2,2:3]
 
 
@@ -341,7 +356,7 @@ d.df[2,2:3]
 # Other data exploration tricks in R
 
 length(d2)        # Obtain length (# elements) of vector d2
-dim(d.mat)            # Obtain dimensions of matrix or array
+dim(d.mat)        # Obtain dimensions of matrix or array
 summary(my.data)  # summarize columns in a data frame. 
 names(my.data)    # get names of variables in a data frame (or names of elements in a named vector)
 nrow(my.data)     # get number of rows/observations in a data frame
@@ -386,6 +401,22 @@ factorial(5)     # factorial
 c(1,4) 
 c(2,5) 
 c(3,6)
+
+### Challenge 2: Is d.mat[-c(1,2),] a matrix or a vector? HINT: you can use the "class()" function to help out.
+
+### Challenge 3: Create a new matrix 'd.mat2' by converting directly from data frame d.df, and using only columns 3 to 5 of the object 'd.df'.
+
+### Challenge 4: Create a 3 by 1 (3 rows, 1 column) matrix called 'd.mat3' with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command '1:3')? HINT: use the "dim()" function, which returns the dimensionality of an object.
+
+### Challenge 5: Take your matrix 'd.mat2' and convert it to a vector containing all elements in the matrix. HINT: use the "as.vector()" function.
+
+### Challenge 6: Create a list named 'd.list' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).
+
+### Challenge 7: Extract (subset) the 2nd row of the 3rd matrix in the array in 'd.list' (the list created in challenge 6 above).
+
+### Challenge 8: (extra challenging!) Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
+
+###     HINT: you don't need to type each location in by hand!
 
 
 ########

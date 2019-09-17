@@ -381,7 +381,7 @@ div.tocify {
       <a href="module2_2.html">Submodule 2.2: Parallel computing in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Using the 'tidyvierse'</a>
+      <a href="module2_3.html">Submodule 2.3: Using the 'tidyverse'</a>
     </li>
     <li>
       <a href="module2_4.html">Submodule 2.4: Plotting with 'ggplot'</a>
@@ -583,7 +583,7 @@ outcor</code></pre>
 
 system.time(outcor &lt;- lapply(pair,geneCor))</code></pre>
 <pre><code>##    user  system elapsed 
-##    3.36    0.00    3.36</code></pre>
+##    3.27    0.00    3.26</code></pre>
 <pre class="r"><code># Notice ONE CPU spiked.  Make note of how long it took to run.</code></pre>
 <p>Notice ONE CPU spiked. Make note of how long it took to run.</p>
 <p>Now let’s make an even bigger dataset (just repeating geneData four times), making 26 x 4 = 104 columns:</p>
@@ -608,7 +608,7 @@ geneCor2 &lt;- function(x, gene = fakeData){
 genCor2_system_time &lt;- system.time(outcor &lt;- lapply(pair[1:10],geneCor2))
 genCor2_system_time[&quot;elapsed&quot;] </code></pre>
 <pre><code>## elapsed 
-##    0.77</code></pre>
+##    0.74</code></pre>
 <p>What did you get? On my machine this operation (for 10 pairs) took around 1 second…</p>
 <p>Let’s use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again?</p>
 <pre class="r"><code>length(pair)   # how many pairs were there again?</code></pre>
@@ -619,13 +619,13 @@ genCor2_system_time[&quot;elapsed&quot;] </code></pre>
 
 genCor2_system_time[&quot;elapsed&quot;]      # time it took to run 10 pairs, in seconds</code></pre>
 <pre><code>## elapsed 
-##    0.77</code></pre>
+##    0.74</code></pre>
 <pre class="r"><code>genCor2_system_time[&quot;elapsed&quot;] *(124750/10)     # time it would take to run 124750 pairs, in seconds </code></pre>
 <pre><code>## elapsed 
-## 9605.75</code></pre>
+##  9231.5</code></pre>
 <pre class="r"><code>genCor2_system_time[&quot;elapsed&quot;] *(124750/10/60/60)    # in hours...</code></pre>
 <pre><code>##  elapsed 
-## 2.668264</code></pre>
+## 2.564306</code></pre>
 <p>Ouch! This is a good candidate for parallel processing!</p>
 </div>
 <div id="running-in-parallel" class="section level3">
@@ -639,7 +639,7 @@ pair2 &lt;- sample(pair,300)    # first extract a subsamble of all the pairs</co
 <pre class="r"><code># Let&#39;s test a sequential version of this:
 system.time(outcor &lt;- lapply(pair2,geneCor2))</code></pre>
 <pre><code>##    user  system elapsed 
-##   21.40    0.72   22.16</code></pre>
+##   19.96    0.55   20.50</code></pre>
 <pre class="r"><code># Note the elapsed time.</code></pre>
 <p>Now, we can explore implementing this operation in parallel. To do this, we will use the “parallel” package in R.</p>
 <div id="parallel-package" class="section level4">
@@ -674,7 +674,7 @@ myCluster</code></pre>
 <pre class="r"><code>length(myCluster) # One entry per &quot;worker&quot;.</code></pre>
 <pre><code>## [1] 4</code></pre>
 <pre class="r"><code>myCluster[[1]]    # more info about this &quot;worker&quot;</code></pre>
-<pre><code>## node of a socket cluster on host &#39;localhost&#39; with pid 24176</code></pre>
+<pre><code>## node of a socket cluster on host &#39;localhost&#39; with pid 9084</code></pre>
 <p>Notice you now have multiple instances of Rscript.exe running now!</p>
 <p>We can stop the cluster by using the “stopCluster()” function:</p>
 <pre class="r"><code>?stopCluster</code></pre>
@@ -692,7 +692,7 @@ myCluster &lt;- parallel::makeCluster(spec=mycorenum,type=&quot;PSOCK&quot;)</co
 ?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster</code></pre>
 <p>For example, we might run the “date()” function on each cluster! Note that the results get returned as lists:</p>
 <pre class="r"><code>date()    # run the &quot;date()&quot; function</code></pre>
-<pre><code>## [1] &quot;Fri Aug 23 16:32:46 2019&quot;</code></pre>
+<pre><code>## [1] &quot;Fri Sep 13 22:37:34 2019&quot;</code></pre>
 <pre class="r"><code>workerDates &lt;- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the &quot;date()&quot; function on all clusters 
 class(workerDates)</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
@@ -743,11 +743,11 @@ parallel::clusterCall(cl=myCluster,fun=search)</code></pre>
 
 system.time(outcor2 &lt;- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   </code></pre>
 <pre><code>##    user  system elapsed 
-##    0.05    0.07    5.63</code></pre>
+##    0.15    0.03    5.75</code></pre>
 <pre class="r"><code># vs the non-clustered version:
 system.time(outcor &lt;- lapply(pair2,geneCor2))   # takes much longer!</code></pre>
 <pre><code>##    user  system elapsed 
-##   20.89    0.20   21.14</code></pre>
+##   19.84    0.28   20.14</code></pre>
 <p>We got a big performance boost here!</p>
 <p>Don’t forget to shut down your cluster:</p>
 <pre class="r"><code>stopCluster(myCluster)   # finally, stop the cluster..</code></pre>
@@ -800,7 +800,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   21.84    0.19   22.07</code></pre>
+##   20.10    0.24   20.33</code></pre>
 <p>And now with a parallel backend!</p>
 <pre class="r"><code># Parallel mode (use a parallel backend):
 
@@ -819,7 +819,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.15    0.03    5.64</code></pre>
+##    0.12    0.06    5.69</code></pre>
 <p>Some things to notice:<br />
 - we explicitly define what packages are to be sent over using the .packages parameter<br />
 - foreach calls have access to the master’s global environment. - we can use specific functions to join the data once its done (e.g. rbind)</p>

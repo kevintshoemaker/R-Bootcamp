@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Basic programming in R" />
@@ -73,9 +74,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -94,8 +93,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -111,7 +116,6 @@ body {
   padding-top: 66px;
   margin-top: -66px;
 }
-
 .section h2 {
   padding-top: 66px;
   margin-top: -66px;
@@ -131,6 +135,43 @@ body {
 .section h6 {
   padding-top: 66px;
   margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,47 +193,65 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -241,8 +300,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -251,6 +308,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -272,7 +339,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2018</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2019</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -287,16 +354,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module1_1.html">Module 1.1: working with objects</a>
+      <a href="module1_1.html">Submodule 1.1: working with objects</a>
     </li>
     <li>
-      <a href="module1_2.html">Module 1.2: managing data</a>
+      <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
     </li>
     <li>
-      <a href="module1_4.html">Module 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
     </li>
   </ul>
 </li>
@@ -308,19 +375,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module2_1.html">Module 2.1: R packages</a>
+      <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Module 2.2: Parallel computing in R</a>
+      <a href="module2_2.html">Submodule 2.2: Parallel computing in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Module 2.3: Using the 'tidyvierse'</a>
+      <a href="module2_3.html">Submodule 2.3: Using the 'tidyverse'</a>
     </li>
     <li>
-      <a href="module2_4.html">Module 2.4: Plotting with 'ggplot'</a>
+      <a href="module2_4.html">Submodule 2.4: Plotting with 'ggplot'</a>
     </li>
     <li>
-      <a href="module2_5.html">Module 2.5: Spatial analysis</a>
+      <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
     </li>
   </ul>
 </li>
@@ -379,8 +446,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Module 1.4</h1>
-<h4 class="author"><em>Basic programming in R</em></h4>
-<h4 class="date"><em>February 2019</em></h4>
+<h4 class="author">Basic programming in R</h4>
+<h4 class="date">Fall 2019</h4>
 
 </div>
 
@@ -389,8 +456,8 @@ div.tocify {
 <div id="load-script-for-module-1.4" class="section level2">
 <h2>Load script for module #1.4</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module1_4.R">here</a> to download the script! Save the script to a convenient folder on your laptop.</p></li>
-<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script.</p></li>
+<li><p>Click <a href="module1_4.R">here</a> to download the script! Save the script to your working directory (R Project directory).</p></li>
+<li><p>Load your script in your RStudio Project. To do this, open your RStudio Project and click on the folder icon in the toolbar at the top and load your script.</p></li>
 </ol>
 <p>Let’s get started with basic programming in R!</p>
 </div>
@@ -402,15 +469,14 @@ div.tocify {
 # Start with blank workspace
 
 rm(list=ls())</code></pre>
-<p>As we have seen, base R already includes lots of functions, and thousands more functions are available in packages that you can install. Nonetheless, it’s really useful to know how to write your own functions! For example, we might write our own function if we have to repeat certain sets of operations over and over in different contexts.</p>
+<p>As we have seen, base R already includes lots of functions, and thousands more functions are available in packages that you can install (next module of this workshop). Nonetheless, it’s really useful to know how to write your own functions! For example, we might write our own function if we have to repeat certain sets of operations over and over in different contexts.</p>
 <p>We use the following syntax when we are writing our own functions:</p>
 <pre><code>
-my.function &lt;- function(inputs){         # function takes various arguments, or inputs
+my.function &lt;- function(input1,input2,...){         # function takes various arguments (inputs)
     
-    ## Algorithm: Do something useful with the inputs
+    ## [Algorithm goes here: Do something useful with the inputs]
     
-    return(output)             # optionally, return some output
-    
+    return(output)  # return some output
 }
 </code></pre>
 <div id="first-function-hello-world" class="section level3">
@@ -422,16 +488,22 @@ my.function &lt;- function(inputs){         # function takes various arguments, 
 
 my.function = function(){       # this function has no arguments
   message &lt;- &quot;Hello, world!&quot;
-  print(message)
+  return(message)
 }</code></pre>
 <p>Now we can run the function!</p>
 <pre class="r"><code>my.function()</code></pre>
 <pre><code>## [1] &quot;Hello, world!&quot;</code></pre>
+<p>What happens if you run the function without the parentheses?</p>
+<pre class="r"><code>my.function      # try running without parentheses-   what happens?</code></pre>
+<pre><code>## function(){       # this function has no arguments
+##   message &lt;- &quot;Hello, world!&quot;
+##   return(message)
+## }</code></pre>
 </div>
 <div id="mean-function" class="section level3">
 <h3>‘Mean’ function</h3>
 <p>Let’s write a function to compute the mean of a vector. Okay fine, base R already has the “mean()” function, but let’s do it anyway!</p>
-<pre class="r"><code>## We can write our own functions. Useful if we have to repeat operations over and over.
+<pre class="r"><code>## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
 my.mean &lt;- function(x){
     m &lt;- sum(x)/length(x)
     return(m)
@@ -443,16 +515,16 @@ my.mean(foo)</code></pre>
 </div>
 <div id="square-function" class="section level3">
 <h3>‘Square’ function</h3>
-<p>How about a function to square the arguments?</p>
+<p>How about a function to square its arguments?</p>
 <pre class="r"><code>## A function to square the arguments.
 square &lt;- function(x){
     x^2
 }
 
-## Square a single value (scaler).
+## Square a single value (scalar).
 square(2)</code></pre>
 <pre><code>## [1] 4</code></pre>
-<pre class="r"><code>## Square a vector.
+<pre class="r"><code>## Square all elements of a vector.
 square(1:10)</code></pre>
 <pre><code>##  [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
 </div>
@@ -496,13 +568,18 @@ logit.x</code></pre>
 ##  [96]  2.94443898  3.17805383  3.47609869  3.89182030  4.59511985
 ## [101]         Inf</code></pre>
 <pre class="r"><code>## Plot x on x-axis, and logit(x) on y axis.
-plot(x, logit.x, type = &#39;l&#39;)    # View the output graphically.</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+plot(x, logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;logit(x)&quot;)    # View the output graphically.</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="expit-function" class="section level3">
 <h3>‘Expit’ function</h3>
 <p>A useful, related function is the inverse-logit, or “expit” function:</p>
-<pre class="r"><code>## The expit (or inverse logit) funtion.
+<pre class="r"><code>## Sequence between 0 and 1.
+x &lt;- seq(from = 0, to = 1, by = 0.01)
+
+logit.x &lt;- logit(x)
+
+## The expit (or inverse logit) funtion.
 expit &lt;- function(x){
     exp(x)/(1+exp(x))
 }
@@ -513,11 +590,11 @@ expit(2.197225)</code></pre>
 <pre class="r"><code>expit.logit.x &lt;- expit(logit.x)    # Return to original x values.
 
 ## Plot x on x-axis, and expit(logit(x)) = x on y axis.
-plot(x, expit.logit.x, type = &#39;l&#39;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+plot(x, expit.logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;expit(logit(x))&quot;)</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>## Plot &quot;logistic&quot; curve
-plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type=&quot;l&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type=&quot;l&quot;,xlab=&quot;x&quot;,ylab=&quot;expit(x)&quot;)</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 </div>
 <div id="wildlife-survival-function" class="section level3">
 <h3>Wildlife survival function</h3>
@@ -532,14 +609,14 @@ survival &lt;- function(n, d){
 survival(n = 10, d = 5)</code></pre>
 <pre><code>## [1] 0.5</code></pre>
 <pre class="r"><code>## Simulate many years of data.
-d &lt;- sample(0:50, 10, replace = TRUE)   # note use of &quot;sample()&quot; function
-n &lt;- c(100, 100-d)
-(surv &lt;- survival(n = n[1:10], d = d))</code></pre>
-<pre><code>##  [1] 0.7000000 0.4428571 0.4918033 0.7391304 1.0000000 0.8600000 0.9302326
-##  [8] 0.6808511 0.5000000 0.7076923</code></pre>
-<pre class="r"><code>## Plot year-specific survival rate.
+d &lt;- sample(0:50, 10, replace = TRUE)   # note use of &quot;sample()&quot; function   [random number of dead individuals]
+n &lt;- rep(100, times=10)                 # total number of individuals 
+surv &lt;- survival(n = n, d = d)
+surv</code></pre>
+<pre><code>##  [1] 0.53 0.72 0.70 0.60 0.91 0.53 0.74 0.88 0.70 0.98</code></pre>
+<pre class="r"><code>## Plot year-specific survival rate (random- will look different every time!)
 plot(1:10, surv, type = &#39;l&#39;,xlab=&quot;Year&quot;,ylab=&quot;Survival&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 </div>
 <div id="conditional-statements" class="section level2">
@@ -551,13 +628,13 @@ plot(1:10, surv, type = &#39;l&#39;,xlab=&quot;Year&quot;,ylab=&quot;Survival&qu
 <pre><code>
 if([some condition]){               ## if some condition is met
   [execute some commands]
-}else if ([some other condition]){   ## if some other condition is met (often not necessary)
+}else if ([some other condition]){   ## if some other condition is met (often this clause is not necessary)
   [execute some other commands]
 }else{                               ## if none of the above conditions are met (otherwise...)
   [execute some other commands]
 }
 </code></pre>
-<p>NOTE: you can include any number of “else if(…)” statements- and most of the time you can omit these entirely!</p>
+<p>NOTE: you can include any number of “else if(…)” statements- or you can omit these entirely!</p>
 <p>Let’s try it!</p>
 <pre class="r"><code>####
 ####  if...else statements
@@ -566,7 +643,7 @@ if([some condition]){               ## if some condition is met
 ########
 # Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
 n.samples &lt;- 1
-p &lt;- 0.7
+p &lt;- 0.7            # probability of detection
 x &lt;- rbinom(n = n.samples, size = 1, prob = p)
 
 if (x &gt; 0) {
@@ -575,17 +652,35 @@ if (x &gt; 0) {
     print(&quot;Not detected&quot;)
 }</code></pre>
 <pre><code>## [1] &quot;Detected&quot;</code></pre>
+<pre class="r"><code>######
+# Make a &quot;safe&quot; version of the &quot;logit&quot; function
+
+logit.safe &lt;- function(x){
+    bad &lt;- ((x&lt;0)|(x&gt;1))
+    if(any(bad)){
+      stop(&quot;logit is only defined for x between 0 and 1!&quot;)
+    }else{
+      log(x/(1-x))
+    }
+    
+}
+x &lt;- seq(from = -1, to = 2, by = 0.1)
+# logit(x)      # this returns impossible numbers (NaNs)
+# logit.safe(x)   # this will throw an informative error!
+
+logit.safe(c(0.15,0.99))</code></pre>
+<pre><code>## [1] -1.734601  4.595120</code></pre>
 </div>
 <div id="ifelse-function" class="section level3">
 <h3>ifelse() function</h3>
-<p>Note that “if…else” only works for testing one condition at a time. If we have a spreadsheet with lots of data, we need something else – somethign “vectorized” – like the “ifelse()” function:</p>
+<p>Note that “if…else” only works for testing one condition at a time. If we have a spreadsheet with lots of data, we need something else – something “vectorized” – like the “ifelse()” function:</p>
 <pre class="r"><code>####
 ####  ifelse()
 ####
 
-## Note if...else only works for testing one value. If we have a spreadsheet with lots of data, need something else.
+## Note if...else only works for running one logical (T/F) test at a time. If we have a spreadsheet with lots of data, we need something else.
 n.samples &lt;- 100
-set.seed(2017)
+set.seed(2017)     # the &#39;seed&#39; allows random number generators to give the same result every time!
 
 ## 100 samples from a binomial disribution with detection probability = p = 0.7.
 y &lt;- rbinom(n = n.samples, size = 1, prob = p)
@@ -665,8 +760,8 @@ xt</code></pre>
 <p>Iterating, or running the same operation over and over sequentially, is another fundamental computer programming tool. Computers are great at performing multiple computations really, really fast! <strong>Loops</strong> are a good way to take advantage of computers!</p>
 <p>The basic syntax for iterating in R is called a “FOR loop”, and looks like this:</p>
 <pre><code>
-for([placeholder variable] in [iteration vector of length x]){
-  [perform specified operation(s) x times, with the placeholder variable alternately set at each value of the iteration vector]
+for([iteration variable] in [iteration vector of length x]){
+  [perform specified operation(s) x times, with the iteration variable alternately set at each value of the iteration vector]
 }
 </code></pre>
 <p>For example…</p>
@@ -674,10 +769,36 @@ for([placeholder variable] in [iteration vector of length x]){
 ####  for loops
 ####
 
-n.iter &lt;- 10
+for(i in 1:10){
+  print(i)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10</code></pre>
+<pre class="r"><code>for(j in c(1,2,3,4,5,6,7,8,9,10)){       # alternative
+  print(j)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10</code></pre>
+<pre class="r"><code>n.iter &lt;- 10                   # another alternative!
 count &lt;- 0
 for(i in 1:n.iter){
-  count &lt;- count+1            # assign a new value of count equal to the old value of count + 1
+  count &lt;- count+1            # assign a new value of count equal to the old value of count plus 1
   print(count)
 }</code></pre>
 <pre><code>## [1] 1
@@ -690,18 +811,18 @@ for(i in 1:n.iter){
 ## [1] 8
 ## [1] 9
 ## [1] 10</code></pre>
-<p>Here, “i” is the <em>placeholder variable</em> and “1:n.iter” is the <em>iteration vector</em>:</p>
+<p>Take the first FOR loop above. Here, “i” is the <em>iteration variable</em> and “1:n.iter” is the <em>iteration vector</em>:</p>
 <pre class="r"><code>  # closer look at iteration vector:
 1:n.iter</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<p>Essentially, R starts this FOR loop by setting the value of the <em>placeholder variable</em> “i” to the first value of the <em>iteration vector</em> (i.e., the value 1). It then runs the two commands in the body of the for loop [count &lt;- count+1; print(count)]. Then, it sets the placeholder variable “i” to the next value in the <em>iteration vector</em> (i.e., the value 2) and runs the commands again. It keeps doing this until it reaches the end of the iteration vector, at which point it stops!</p>
-<p>Often, we use the placeholder variable directly within the FOR loop. Here are some examples:</p>
-<pre class="r"><code>## Using the placeholder variable &quot;i&quot; within the for loop:
+<p>Essentially, R starts this FOR loop by setting the value of the placeholder <em>iteration variable</em> “i” to the first value of the <em>iteration vector</em> (i.e., the value 1). It then runs the two commands in the body of the for loop [count &lt;- count+1; print(count)]. Then, it sets the iteration variable “i” to the next value in the <em>iteration vector</em> (i.e., the value 2) and runs the commands again. It keeps doing this until it reaches the end of the iteration vector, at which point it stops!</p>
+<p>It is often useful to reference the iteration variable directly within the FOR loop. Here are some examples:</p>
+<pre class="r"><code>## Using the iteration variable &quot;i&quot; within the for loop:
 
 count &lt;- 0
 for(i in 1:n.iter){
-    count &lt;- count+i            # assign a new value of count equal to the old value of count + i
-    print(count)
+  count &lt;- count+i            # assign a new value of count equal to the old value of count + i
+  print(count)
 }</code></pre>
 <pre><code>## [1] 1
 ## [1] 3
@@ -715,20 +836,18 @@ for(i in 1:n.iter){
 ## [1] 55</code></pre>
 <pre class="r"><code>## A for-loop for dependent sequence (here, the Fibonacci sequence)
 n.iter &lt;- 10
-x &lt;- rep(0, n.iter)            # set up vector of all zeros
+x &lt;- rep(0, n.iter)           # set up vector of all zeros
 x[1] &lt;- 1                     # assign x_1  &lt;-  1
 x[2] &lt;- 1                     # assign x_2 = 0
-x</code></pre>
-<pre><code>##  [1] 1 1 0 0 0 0 0 0 0 0</code></pre>
-<pre class="r"><code>for(i in 3:n.iter){
-    x[i] &lt;- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
+for(i in 3:n.iter){
+  x[i] &lt;- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
 }
 x</code></pre>
 <pre><code>##  [1]  1  1  2  3  5  8 13 21 34 55</code></pre>
 <div id="iterating-using-the-apply-family-of-functions-in-r" class="section level3">
 <h3>Iterating using the “apply() family of functions in R”</h3>
 <pre class="r"><code>###
-### apply (A more efficient, vectorized way to iterate)
+### apply (A more efficient way to iterate)
 ###
 
 W &lt;- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
@@ -751,6 +870,54 @@ MyFunc &lt;- function(x){
 }
 apply(W, 1, MyFunc)</code></pre>
 <pre><code>## [1] -102.975 -115.900</code></pre>
+<pre class="r"><code>##########
+# lapply: apply a function across a list or vector
+
+lapply(1:5,function(x) exp(x)) </code></pre>
+<pre><code>## [[1]]
+## [1] 2.718282
+## 
+## [[2]]
+## [1] 7.389056
+## 
+## [[3]]
+## [1] 20.08554
+## 
+## [[4]]
+## [1] 54.59815
+## 
+## [[5]]
+## [1] 148.4132</code></pre>
+<pre class="r"><code>lapply(1:5, function(x) sqrt(trees$Volume[x]))</code></pre>
+<pre><code>## [[1]]
+## [1] 3.209361
+## 
+## [[2]]
+## [1] 3.209361
+## 
+## [[3]]
+## [1] 3.193744
+## 
+## [[4]]
+## [1] 4.049691
+## 
+## [[5]]
+## [1] 4.335897</code></pre>
+<pre class="r"><code>##########
+# sapply: apply a function across a list or vector, and simplify the returned object (usually returns a vector)
+
+sapply(1:5,function(x) exp(x)) </code></pre>
+<pre><code>## [1]   2.718282   7.389056  20.085537  54.598150 148.413159</code></pre>
+<pre class="r"><code>#########
+# tapply: summarize a vector by group (apply a summary function separately to each group)
+
+df.new &lt;- data.frame(
+  var1 = runif(10),
+  group = sample(c(&quot;A&quot;,&quot;B&quot;),10,replace=T)
+)
+tapply(df.new$var1,df.new$group,sum)</code></pre>
+<pre><code>##        A        B 
+## 2.948623 1.336062</code></pre>
 </div>
 </div>
 <div id="practice-exercises" class="section level2">
@@ -773,7 +940,9 @@ apply(W, 1, MyFunc)</code></pre>
 
 n.samples &lt;- 100
 x &lt;- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
-mu &lt;- mean(x)                               # Compute the sample mean.
+hist(x)</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>mu &lt;- mean(x)                               # Compute the sample mean.
 s &lt;- sd(x)                                  # Compute the sample standard deviation.
 t &lt;- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
 t.crit &lt;- qt(p = 0.975, df = 99)            # Calculate critical value for test (above which we can reject the null hypothesis with acceptable type-I error)
@@ -799,26 +968,26 @@ habitat &lt;- rnorm(20, 0, 2)    # simulate environmental covariate
 Data &lt;- cbind(observations, habitat)       # bind into single matrix.
 Data</code></pre>
 <pre><code>##                                                 habitat             
-##  [1,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;Detected&quot;    &quot;1.1651537695756&quot;   
-##  [2,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;-0.613816554750075&quot;
-##  [3,] &quot;0&quot;           &quot;NotDetected&quot; &quot;0&quot;           &quot;2.21824770751705&quot;  
-##  [4,] &quot;NotDetected&quot; &quot;1&quot;           &quot;NotDetected&quot; &quot;-1.41476041128591&quot; 
-##  [5,] &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;0&quot;           &quot;1.67620138721813&quot;  
-##  [6,] &quot;0&quot;           &quot;Detected&quot;    &quot;1&quot;           &quot;2.91765526282092&quot;  
-##  [7,] &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;4.86943597273634&quot;  
-##  [8,] &quot;NotDetected&quot; &quot;0&quot;           &quot;NotDetected&quot; &quot;3.13166254497207&quot;  
-##  [9,] &quot;NotDetected&quot; &quot;1&quot;           &quot;Detected&quot;    &quot;1.17810663231691&quot;  
-## [10,] &quot;Detected&quot;    &quot;1&quot;           &quot;0&quot;           &quot;1.40889464651772&quot;  
-## [11,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-1.31838013069218&quot; 
-## [12,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;1&quot;           &quot;-0.959218095366536&quot;
-## [13,] &quot;1&quot;           &quot;1&quot;           &quot;Detected&quot;    &quot;2.31665529967448&quot;  
-## [14,] &quot;0&quot;           &quot;Detected&quot;    &quot;1&quot;           &quot;-0.600024626226216&quot;
-## [15,] &quot;0&quot;           &quot;0&quot;           &quot;1&quot;           &quot;-1.19162607148504&quot; 
-## [16,] &quot;Detected&quot;    &quot;0&quot;           &quot;NotDetected&quot; &quot;0.952650163756112&quot; 
-## [17,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;Detected&quot;    &quot;3.31960806917777&quot;  
-## [18,] &quot;1&quot;           &quot;1&quot;           &quot;NotDetected&quot; &quot;-2.82432188658575&quot; 
-## [19,] &quot;0&quot;           &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;2.00889649628675&quot;  
-## [20,] &quot;0&quot;           &quot;0&quot;           &quot;1&quot;           &quot;3.37380275696964&quot;</code></pre>
+##  [1,] &quot;Detected&quot;    &quot;1&quot;           &quot;Detected&quot;    &quot;-1.31838013069218&quot; 
+##  [2,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-0.959218095366536&quot;
+##  [3,] &quot;1&quot;           &quot;Detected&quot;    &quot;Detected&quot;    &quot;2.31665529967448&quot;  
+##  [4,] &quot;0&quot;           &quot;Detected&quot;    &quot;Detected&quot;    &quot;-0.600024626226216&quot;
+##  [5,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;1&quot;           &quot;-1.19162607148504&quot; 
+##  [6,] &quot;1&quot;           &quot;1&quot;           &quot;Detected&quot;    &quot;0.952650163756112&quot; 
+##  [7,] &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;1&quot;           &quot;3.31960806917777&quot;  
+##  [8,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-2.82432188658575&quot; 
+##  [9,] &quot;NotDetected&quot; &quot;1&quot;           &quot;Detected&quot;    &quot;2.00889649628675&quot;  
+## [10,] &quot;0&quot;           &quot;0&quot;           &quot;NotDetected&quot; &quot;3.37380275696964&quot;  
+## [11,] &quot;1&quot;           &quot;1&quot;           &quot;NotDetected&quot; &quot;-1.38505429366756&quot; 
+## [12,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;1&quot;           &quot;0.818397336733175&quot; 
+## [13,] &quot;0&quot;           &quot;0&quot;           &quot;0&quot;           &quot;-1.01972896373415&quot; 
+## [14,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;Detected&quot;    &quot;-2.96852211723634&quot; 
+## [15,] &quot;0&quot;           &quot;0&quot;           &quot;NotDetected&quot; &quot;-2.15312731331142&quot; 
+## [16,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-2.08564204039605&quot; 
+## [17,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;1&quot;           &quot;-0.725906188492338&quot;
+## [18,] &quot;1&quot;           &quot;1&quot;           &quot;0&quot;           &quot;3.02404054801466&quot;  
+## [19,] &quot;Detected&quot;    &quot;1&quot;           &quot;NotDetected&quot; &quot;0.237107059656618&quot; 
+## [20,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;0.773745221715878&quot;</code></pre>
 <p>As you can see, non-detections are coded here as both “NotDetected” and “0”, and likewise, detection events also have two alternative codes. To clean up this data set, let’s do the following:</p>
 <ul>
 <li>Make sure that detections and non-detections are coded in a consistent manner!<br />
@@ -836,26 +1005,26 @@ NewData &lt;- cbind(NewObs, NewHabitat) # bind the columns to form a matrix.
 colnames(NewData) &lt;- c(&quot;obs1&quot;, &quot;obs2&quot;, &quot;obs3&quot;, &quot;Habitat&quot;)  # provide column names
 NewData</code></pre>
 <pre><code>##       obs1 obs2 obs3 Habitat
-##  [1,]    0    1    1    1.17
-##  [2,]    0    0    1   -0.61
-##  [3,]    0    0    0    2.22
-##  [4,]    0    1    0   -1.41
-##  [5,]    0    0    0    1.68
-##  [6,]    0    1    1    2.92
-##  [7,]    0    0    0    4.87
-##  [8,]    0    0    0    3.13
-##  [9,]    0    1    1    1.18
-## [10,]    1    1    0    1.41
-## [11,]    0    1    0   -1.32
-## [12,]    1    0    1   -0.96
-## [13,]    1    1    1    2.32
-## [14,]    0    1    1   -0.60
-## [15,]    0    0    1   -1.19
-## [16,]    1    0    0    0.95
-## [17,]    1    1    1    3.32
-## [18,]    1    1    0   -2.82
-## [19,]    0    0    0    2.01
-## [20,]    0    0    1    3.37</code></pre>
+##  [1,]    1    1    1   -1.32
+##  [2,]    1    1    0   -0.96
+##  [3,]    1    1    1    2.32
+##  [4,]    0    1    1   -0.60
+##  [5,]    0    1    1   -1.19
+##  [6,]    1    1    1    0.95
+##  [7,]    0    0    1    3.32
+##  [8,]    1    1    0   -2.82
+##  [9,]    0    1    1    2.01
+## [10,]    0    0    0    3.37
+## [11,]    1    1    0   -1.39
+## [12,]    1    0    1    0.82
+## [13,]    0    0    0   -1.02
+## [14,]    1    0    1   -2.97
+## [15,]    0    0    0   -2.15
+## [16,]    1    1    0   -2.09
+## [17,]    1    1    1   -0.73
+## [18,]    1    1    0    3.02
+## [19,]    1    1    0    0.24
+## [20,]    0    0    1    0.77</code></pre>
 <p>Looks a lot better now, right!</p>
 </div>
 </div>
@@ -885,13 +1054,13 @@ layout(matrix(c(1,1),nrow=1))
 persp(X,  Y, Z, theta = 135, phi = 30, col = &quot;green3&quot;,    # &quot;persp()&quot; produces a 3D &quot;perspective plot&quot;
       scale = FALSE, ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Now let’s view from an alternative angle!</p>
 <pre class="r"><code>## change the value of theta from 135 to 90 to change the viewing angle
 persp(X, Y, Z, theta = 90, phi = 30, col = &quot;green3&quot;,
       scale = FALSE,  ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Now we can use a FOR loop to view this landscape from many angles. Try it!</p>
 <pre class="r"><code>## Use a for-loop to help view many angles.
 for(i in 1:18){
@@ -953,7 +1122,7 @@ readline()</code></pre>
 </li>
 <li>Specify the sample size for each hypothetical repeat sample<br />
 </li>
-<li>Specify the mean and variance of the “true” population from which we will sample</li>
+<li>Specify the min and max of the “true” (uniform) population from which we will sample</li>
 <li>For each hypothetical sampling experiment:
 <ol style="list-style-type: lower-alpha">
 <li>Draw a random sample from the known distribution<br />
@@ -969,23 +1138,21 @@ readline()</code></pre>
 
 n.iter &lt;- 1000                                # large number of hypothetical &quot;repeat samples.&quot;
 sample.size &lt;- 30                             # Sample size of 30 from each repeat sample.
-mu &lt;- 5                                       # True population mean of 5.
-sd &lt;- 2                                       # True standard deviation of 2.
+min &lt;- 2                                       # True population minimum of 2.
+max &lt;- 6                                       # True population maximum of 6.
 means &lt;- numeric(n.iter)                      # Initialize empty vector to store the sample means.
 for(i in 1:n.iter){                           # For each of the repeat samples...
-    sample &lt;- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
+    sample &lt;- runif(sample.size,min=min,max=max)     # draw a random sample from the true population
     means[i] &lt;- mean(sample)                # and store the sample mean.
 }
 hist(means)                                # Histogram of all the means.
-abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 4.</code></pre>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <pre class="r"><code>plot(density(means), main = &quot;&quot;)
 abline(v = mean(means), col = 2, lwd = 4)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
 <pre class="r"><code>mean(means)                                # Close to true mean of 5</code></pre>
-<pre><code>## [1] 5.009089</code></pre>
-<pre class="r"><code>sd(means)*sqrt(30)                         # Close to true sd of 2</code></pre>
-<pre><code>## [1] 1.983313</code></pre>
+<pre><code>## [1] 3.99954</code></pre>
 </div>
 <div id="practice-putting-it-all-together" class="section level3">
 <h3>Practice putting it all together!</h3>
@@ -1022,9 +1189,9 @@ for(i in 1:(years-1)){                     # Function within a FOR loop!
 }
 plot(1:years, pop.size, type = &#39;l&#39;,
      xlab = &quot;Years&quot;, ylab = &quot;Population Size&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>And finally, we could wrap this all up in a more complex function that simulates across years and produces a plot! That way, we could run an entire population simulation with a single line of code. Let’s try it!</p>
-<pre class="r"><code>## A more complex function that ouputs a plot.
+<pre class="r"><code>## A more complex function that outputs a plot.
 plot.logistic.growth &lt;- function(r, P, K, years){
     pop.size[1] &lt;- P
     for(i in 1:(years-1)){
@@ -1037,13 +1204,13 @@ plot.logistic.growth &lt;- function(r, P, K, years){
 }
 
 plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <pre class="r"><code>par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))                  # Multi-figure (mf) plot with 2 rows and 2 columns.
 plot.logistic.growth(r = 0.1, P = 10, K = 100, years = 20)   # Change the values of r and quickly print plots.
 plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
 plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
 plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
 <pre class="r"><code>par(mfrow = c(1, 1))                               # Return to a 1X1 plot.</code></pre>
 </div>
 </div>
@@ -1067,6 +1234,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

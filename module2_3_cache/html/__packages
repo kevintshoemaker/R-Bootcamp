@@ -1,11 +1,4 @@
 base
-RevoUtilsMath
-RevoUtils
-boot
-foreach
-iterators
-doParallel
-modeest
 tidyverse
 ggplot2
 tibble
@@ -15,5 +8,4 @@ purrr
 dplyr
 stringr
 forcats
-bindrcpp
 lubridate

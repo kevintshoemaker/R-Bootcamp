@@ -36,7 +36,6 @@ In this module we will talk about how you can continue learning, gaining confide
 
 Whether you are an expert or a novice, you will always encounter situations where you don't know exactly what to do. The great thing about R is that there is *nearly always a way to do it* (whether in base R or via **packages** contributed by R users from around the world), and once you get familiar with the basics, it's usually not that hard to figure out how to accomplish your analysis objectives!
 
-![](tech_support_cheat_sheet.jpg)
 
 ## Load script for module #2.1
 
@@ -70,6 +69,9 @@ install.packages("modeest")    # run this if you haven't yet installed the packa
 
 library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
 
+   # install.packages("BiocManager")
+   # BiocManager::install("genefilter")    # you might need to install a dependency in order to make this work!
+
 ```
 
 Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax: 
@@ -100,7 +102,7 @@ Not that you need to do this very often, but if you want to remove a package fro
 
 ```{r eval=FALSE}
 
-detach("modeest")  # remove the package from the workspace
+detach("package:modeest")  # remove the package from the workspace
 
 ```
 
@@ -137,6 +139,8 @@ Let's install and load the "car" package:
 ```{r eval=FALSE}
 
 install.packages("car")
+install.packages("rgl")   # you need this one as well!
+
 library(car)
 
 ```
@@ -177,7 +181,7 @@ install_github("kbroman/broman")  # install a random package from GitHub!
 
 ### Finding the right package for the job
 
-Usually a Google search is the best way to find out about packages! But you may also read about new packages in a journal (e.g., [Methods in Ecology and Evolution](https://besjournals.onlinelibrary.wiley.com/journal/2041210X)) or textbook, or conference, or just talking with other researchers! 
+Usually a Google search is the best way to find packages for doing something you want to do! But you may also read about new packages in a journal (e.g., [Methods in Ecology and Evolution](https://besjournals.onlinelibrary.wiley.com/journal/2041210X)) or textbook, or conference, or just talking with other researchers! 
 
 ### Learning more about how a package works
 
@@ -295,7 +299,7 @@ example(lm)   # run examples for "lm" function (included in base R)
 
 ```
 
-Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples! 
+Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples on the web! 
 
 #### Package citations
 
@@ -341,6 +345,8 @@ I don't even understand why it works so well to google R help ('r' is just a sin
 
 More helpful links for going further with R are provided on the [Links](Links.html) page. 
 
+
+![](tech_support_cheat_sheet.jpg)
 
 ## Any questions???
 

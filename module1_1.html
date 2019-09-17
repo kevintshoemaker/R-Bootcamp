@@ -453,11 +453,11 @@ div.tocify {
 
 
 <p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. - Thanks to Perry Williams for allowing us to use these materials!!</p>
-<p>Welcome to the 2018 R bootcamps! Let’s get started!!</p>
+<p>Welcome to the 2019 R bootcamps! Let’s get started!!</p>
 <div id="get-materials-for-this-module" class="section level2">
 <h2>Get materials for this module</h2>
 <ul>
-<li>I recommend having a printed copy of a good base R “cheatsheet” as you get started (we will have copies to pass out at the workshop!). You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! ‘Cheatsheets’ like this can quickly and easily refresh your memory. So print out the cheatsheet and don’t worry if you don’t memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to use R and learn new things in R!</li>
+<li>I recommend having a printed copy of a good base R “cheatsheet” as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! ‘Cheatsheets’ like this can quickly and easily refresh your memory. So print out the cheatsheet and don’t worry if you don’t memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to use R and learn new things in R!</li>
 </ul>
 <p>Here are links to good base R “cheatsheets”:</p>
 <p><a href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf">Base R Cheat sheet</a><br />
@@ -466,16 +466,16 @@ div.tocify {
 <div id="load-script-for-module-1.1" class="section level2">
 <h2>Load script for module #1.1</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module1_1.R">here</a> to download the script for this module! I recommend right-clicking (or ctrl-clicking for Macs) on the link and selecting the “Save As” option from the context menu. Save the script to a convenient folder on your laptop, which will ultimately serve as your <strong>working directory</strong> for this bootcamp. I recommend creating a new folder to store all the scripts, data sets and other materials from these modules!</p></li>
-<li><p>Start a new <strong>RStudio Project</strong>. To do this, open RStudio and from the File menu select File&gt;&gt;New Project. In the menu that follows, select “Existing Directory”, and then navigate to the folder in which you saved the R script for this module (from the previous step; your working directory). The R project will automatically take the name of your working directory folder.</p></li>
-<li><p>Load a blank script in RStudio. To do this, click on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script). Your RStudio interface should now be divided into four quadrants. On the top left is your <strong>script</strong> (a set of written commands that R can recognize and execute), on the bottom left is your <strong>console</strong> (your direct connection with R- prints errors and stores a record of commands that have already been run), on the top right is your <strong>Environment</strong> (a record of all the objects – data, variables, functions– that you have defined in your current <strong>session</strong>), and on the bottom left are some helper interfaces that let you view helpfiles, load packages, view graphical plots, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!</p></li>
+<li><p>Click <a href="module1_1.R">here</a> to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the “Save As” option from the context menu. Save the script to a convenient folder on your laptop, which will serve as your <strong>working directory</strong> for this bootcamp. I recommend creating a new folder to store all the scripts, data sets and other materials from these modules!</p></li>
+<li><p>Start a new <strong>RStudio Project</strong>. To do this, open RStudio and from the File menu select File&gt;&gt;New Project. In the menu that follows, select “Existing Directory”, and then navigate to the folder in which you saved the R script for this module (your working directory). The R project will automatically take the name of your working directory folder.</p></li>
+<li><p>Load a blank script in RStudio. To do this, click on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script). Your RStudio interface should now be divided into four quadrants. In the Rstudio default configuration, the top left panel is your <strong>script</strong> (a set of written commands that R can recognize and execute), the bottom left panel is your <strong>console</strong> (your direct connection with R- prints errors and stores a record of commands that have already been run), the top right panel is your <strong>Environment</strong> (container for all the objects – data, variables, functions– that you have defined in your current <strong>session</strong>), and the bottom left panel is a set of tabbed interfaces that let you view helpfiles, load packages, view graphical plots, view files in your working directory, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!</p></li>
 </ol>
-<p>Let’s get started!!!</p>
+<p>Let’s get started!!</p>
 <p><img src="rstudio1.jpg" /></p>
 </div>
 <div id="explore-the-r-console" class="section level2">
 <h2>Explore the R console</h2>
-<p>The R console (what you see if you opened R directly without going through RStudio) is a <strong>command line</strong> interface, and is <em>your direct connection with the R statistical programming language</em>. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make the most effective use of the console! In fact, after this short demo you will rarely interact directly with the console!</p>
+<p>The R console (what you see if you opened R directly without going through RStudio) is a <strong>command line</strong> interface, and is <em>your direct connection with the R statistical programming language</em>. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make effective use of the console! In fact, after this short demo you will rarely interact directly with the console (instead, you will use a script!)!</p>
 <p>The R console is located in the left half or bottom left of the RStudio interface (see figure above).</p>
 <ol style="list-style-type: decimal">
 <li><p>Click on the console just to the right of one of the “&gt;” prompts.</p></li>
@@ -491,12 +491,12 @@ div.tocify {
 <p>NOTHING!</p>
 <p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface). You should see that you now have a new <strong>object</strong> in your environment, called “Batmans_butler”, and this object contains a <strong>text string</strong> (“Alfred Pennyworth”).</p>
 <p>Now type <code>print(Batmans_butler)</code><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> into the R console and hit “Enter”. What happens? <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
-<p>If you enter the name of an object at the command line, R automatically prints the value of the object- you don’t need to use the <code>print()</code> function… Try it: type <code>Batmans_butler</code> into the R console and hit “Enter”. R dutifully returns the name of Bruce Wayne’s loyal and tireless butler, best friend and surrogate father figure.</p>
+<p>If you enter the name of an object at the command line, R automatically prints the value of the object- you don’t need to use the <code>print()</code> function… Try it: type <code>Batmans_butler</code> into the R console and hit “Enter”. R dutifully returns the name of Bruce Wayne’s loyal and tireless butler, best friend and surrogate father figure. In fact, when you type the name of an object and hit “Enter”, R will automatically print the contents of that object back to the console.</p>
 </div>
 </div>
 <div id="graduating-to-r-scripts" class="section level2">
 <h2>Graduating to R Scripts</h2>
-<p>You will quickly realize that although the command-line R console is nice for some things, there is a much better way to develop R code. That is by storing an ordered set of commands as a text file. This text file (the standard is to use the “.R” extension) is called an <strong>R script</strong>. Again, the top left quadrant of the RStudio interface allows you to view and edit one or more R scripts.</p>
+<p>You will quickly realize that although the command-line R console is nice for some things, there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the “.R” extension) is called an <strong>R script</strong>. Again, the top left quadrant of the RStudio interface (at least by default) is where you can view and edit your R scripts.</p>
 <div id="new-script" class="section level3">
 <h3>New script</h3>
 <p>If you haven’t done it already, create a new R script by clicking on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script).</p>
@@ -506,13 +506,14 @@ my_obj &lt;- 2+2
 </code></pre>
 <p>Now highlight the text you just wrote (or place the cursor somewhere within the text) and hit ‘Ctrl+Enter’ (or ‘Command+Enter’) to run that line of code!</p>
 <p>Click on a new (blank) line in the script and type <code>2+2</code>. Now hit “Ctrl+Enter” (or “Command+Enter”) to run the line of code.</p>
-<p>Of course, it’s always a good idea to save your scripts often- make sure to save your new script before you move on.</p>
+<p>Of course, it’s always a good idea to save your scripts often – make sure to save your new script before you move on.</p>
 </div>
 <div id="load-existing-script" class="section level3">
 <h3>Load Existing script</h3>
 <p>Remember the file you downloaded at the beginning of this submodule? That file is an R script- Let’s load it up now!</p>
-<p>To do this, click on the “folder” icon on the Rstudio toolbar (or File&gt;&gt;New File) and choose the script you downloaded earlier.</p>
-<p>The first few lines (commands) of the script for this module are preceded by pound signs. R doesn’t do anything with these commands- they are called <strong>comments</strong>, and they help to keep code clear, organized and understandable to human readers. <em>use comments early and often- they are tremendously valuable</em>.</p>
+<p>To do this, click on the “folder” icon on the Rstudio toolbar (or File&gt;&gt;Open File) and choose the script you downloaded earlier.</p>
+<p>The first few lines (commands) of the script for this module are preceded by pound signs. R doesn’t do anything with these commands- they are called <strong>comments</strong>, and they help to keep code clear, organized and understandable to human readers.</p>
+<p><em>use comments early and often- they are tremendously valuable</em>.</p>
 <p>Click on the top of the script (first line of comments). To <strong>run</strong> a line of code, press the “Ctrl” key (or the “Command” key) and hit “Enter”. R will then run that line through the console. But of course, nothing happens because it’s a comment and not meant to be interpreted by your machine<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
 <p>If you click on a line of code that is not followed by a pound sign, you should see that R interprets the text on that line of code and stores any newly defined objects in memory (see top right quadrant of the Rstudio interface – ‘Environment’ tab – for a list of objects stored in memory)</p>
 <p>Now you know the basics of how to use R scripts.</p>
@@ -554,16 +555,16 @@ summary(trees)</code></pre>
 # visualize the data
 
    # histograms:
-layout(matrix(1:3,nrow=1,byrow = T))
-hist(trees$Height)
-hist(trees$Girth)
-hist(trees$Volume)</code></pre>
+layout(matrix(1:3,nrow=1,byrow = T))    # set up a multi-panel graphics device (three plots side by side)
+hist(trees$Height)                       # visualize the distribution of height data
+hist(trees$Girth)                        # visualize the distribution of girth data
+hist(trees$Volume)                       # visualize the distribution of volume data</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <pre class="r"><code>   # scatterplots:
 
-layout(matrix(1:2,nrow=1,byrow = T))
-plot(trees$Volume~trees$Girth)
-plot(trees$Volume~trees$Height)</code></pre>
+layout(matrix(1:2,nrow=1,byrow = T))      # set graphics device with 2 plots side by side
+plot(trees$Volume~trees$Girth)            # scatterplot of volume against girth
+plot(trees$Volume~trees$Height)           # scatterplot of volume against height</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
 <pre class="r"><code>pairs(trees)    # plots all scatterplots together as a scatterplot matrix!</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
@@ -571,7 +572,7 @@ plot(trees$Volume~trees$Height)</code></pre>
 <pre class="r"><code>##########
 # perform linear regression analysis
 
-model1 &lt;- lm(Volume~Girth,data=trees)
+model1 &lt;- lm(Volume~Girth,data=trees)        # regress Volume on Girth
 
 summary(model1)    # examine the results</code></pre>
 <pre><code>## 
@@ -596,17 +597,17 @@ summary(model1)    # examine the results</code></pre>
 <pre class="r"><code>#########
 # visualize the results!
 
-xvals &lt;- seq(5,30,0.5)
-pred &lt;- predict(model1,newdata=data.frame(Girth=xvals),interval = &quot;confidence&quot;,level = 0.99)
+xvals &lt;- seq(5,30,0.5)            # set the range of &quot;Girth&quot; values over which you want to make predictions about &quot;Volume&quot;
+pred &lt;- predict(model1,newdata=data.frame(Girth=xvals),interval = &quot;confidence&quot;,level = 0.99)   # use the linear model to make predictions about &quot;Volume&quot;
 
 plot(trees$Volume~trees$Girth,xlab=&quot;Girth (inches)&quot;,ylab=&quot;Volume (cubic feet)&quot;,main=&quot;Black Cherry&quot;,
-     xlim=range(xvals),ylim=c(0,100))
+     xlim=range(xvals),ylim=c(0,100))         # Make a pretty scatterplot
 
-abline(model1,lwd=2,col=&quot;green&quot;)
-lines(xvals,pred[,&quot;upr&quot;],col=&quot;green&quot;,lty=2)
-lines(xvals,pred[,&quot;lwr&quot;],col=&quot;green&quot;,lty=2)
-text(10,80,sprintf(&quot;Volume = %s + %s*Girth&quot;,round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))
-text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;Pr(&gt;|t|)&quot;][2],3)))</code></pre>
+abline(model1,lwd=2,col=&quot;green&quot;)                # Add the regression line
+lines(xvals,pred[,&quot;upr&quot;],col=&quot;green&quot;,lty=2)       # Add the upper bound of the confidence interval
+lines(xvals,pred[,&quot;lwr&quot;],col=&quot;green&quot;,lty=2)       #      ... and the lower bound
+text(10,80,sprintf(&quot;Volume = %s + %s*Girth&quot;,round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))       # Add the regression coefficients
+text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;Pr(&gt;|t|)&quot;][2],3)))     # Add the p-value</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="workspace-management" class="section level2">
@@ -621,8 +622,8 @@ text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;
 </div>
 <div id="back-to-basics-r-objects" class="section level2">
 <h2>Back to basics! R Objects</h2>
-<p>R has many different kinds of objects. These are the building blocks of the language.</p>
-<p>Object classes that enable storage of information and data are: <em>scalars</em>, <em>vectors</em>, <em>matrices</em>, <em>lists</em>, and <em>data frames</em>.</p>
+<p>R has many different kinds of objects that you can define and store in memory. These are the building blocks of the language.</p>
+<p>Object <strong>classes</strong> that enable storage of information and data are: <em>scalars</em>, <em>vectors</em>, <em>matrices</em>, <em>lists</em>, and <em>data frames</em>.</p>
 <p>Objects that transform data and perform data operations/statistics/visualizations etc. are called <em>functions</em>.</p>
 <div id="data-types" class="section level3">
 <h3>Data types</h3>
@@ -640,7 +641,7 @@ text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;
 <h3>Data storage objects</h3>
 <div id="scalars" class="section level4">
 <h4>Scalars</h4>
-<p>Scalars are the simplest objects in R. A scalar is just a single value. Remember the when we assigned the text string ‘Alfred Pennyworth’ to the <code>Batmans_butler</code> object? When we did that we created a scalar data object that contained a single text string. Scalars can be a single value of any data type.</p>
+<p>Scalars are the simplest objects in R. A scalar is just a single value. Remember when we assigned the text string ‘Alfred Pennyworth’ to the <code>Batmans_butler</code> object? When we did that we created a scalar data object that contained a single text string. Scalars can be a single value of any data type.</p>
 <pre class="r"><code>##################
 ####  Create R Objects 
 ##################
@@ -677,28 +678,39 @@ scalar_2 + scalar_4</code></pre>
 <p>Vectors are combinations of scalars stored as a single object.</p>
 <p>NOTE: strictly speaking, there are no true scalars in R- scalars are actually just vectors with 1 element!</p>
 <p>Let’s create some vectors:</p>
-<p>There are many different ways to create a vector. You’ll learn more about that later in the bootcamp. Check out some of the vectors you just created. Each vector is comprised of several scalars. Each of these scalars is called an <strong>element</strong> of the vector. You can still check the types of the objects with the <code>typeof()</code> function (try it yourself).</p>
+<pre class="r"><code>#############
+### VECTORS
+#############
+
+vector1 &lt;- c(1.1, 2.1, 3.1, 4)
+vector2 &lt;- c(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)
+vector3 &lt;- c(1, &#39;a&#39;, 2, &#39;b&#39;)
+vector4 &lt;- c(TRUE, &#39;a&#39;, 1)
+vector5 &lt;- c(TRUE, 1.2, FALSE)</code></pre>
+<p>There are many different ways to create a vector. You’ll learn more about that later in the bootcamp. Check out some of the vectors you just created. Each vector is composed of several scalars. Each of these scalars is an <strong>element</strong> of the vector. You can still check the types of the objects with the <code>typeof()</code> function (try it yourself).</p>
 <p>What happened with <code>vector2</code> and <code>vector4</code>? Looking at the script, these vectors appear to contain a mix of numeric and character types, but the resulting vector is all characters!</p>
 <p>This is because <em>all elements of a vector must be the same type</em>. R will attempt to convert (coerce) all elements to a single type. Check the contents of <code>vector5</code>. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. <code>TRUE</code> maps to 1 and <code>FALSE</code> maps to 0.</p>
-<p>In the code above we use another function called <code>c()</code>. I find it easiest to think of it as a concatenate or combine. It takes several objects, and combines them together into a vector. We can even use <code>c()</code> to combine scalar objects, like below.</p>
+<p>In the code above we use another function called <code>c()</code>. You can think of it as ‘c for combine’. It takes several objects, and combines them together into a vector. We can even use <code>c()</code> to combine scalar (or vector) objects, like below.</p>
 <pre class="r"><code>a &lt;- 1
 b &lt;- 2
-c &lt;- 3
+c &lt;- c(3,4)
 
 d.vec &lt;- c(a, b, c)
 d.vec</code></pre>
-<pre><code>## [1] 1 2 3</code></pre>
-<p><code>d.vec</code> is a vector with 3 elements: 1, 2, and 3. Alternatively, we could create the vector “d.vec” with the following code:</p>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<p><code>d.vec</code> is a vector with 3 elements: 1, 2, 3 and 4. Alternatively, we could create the vector “d.vec” with the following code:</p>
+<pre class="r"><code>d.vec &lt;- c(1,2,3,4)            # another way to construct the vector &quot;d.vec&quot;
+d.vec = c(1,2,3,4)             # the &quot;equals&quot; sign can also be an assignment operator
+d.vec &lt;- 1:4                   # we can use the colon operator as a shorthand for creating a sequence of integers</code></pre>
 <p>Now let’s do some stuff with vectors!</p>
-<pre class="r"><code>length(d.vec)    # the &quot;length()&quot; function returns the number of elements in a vector (or list, matrix etc.)
+<pre class="r"><code>length(d.vec)    # the &quot;length()&quot; function returns the number of elements in a vector
 
 d1 &lt;- d.vec           # copy the vector &quot;d.vec&quot;
 d2 &lt;- d.vec+3         # add 3 to all elements of the vector &quot;d.vec&quot;
 d3 &lt;- d1+d2           # elementwise addition
-d4 &lt;- d1+c(1,2)       # what does this do?</code></pre>
-<pre><code>## Warning in d1 + c(1, 2): longer object length is not a multiple of shorter
-## object length</code></pre>
-<pre class="r"><code>## inspect the objects by calling them in the console (or script window)
+d4 &lt;- d1+c(1,2)       # what does this do?
+
+## inspect the objects by calling them in the console (or script window)
 d1    # returns: 1 2 3
 d2    # returns: 4 5 6
 d3    # returns: 5 7 9
@@ -718,7 +730,8 @@ d.mat</code></pre>
 <pre><code>##      d1 d2
 ## [1,]  1  4
 ## [2,]  2  5
-## [3,]  3  6</code></pre>
+## [3,]  3  6
+## [4,]  4  7</code></pre>
 <pre class="r"><code>class(d.mat)   # confirm that the new object &quot;d.mat&quot; is a matrix!</code></pre>
 <pre><code>## [1] &quot;matrix&quot;</code></pre>
 <p>And there are other ways to make a matrix in R. For instance, we can use the function “matrix”:</p>
@@ -760,7 +773,7 @@ d.mat</code></pre>
 ############
 
 d.array=array(0,dim=c(3,2,4))       # create 3 by 2 by 4 array full of zeros
-d.array             # see what it looks like</code></pre>
+d.array                                   # see what it looks like</code></pre>
 <pre><code>## , , 1
 ## 
 ##      [,1] [,2]
@@ -789,11 +802,11 @@ d.array             # see what it looks like</code></pre>
 ## [2,]    0    0
 ## [3,]    0    0</code></pre>
 <pre class="r"><code>d.mat=matrix(1:6,nrow=3)
-d.array[,,1]=d.mat          # enter d as the first slice of the array
-d.array[,,2]=d.mat*2        # enter d*2 as the second slide...
+d.array[,,1]=d.mat                      # enter d as the first slice of the array
+d.array[,,2]=d.mat*2                    # enter d*2 as the second slide...
 d.array[,,3]=d.mat*3
 d.array[,,4]=d.mat*4
-d.array             # view the array </code></pre>
+d.array                                   # view the array </code></pre>
 <pre><code>## , , 1
 ## 
 ##      [,1] [,2]
@@ -821,8 +834,12 @@ d.array             # view the array </code></pre>
 ## [1,]    4   16
 ## [2,]    8   20
 ## [3,]   12   24</code></pre>
-<pre class="r"><code>d.array[1,2,4]</code></pre>
+<pre class="r"><code>d.array[1,2,4]  # view an element of the array</code></pre>
 <pre><code>## [1] 16</code></pre>
+<pre class="r"><code>d.array[1,,]    # view a slice of the array</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    4    8   12   16</code></pre>
 </div>
 <div id="lists" class="section level4">
 <h4>Lists</h4>
@@ -889,10 +906,10 @@ d.df</code></pre>
 <div id="functions" class="section level3">
 <h3>Functions</h3>
 <p>Functions are an essential building block in R. Without functions we would need to write out every bit of logic for everything we want to accomplish in R. We’ve already used a few functions (<code>typeof</code>, <code>c</code>) without fully understanding what they are. That is about to change!</p>
-<p>Just like in algebra, functions are essentially machines that take any inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. The basic syntax looks like the code snippet below.</p>
+<p>Functions are essentially machines that take any inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. The basic syntax looks like the code snippet below.</p>
 <p><img src="funcmach.png" /></p>
 <pre><code>## function syntax
-functionName(inputs)</code></pre>
+functionName(input1=[user input #1], input2=[user input #2])</code></pre>
 <p>Let’s use another function called <code>sum()</code>. This function takes a set of several values and computes the sum of those numbers.</p>
 <pre class="r"><code>#############
 ### functions
@@ -905,6 +922,7 @@ sum(vector1)        # returns: 10.3</code></pre>
 <p>If you ever forget the arguments of a function, or how it works there are several ways to get help. There is a built in function called <code>help()</code> that will takes a function name as an argument, and looks up the help documents for the given function. The <code>?</code> is an alternative to the <code>help</code> function.</p>
 <pre class="r"><code>help(sum)
 ?sum    # this is an alternative to &#39;help(sum)&#39;!</code></pre>
+<p>We will revisit functions in more detail in the “Programming” submodule.</p>
 </div>
 </div>
 <div id="making-up-data" class="section level2">
@@ -912,7 +930,7 @@ sum(vector1)        # returns: 10.3</code></pre>
 <p>In this section, we will ‘make up’ a bunch of data objects. In the next submodule we’ll practice working with real data!</p>
 <div id="generating-sequences-of-numbers" class="section level3">
 <h3>Generating sequences of numbers</h3>
-<p>One task that comes up a lot is making sequences of numbers. We certainly don’t want to do this entirely by hand! Here are some shortcuts:</p>
+<p>One task that comes up a lot is generating sequences of numbers. We certainly don’t want to do this entirely by hand! Here are some shortcuts:</p>
 <pre class="r"><code>#############
 ### MAKING UP DATA!
 #############
@@ -951,32 +969,32 @@ rep(0,times=3)                # repeat 0 three times</code></pre>
 
 z &lt;- rnorm(10)                # 10 realizations from std. normal
 z</code></pre>
-<pre><code>##  [1] -0.52387588 -1.05298617  1.90960403  0.41624813  0.34040889
-##  [6] -0.09604348 -0.24863128  0.09659997  0.50428509  0.43284033</code></pre>
+<pre><code>##  [1]  0.1531699  0.1433809  0.3695570  0.1999427 -0.9948798  0.7006862
+##  [7] -1.6993735 -0.7512664  0.6911826  2.8087835</code></pre>
 <pre class="r"><code>y &lt;- rnorm(10,mean=-2,sd=4)           # 10 realizations from N(-2,4^2)
 y</code></pre>
-<pre><code>##  [1]  1.0777125  6.2494989 -0.9264233 -3.5654899  0.2209896 -0.5948652
-##  [7] -3.9548674 -9.1877829 -7.5906441  2.3128913</code></pre>
+<pre><code>##  [1] -2.3534917 -3.5732859 -0.6138528 -0.2226236  4.2901010 -0.9257079
+##  [7] -2.4898045  6.6591373  1.7588928  4.0267616</code></pre>
 <pre class="r"><code>rbinom(5,size=3,prob=.5)                # 5 realizations from Binom(3,0.5)</code></pre>
-<pre><code>## [1] 2 1 2 2 0</code></pre>
+<pre><code>## [1] 1 0 2 0 2</code></pre>
 <pre class="r"><code>rbinom(5,3,.1)                # 5 realizations from Binom(3,0.1)</code></pre>
-<pre><code>## [1] 0 0 0 0 0</code></pre>
+<pre><code>## [1] 1 0 1 0 0</code></pre>
 <pre class="r"><code>rbinom(5,3,.8)                # 5 realizations from Binom(3,0.8)</code></pre>
-<pre><code>## [1] 3 2 2 3 3</code></pre>
+<pre><code>## [1] 2 2 2 2 2</code></pre>
 <pre class="r"><code>rbinom(5,1:5,0.5)       # simulations from binomial w/ diff number of trials</code></pre>
-<pre><code>## [1] 1 1 1 1 1</code></pre>
+<pre><code>## [1] 0 1 2 1 3</code></pre>
 <pre class="r"><code>rbinom(5,1:5,seq(.1,.9,length=5))   # simulations from diff number of trials and probs</code></pre>
-<pre><code>## [1] 0 0 1 3 5</code></pre>
+<pre><code>## [1] 0 1 1 3 5</code></pre>
 <pre class="r"><code>runif(10)                # 10 standard uniform random variates</code></pre>
-<pre><code>##  [1] 0.84007948 0.76216510 0.36611233 0.85899706 0.52942868 0.14433661
-##  [7] 0.48180753 0.64434227 0.46869078 0.02683284</code></pre>
+<pre><code>##  [1] 0.43533225 0.11524089 0.26207590 0.80313381 0.94261948 0.97442669
+##  [7] 0.66681028 0.07955516 0.98293861 0.82963642</code></pre>
 <pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random variates on [-1,1]</code></pre>
-<pre><code>##  [1]  0.25876905 -0.29384897 -0.45944957  0.01236111  0.56308581
-##  [6]  0.69477649 -0.98567046 -0.94934476 -0.85540491 -0.76892166</code></pre>
+<pre><code>##  [1] -0.5860341  0.5805945  0.6285255 -0.6597934 -0.6904750 -0.7087711
+##  [7] -0.4244977 -0.2192225 -0.7129384  0.1953845</code></pre>
 <pre class="r"><code>sample(1:10,size=5,replace=TRUE)        # 5 rvs from discrete unif. on 1:10.</code></pre>
-<pre><code>## [1] 7 5 1 5 6</code></pre>
+<pre><code>## [1] 9 5 2 3 8</code></pre>
 <pre class="r"><code>sample(1:10,size=5,replace=TRUE,prob=(1:10)/sum(1:10)) # 5 rvs from discrete pmf w/ varying probs.</code></pre>
-<pre><code>## [1]  6 10  8  4  5</code></pre>
+<pre><code>## [1] 2 7 6 6 9</code></pre>
 <p>And finally, we can make up a fake data frame using some of the tricks we just learned!</p>
 <pre class="r"><code>############
 # Make up an entire data frame!
@@ -991,31 +1009,33 @@ my.data &lt;- data.frame(
 )
 head(my.data)</code></pre>
 <pre><code>##   Obs.Id Treatment Block Germination AvgHeight
-## 1      1         A     1           1  9.830391
-## 2      2         A     2           2  9.116464
-## 3      3         A     3           1  8.904813
-## 4      4         A     4           1 10.480244
-## 5      5         A     5           0  8.867852
-## 6      6         A     6           1  9.782490</code></pre>
+## 1      1         A     1           1 10.911505
+## 2      2         A     2           0  8.668143
+## 3      3         A     3           0 10.313027
+## 4      4         A     4           2 10.201915
+## 5      5         A     5           1 12.527927
+## 6      6         A     6           0  8.550467</code></pre>
 <pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
 <pre><code>##      Obs.Id       Treatment     Block        Germination   
 ##  Min.   :  1.00   A:20      Min.   : 1.00   Min.   : 0.00  
 ##  1st Qu.: 25.75   B:20      1st Qu.: 5.75   1st Qu.: 1.00  
-##  Median : 50.50   C:20      Median :10.50   Median : 3.00  
-##  Mean   : 50.50   D:20      Mean   :10.50   Mean   : 3.41  
+##  Median : 50.50   C:20      Median :10.50   Median : 4.00  
+##  Mean   : 50.50   D:20      Mean   :10.50   Mean   : 4.21  
 ##  3rd Qu.: 75.25   E:20      3rd Qu.:15.25   3rd Qu.: 6.00  
-##  Max.   :100.00             Max.   :20.00   Max.   :11.00  
+##  Max.   :100.00             Max.   :20.00   Max.   :16.00  
 ##    AvgHeight     
-##  Min.   : 8.841  
-##  1st Qu.:24.414  
-##  Median :29.742  
-##  Mean   :26.169  
-##  3rd Qu.:31.591  
-##  Max.   :37.705</code></pre>
+##  Min.   : 8.079  
+##  1st Qu.:24.733  
+##  Median :29.845  
+##  Mean   :26.125  
+##  3rd Qu.:31.265  
+##  Max.   :37.831</code></pre>
 <p>NOTE: the “head()” function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!</p>
 </div>
-<div id="accessing-indexing-and-subsetting-data" class="section level3">
-<h3>Accessing, indexing and subsetting data</h3>
+</div>
+<div id="accessing-indexing-and-subsetting-data" class="section level2">
+<h2>Accessing, indexing and subsetting data</h2>
+<p>In any data analysis project, we will need to manage, manipulate and process your data objects. To do this, we need to be able to access elements and subsets of our data objects.</p>
 <p>To access a particular element of a vector, we just enclose the element(s) we want in brackets:</p>
 <pre class="r"><code>############
 ### Accessing, indexing and subsetting data
@@ -1063,43 +1083,58 @@ d</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    2    5
 ## [2,]    3    6</code></pre>
-<p>Subsetting works much the same for lists and data frames. However, now we can reference columns (variables) and other list elements using the dollar sign operator:</p>
+<p>Subsetting works much the same for lists and data frames. However, now we can reference data frame columns (variables) and other list elements using the dollar sign operator:</p>
 <pre class="r"><code># $            access component of an object (data frame or list)
 # Z_list[[i]]  access the ith element of list Z
 
 d.df=my.data[21:30,]  # only take 10 observations
 d.df</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 21     21         B     1           6  29.16162
-## 22     22         B     2           7  31.72942
-## 23     23         B     3           6  29.87268
-## 24     24         B     4           5  31.44255
-## 25     25         B     5           4  30.37262
-## 26     26         B     6           2  29.76904
-## 27     27         B     7           6  29.19883
-## 28     28         B     8           9  30.34642
-## 29     29         B     9           2  30.51342
-## 30     30         B    10           5  31.47791</code></pre>
-<pre class="r"><code>d.df$Germination      # Subsetting a data frame</code></pre>
-<pre><code>##  [1] 6 7 6 5 4 2 6 9 2 5</code></pre>
-<pre class="r"><code>d.df[,4]              # same thing!</code></pre>
-<pre><code>##  [1] 6 7 6 5 4 2 6 9 2 5</code></pre>
-<pre class="r"><code>d.df[[4]]             # same thing!</code></pre>
-<pre><code>##  [1] 6 7 6 5 4 2 6 9 2 5</code></pre>
-<pre class="r"><code>d.df[,&quot;Germination&quot;]           # same thing!</code></pre>
-<pre><code>##  [1] 6 7 6 5 4 2 6 9 2 5</code></pre>
+## 21     21         B     1          11  28.87157
+## 22     22         B     2           5  29.73062
+## 23     23         B     3           8  28.67837
+## 24     24         B     4           6  29.69622
+## 25     25         B     5           5  30.00710
+## 26     26         B     6           6  29.94907
+## 27     27         B     7           5  28.51203
+## 28     28         B     8           3  27.69992
+## 29     29         B     9           4  29.40945
+## 30     30         B    10           5  31.11471</code></pre>
+<pre class="r"><code>## many ways of accessing a particular column of a data frame
+d.df$Germination           # Subsetting a data frame</code></pre>
+<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre class="r"><code>d.df[[&quot;Germination&quot;]]      # same thing!</code></pre>
+<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre class="r"><code>d.df[,4]                   # same thing!</code></pre>
+<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre class="r"><code>d.df[[4]]                  # same thing!</code></pre>
+<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre class="r"><code>d.df[,&quot;Germination&quot;]       # same thing!</code></pre>
+<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre class="r"><code>d.df[&quot;Germination&quot;]        # same thing!  (or is it...)</code></pre>
+<pre><code>##    Germination
+## 21          11
+## 22           5
+## 23           8
+## 24           6
+## 25           5
+## 26           6
+## 27           5
+## 28           3
+## 29           4
+## 30           5</code></pre>
 <pre class="r"><code>d.df$AvgHeight</code></pre>
-<pre><code>##  [1] 29.16162 31.72942 29.87268 31.44255 30.37262 29.76904 29.19883
-##  [8] 30.34642 30.51342 31.47791</code></pre>
+<pre><code>##  [1] 28.87157 29.73062 28.67837 29.69622 30.00710 29.94907 28.51203
+##  [8] 27.69992 29.40945 31.11471</code></pre>
 <pre class="r"><code>d.df$AvgHeight[3]  # subset an element of a data frame</code></pre>
-<pre><code>## [1] 29.87268</code></pre>
-<pre class="r"><code># Columns and rows of data frame
-d.df$Treatment</code></pre>
+<pre><code>## [1] 28.67837</code></pre>
+<pre class="r"><code># Data frame can be indexed just like a matrix
+d.df[,2]</code></pre>
 <pre><code>##  [1] B B B B B B B B B B
 ## Levels: A B C D E</code></pre>
-<pre class="r"><code>d.df[,2]</code></pre>
-<pre><code>##  [1] B B B B B B B B B B
-## Levels: A B C D E</code></pre>
+<pre class="r"><code>d.df[2,]</code></pre>
+<pre><code>##    Obs.Id Treatment Block Germination AvgHeight
+## 22     22         B     2           5  29.73062</code></pre>
 <pre class="r"><code>d.df[,2:3]</code></pre>
 <pre><code>##    Treatment Block
 ## 21         B     1
@@ -1112,21 +1147,6 @@ d.df$Treatment</code></pre>
 ## 28         B     8
 ## 29         B     9
 ## 30         B    10</code></pre>
-<pre class="r"><code>cbind(ID=d.df$Obs.Id,Height=d.df$AvgHeight)    # make new data frame </code></pre>
-<pre><code>##       ID   Height
-##  [1,] 21 29.16162
-##  [2,] 22 31.72942
-##  [3,] 23 29.87268
-##  [4,] 24 31.44255
-##  [5,] 25 30.37262
-##  [6,] 26 29.76904
-##  [7,] 27 29.19883
-##  [8,] 28 30.34642
-##  [9,] 29 30.51342
-## [10,] 30 31.47791</code></pre>
-<pre class="r"><code>d.df[2,]</code></pre>
-<pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 22     22         B     2           7  31.72942</code></pre>
 <pre class="r"><code>d.df[2,2:3]</code></pre>
 <pre><code>##    Treatment Block
 ## 22         B     2</code></pre>
@@ -1135,13 +1155,12 @@ d.df$Treatment</code></pre>
 # Other data exploration tricks in R
 
 length(d2)        # Obtain length (# elements) of vector d2
-dim(d.mat)            # Obtain dimensions of matrix or array
+dim(d.mat)        # Obtain dimensions of matrix or array
 summary(my.data)  # summarize columns in a data frame. 
 names(my.data)    # get names of variables in a data frame (or names of elements in a named vector)
 nrow(my.data)     # get number of rows/observations in a data frame
 ncol(my.data)     # get number of columns/variables in a data frame
 str(my.data)      # look at the &quot;internals&quot; of an object (useful for making sense of complex objects!)</code></pre>
-</div>
 </div>
 <div id="basic-mathematical-operations" class="section level2">
 <h2>Basic mathematical operations</h2>

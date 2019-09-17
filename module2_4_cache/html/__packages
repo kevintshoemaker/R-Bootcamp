@@ -1,7 +1,4 @@
 base
-RevoUtilsMath
-RevoUtils
-modeest
 tidyverse
 ggplot2
 tibble
@@ -11,12 +8,6 @@ purrr
 dplyr
 stringr
 forcats
-bindrcpp
-lubridate
-boot
-foreach
-iterators
-doParallel
 ggthemes
 carData
 lattice

@@ -35,11 +35,11 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
     - Thanks to Perry Williams for allowing us to use these materials!!
     
-Welcome to the 2018 R bootcamps! Let's get started!! 
+Welcome to the 2019 R bootcamps! Let's get started!! 
 
 ## Get materials for this module
 
-* I recommend having a printed copy of a good base R "cheatsheet" as you get started (we will have copies to pass out at the workshop!). You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to use R and learn new things in R!
+* I recommend having a printed copy of a good base R "cheatsheet" as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to use R and learn new things in R!
 
 Here are links to good base R "cheatsheets":
 
@@ -49,19 +49,19 @@ Here are links to good base R "cheatsheets":
 
 ## Load script for module #1.1
 
-1. Click [here](module1_1.R) to download the script for this module! I recommend right-clicking (or ctrl-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop, which will ultimately serve as your **working directory** for this bootcamp. I recommend creating a new folder to store all the scripts, data sets and other materials from these modules! 
+1. Click [here](module1_1.R) to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop, which will serve as your **working directory** for this bootcamp. I recommend creating a new folder to store all the scripts, data sets and other materials from these modules! 
 
-2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (from the previous step; your working directory). The R project will automatically take the name of your working directory folder. 
+2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (your working directory). The R project will automatically take the name of your working directory folder. 
 
-3. Load a blank script in RStudio. To do this, click on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). Your RStudio interface should now be divided into four quadrants. On the top left is your **script** (a set of written commands that R can recognize and execute), on the bottom left is your **console** (your direct connection with R- prints errors and stores a record of commands that have already been run), on the top right is your **Environment** (a record of all the objects -- data, variables, functions-- that you have defined in your current **session**), and on the bottom left are some helper interfaces that let you view helpfiles, load packages, view graphical plots, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!
+3. Load a blank script in RStudio. To do this, click on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). Your RStudio interface should now be divided into four quadrants. In the Rstudio default configuration, the top left panel is your **script** (a set of written commands that R can recognize and execute), the bottom left panel is your **console** (your direct connection with R- prints errors and stores a record of commands that have already been run), the top right panel is your **Environment** (container for all the objects -- data, variables, functions-- that you have defined in your current **session**), and the bottom left panel is a set of tabbed interfaces that let you view helpfiles, load packages, view graphical plots, view files in your working directory, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!
 
-Let's get started!!!
+Let's get started!!
 
 ![](rstudio1.jpg)
 
 ## Explore the R console
 
-The R console (what you see if you opened R directly without going through RStudio) is a **command line** interface, and is *your direct connection with the R statistical programming language*. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make the most effective use of the console! In fact, after this short demo you will rarely interact directly with the console!
+The R console (what you see if you opened R directly without going through RStudio) is a **command line** interface, and is *your direct connection with the R statistical programming language*. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make effective use of the console! In fact, after this short demo you will rarely interact directly with the console (instead, you will use a script!)!
 
 The R console is located in the left half or bottom left of the RStudio interface (see figure above). 
 
@@ -95,11 +95,11 @@ Now type `print(Batmans_butler)`[^functions] into the R console and hit "Enter".
 
 [^autofill]: RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "bat"), RStudio will suggest "Batmans_butler" and you can just hit "Enter" to complete the object name! The auto-type feature, unlike R, is not case sensitive!
 
-If you enter the name of an object at the command line, R automatically prints the value of the object- you don't need to use the `print()` function... Try it: type `Batmans_butler` into the R console and hit "Enter". R dutifully returns the name of Bruce Wayne's loyal and tireless butler, best friend and surrogate father figure.
+If you enter the name of an object at the command line, R automatically prints the value of the object- you don't need to use the `print()` function... Try it: type `Batmans_butler` into the R console and hit "Enter". R dutifully returns the name of Bruce Wayne's loyal and tireless butler, best friend and surrogate father figure. In fact, when you type the name of an object and hit "Enter", R will automatically print the contents of that object back to the console. 
 
 ## Graduating to R Scripts
 
-You will quickly realize that although the command-line R console is nice for some things, there is a much better way to develop R code. That is by storing an ordered set of commands as a text file. This text file (the standard is to use the ".R" extension) is called an **R script**. Again, the top left quadrant of the RStudio interface allows you to view and edit one or more R scripts. 
+You will quickly realize that although the command-line R console is nice for some things, there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the ".R" extension) is called an **R script**. Again, the top left quadrant of the RStudio interface (at least by default) is where you can view and edit your R scripts. 
 
 ### New script
 
@@ -117,15 +117,17 @@ Now highlight the text you just wrote (or place the cursor somewhere within the 
 
 Click on a new (blank) line in the script and type `2+2`. Now hit "Ctrl+Enter" (or "Command+Enter") to run the line of code. 
 
-Of course, it's always a good idea to save your scripts often- make sure to save your new script before you move on.
+Of course, it's always a good idea to save your scripts often -- make sure to save your new script before you move on.
 
 ### Load Existing script
 
 Remember the file you downloaded at the beginning of this submodule? That file is an R script- Let's load it up now!  
 
-To do this, click on the "folder" icon on the Rstudio toolbar (or File>>New File) and choose the script you downloaded earlier.
+To do this, click on the "folder" icon on the Rstudio toolbar (or File>>Open File) and choose the script you downloaded earlier.
 
-The first few lines (commands) of the script for this module are preceded by pound signs. R doesn't do anything with these commands- they are called **comments**, and they help to keep code clear, organized and understandable to human readers. _use comments early and often- they are tremendously valuable_.   
+The first few lines (commands) of the script for this module are preceded by pound signs. R doesn't do anything with these commands- they are called **comments**, and they help to keep code clear, organized and understandable to human readers. 
+
+_use comments early and often- they are tremendously valuable_.   
 
 Click on the top of the script (first line of comments). To **run** a line of code, press the "Ctrl" key (or the "Command" key) and hit "Enter". R will then run that line through the console. But of course, nothing happens because it's a comment and not meant to be interpreted by your machine[^shortcuts]. 
 
@@ -179,16 +181,16 @@ Now let's visualize the data and start to get a sense for what patterns we can d
 # visualize the data
 
    # histograms:
-layout(matrix(1:3,nrow=1,byrow = T))
-hist(trees$Height)
-hist(trees$Girth)
-hist(trees$Volume)
+layout(matrix(1:3,nrow=1,byrow = T))    # set up a multi-panel graphics device (three plots side by side)
+hist(trees$Height)                       # visualize the distribution of height data
+hist(trees$Girth)                        # visualize the distribution of girth data
+hist(trees$Volume)                       # visualize the distribution of volume data
 
    # scatterplots:
 
-layout(matrix(1:2,nrow=1,byrow = T))
-plot(trees$Volume~trees$Girth)
-plot(trees$Volume~trees$Height)
+layout(matrix(1:2,nrow=1,byrow = T))      # set graphics device with 2 plots side by side
+plot(trees$Volume~trees$Girth)            # scatterplot of volume against girth
+plot(trees$Volume~trees$Height)           # scatterplot of volume against height
 
 pairs(trees)    # plots all scatterplots together as a scatterplot matrix!
 
@@ -202,7 +204,7 @@ Now we can perform some basic statistics, like a regression analysis:
 ##########
 # perform linear regression analysis
 
-model1 <- lm(Volume~Girth,data=trees)
+model1 <- lm(Volume~Girth,data=trees)        # regress Volume on Girth
 
 summary(model1)    # examine the results
 
@@ -215,17 +217,17 @@ And finally, let's visualize the results:
 #########
 # visualize the results!
 
-xvals <- seq(5,30,0.5)
-pred <- predict(model1,newdata=data.frame(Girth=xvals),interval = "confidence",level = 0.99)
+xvals <- seq(5,30,0.5)            # set the range of "Girth" values over which you want to make predictions about "Volume"
+pred <- predict(model1,newdata=data.frame(Girth=xvals),interval = "confidence",level = 0.99)   # use the linear model to make predictions about "Volume"
 
 plot(trees$Volume~trees$Girth,xlab="Girth (inches)",ylab="Volume (cubic feet)",main="Black Cherry",
-     xlim=range(xvals),ylim=c(0,100))
+     xlim=range(xvals),ylim=c(0,100))         # Make a pretty scatterplot
 
-abline(model1,lwd=2,col="green")
-lines(xvals,pred[,"upr"],col="green",lty=2)
-lines(xvals,pred[,"lwr"],col="green",lty=2)
-text(10,80,sprintf("Volume = %s + %s*Girth",round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))
-text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3)))
+abline(model1,lwd=2,col="green")                # Add the regression line
+lines(xvals,pred[,"upr"],col="green",lty=2)       # Add the upper bound of the confidence interval
+lines(xvals,pred[,"lwr"],col="green",lty=2)       #      ... and the lower bound
+text(10,80,sprintf("Volume = %s + %s*Girth",round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))       # Add the regression coefficients
+text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3)))     # Add the p-value
 
 ```
 
@@ -240,9 +242,9 @@ The workspace (environment) panel window in R can become cluttered as we create 
 
 ## Back to basics! R Objects
 
-R has many different kinds of objects. These are the building blocks of the language. 
+R has many different kinds of objects that you can define and store in memory. These are the building blocks of the language. 
 
-Object classes that enable storage of information and data are: *scalars*, *vectors*, *matrices*, *lists*, and *data frames*.
+Object **classes** that enable storage of information and data are: *scalars*, *vectors*, *matrices*, *lists*, and *data frames*.
 
 Objects that transform data and perform data operations/statistics/visualizations etc. are called *functions*.
 
@@ -259,7 +261,7 @@ It is important to note that all R data objects have a property called **type** 
 
 #### Scalars
 
-Scalars are the simplest objects in R. A scalar is just a single value. Remember the when we assigned the text string 'Alfred Pennyworth' to the `Batmans_butler` object? When we did that we created a scalar data object that contained a single text string. Scalars can be a single value of any data type.
+Scalars are the simplest objects in R. A scalar is just a single value. Remember when we assigned the text string 'Alfred Pennyworth' to the `Batmans_butler` object? When we did that we created a scalar data object that contained a single text string. Scalars can be a single value of any data type.
 
 ```{r results=F}
 
@@ -320,7 +322,7 @@ NOTE: strictly speaking, there are no true scalars in R- scalars are actually ju
 
 Let's create some vectors:
 
-```{r echo=F}
+```{r}
 
 #############
 ### VECTORS
@@ -334,19 +336,19 @@ vector5 <- c(TRUE, 1.2, FALSE)
 
 ```
 
-There are many different ways to create a vector. You'll learn more about that later in the bootcamp. Check out some of the vectors you just created. Each vector is comprised of several scalars. Each of these scalars is called an **element** of the vector. You can still check the types of the objects with the `typeof()` function (try it yourself).
+There are many different ways to create a vector. You'll learn more about that later in the bootcamp. Check out some of the vectors you just created. Each vector is composed of several scalars. Each of these scalars is an **element** of the vector. You can still check the types of the objects with the `typeof()` function (try it yourself).
 
 What happened with `vector2` and `vector4`? Looking at the script, these vectors appear to contain a mix of numeric and character types, but the resulting vector is all characters! 
 
 This is because *all elements of a vector must be the same type*. R will attempt to convert (coerce) all elements to a single type. Check the contents of `vector5`. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. `TRUE` maps to 1 and `FALSE` maps to 0.
 
-In the code above we use another function called `c()`. I find it easiest to think of it as a concatenate or combine. It takes several objects, and combines them together into a vector. We can even use `c()` to combine scalar objects, like below.
+In the code above we use another function called `c()`. You can think of it as 'c for combine'. It takes several objects, and combines them together into a vector. We can even use `c()` to combine scalar (or vector) objects, like below.
 
 ```{r}
 
 a <- 1
 b <- 2
-c <- 3
+c <- c(3,4)
 
 d.vec <- c(a, b, c)
 d.vec
@@ -354,12 +356,13 @@ d.vec
 
 ```
 
-`d.vec` is a vector with 3 elements: 1, 2, and 3. Alternatively, we could create the vector "d.vec" with the following code:
+`d.vec` is a vector with 3 elements: 1, 2, 3 and 4. Alternatively, we could create the vector "d.vec" with the following code:
 
-```{r echo=F}
+```{r}
 
-d.vec <- c(1,2,3)            # another way to construct the vector "d.vec"
-d.vec = c(1,2,3)           # the "equals" sign can also be an assignment operator
+d.vec <- c(1,2,3,4)            # another way to construct the vector "d.vec"
+d.vec = c(1,2,3,4)             # the "equals" sign can also be an assignment operator
+d.vec <- 1:4                   # we can use the colon operator as a shorthand for creating a sequence of integers
 
 ```
 
@@ -368,7 +371,7 @@ Now let's do some stuff with vectors!
 
 ```{r results=F}
 
-length(d.vec)    # the "length()" function returns the number of elements in a vector (or list, matrix etc.)
+length(d.vec)    # the "length()" function returns the number of elements in a vector
 
 d1 <- d.vec           # copy the vector "d.vec"
 d2 <- d.vec+3         # add 3 to all elements of the vector "d.vec"
@@ -440,15 +443,16 @@ We can structure information in more than two dimensions using objects of the "a
 ############
 
 d.array=array(0,dim=c(3,2,4))       # create 3 by 2 by 4 array full of zeros
-d.array				# see what it looks like
+d.array				                      # see what it looks like
 d.mat=matrix(1:6,nrow=3)
-d.array[,,1]=d.mat  		# enter d as the first slice of the array
-d.array[,,2]=d.mat*2		# enter d*2 as the second slide...
+d.array[,,1]=d.mat  		            # enter d as the first slice of the array
+d.array[,,2]=d.mat*2		            # enter d*2 as the second slide...
 d.array[,,3]=d.mat*3
 d.array[,,4]=d.mat*4
-d.array				# view the array 
+d.array				                      # view the array 
 
-d.array[1,2,4]
+d.array[1,2,4]  # view an element of the array
+d.array[1,,]    # view a slice of the array
 
 ```
 
@@ -525,13 +529,13 @@ d.df
 
 Functions are an essential building block in R. Without functions we would need to write out every bit of logic for everything we want to accomplish in R. We've already used a few functions (`typeof`, `c`) without fully understanding what they are. That is about to change!
 
-Just like in algebra, functions are essentially machines that take any inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. The basic syntax looks like the code snippet below.
+Functions are essentially machines that take any inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. The basic syntax looks like the code snippet below.
 
 ![](funcmach.png)
 
 ```
 ## function syntax
-functionName(inputs)
+functionName(input1=[user input #1], input2=[user input #2])
 ```
 
 Let's use another function called `sum()`. This function takes a set of several values and computes the sum of those numbers.
@@ -558,7 +562,7 @@ help(sum)
 
 ```
 
-
+We will revisit functions in more detail in the "Programming" submodule.
 
 ## Making up data!
 
@@ -566,7 +570,7 @@ In this section, we will 'make up' a bunch of data objects. In the next submodul
 
 ### Generating sequences of numbers
 
-One task that comes up a lot is making sequences of numbers. We certainly don't want to do this entirely by hand! Here are some shortcuts:
+One task that comes up a lot is generating sequences of numbers. We certainly don't want to do this entirely by hand! Here are some shortcuts:
 
 ```{r}
 
@@ -657,7 +661,9 @@ summary(my.data)    # Use the "summary()" function to summarize each column in t
 NOTE: the "head()" function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!
 
 
-### Accessing, indexing and subsetting data
+## Accessing, indexing and subsetting data
+
+In any data analysis project, we will need to manage, manipulate and process your data objects. To do this, we need to be able to access elements and subsets of our data objects.
 
 To access a particular element of a vector, we just enclose the element(s) we want in brackets:
 
@@ -705,7 +711,7 @@ d[2:3,]        # 2nd and 3rd rows of d in a matrix
 
 ```
 
-Subsetting works much the same for lists and data frames. However, now we can reference columns (variables) and other list elements using the dollar sign operator:
+Subsetting works much the same for lists and data frames. However, now we can reference data frame columns (variables) and other list elements using the dollar sign operator:
 
 ```{r}
 
@@ -715,25 +721,23 @@ Subsetting works much the same for lists and data frames. However, now we can re
 d.df=my.data[21:30,]  # only take 10 observations
 d.df
 
-
-d.df$Germination      # Subsetting a data frame
-d.df[,4]              # same thing!
-d.df[[4]]             # same thing!
-d.df[,"Germination"]           # same thing!
+## many ways of accessing a particular column of a data frame
+d.df$Germination           # Subsetting a data frame
+d.df[["Germination"]]      # same thing!
+d.df[,4]                   # same thing!
+d.df[[4]]                  # same thing!
+d.df[,"Germination"]       # same thing!
+d.df["Germination"]        # same thing!  (or is it...)
 
 
 d.df$AvgHeight
 d.df$AvgHeight[3]  # subset an element of a data frame
 
 
-# Columns and rows of data frame
-d.df$Treatment
+# Data frame can be indexed just like a matrix
 d.df[,2]
-
-d.df[,2:3]
-cbind(ID=d.df$Obs.Id,Height=d.df$AvgHeight)    # make new data frame 
-
 d.df[2,]
+d.df[,2:3]
 d.df[2,2:3]
 
 
@@ -748,7 +752,7 @@ Here are some useful R functions for exploring data objects:
 # Other data exploration tricks in R
 
 length(d2)        # Obtain length (# elements) of vector d2
-dim(d.mat)            # Obtain dimensions of matrix or array
+dim(d.mat)        # Obtain dimensions of matrix or array
 summary(my.data)  # summarize columns in a data frame. 
 names(my.data)    # get names of variables in a data frame (or names of elements in a named vector)
 nrow(my.data)     # get number of rows/observations in a data frame

@@ -1,0 +1,13 @@
+Filter and select lines:
+
+##Play with filter and select
+# example of using filter: To filter out categories- in this case PK. R by defaults filters everything you don't ask it not to.
+names(tidy_clim_data)
+filter_tidy_clim_data <- tidy_clim_data %>%
+  dplyr::filter(Station %in% c("HH"))
+
+select_tidy_clim_data <- tidy_clim_data %>%
+  dplyr::select(Date,Station,TMaxF)
+
+
+Learning made easy with swirl for R: https://swirlstats.com/

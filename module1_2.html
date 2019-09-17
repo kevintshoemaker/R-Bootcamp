@@ -456,8 +456,8 @@ div.tocify {
 <div id="load-script-for-module-1.2" class="section level2">
 <h2>Load script for module #1.2</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module1_2.R">here</a> to download the script! Save the script to a convenient folder on your laptop.</p></li>
-<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script.</p></li>
+<li><p>Click <a href="module1_2.R">here</a> to download the script! Save the script to your working directory (project directory you set up in the previous submodule).</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio (load the RStudio project you created in the previous submodule) and click on the folder icon in the toolbar at the top and load your script.</p></li>
 </ol>
 <p>Let’s get started with data management in R!</p>
 </div>
@@ -468,16 +468,16 @@ div.tocify {
 <pre class="r"><code># Find the directory you&#39;re working in 
 getwd()          # note: the results from running this command on my machine will probably differ from yours!  </code></pre>
 <pre><code>## [1] &quot;E:/GIT/R-Bootcamp&quot;</code></pre>
-<p>What’s yours? Usually the default working directory is your “Documents” folder.</p>
-<div id="aside-rstudio-projects" class="section level3">
-<h3>ASIDE: RStudio Projects</h3>
+<p>What’s yours? Usually the default working directory is your “Documents” folder. Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file).</p>
+<div id="aside-rstudio-projects" class="section level4">
+<h4>ASIDE: RStudio Projects</h4>
 <p>If you’re using an <strong>RStudio Project</strong> (.Rproj extension) then the default working directory is the directory where the .Rproj file lives- which is convenient, because: 1. That’s most likely where the data for that project live anyway<br />
-2. If you’re collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and immediately read/write data to that directory (without having to set the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!</p>
+2. If you’re collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and immediately read/write data to the directory (without having to reset the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!</p>
 <p>To start a new RStudio Project, just click on “File-&gt;New Project” in RStudio’s menu bar.</p>
 </div>
 <div id="set-your-working-directory" class="section level3">
 <h3>Set your working directory</h3>
-<p>You can easily set a new working directory using the “setwd()” function. To select the directory manually (using standard file navigation) you can use the “file.choose()” function:</p>
+<p>You can easily set a new working directory using the “setwd()” function. To select the directory manually (using standard file navigation) you can use the “choose.dir()” function:</p>
 <pre class="r"><code># Setting a new working directory in a PC (same as File-&gt;Change dir...)
 # setwd(&quot;[filepath with forward slashes]&quot;) 
 
@@ -563,24 +563,27 @@ data()   </code></pre>
 <pre class="r"><code># read built-in data on the passengers of the titanic
 data(Titanic)         
 
-str(Titanic)    # examine the structure of this data object</code></pre>
-</div>
-<div id="aside-tips-on-naming-objects-in-r" class="section level3">
-<h3>Aside: Tips on naming objects in R</h3>
+str(Titanic)    # examine the structure of this data object
+
+?Titanic        # learn more about this built-in data object</code></pre>
+<pre><code>## starting httpd help server ... done</code></pre>
+<div id="aside-tips-on-naming-objects-in-r" class="section level4">
+<h4>Aside: Tips on naming objects in R</h4>
 <ol style="list-style-type: decimal">
 <li>No spaces within object names (same for column names in data files, use . or _ instead)<br />
 </li>
-<li>Try not to name an object with a similar/same as a function (e.g. don’t name your data “data.frame”). NOTE: this can be hard- there are so many functions in base R!<br />
+<li>Try not to name an object with a similar/same as a function (e.g. don’t name your data “data.frame”). NOTE: this can be hard- there are lots of functions in base R!<br />
 </li>
 <li>Can’t start object names with a number</li>
 </ol>
 </div>
 </div>
+</div>
 <div id="basic-data-checking" class="section level2">
 <h2>Basic data checking</h2>
 <p>As you’ve already seen, data objects can be vectors, matrices, arrays, data frames, and lists.</p>
-<p><em>Elements</em> of vectors, matrices, etc. can be coded as numbers (numeric), characters, logicals (TRUE/FALSE), factors etc.</p>
-<p>You can use the “class()” function to see what kind of object you’re working with:</p>
+<p><em>Elements</em> of vectors, matrices, etc. can represent numbers (numeric), characters, logicals (TRUE/FALSE), factors etc.</p>
+<p>You can use the “class()” function to see what class of data object you’re working with. You can use the “typeof()” function to see what type of data are in your data object.</p>
 <pre class="r"><code>####
 #### Check/explore data object
 #### 
@@ -619,6 +622,16 @@ tail(data.df)</code></pre>
 ## 18           Peru     73      0       N
 ## 19 TrinidadTobago     84     15       A
 ## 20      Venezuela     91      7       N</code></pre>
+<p>And we can use the “summary()” function to get a brief summary of what’s in our data frame:</p>
+<pre class="r"><code>summary(data.df)</code></pre>
+<pre><code>##       Country       Import         Export      Product
+##  Bolivia  : 1   Min.   :35.0   Min.   : 0.00   A:13   
+##  Brazil   : 1   1st Qu.:66.0   1st Qu.: 3.00   N: 7   
+##  Chile    : 1   Median :74.0   Median : 8.00          
+##  Colombia : 1   Mean   :72.1   Mean   : 9.55          
+##  CostaRica: 1   3rd Qu.:84.0   3rd Qu.:15.25          
+##  Cuba     : 1   Max.   :91.0   Max.   :23.00          
+##  (Other)  :14</code></pre>
 </div>
 <div id="exporting-and-saving-data-in-r" class="section level2">
 <h2>Exporting and saving data in R</h2>
@@ -633,11 +646,11 @@ tail(data.df)</code></pre>
 # ?write.table: writes a file to the working directory
 # ?writeLines: writes to a file, one line at a time
    
-write.table(data.df[,c(&quot;Country&quot;,&quot;Export&quot;)], file=&quot;data_export.csv&quot;, sep=&quot;,&quot;, col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in.</code></pre>
+write.table(data.df[,c(&quot;Country&quot;,&quot;Product&quot;)], file=&quot;data_export.csv&quot;, sep=&quot;,&quot;, col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in.</code></pre>
 </div>
 <div id="saving-and-loading-data" class="section level3">
 <h3>Saving (and loading) data</h3>
-<p>The data loaded in your <strong>R workspace</strong> are stored in your computers RAM as <strong>binary</strong> representations that are efficient but not particulary human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn’t a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data <em>outside</em> of R.</p>
+<p>The data loaded in your <strong>R workspace</strong> are stored in your computer’s memory as <strong>binary</strong> representations that are efficient but not particulary human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn’t a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data <em>outside</em> of R.</p>
 <p>To do this we can use the “save()” (or “save.image()”) and “load()” functions in R:</p>
 <p>NOTE: all binary R data files should be stored with the extension “.RData”:</p>
 <pre class="r"><code>####
@@ -654,11 +667,11 @@ save(a,b,file=&quot;Module1_2.RData&quot;)
 rm(a,b)   # remove these objects from the workspace
 
 load(&quot;Module1_2.RData&quot;)   # load these objects back in!</code></pre>
-<p>NOTE: If you’re using an RStudio Project (.Rproj), then the contents of your workspace are automatically saved when you close the project, and load again when you open the project file. This allows you to easily pick up where you left off!</p>
+<p>NOTE: If you’re using an RStudio Project (.Rproj), then the contents of your workspace are automatically saved when you close the project, and load again when you open the R Project file. This allows you to easily pick up where you left off!</p>
 </div>
 <div id="clearing-the-workspace" class="section level3">
 <h3>Clearing the workspace</h3>
-<p>Sometimes your workspace can get cluttered with objects. In these cases, it can really help to clear the workspace. Let’s try this!</p>
+<p>Sometimes your workspace can get cluttered with objects. In these cases, it can help to clear the workspace. Let’s try this!</p>
 <pre class="r"><code>##############
 # Clear the workspace (and load it back in!)
 
@@ -671,7 +684,7 @@ load(file=&quot;Module2.RData&quot;)   # load the objects back!</code></pre>
 </div>
 <div id="working-with-data-in-r" class="section level2">
 <h2>Working with data in R</h2>
-<p>Now let’s start seeing what we can do with data in R. Even without doing any statistics, R is very a powerful environment for doing data transformations and mathematical operations.</p>
+<p>Now let’s start seeing what we can do with data in R. Even without doing any statistical analyses, R is very a powerful environment for doing data transformations and mathematical operations with data.</p>
 <div id="boolean-operations" class="section level3">
 <h3>Boolean operations</h3>
 <p>Boolean operations refer to TRUE/FALSE tests. That is, we impose a condition on the data that either is true or false.</p>
@@ -699,7 +712,7 @@ a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quo
 # &gt;=   greater than or equal to
 # ==   equal to
 # !=   not equal to
-# %in% matches one of a specified group of possibilities
+# %in% matches any one of a specified group of possibilities
 
 #####
 # Combining multiple conditions
@@ -754,7 +767,7 @@ data.df[indices,2]               # same as above!</code></pre>
 # Alternatively, you can omit the &quot;which()&quot; function entirely- 
 #     R will know that you&#39;re trying to omit &quot;FALSE&quot; elements and keep &quot;TRUE&quot; elements
 
-data.df[data.df[,2]&lt;74,2]    # alternative syntax without using &quot;which()&quot;... </code></pre>
+data.df[data.df[,2]&lt;74,2]    # alternative simpler syntax without using &quot;which()&quot;... </code></pre>
 <pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
 <pre class="r"><code>sub.countries&lt;-c(&quot;Chile&quot;,&quot;Colombia&quot;,&quot;Mexico&quot;)    # create vector of character strings
 
@@ -781,7 +794,7 @@ which(data.df[,1] %in% sub.countries)     # elements of data column that match o
 
 indices &lt;- which(data.df$Country %in% sub.countries)
 
-data.df[indices,] </code></pre>
+data.df[indices,]          # print all data for a subset of observations</code></pre>
 <pre><code>##     Country Import Export Product
 ## 3     Chile     89     16       N
 ## 4  Colombia     77     16       A
@@ -791,7 +804,7 @@ data.df[indices,] </code></pre>
 <div id="practice-exercise" class="section level2">
 <h2>Practice exercise!</h2>
 <p>Let’s practice some of what we’ve learned. Here we will use a different data file. Take a couple minutes to make sure you understand this code.</p>
-<p>First, make sure you download the <a href="turtle_data.txt">Turtle Data</a> and save to your working directory.</p>
+<p>First, make sure you download the <a href="turtle_data.txt">Turtle Data</a> and save to your working directory (R project directory).</p>
 <div id="subsetting-data-and-correcting-errors" class="section level3">
 <h3>Subsetting data and correcting errors</h3>
 <pre class="r"><code>####
@@ -1109,7 +1122,7 @@ Import  # There is still the original object behind it. That&#39;s troubling!
 detach(data.df)   # Remember to detach</code></pre>
 <p>BUT this just leads to problems in the end. Our recommendation: just don’t use it!!</p>
 <ol start="2" style="list-style-type: decimal">
-<li>When reading in data, R automatically codes character data (any column containing even one character element) as a <strong>factor</strong>. This often leads to problems, since factor data (while useful) are actually integers and can confuse novice and expert R users alike. This is one of the most common problems that new R users face!</li>
+<li>When reading in data, R automatically codes character data (any column containing even one character element) as a <strong>factor</strong>. This often leads to problems, since factor data (while sometimes useful) are actually integers and can confuse novice and expert R users alike. This is one of the most common problems that new R users face!</li>
 </ol>
 <p>My recommendation is that, when reading in data, use the function argument “stringsAsFactors=FALSE” so that R reads these variables in as character strings rather than as factors:</p>
 <pre class="r"><code>df &lt;- read.csv(&quot;data.csv&quot;, header=T, stringsAsFactors=FALSE)   # avoid reading in character data as factors by default.</code></pre>

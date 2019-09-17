@@ -38,25 +38,30 @@ library(leaflet)
 
 
 ## a single point
-st_point(c(1, 1))
+pt <- st_point(c(1, 1))
+plot(pt)
 
 ## multiple points 
-st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+mpt <- st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(mpt)
 
 ## a line
-st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+l <- st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(l, col = 'purple')
 
 ## a polygon
-st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))
+poly <- st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))
+plot(poly, col = 'purple')
 
-## ...etc
-
+## ...etc, multiline and multipolygons
 
 # create spatial points data frame ----
 ## load reptile data 
 reptiles <- readr::read_csv('reptiles.csv')
 
 ## create a SpatialPoints object
+## provide data (x), the columns that contain the x & y (coords)
+## and the coordinate reference system (crs)
 sf_points <- st_as_sf(x = reptiles, 
                       coords = c('x', 'y'), 
                       crs = '+init=epsg:26911')
@@ -75,6 +80,9 @@ summary(sf_points)
 ## what type is the geometry column
 class(sf_points$geometry)
 
+## plot the data
+plot(sf_points[0])
+
 head(sf_points)
 
 # subset an sf object ----
@@ -84,6 +92,7 @@ head(phpl)
 ## check to see that there is only one species in the data.frame
 phpl %>% magrittr::extract2('species') %>% unique()
 
+class(sf_points)
 
 ## we can filter using dplyr syntax
 sf_points %>% 

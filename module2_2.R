@@ -21,11 +21,17 @@
 # examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
 
 # First, load this script directly from the web (which also installs required packages for you!):
-source("http://bioconductor.org/biocLite.R")
-biocLite("Biobase")
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("Biobase")
+
 
 
 data(geneData, package = "Biobase")   # load example data from Biobase package between all pairs of genes across all samples.
+  # geneData <- read.csv("geneData.csv")    # alternative!
+
+
 # This data represents 500 genes (organized by rows)
 # with expression data (numerical). 
 
@@ -207,8 +213,8 @@ parallel::clusterEvalQ(cl=myCluster,ls())   # Check the environment on each work
 
 
 #### alternatively, load all data in our environment into each worker:
-loadData <- parallel::clusterExport(cl=myCluster,ls())
-parallel::clusterEvalQ(cl=myCluster,ls())
+# loadData <- parallel::clusterExport(cl=myCluster,ls())
+# parallel::clusterEvalQ(cl=myCluster,ls())
 
 
 ############
@@ -264,8 +270,6 @@ myCluster <- makeCluster(spec=4,type="PSOCK")
 # Register the backend with foreach (doParallel):
 registerDoParallel(myCluster)
 # Run our code! Notice I didn't change the foreach call at all:
-
-loadData <- parallel::clusterExport(cl=myCluster,"geneCor2")   # KTS: I added this to make it run - was this necessary for others? 
 
 system.time(
   outcor <- foreach(

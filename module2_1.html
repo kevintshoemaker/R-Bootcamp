@@ -381,7 +381,7 @@ div.tocify {
       <a href="module2_2.html">Submodule 2.2: Parallel computing in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Using the 'tidyvierse'</a>
+      <a href="module2_3.html">Submodule 2.3: Using the 'tidyverse'</a>
     </li>
     <li>
       <a href="module2_4.html">Submodule 2.4: Plotting with 'ggplot'</a>
@@ -454,7 +454,6 @@ div.tocify {
 
 <p>In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed <strong>packages</strong> (also called <em>libraries</em>).</p>
 <p>Whether you are an expert or a novice, you will always encounter situations where you don’t know exactly what to do. The great thing about R is that there is <em>nearly always a way to do it</em> (whether in base R or via <strong>packages</strong> contributed by R users from around the world), and once you get familiar with the basics, it’s usually not that hard to figure out how to accomplish your analysis objectives!</p>
-<p><img src="tech_support_cheat_sheet.jpg" /></p>
 <div id="load-script-for-module-2.1" class="section level2">
 <h2>Load script for module #2.1</h2>
 <ol style="list-style-type: decimal">
@@ -475,10 +474,10 @@ div.tocify {
 ##############
 
 install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet installed the package from CRAN!</code></pre>
-<pre class="r"><code>library(modeest)    # load the package: This is package &#39;modeest&#39; written by P. PONCET.</code></pre>
-<pre><code>## 
-## This is package &#39;modeest&#39; written by P. PONCET.
-## For a complete list of functions, use &#39;library(help = &quot;modeest&quot;)&#39; or &#39;help.start()&#39;.</code></pre>
+<pre class="r"><code>library(modeest)    # load the package: This is package &#39;modeest&#39; written by P. PONCET.
+
+   # install.packages(&quot;BiocManager&quot;)
+   # BiocManager::install(&quot;genefilter&quot;)    # you might need to install a dependency in order to make this work!</code></pre>
 <p>Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax:</p>
 <pre class="r"><code>library(help = &quot;modeest&quot;)    # get overview of package</code></pre>
 <p>Can you use the package overview to identify a function for computing the mode of a data vector?</p>
@@ -489,13 +488,11 @@ install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet insta
 <pre><code>## starting httpd help server ... done</code></pre>
 <pre class="r"><code>  # lets find the most frequent value(s) in the &quot;Export&quot; column:
 mlv(newdf$Export, method=&quot;mfv&quot;, na.rm = T)    </code></pre>
-<pre><code>## Mode (most frequent value): 0 
-## Bickel&#39;s modal skewness: 0.8333333 
-## Call: mlv.integer(x = newdf$Export, na.rm = T, method = &quot;mfv&quot;)</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div id="removing-a-package-from-your-environment" class="section level4">
 <h4>Removing a package from your environment</h4>
 <p>Not that you need to do this very often, but if you want to remove a package from your current session, you can use the “detach()” function:</p>
-<pre class="r"><code>detach(&quot;modeest&quot;)  # remove the package from the workspace</code></pre>
+<pre class="r"><code>detach(&quot;package:modeest&quot;)  # remove the package from the workspace</code></pre>
 </div>
 </div>
 <div id="d-scatterplot-example" class="section level3">
@@ -519,6 +516,8 @@ Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
        15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)</code></pre>
 <p>Let’s install and load the “car” package:</p>
 <pre class="r"><code>install.packages(&quot;car&quot;)
+install.packages(&quot;rgl&quot;)   # you need this one as well!
+
 library(car)</code></pre>
 <p>Now for the fun part- interactive 3-D graphics! Run the following code and take a minute to play around with the resulting scatterplot.</p>
 <pre class="r"><code>##########
@@ -546,7 +545,7 @@ install_github(&quot;kbroman/broman&quot;)  # install a random package from GitH
 </div>
 <div id="finding-the-right-package-for-the-job" class="section level3">
 <h3>Finding the right package for the job</h3>
-<p>Usually a Google search is the best way to find out about packages! But you may also read about new packages in a journal (e.g., <a href="https://besjournals.onlinelibrary.wiley.com/journal/2041210X">Methods in Ecology and Evolution</a>) or textbook, or conference, or just talking with other researchers!</p>
+<p>Usually a Google search is the best way to find packages for doing something you want to do! But you may also read about new packages in a journal (e.g., <a href="https://besjournals.onlinelibrary.wiley.com/journal/2041210X">Methods in Ecology and Evolution</a>) or textbook, or conference, or just talking with other researchers!</p>
 </div>
 <div id="learning-more-about-how-a-package-works" class="section level3">
 <h3>Learning more about how a package works</h3>
@@ -619,7 +618,7 @@ help.start()</code></pre>
 # Built-in examples
 
 example(lm)   # run examples for &quot;lm&quot; function (included in base R)</code></pre>
-<p>Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples!</p>
+<p>Unfortunately, the code examples provided in help files (e.g., when using the leading question mark to pull up a help document) are often surprisingly unhelpful. Instead, you can try the package vignettes, or just use your favorite search engine to find more helpful examples on the web!</p>
 </div>
 <div id="package-citations" class="section level4">
 <h4>Package citations</h4>
@@ -631,26 +630,26 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 <pre><code>## 
 ## To cite the car package in publications use:
 ## 
-##   John Fox and Sanford Weisberg (2011). An {R} Companion to
-##   Applied Regression, Second Edition. Thousand Oaks CA: Sage. URL:
-##   http://socserv.socsci.mcmaster.ca/jfox/Books/Companion
+##   John Fox and Sanford Weisberg (2019). An {R} Companion to
+##   Applied Regression, Third Edition. Thousand Oaks CA: Sage. URL:
+##   https://socialsciences.mcmaster.ca/jfox/Books/Companion/
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
 ##   @Book{,
 ##     title = {An {R} Companion to Applied Regression},
-##     edition = {Second},
+##     edition = {Third},
 ##     author = {John Fox and Sanford Weisberg},
-##     year = {2011},
+##     year = {2019},
 ##     publisher = {Sage},
 ##     address = {Thousand Oaks {CA}},
-##     url = {http://socserv.socsci.mcmaster.ca/jfox/Books/Companion},
+##     url = {https://socialsciences.mcmaster.ca/jfox/Books/Companion/},
 ##   }</code></pre>
 <pre class="r"><code>citation()    # and here&#39;s the citation for R in general- useful for when you use R for manuscripts</code></pre>
 <pre><code>## 
 ## To cite R in publications use:
 ## 
-##   R Core Team (2018). R: A language and environment for
+##   R Core Team (2019). R: A language and environment for
 ##   statistical computing. R Foundation for Statistical Computing,
 ##   Vienna, Austria. URL https://www.R-project.org/.
 ## 
@@ -661,7 +660,7 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 ##     author = {{R Core Team}},
 ##     organization = {R Foundation for Statistical Computing},
 ##     address = {Vienna, Austria},
-##     year = {2018},
+##     year = {2019},
 ##     url = {https://www.R-project.org/},
 ##   }
 ## 
@@ -690,6 +689,7 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 <h2><em>Google!</em></h2>
 <p>I don’t even understand why it works so well to google R help (‘r’ is just a single letter after all, how does a single letter help a search?), but it works pretty well!! With some basic programming knowledge, basic R know-how including how R packages work (and some cheat sheets by your desk), and the internet, you can pretty much always find a solution!</p>
 <p>More helpful links for going further with R are provided on the <a href="Links.html">Links</a> page.</p>
+<p><img src="tech_support_cheat_sheet.jpg" /></p>
 </div>
 <div id="any-questions" class="section level2">
 <h2>Any questions???</h2>

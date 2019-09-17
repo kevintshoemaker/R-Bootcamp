@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Introduction to Spatial Data (Mitch Gritts)" />
@@ -26,16 +27,16 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="site_libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
 <script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="site_libs/leaflet-binding-2.0.0/leaflet.js"></script>
+<script src="site_libs/leaflet-binding-2.0.2/leaflet.js"></script>
 <script src="site_libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
-<script src="site_libs/leaflet-providers-plugin-2.0.0/leaflet-providers-plugin.js"></script>
+<script src="site_libs/leaflet-providers-plugin-2.0.2/leaflet-providers-plugin.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -83,9 +84,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -104,8 +103,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -121,7 +126,6 @@ body {
   padding-top: 66px;
   margin-top: -66px;
 }
-
 .section h2 {
   padding-top: 66px;
   margin-top: -66px;
@@ -141,6 +145,43 @@ body {
 .section h6 {
   padding-top: 66px;
   margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -162,47 +203,65 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -251,8 +310,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -261,6 +318,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -282,7 +349,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2018</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2019</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -297,16 +364,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module1_1.html">Module 1.1: working with objects</a>
+      <a href="module1_1.html">Submodule 1.1: working with objects</a>
     </li>
     <li>
-      <a href="module1_2.html">Module 1.2: managing data</a>
+      <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Module 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
     </li>
     <li>
-      <a href="module1_4.html">Module 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
     </li>
   </ul>
 </li>
@@ -318,19 +385,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="module2_1.html">Module 2.1: R packages</a>
+      <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Module 2.2: Parallel computing in R</a>
+      <a href="module2_2.html">Submodule 2.2: Parallel computing in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Module 2.3: Using the 'tidyvierse'</a>
+      <a href="module2_3.html">Submodule 2.3: Using the 'tidyverse'</a>
     </li>
     <li>
-      <a href="module2_4.html">Module 2.4: Plotting with 'ggplot'</a>
+      <a href="module2_4.html">Submodule 2.4: Plotting with 'ggplot'</a>
     </li>
     <li>
-      <a href="module2_5.html">Module 2.5: Spatial analysis</a>
+      <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
     </li>
   </ul>
 </li>
@@ -389,8 +456,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Module 2.5</h1>
-<h4 class="author"><em>Introduction to Spatial Data (Mitch Gritts)</em></h4>
-<h4 class="date"><em>November 2018</em></h4>
+<h4 class="author">Introduction to Spatial Data (Mitch Gritts)</h4>
+<h4 class="date">Fall 2019</h4>
 
 </div>
 
@@ -408,15 +475,16 @@ div.tocify {
 <h2>The Science of Where</h2>
 <p>Spatial analysis allows you to solve complex location-oriented problems and better understand where and what is occurring in your world. It goes beyond mere mapping to let you study the characteristics of places and the relationships between them.</p>
 <div style="margin: 16px 0">
-<img class="img-responsive center-block" src="assets/SpatialAnalysisLayers.jpg" alt="gis analysis layers", width="50%" align="middle">
+&lt;img class=“img-responsive center-block” src=“assets/SpatialAnalysisLayers.jpg” alt=“gis analysis layers”, width=“50%” align=“middle”&gt;
 <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">
 Spatial data analysis combines several different data types and methods in an attempt to model the real world.
 </figcaption>
 </div>
+<p>The best resource I’ve found for learning about spatial data in R is <a href="https://geocompr.robinlovelace.net">Geocomputation with R</a>. The book is available free online.</p>
 </div>
 <div id="spatial-isnt-special-in-r" class="section level2">
 <h2>Spatial isn’t Special (in R)</h2>
-<p>Spatial data, just like all other data in R, are combinations of vectors, matrices, and lists. These combinations of data are wrapped into specialized classes, and have many specialized methods to make working with them easier. Most of the functionality comes from the <code>sp</code> package for vector data, and <code>raster</code> package for raster data. In addition to these packages we will use a few other packages:</p>
+<p>Spatial data, just like all other data in R, are combinations of vectors, matrices, and lists. These combinations of data are wrapped into specialized classes, and have many specialized methods to make working with them easier. Most of the functionality comes from the <code>sf</code> package for vector data, and <code>raster</code> package for raster data. In addition to these packages we will use a few other packages:</p>
 <ol style="list-style-type: decimal">
 <li><code>rgdal</code> - an R wrapper to the open source <a href="https://www.gdal.org/">gdal library</a></li>
 <li><code>rgeos</code> - an R wrapper to the open source <a href="http://trac.osgeo.org/geos">geos library</a></li>
@@ -437,15 +505,13 @@ unzip(zipfile = &#39;data.zip&#39;, exdir = &#39;.&#39;)
 library(dplyr)
 library(spData)
 library(sf)
-library(raster)</code></pre>
-<pre><code>## Warning: package &#39;sp&#39; was built under R version 3.5.1</code></pre>
-<pre class="r"><code>library(rgdal)
-library(rgeos)</code></pre>
-<pre><code>## Warning: package &#39;rgeos&#39; was built under R version 3.5.1</code></pre>
-<pre class="r"><code>library(rcartocolor)
+library(raster)
+library(rgdal)
+library(rgeos)
+library(rcartocolor)
 library(magrittr)
 library(leaflet)</code></pre>
-<p><em>Check the footnotes for info about some of the warnings</em> <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p><em>Check the footnotes for info about some of the warnings</em> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 </div>
 <div id="spatial-data" class="section level2">
 <h2>Spatial Data</h2>
@@ -458,7 +524,7 @@ Everything is related to everything else, but near things are more related than 
 <p>There are two ways to model geographic data: as vectors or rasters. In the sections that follow we will first review vector data, then raster data. First we will review the theory behind each model then demonstrate how to implement them in R</p>
 <div id="vector-data" class="section level3">
 <h3>Vector Data</h3>
-<p>Vector <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> data represents the world as points with a geographic refence (they are somewhere on the earth). These points can be linked together to form more complex geometries such as lines and polygons.</p>
+<p>Vector <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> data represents the world as points with a geographic refence (they are somewhere on the earth). These points can be linked together to form more complex geometries such as lines and polygons.</p>
 <div id="points" class="section level4">
 <h4>Points</h4>
 <p>Points represent single features, such as a tree in a forest or a location of an captured animal. Points are pairs of (x, y) coordinates. Points are often 2 dimensions, however they can be extended with a z value to represent height above sea level. Attribute data can be attached to each point. An example of points with attribute data might be trees in a forest, and the attributes are height, diameter, species, etc.</p>
@@ -484,7 +550,7 @@ Everything is related to everything else, but near things are more related than 
 <div id="coordinate-reference-systems" class="section level2">
 <h2>Coordinate Reference Systems</h2>
 <div style="margin: 16px 0">
-<img class="img-responsive center-block" src="assets/geoid.jpg" alt="The shape of the earth", width="50%" align="middle">
+&lt;img class=“img-responsive center-block” src=“assets/geoid.jpg” alt=“The shape of the earth”, width=“50%” align=“middle”&gt;
 <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">
 This figure depicts one of the most accurate representations of the shape of the earth, or geoid.
 </figcaption>
@@ -506,7 +572,7 @@ This figure depicts one of the most accurate representations of the shape of the
 Watch how the representation of the earth changes as the projections change
 </figcaption>
 </div>
-<p>There are several methods to add a projection to <code>sf</code> and <code>raster</code> objects. The underlying structure of a projection string is from the <a href="https://proj4.org/">PROJ.4 open source library</a>. These are often refered to as a coordinate reference system (CRS). A common shorthand for creating CRSs is to use an EPSG id<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>.</p>
+<p>There are several methods to add a projection to <code>sf</code> and <code>raster</code> objects. The underlying structure of a projection string is from the <a href="https://proj4.org/">PROJ.4 open source library</a>. These are often refered to as a coordinate reference system (CRS). A common shorthand for creating CRSs is to use an EPSG id<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
 <p>Below is a list of common projections:</p>
 <ol style="list-style-type: decimal">
 <li>WGS84 (<a href="epsg.io/4326">EPSG:4326</a>) - Latlong used in GPS systems</li>
@@ -521,7 +587,7 @@ Watch how the representation of the earth changes as the projections change
 <div id="spatial-objects" class="section level2">
 <h2>Spatial Objects</h2>
 <p>In 2005 Edzer Pebesma and Roger Bivand cretaed the <code>sp</code> package to handle spatial data in R. <code>sp</code> provides a set of classes and methods for vector and raster data types. At the time, there weren’t many agreed upon standards for spatial data. In 2004 the Open Geospatial Consortium published a formal international standard for spatial data called <em>simple feature access</em>. It was originaly developed for SQL, and has since been adopted by many spatial communities (ESRI, QGIS, Postgres).</p>
-<p>Over the last year Pebesma et al. are actively developing a new package to handle spatial data in R. It is called <code>sf</code> for simple feature.</p>
+<p>Over the last year Pebesma et al. are actively developing a new package to handle spatial data in R. It is called <code>sf</code> for simple feature.</p>
 <div id="introduction-to-simple-features" class="section level3">
 <h3>Introduction to simple features</h3>
 <p>At the core <code>sf</code> extends the <code>data.frame</code> class to include a geometry column. This geometry column can be of several types (found within the simple feature standard): <code>POINT</code>, <code>LINE</code>, <code>POLYGON</code>, …etc.</p>
@@ -537,29 +603,35 @@ Watch how the representation of the earth changes as the projections change
 <h3>sf geometry types</h3>
 <p>As mentioned above, <code>sf</code> has many different types of geometries. Let’s create a few simple geometries so that we have an idea of what they are. These (class <code>sfg</code>) are the basic building blocks of all the classes in the <code>sf</code> package.</p>
 <pre class="r"><code>## a single point
-st_point(c(1, 1))</code></pre>
-<pre><code>## POINT (1 1)</code></pre>
+pt &lt;- st_point(c(1, 1))
+plot(pt)</code></pre>
+<p><img src="module2_5_files/figure-html/sf_intro-1.png" width="672" /></p>
 <pre class="r"><code>## multiple points 
-st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))</code></pre>
-<pre><code>## MULTIPOINT (0 0, 1 0, 1 1, 0 1, 0 0)</code></pre>
+mpt &lt;- st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(mpt)</code></pre>
+<p><img src="module2_5_files/figure-html/sf_intro-2.png" width="672" /></p>
 <pre class="r"><code>## a line
-st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))</code></pre>
-<pre><code>## LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)</code></pre>
+l &lt;- st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(l, col = &#39;purple&#39;)</code></pre>
+<p><img src="module2_5_files/figure-html/sf_intro-3.png" width="672" /></p>
 <pre class="r"><code>## a polygon
-st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))</code></pre>
-<pre><code>## POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))</code></pre>
-<pre class="r"><code>## ...etc</code></pre>
+poly &lt;- st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))
+plot(poly, col = &#39;purple&#39;)</code></pre>
+<p><img src="module2_5_files/figure-html/sf_intro-4.png" width="672" /></p>
+<pre class="r"><code>## ...etc, multiline and multipolygons</code></pre>
 <p>A comprehensive overview of all the geometry classes can be <a href="https://r-spatial.github.io/sf/articles/sf1.html">found here</a></p>
 </div>
 <div id="creating-spatial-points-data" class="section level3">
 <h3>Creating Spatial Points Data</h3>
 <p>Let’s start out by creating a <code>sf</code> object.</p>
-<p>First, download the following data set and save to your working directory: <a href="reptiles.csv" class="uri">reptiles.csv</a></p>
+<p>First, download the following data set and save to your working directory: <a href="reptiles.csv">reptiles.csv</a></p>
 <pre class="r"><code># create spatial points data frame ----
 ## load reptile data 
 reptiles &lt;- readr::read_csv(&#39;reptiles.csv&#39;)
 
 ## create a SpatialPoints object
+## provide data (x), the columns that contain the x &amp; y (coords)
+## and the coordinate reference system (crs)
 sf_points &lt;- st_as_sf(x = reptiles, 
                       coords = c(&#39;x&#39;, &#39;y&#39;), 
                       crs = &#39;+init=epsg:26911&#39;)
@@ -569,9 +641,9 @@ str(sf_points)</code></pre>
 <pre><code>## Classes &#39;sf&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:  60955 obs. of  7 variables:
 ##  $ species : chr  &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; ...
 ##  $ date    : Date, format: &quot;2015-04-03&quot; &quot;2015-04-03&quot; ...
-##  $ total   : int  4 1 3 1 1 1 1 1 1 1 ...
+##  $ total   : num  4 1 3 1 1 1 1 1 1 1 ...
 ##  $ label   : chr  &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; ...
-##  $ year    : int  2015 2015 2015 2015 2015 2010 2010 2012 2012 2012 ...
+##  $ year    : num  2015 2015 2015 2015 2015 ...
 ##  $ month   : chr  &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; ...
 ##  $ geometry:sfc_POINT of length 60955; first list element:  &#39;XY&#39; num  581906 4015885
 ##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
@@ -587,7 +659,10 @@ st_crs(sf_points)
 summary(sf_points)
 
 ## what type is the geometry column
-class(sf_points$geometry)</code></pre>
+class(sf_points$geometry)
+
+## plot the data
+plot(sf_points[0])</code></pre>
 <div id="subset-sf-object" class="section level4">
 <h4>Subset sf object</h4>
 <pre class="r"><code>head(sf_points)</code></pre>
@@ -598,14 +673,14 @@ class(sf_points$geometry)</code></pre>
 ## epsg (SRID):    26911
 ## proj4string:    +proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
 ## # A tibble: 6 x 7
-##   species    date       total label     year month                geometry
-##   &lt;chr&gt;      &lt;date&gt;     &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
-## 1 Crotaphyt~ 2015-04-03     4 Ivanpah~  2015 Apr          (581906 4015885)
-## 2 Sauromalu~ 2015-04-03     1 Ivanpah~  2015 Apr          (581738 4015674)
-## 3 Sauromalu~ 2015-04-03     3 Ivanpah~  2015 Apr          (581630 4015679)
-## 4 Sauromalu~ 2015-04-03     1 Ivanpah~  2015 Apr          (581209 4016290)
-## 5 Sauromalu~ 2015-04-03     1 Ivanpah~  2015 Apr          (581046 4015795)
-## 6 Crotaphyt~ 2010-06-30     1 Dixie V~  2010 Jun          (408859 4369481)</code></pre>
+##   species     date       total label     year month                geometry
+##   &lt;chr&gt;       &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
+## 1 Crotaphytu~ 2015-04-03     4 Ivanpah~  2015 Apr          (581906 4015885)
+## 2 Sauromalus~ 2015-04-03     1 Ivanpah~  2015 Apr          (581738 4015674)
+## 3 Sauromalus~ 2015-04-03     3 Ivanpah~  2015 Apr          (581630 4015679)
+## 4 Sauromalus~ 2015-04-03     1 Ivanpah~  2015 Apr          (581209 4016290)
+## 5 Sauromalus~ 2015-04-03     1 Ivanpah~  2015 Apr          (581046 4015795)
+## 6 Crotaphytu~ 2010-06-30     1 Dixie V~  2010 Jun          (408859 4369481)</code></pre>
 <p>As you can see, this does look like a normal <code>data.frame</code> with a geometry column. In this case the geometry is a point, as shown by a coordinate pair. Just like <code>data.frames</code> we can use indexing to subset the data. One of the columns is species. Lets use this column to subset the data frame for only desert horned lizards (**Phrynosoma platyrhinos*).</p>
 <pre class="r"><code># subset an sf object ----
 phpl &lt;- sf_points[sf_points$species == &#39;Phrynosoma platyrhinos&#39;, ]
@@ -617,18 +692,20 @@ head(phpl)</code></pre>
 ## epsg (SRID):    26911
 ## proj4string:    +proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
 ## # A tibble: 6 x 7
-##   species    date       total label     year month                geometry
-##   &lt;chr&gt;      &lt;date&gt;     &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
-## 1 Phrynosom~ 2010-04-23     1 Ivanpah~  2010 Apr          (605707 3978995)
-## 2 Phrynosom~ 2012-06-04     1 Gabbs V~  2012 Jun          (416711 4310457)
-## 3 Phrynosom~ 2012-08-30     1 Dixie V~  2012 Aug          (399708 4354045)
-## 4 Phrynosom~ 2013-05-04     1 Las Veg~  2013 May        (678717.7 3998239)
-## 5 Phrynosom~ 2014-05-09     1 Cactus-~  2014 May          (516255 4099335)
-## 6 Phrynosom~ 2015-08-04     1 Dixie V~  2015 Aug          (406478 4370088)</code></pre>
+##   species    date       total label      year month                geometry
+##   &lt;chr&gt;      &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
+## 1 Phrynosom~ 2010-04-23     1 Ivanpah-~  2010 Apr          (605707 3978995)
+## 2 Phrynosom~ 2012-06-04     1 Gabbs Va~  2012 Jun          (416711 4310457)
+## 3 Phrynosom~ 2012-08-30     1 Dixie Va~  2012 Aug          (399708 4354045)
+## 4 Phrynosom~ 2013-05-04     1 Las Vega~  2013 May        (678717.7 3998239)
+## 5 Phrynosom~ 2014-05-09     1 Cactus-S~  2014 May          (516255 4099335)
+## 6 Phrynosom~ 2015-08-04     1 Dixie Va~  2015 Aug          (406478 4370088)</code></pre>
 <pre class="r"><code>## check to see that there is only one species in the data.frame
 phpl %&gt;% magrittr::extract2(&#39;species&#39;) %&gt;% unique()</code></pre>
 <pre><code>## [1] &quot;Phrynosoma platyrhinos&quot;</code></pre>
 <p>If you check the class of <code>sf_points</code> you’ll see a list of different classes. <code>sf_points</code> is an object of class <code>sf</code>. But it inherits properties of the <code>tbl_df</code>, <code>tbl</code>, and <code>data.frame</code> class. That means that any methods that work on these classes will also work on objects of class <code>sf</code>.</p>
+<pre class="r"><code>class(sf_points)</code></pre>
+<pre><code>## [1] &quot;sf&quot;         &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
 <pre class="r"><code>## we can filter using dplyr syntax
 sf_points %&gt;% 
   dplyr::filter(species == &#39;Phrynosoma platyrhinos&#39;) %&gt;% 
@@ -640,15 +717,15 @@ sf_points %&gt;%
 ## epsg (SRID):    26911
 ## proj4string:    +proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
 ## # A tibble: 6 x 7
-##   species    date       total label     year month                geometry
-##   &lt;chr&gt;      &lt;date&gt;     &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
-## 1 Phrynosom~ 2010-04-23     1 Ivanpah~  2010 Apr          (605707 3978995)
-## 2 Phrynosom~ 2012-06-04     1 Gabbs V~  2012 Jun          (416711 4310457)
-## 3 Phrynosom~ 2012-08-30     1 Dixie V~  2012 Aug          (399708 4354045)
-## 4 Phrynosom~ 2013-05-04     1 Las Veg~  2013 May        (678717.7 3998239)
-## 5 Phrynosom~ 2014-05-09     1 Cactus-~  2014 May          (516255 4099335)
-## 6 Phrynosom~ 2015-08-04     1 Dixie V~  2015 Aug          (406478 4370088)</code></pre>
-<p>Finally, let’s plot this data. The plot function provided by <code>sf</code> behaves slightly differently than it does for most other classes. It’ll create a plot for each attribute column in the <code>sf</code> object.</p>
+##   species    date       total label      year month                geometry
+##   &lt;chr&gt;      &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
+## 1 Phrynosom~ 2010-04-23     1 Ivanpah-~  2010 Apr          (605707 3978995)
+## 2 Phrynosom~ 2012-06-04     1 Gabbs Va~  2012 Jun          (416711 4310457)
+## 3 Phrynosom~ 2012-08-30     1 Dixie Va~  2012 Aug          (399708 4354045)
+## 4 Phrynosom~ 2013-05-04     1 Las Vega~  2013 May        (678717.7 3998239)
+## 5 Phrynosom~ 2014-05-09     1 Cactus-S~  2014 May          (516255 4099335)
+## 6 Phrynosom~ 2015-08-04     1 Dixie Va~  2015 Aug          (406478 4370088)</code></pre>
+<p>Finally, let’s plot this data. The plot function provided by <code>sf</code> behaves slightly differently than it does for most other classes. It’ll create a plot for each attribute column in the <code>sf</code> objecct. I think this behavior is strange, I don’t like it. But it is handy.</p>
 <pre class="r"><code>## plot with sf::plot
 plot(head(sf_points, n = 100))</code></pre>
 <p><img src="module2_5_files/figure-html/plotting%20with%20sf-1.png" width="672" /></p>
@@ -779,20 +856,20 @@ rslt &lt;- st_join(sf_points, counties)
 
 ## what does rslt look like?
 str(rslt)</code></pre>
-<pre><code>## Classes &#39;sf&#39; and &#39;data.frame&#39;:   60955 obs. of  13 variables:
+<pre><code>## Classes &#39;sf&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:  60955 obs. of  13 variables:
 ##  $ species   : chr  &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; ...
 ##  $ date      : Date, format: &quot;2015-04-03&quot; &quot;2015-04-03&quot; ...
-##  $ total     : int  4 1 3 1 1 1 1 1 1 1 ...
+##  $ total     : num  4 1 3 1 1 1 1 1 1 1 ...
 ##  $ label     : chr  &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; ...
-##  $ year      : int  2015 2015 2015 2015 2015 2010 2010 2012 2012 2012 ...
+##  $ year      : num  2015 2015 2015 2015 2015 ...
 ##  $ month     : chr  &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; ...
+##  $ geometry  :sfc_POINT of length 60955; first list element:  &#39;XY&#39; num  581906 4015885
 ##  $ ST        : Factor w/ 1 level &quot;NV&quot;: 1 1 1 1 1 1 NA 1 1 1 ...
 ##  $ CNTYNAME  : Factor w/ 17 levels &quot;Carson City&quot;,..: 13 13 13 13 13 2 NA 13 2 2 ...
 ##  $ COV_NAME  : Factor w/ 17 levels &quot;CARSON&quot;,&quot;CHURCHILL&quot;,..: 13 13 13 13 13 2 NA 13 2 2 ...
 ##  $ STATEPLANE: Factor w/ 3 levels &quot;4601&quot;,&quot;4626&quot;,..: 2 2 2 2 2 3 NA 2 3 3 ...
 ##  $ STATEPLA_1: Factor w/ 3 levels &quot;Central  Zone&quot;,..: 1 1 1 1 1 3 NA 1 3 3 ...
 ##  $ Acres     : num  11613744 11613744 11613744 11613744 11613744 ...
-##  $ geometry  :sfc_POINT of length 60955; first list element:  &#39;XY&#39; num  581906 4015885
 ##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
 ##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA NA NA ...
 ##   ..- attr(*, &quot;names&quot;)= chr  &quot;species&quot; &quot;date&quot; &quot;total&quot; &quot;label&quot; ...</code></pre>
@@ -806,30 +883,30 @@ summary(rslt)</code></pre>
 ##                     3rd Qu.:2014-08-18   3rd Qu.: 1.000  
 ##                     Max.   :2016-09-14   Max.   :88.000  
 ##                                                          
-##     label                year         month              ST       
-##  Length:60955       Min.   :2010   Length:60955       NV  :60825  
-##  Class :character   1st Qu.:2011   Class :character   NA&#39;s:  130  
-##  Mode  :character   Median :2013   Mode  :character               
-##                     Mean   :2013                                  
-##                     3rd Qu.:2014                                  
-##                     Max.   :2016                                  
-##                                                                   
-##       CNTYNAME          COV_NAME     STATEPLANE           STATEPLA_1   
-##  Churchill:25455   CHURCHILL:25455   4601: 2926   Central  Zone:21579  
-##  Nye      :21557   NYE      :21557   4626:21579   East Zone    : 2926  
-##  Mineral  : 7496   MINERAL  : 7496   4651:36320   West Zone    :36320  
-##  Clark    : 2819   CLARK    : 2819   NA&#39;s:  130   NA&#39;s         :  130  
-##  Washoe   : 1730   WASHOE   : 1730                                     
-##  (Other)  : 1768   (Other)  : 1768                                     
-##  NA&#39;s     :  130   NA&#39;s     :  130                                     
-##      Acres                   geometry    
-##  Min.   :  168888   POINT        :60955  
-##  1st Qu.: 3213476   epsg:26911   :    0  
-##  Median : 3213476   +proj=utm ...:    0  
-##  Mean   : 6174634                        
-##  3rd Qu.:11613744                        
-##  Max.   :11613744                        
-##  NA&#39;s   :130</code></pre>
+##     label                year         month          
+##  Length:60955       Min.   :2010   Length:60955      
+##  Class :character   1st Qu.:2011   Class :character  
+##  Mode  :character   Median :2013   Mode  :character  
+##                     Mean   :2013                     
+##                     3rd Qu.:2014                     
+##                     Max.   :2016                     
+##                                                      
+##           geometry        ST             CNTYNAME          COV_NAME    
+##  POINT        :60955   NV  :60825   Churchill:25455   CHURCHILL:25455  
+##  epsg:26911   :    0   NA&#39;s:  130   Nye      :21557   NYE      :21557  
+##  +proj=utm ...:    0                Mineral  : 7496   MINERAL  : 7496  
+##                                     Clark    : 2819   CLARK    : 2819  
+##                                     Washoe   : 1730   WASHOE   : 1730  
+##                                     (Other)  : 1768   (Other)  : 1768  
+##                                     NA&#39;s     :  130   NA&#39;s     :  130  
+##  STATEPLANE           STATEPLA_1        Acres         
+##  4601: 2926   Central  Zone:21579   Min.   :  168888  
+##  4626:21579   East Zone    : 2926   1st Qu.: 3213476  
+##  4651:36320   West Zone    :36320   Median : 3213476  
+##  NA&#39;s:  130   NA&#39;s         :  130   Mean   : 6174634  
+##                                     3rd Qu.:11613744  
+##                                     Max.   :11613744  
+##                                     NA&#39;s   :130</code></pre>
 <p><code>rslt</code> is an <code>sf</code> object with 60,955 observations of 13 columns (all the columns of each <code>sf</code> object in the functino call). If you look at <code>sf_points</code> there are 60,955 elements, and <code>rslt</code> has 60,955 elements, this is a good sign! To reiterate <code>st_join()</code> has taken each point in our first geometry, <code>sf_points</code>, and looked at the polygons in <code>counties</code> to see which polygon that point lies within, then binds those colunns together to make a new <code>sf</code> object.</p>
 <p>Notice that the geometry column for of <code>rslt</code> is still a <code>POINT</code>. What does happens if you switch the order of <code>sf_points</code> and <code>counties</code>? Run the code chunk below to find out.</p>
 <pre class="r"><code>## what happens if you change the order of the input objects?
@@ -1077,7 +1154,7 @@ str(dem)</code></pre>
 <pre class="r"><code>## what is this?
 dem@data@inmemory</code></pre>
 <pre><code>## [1] FALSE</code></pre>
-<p>Wow, that is a lot of data packed into a single class<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. Check that last command. What does that mean? Well, the Raster package cleverly keeps raster data saved in on disk, in a temporary file, rather than loading it into memory. This is a very nice feature because raster data can be huge. Don’t let anyone tell you differently, geographic data was the first big data!</p>
+<p>Wow, that is a lot of data packed into a single class<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>. Check that last command. What does that mean? Well, the Raster package cleverly keeps raster data saved in on disk, in a temporary file, rather than loading it into memory. This is a very nice feature because raster data can be huge. Don’t let anyone tell you differently, geographic data was the first big data!</p>
 <p>How about plotting the data? We have two different methods, <code>plot</code> and <code>image</code>. The essentially do the same thing. Pick your favorite.</p>
 <pre class="r"><code>## plot raster
 terrain_colors &lt;- rcartocolor::carto_pal(7, &#39;TealRose&#39;)
@@ -1109,7 +1186,7 @@ plot(dem, col = terrain_colors)
 plot(nv, lwd = 3, add = T)</code></pre>
 <p><img src="module2_5_files/figure-html/check%20raster%20projection-1.png" width="672" /></p>
 <p>If we wanted to reproject the raster into a different coordinate reference system we would use the <code>raster::projectRaster</code> function. One of the parameters for this function is <code>filename</code>. This parameter allows you to give the function a filename so that data is saved onto disk as the operation progresses, rather than saving it in memory. Most of the time you should specify a filename when working with rasters.</p>
-<div id="sp-vs.sf" class="section level3">
+<div id="sp-vs.-sf" class="section level3">
 <h3>sp vs. sf</h3>
 <p>The <code>sf</code> package is very new. The first version was published on Jan 5, 2017. This means that not all packages play nicely with <code>sf</code>, yet. The <code>raster</code> package is an example. The core functions in <code>raster</code> can take <code>raster</code> objects, or <code>sp</code> objects, but not <code>sf</code> objects. This should be thought of as a minor nuisance. We can use the <code>as(x, 'Spatial</code>) function from <code>sf</code> to easily coerce <code>sf</code> objects to <code>sp</code> objects. This can always be done as part of the function call. You’ve already seen this in the code chunk above, and you’ll see it as we continue working with the <code>raster</code> package. This is what it will look like: <code>extract(dem, as(sf_points, 'Spatial'))</code>.</p>
 <p>An al</p>
@@ -1202,22 +1279,22 @@ library(leaflet)
 leaflet::leaflet(wgs_pts) %&gt;% 
   addTiles() %&gt;% 
   addCircleMarkers(radius = 5)</code></pre>
-<div id="htmlwidget-919f93729c670d137b21" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-919f93729c670d137b21">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3896d7a9ba9490c34eac" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3896d7a9ba9490c34eac">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
 <p>We can change the basemap too.</p>
 <pre class="r"><code>## leaflet provider tiles
 leaflet::leaflet(wgs_pts) %&gt;% 
   addProviderTiles(providers$Esri.WorldTopoMap) %&gt;% 
   addCircleMarkers(radius = 5)</code></pre>
-<div id="htmlwidget-9ba67bb8d753c7a1f512" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9ba67bb8d753c7a1f512">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-74fb4edd013b5a3796b9" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-74fb4edd013b5a3796b9">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
 <p>And popups!</p>
 <pre class="r"><code>## and popups
 leaflet::leaflet(wgs_pts) %&gt;% 
   addTiles() %&gt;% 
   addCircleMarkers(radius = 5, popup = paste(wgs_pts$species))</code></pre>
-<div id="htmlwidget-84f2a1759cdc0d80ad9b" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-84f2a1759cdc0d80ad9b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,["Crotaphytus bicinctores","Sauromalus ater","Sauromalus ater","Sauromalus ater","Sauromalus ater","Crotaphytus bicinctores","Phrynosoma platyrhinos","Gambelia wislizenii","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Gambelia wislizenii","Phrynosoma platyrhinos","Crotaphytus bicinctores","Phrynosoma platyrhinos","Gambelia wislizenii","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Gambelia wislizenii","Callisaurus draconoides","Callisaurus draconoides","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Dipsosaurus dorsalis","Dipsosaurus dorsalis","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Sceloporus uniformis","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Callisaurus draconoides","Phrynosoma platyrhinos","Crotaphytus bicinctores","Phrynosoma platyrhinos","Callisaurus draconoides","Sauromalus ater","Sauromalus ater","Sauromalus ater","Phrynosoma platyrhinos","Sauromalus ater","Crotaphytus bicinctores","Dipsosaurus dorsalis","Dipsosaurus dorsalis","Sceloporus occidentalis","Sauromalus ater","Crotaphytus bicinctores","Sceloporus occidentalis","Sauromalus ater","Sceloporus uniformis","Uta stansburiana","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Crotaphytus bicinctores","Gambelia wislizenii","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7152db75382cdfc741f4" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7152db75382cdfc741f4">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,["Crotaphytus bicinctores","Sauromalus ater","Sauromalus ater","Sauromalus ater","Sauromalus ater","Crotaphytus bicinctores","Phrynosoma platyrhinos","Gambelia wislizenii","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Gambelia wislizenii","Phrynosoma platyrhinos","Crotaphytus bicinctores","Phrynosoma platyrhinos","Gambelia wislizenii","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Gambelia wislizenii","Callisaurus draconoides","Callisaurus draconoides","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Dipsosaurus dorsalis","Dipsosaurus dorsalis","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Sceloporus uniformis","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Callisaurus draconoides","Phrynosoma platyrhinos","Crotaphytus bicinctores","Phrynosoma platyrhinos","Callisaurus draconoides","Sauromalus ater","Sauromalus ater","Sauromalus ater","Phrynosoma platyrhinos","Sauromalus ater","Crotaphytus bicinctores","Dipsosaurus dorsalis","Dipsosaurus dorsalis","Sceloporus occidentalis","Sauromalus ater","Crotaphytus bicinctores","Sceloporus occidentalis","Sauromalus ater","Sceloporus uniformis","Uta stansburiana","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Crotaphytus bicinctores","Gambelia wislizenii","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="challenge-spatial-lines" class="section level2">
 <h2>Challenge: Spatial Lines</h2>
@@ -1269,10 +1346,10 @@ leaflet::leaflet(wgs_pts) %&gt;%
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>The <code>raster</code> and <code>dplyr</code> libraries each have a function called <code>select</code>. I prefer to load <code>dplyr</code> first and have the <code>raster</code> library mask the <code>select</code> function in the <code>dplyr</code> library. In order to call the <code>select</code> function in the <code>raster</code> library we need to explicitly reference the library we want to use with two colons: <code>dplyr::select</code>. When using double colons the libraries namespace (list of functions, variable, etc.) is loaded, but not attached to the session. This allows us to call function from libraries we haven’t explicitly loaded with <code>library()</code> or <code>requrie()</code> function. I have a tendancy to (over)use this method. It is very helpful when writing your own functions and libraries as those functions will not throw errors about a library not being loaded.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will almost always be refering to the geographic data .<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>The European Petroleum Survey Group maintains a list of IDs to all the projection systems. These are a nice shorthand for create coordinate reference strings in R. <a href="epsg.io" class="uri">epsg.io</a> is a great interactive site to discover EPSG IDs.<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>R supports two different class types, S3 classes and S4 classes. All we really need to now about them right now is how they differ in terms of accessing values. The <code>@</code> symbol is analogous to the <code>$</code> symbol for lists. It access named items from an S4 class. These items in S4 classes are called slots.<a href="#fnref4">↩</a></p></li>
+<li id="fn1"><p>The <code>raster</code> and <code>dplyr</code> libraries each have a function called <code>select</code>. I prefer to load <code>dplyr</code> first and have the <code>raster</code> library mask the <code>select</code> function in the <code>dplyr</code> library. In order to call the <code>select</code> function in the <code>raster</code> library we need to explicitly reference the library we want to use with two colons: <code>dplyr::select</code>. When using double colons the libraries namespace (list of functions, variable, etc.) is loaded, but not attached to the session. This allows us to call function from libraries we haven’t explicitly loaded with <code>library()</code> or <code>requrie()</code> function. I have a tendancy to (over)use this method. It is very helpful when writing your own functions and libraries as those functions will not throw errors about a library not being loaded.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will almost always be refering to the geographic data .<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>The European Petroleum Survey Group maintains a list of IDs to all the projection systems. These are a nice shorthand for create coordinate reference strings in R. <a href="epsg.io">epsg.io</a> is a great interactive site to discover EPSG IDs.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>R supports two different class types, S3 classes and S4 classes. All we really need to now about them right now is how they differ in terms of accessing values. The <code>@</code> symbol is analogous to the <code>$</code> symbol for lists. It access named items from an S4 class. These items in S4 classes are called slots.<a href="#fnref4" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 
@@ -1294,6 +1371,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -23,6 +23,9 @@ install.packages("modeest")    # run this if you haven't yet installed the packa
 
 library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
 
+   # install.packages("BiocManager")
+   # BiocManager::install("genefilter")    # you might need to install a dependency in order to make this work!
+
 
 library(help = "modeest")    # get overview of package
 
@@ -35,7 +38,7 @@ newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 mlv(newdf$Export, method="mfv", na.rm = T)    
 
 
-detach("modeest")  # remove the package from the workspace
+detach("package:modeest")  # remove the package from the workspace
 
 
 #########
@@ -56,6 +59,8 @@ Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
 
 
 install.packages("car")
+install.packages("rgl")   # you need this one as well!
+
 library(car)
 
 

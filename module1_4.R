@@ -28,14 +28,17 @@ rm(list=ls())
 
 my.function = function(){       # this function has no arguments
   message <- "Hello, world!"
-  print(message)
+  return(message)
 }
 
 
 my.function()
 
 
-## We can write our own functions. Useful if we have to repeat operations over and over.
+my.function      # try running without parentheses-   what happens?
+
+
+## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
 my.mean <- function(x){
     m <- sum(x)/length(x)
     return(m)
@@ -51,10 +54,10 @@ square <- function(x){
     x^2
 }
 
-## Square a single value (scaler).
+## Square a single value (scalar).
 square(2)
 
-## Square a vector.
+## Square all elements of a vector.
 square(1:10)
 
 
@@ -76,8 +79,14 @@ logit.x <- logit(x)
 logit.x
 
 ## Plot x on x-axis, and logit(x) on y axis.
-plot(x, logit.x, type = 'l')    # View the output graphically.
+plot(x, logit.x, type = 'l',xlab="x",ylab="logit(x)")    # View the output graphically.
 
+
+
+## Sequence between 0 and 1.
+x <- seq(from = 0, to = 1, by = 0.01)
+
+logit.x <- logit(x)
 
 ## The expit (or inverse logit) funtion.
 expit <- function(x){
@@ -90,10 +99,10 @@ expit(2.197225)
 expit.logit.x <- expit(logit.x)    # Return to original x values.
 
 ## Plot x on x-axis, and expit(logit(x)) = x on y axis.
-plot(x, expit.logit.x, type = 'l')
+plot(x, expit.logit.x, type = 'l',xlab="x",ylab="expit(logit(x))")
 
 ## Plot "logistic" curve
-plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type="l")
+plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type="l",xlab="x",ylab="expit(x)")
 
 
 
@@ -107,11 +116,12 @@ survival <- function(n, d){
 survival(n = 10, d = 5)
 
 ## Simulate many years of data.
-d <- sample(0:50, 10, replace = TRUE)   # note use of "sample()" function
-n <- c(100, 100-d)
-(surv <- survival(n = n[1:10], d = d))
+d <- sample(0:50, 10, replace = TRUE)   # note use of "sample()" function   [random number of dead individuals]
+n <- rep(100, times=10)                 # total number of individuals 
+surv <- survival(n = n, d = d)
+surv
 
-## Plot year-specific survival rate.
+## Plot year-specific survival rate (random- will look different every time!)
 plot(1:10, surv, type = 'l',xlab="Year",ylab="Survival")
 
 
@@ -122,7 +132,7 @@ plot(1:10, surv, type = 'l',xlab="Year",ylab="Survival")
 ########
 # Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
 n.samples <- 1
-p <- 0.7
+p <- 0.7            # probability of detection
 x <- rbinom(n = n.samples, size = 1, prob = p)
 
 if (x > 0) {
@@ -132,14 +142,34 @@ if (x > 0) {
 }
 
 
+######
+# Make a "safe" version of the "logit" function
+
+logit.safe <- function(x){
+    bad <- ((x<0)|(x>1))
+    if(any(bad)){
+      stop("logit is only defined for x between 0 and 1!")
+    }else{
+      log(x/(1-x))
+    }
+    
+}
+x <- seq(from = -1, to = 2, by = 0.1)
+# logit(x)      # this returns impossible numbers (NaNs)
+# logit.safe(x)   # this will throw an informative error!
+
+logit.safe(c(0.15,0.99))
+
+
+
 
 ####
 ####  ifelse()
 ####
 
-## Note if...else only works for testing one value. If we have a spreadsheet with lots of data, need something else.
+## Note if...else only works for running one logical (T/F) test at a time. If we have a spreadsheet with lots of data, we need something else.
 n.samples <- 100
-set.seed(2017)
+set.seed(2017)     # the 'seed' allows random number generators to give the same result every time!
 
 ## 100 samples from a binomial disribution with detection probability = p = 0.7.
 y <- rbinom(n = n.samples, size = 1, prob = p)
@@ -170,10 +200,19 @@ ifelse(xt[, 1] > 0 & xt[, 2] > 0, print("Detected twice"),
 ####  for loops
 ####
 
-n.iter <- 10
+for(i in 1:10){
+  print(i)
+}
+
+for(j in c(1,2,3,4,5,6,7,8,9,10)){       # alternative
+  print(j)
+}
+
+
+n.iter <- 10                   # another alternative!
 count <- 0
 for(i in 1:n.iter){
-  count <- count+1            # assign a new value of count equal to the old value of count + 1
+  count <- count+1            # assign a new value of count equal to the old value of count plus 1
   print(count)
 }
 
@@ -183,30 +222,28 @@ for(i in 1:n.iter){
 1:n.iter
 
 
-## Using the placeholder variable "i" within the for loop:
+## Using the iteration variable "i" within the for loop:
 
 count <- 0
 for(i in 1:n.iter){
-    count <- count+i            # assign a new value of count equal to the old value of count + i
-    print(count)
+  count <- count+i            # assign a new value of count equal to the old value of count + i
+  print(count)
 }
 
 ## A for-loop for dependent sequence (here, the Fibonacci sequence)
 n.iter <- 10
-x <- rep(0, n.iter)            # set up vector of all zeros
+x <- rep(0, n.iter)           # set up vector of all zeros
 x[1] <- 1                     # assign x_1  <-  1
 x[2] <- 1                     # assign x_2 = 0
-x
-
 for(i in 3:n.iter){
-    x[i] <- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
+  x[i] <- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
 }
 x
 
 
 
 ###
-### apply (A more efficient, vectorized way to iterate)
+### apply (A more efficient way to iterate)
 ###
 
 W <- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
@@ -228,6 +265,30 @@ MyFunc <- function(x){
 apply(W, 1, MyFunc)
 
 
+##########
+# lapply: apply a function across a list or vector
+
+lapply(1:5,function(x) exp(x)) 
+
+lapply(1:5, function(x) sqrt(trees$Volume[x]))
+
+
+##########
+# sapply: apply a function across a list or vector, and simplify the returned object (usually returns a vector)
+
+sapply(1:5,function(x) exp(x)) 
+
+
+#########
+# tapply: summarize a vector by group (apply a summary function separately to each group)
+
+df.new <- data.frame(
+  var1 = runif(10),
+  group = sample(c("A","B"),10,replace=T)
+)
+tapply(df.new$var1,df.new$group,sum)
+
+
 
 ####################
 ####  Practice exercises ####
@@ -240,6 +301,7 @@ apply(W, 1, MyFunc)
 
 n.samples <- 100
 x <- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
+hist(x)
 mu <- mean(x)                               # Compute the sample mean.
 s <- sd(x)                                  # Compute the sample standard deviation.
 t <- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
@@ -345,19 +407,18 @@ readline()
 
 n.iter <- 1000                                # large number of hypothetical "repeat samples."
 sample.size <- 30                             # Sample size of 30 from each repeat sample.
-mu <- 5                                       # True population mean of 5.
-sd <- 2                                       # True standard deviation of 2.
+min <- 2                                       # True population minimum of 2.
+max <- 6                                       # True population maximum of 6.
 means <- numeric(n.iter)                      # Initialize empty vector to store the sample means.
 for(i in 1:n.iter){                           # For each of the repeat samples...
-    sample <- rnorm(sample.size, mean = mu, sd = sd)     # draw a random sample from the true population
+    sample <- runif(sample.size,min=min,max=max)     # draw a random sample from the true population
     means[i] <- mean(sample)                # and store the sample mean.
 }
 hist(means)                                # Histogram of all the means.
-abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 5.
+abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 4.
 plot(density(means), main = "")
 abline(v = mean(means), col = 2, lwd = 4)
 mean(means)                                # Close to true mean of 5
-sd(means)*sqrt(30)                         # Close to true sd of 2
 
 
 
@@ -389,7 +450,7 @@ plot(1:years, pop.size, type = 'l',
      xlab = "Years", ylab = "Population Size")
 
 
-## A more complex function that ouputs a plot.
+## A more complex function that outputs a plot.
 plot.logistic.growth <- function(r, P, K, years){
     pop.size[1] <- P
     for(i in 1:(years-1)){

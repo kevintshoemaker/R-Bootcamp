@@ -38,9 +38,9 @@ NOTE: this module borrows heavily from an R short course developed by a team at 
 
 ## Load script for module #1.4
 
-1. Click [here](module1_4.R) to download the script! Save the script to a convenient folder on your laptop.
+1. Click [here](module1_4.R) to download the script! Save the script to your working directory (R Project directory).
 
-2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
+2. Load your script in your RStudio Project. To do this, open your RStudio Project and click on the folder icon in the toolbar at the top and load your script. 
 
 Let's get started with basic programming in R!
 
@@ -60,18 +60,17 @@ rm(list=ls())
 
 ```
 
-As we have seen, base R already includes lots of functions, and thousands more functions are available in packages that you can install. Nonetheless, it's really useful to know how to write your own functions! For example, we might write our own function if we have to repeat certain sets of operations over and over in different contexts. 
+As we have seen, base R already includes lots of functions, and thousands more functions are available in packages that you can install (next module of this workshop). Nonetheless, it's really useful to know how to write your own functions! For example, we might write our own function if we have to repeat certain sets of operations over and over in different contexts. 
 
 We use the following syntax when we are writing our own functions:
 
 ```
 
-my.function <- function(inputs){         # function takes various arguments, or inputs
+my.function <- function(input1,input2,...){         # function takes various arguments (inputs)
     
-    ## Algorithm: Do something useful with the inputs
+    ## [Algorithm goes here: Do something useful with the inputs]
     
-    return(output)             # optionally, return some output
-    
+    return(output)  # return some output
 }
 
 ```
@@ -88,7 +87,7 @@ Let's try to write our first function, which prints out a message: "Hello, world
 
 my.function = function(){       # this function has no arguments
   message <- "Hello, world!"
-  print(message)
+  return(message)
 }
 
 ```
@@ -102,13 +101,22 @@ my.function()
 
 ```
 
+What happens if you run the function without the parentheses?
+
+
+```{r}
+
+my.function      # try running without parentheses-   what happens?
+
+```
+
 ### 'Mean' function
 
 Let's write a function to compute the mean of a vector. Okay fine, base R already has the "mean()" function, but let's do it anyway!
 
 ```{r}
 
-## We can write our own functions. Useful if we have to repeat operations over and over.
+## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
 my.mean <- function(x){
     m <- sum(x)/length(x)
     return(m)
@@ -122,7 +130,7 @@ my.mean(foo)
 
 ### 'Square' function
 
-How about a function to square the arguments?
+How about a function to square its arguments?
 
 ```{r}
 
@@ -131,7 +139,7 @@ square <- function(x){
     x^2
 }
 
-## Square a single value (scaler).
+## Square a single value (scalar).
 square(2)
 
 ## Square all elements of a vector.
@@ -214,9 +222,10 @@ survival <- function(n, d){
 survival(n = 10, d = 5)
 
 ## Simulate many years of data.
-d <- sample(0:50, 10, replace = TRUE)   # note use of "sample()" function
-n <- rep(100, times=10)
-(surv <- survival(n = n[1:10], d = d))
+d <- sample(0:50, 10, replace = TRUE)   # note use of "sample()" function   [random number of dead individuals]
+n <- rep(100, times=10)                 # total number of individuals 
+surv <- survival(n = n, d = d)
+surv
 
 ## Plot year-specific survival rate (random- will look different every time!)
 plot(1:10, surv, type = 'l',xlab="Year",ylab="Survival")
@@ -236,7 +245,7 @@ The basic syntax for if...else statements in R is as follows:
 
 if([some condition]){               ## if some condition is met
   [execute some commands]
-}else if ([some other condition]){   ## if some other condition is met (often not necessary)
+}else if ([some other condition]){   ## if some other condition is met (often this clause is not necessary)
   [execute some other commands]
 }else{                               ## if none of the above conditions are met (otherwise...)
   [execute some other commands]
@@ -244,7 +253,7 @@ if([some condition]){               ## if some condition is met
 
 ```
 
-NOTE: you can include any number of "else if(...)" statements- and most of the time you can omit these entirely!   
+NOTE: you can include any number of "else if(...)" statements- or you can omit these entirely!   
 
 Let's try it!
 
@@ -257,7 +266,7 @@ Let's try it!
 ########
 # Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
 n.samples <- 1
-p <- 0.7
+p <- 0.7            # probability of detection
 x <- rbinom(n = n.samples, size = 1, prob = p)
 
 if (x > 0) {
@@ -281,7 +290,7 @@ logit.safe <- function(x){
 }
 x <- seq(from = -1, to = 2, by = 0.1)
 # logit(x)      # this returns impossible numbers (NaNs)
-# logit.safe(x)   # this will now throw an error!
+# logit.safe(x)   # this will throw an informative error!
 
 logit.safe(c(0.15,0.99))
 
@@ -291,7 +300,7 @@ logit.safe(c(0.15,0.99))
 
 ### ifelse() function
 
-Note that "if...else" only works for testing one condition at a time. If we have a spreadsheet with lots of data, we need something else -- somethign "vectorized" -- like the "ifelse()" function:
+Note that "if...else" only works for testing one condition at a time. If we have a spreadsheet with lots of data, we need something else -- something "vectorized" -- like the "ifelse()" function:
 
 ```{r}
 
@@ -299,9 +308,9 @@ Note that "if...else" only works for testing one condition at a time. If we have
 ####  ifelse()
 ####
 
-## Note if...else only works for testing one value. If we have a spreadsheet with lots of data, need something else.
+## Note if...else only works for running one logical (T/F) test at a time. If we have a spreadsheet with lots of data, we need something else.
 n.samples <- 100
-set.seed(2017)
+set.seed(2017)     # the 'seed' allows random number generators to give the same result every time!
 
 ## 100 samples from a binomial disribution with detection probability = p = 0.7.
 y <- rbinom(n = n.samples, size = 1, prob = p)
@@ -338,8 +347,8 @@ The basic syntax for iterating in R is called a "FOR loop", and looks like this:
 
 ```
 
-for([placeholder variable] in [iteration vector of length x]){
-  [perform specified operation(s) x times, with the placeholder variable alternately set at each value of the iteration vector]
+for([iteration variable] in [iteration vector of length x]){
+  [perform specified operation(s) x times, with the iteration variable alternately set at each value of the iteration vector]
 }
 
 ```
@@ -352,10 +361,19 @@ For example...
 ####  for loops
 ####
 
-n.iter <- 10
+for(i in 1:10){
+  print(i)
+}
+
+for(j in c(1,2,3,4,5,6,7,8,9,10)){       # alternative
+  print(j)
+}
+
+
+n.iter <- 10                   # another alternative!
 count <- 0
 for(i in 1:n.iter){
-  count <- count+1            # assign a new value of count equal to the old value of count + 1
+  count <- count+1            # assign a new value of count equal to the old value of count plus 1
   print(count)
 }
 
@@ -363,7 +381,7 @@ for(i in 1:n.iter){
 ```
 
 
-Here, "i" is the *placeholder variable* and "1:n.iter" is the *iteration vector*: 
+Take the first FOR loop above. Here, "i" is the *iteration variable* and "1:n.iter" is the *iteration vector*: 
 
 ```{r}
 
@@ -373,29 +391,27 @@ Here, "i" is the *placeholder variable* and "1:n.iter" is the *iteration vector*
 ```
 
 
-Essentially, R starts this FOR loop by setting the value of the *placeholder variable* "i" to the first value of the *iteration vector* (i.e., the value 1). It then runs the two commands in the body of the for loop [count <- count+1; print(count)]. Then, it sets the placeholder variable "i" to the next value in the *iteration vector* (i.e., the value 2) and runs the commands again. It keeps doing this until it reaches the end of the iteration vector, at which point it stops!  
+Essentially, R starts this FOR loop by setting the value of the placeholder *iteration variable* "i" to the first value of the *iteration vector* (i.e., the value 1). It then runs the two commands in the body of the for loop [count <- count+1; print(count)]. Then, it sets the iteration variable "i" to the next value in the *iteration vector* (i.e., the value 2) and runs the commands again. It keeps doing this until it reaches the end of the iteration vector, at which point it stops!  
 
-Often, we use the placeholder variable directly within the FOR loop. Here are some examples:
+It is often useful to reference the iteration variable directly within the FOR loop. Here are some examples:
 
 ```{r}
 
-## Using the placeholder variable "i" within the for loop:
+## Using the iteration variable "i" within the for loop:
 
 count <- 0
 for(i in 1:n.iter){
-    count <- count+i            # assign a new value of count equal to the old value of count + i
-    print(count)
+  count <- count+i            # assign a new value of count equal to the old value of count + i
+  print(count)
 }
 
 ## A for-loop for dependent sequence (here, the Fibonacci sequence)
 n.iter <- 10
-x <- rep(0, n.iter)            # set up vector of all zeros
+x <- rep(0, n.iter)           # set up vector of all zeros
 x[1] <- 1                     # assign x_1  <-  1
 x[2] <- 1                     # assign x_2 = 0
-x
-
 for(i in 3:n.iter){
-    x[i] <- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
+  x[i] <- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
 }
 x
 
@@ -439,13 +455,13 @@ lapply(1:5, function(x) sqrt(trees$Volume[x]))
 
 
 ##########
-# sapply: apply a function across a list or vector, and simplify the returned object
+# sapply: apply a function across a list or vector, and simplify the returned object (usually returns a vector)
 
 sapply(1:5,function(x) exp(x)) 
 
 
 #########
-# tapply: apply a function across a vector that is organized into groups
+# tapply: summarize a vector by group (apply a summary function separately to each group)
 
 df.new <- data.frame(
   var1 = runif(10),
@@ -483,6 +499,7 @@ The act of rejecting or failing to reject a null hypothesis is an instance of co
 
 n.samples <- 100
 x <- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
+hist(x)
 mu <- mean(x)                               # Compute the sample mean.
 s <- sd(x)                                  # Compute the sample standard deviation.
 t <- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)

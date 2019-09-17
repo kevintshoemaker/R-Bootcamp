@@ -241,7 +241,7 @@ legend("topright",pch=c(20,20),pt.cex=c(2,2),col=c(colramp[1],colramp[100]),lege
  
 
 ## calculate the mean Sepal Length of for each species
-bar.heights <- tapply(X=iris$Sepal.Length, INDEX=iris$Species, FUN=mean)   #use "tapply()" function, which summarizes a numeric variable by levels of a categorical variable)
+bar.heights <- tapply(iris$Sepal.Length, iris$Species, mean)   #use "tapply()" function, which summarizes a numeric variable by levels of a categorical variable)
 
 # The basic 'barplot()' function
 barplot(bar.heights)

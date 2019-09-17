@@ -21,23 +21,18 @@ getwd()          # note: the results from running this command on my machine wil
 
 
 # Setting a new working directory in a PC (same as File->Change dir...)
-#setwd("filepath with forward slashes") 
+# setwd("[filepath with forward slashes]") 
 
 # for example...
 
 # setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
 
 # Open finder to set directory
-setwd(file.choose())
+setwd(choose.dir())
 
 
 # Names of files in working directory
 dir()
-
-
-setwd("E:/GIT/R-Bootcamp")   # set working directory to the folder with my data!
-
-# note: since I use an R project (.Rproj), this is automatically my working directory when I open the R project in Rstudio. 
 
 
 ####
@@ -46,14 +41,8 @@ setwd("E:/GIT/R-Bootcamp")   # set working directory to the folder with my data!
 
 # ?read.table    # some useful functions for reading in data
 # ?read.csv
-# ?readLines
 
-# read.table with tab delimited file (default is sep = "" (one of several common delimiters, including any type of whitespace))
-data.tab.df <- read.table("data.dat", header=TRUE, sep="")
-
-head(data.tab.df)    # display the first few lines of the data frame
-
-# read.table to import textfile
+# read.table to import textfile (default is sep = "" (one of several common delimiters, including any type of whitespace))
 data.txt.df <- read.table("data.txt", header=T, sep="")  
 
 # read.table with csv file
@@ -66,8 +55,7 @@ names(data.csv.df)
 data.df <- read.csv("data.csv")
 names(data.df) 
 
-# Remove objects we won't be using
-rm(data.tab.df)
+# Remove redundant objects from memory
 rm(data.txt.df)
 rm(data.csv.df)
 
@@ -138,10 +126,6 @@ rm(a,b)   # remove these objects from the workspace
 
 load("Module1_2.RData")   # load these objects back in!
 
-save.image(file="Module2.RData")    # ?save.image: saves entire workspace   
-
-load(file="Module2.RData")  # load the workspace from the working directory
-
 
 ##############
 # Clear the workspace (and load it back in!)
@@ -194,7 +178,7 @@ Y < Z
 # Wrong!
 data.df[,2]=74     # sets entire second column equal to 74!
 
-data.df <- read.csv("data.csv")  ## correct our mistake in the previous line and revert to the original data!
+data.df <- read.csv("data.csv")  ## correct our mistake in the previous line (revert to the original data)!
 
 # Right
 data.df[,2]==74    # tests each element of column to see whether it is equal to 74
@@ -222,7 +206,8 @@ data.df[indices,2]               # same as above!
 
 
 #########
-# Alternatively, you don't actually need to use the "which()" function
+# Alternatively, you can omit the "which()" function entirely- 
+#     R will know that you're trying to omit "FALSE" elements and keep "TRUE" elements
 
 data.df[data.df[,2]<74,2]    # alternative syntax without using "which()"... 
 

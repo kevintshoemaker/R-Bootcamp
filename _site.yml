@@ -21,7 +21,7 @@ navbar:
           href: module2_1.html
         - text: "Submodule 2.2: Parallel computing in R"
           href: module2_2.html
-        - text: "Submodule 2.3: Using the 'tidyvierse'"
+        - text: "Submodule 2.3: Using the 'tidyverse'"
           href: module2_3.html
         - text: "Submodule 2.4: Plotting with 'ggplot'"
           href: module2_4.html
