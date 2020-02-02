@@ -35,7 +35,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
     - Thanks to Perry Williams for allowing us to use these materials!!
     
-Welcome to the 2019 R bootcamps! Let's get started!! 
+Welcome to the 2020 R bootcamp! Let's get started!! 
 
 ## Get materials for this module
 
