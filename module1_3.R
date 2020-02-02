@@ -140,7 +140,7 @@ plot.colors
 
 # generate a vector of colors for our plot (one color for each observation)
 
-indices <- match(iris$Species,names(plot.colors))   # the "match()" function returns the indices of the second vector corresponding to each element of the first vector         
+indices <- match(iris$Species,names(plot.colors))   # the "match()" function goes through each element of the first vector and finds the matching index in the second vector         
 color.vector2 <- plot.colors[indices]
 
 
@@ -283,6 +283,7 @@ hist(iris$Sepal.Length, freq=FALSE, main="Histogram of Sepal Length",
 ## Add a density estimator
 
 lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
+curve(dnorm(x,mean(iris$Sepal.Length),sd(iris$Sepal.Length)),add=T,col="red",lty=3)   # add a normal distribution
 
 
 pairs(iris)

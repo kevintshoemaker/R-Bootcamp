@@ -1,7 +1,7 @@
 ---
 title: "Module 1.2"
 author: "Getting started: managing data"
-date: "Fall 2019"
+date: "TWS-WS 2020"
 output: 
   html_document: 
     theme: journal

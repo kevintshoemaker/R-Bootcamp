@@ -79,6 +79,8 @@ data(Titanic)
 
 str(Titanic)    # examine the structure of this data object
 
+?Titanic        # learn more about this built-in data object
+
 
 ####
 #### Check/explore data object
@@ -101,6 +103,9 @@ head(data.df,2)
 tail(data.df)
 
 
+summary(data.df)
+
+
 ####
 #### Exporting data (save to hard drive as data file)
 ####
@@ -108,7 +113,7 @@ tail(data.df)
 # ?write.table: writes a file to the working directory
 # ?writeLines: writes to a file, one line at a time
    
-write.table(data.df[,c("Country","Export")], file="data_export.csv", sep=",", col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in.
+write.table(data.df[,c("Country","Product")], file="data_export.csv", sep=",", col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in.
 
 
 ####
@@ -159,7 +164,7 @@ a == 2
 # >=   greater than or equal to
 # ==   equal to
 # !=   not equal to
-# %in% matches one of a specified group of possibilities
+# %in% matches any one of a specified group of possibilities
 
 #####
 # Combining multiple conditions
@@ -209,7 +214,7 @@ data.df[indices,2]               # same as above!
 # Alternatively, you can omit the "which()" function entirely- 
 #     R will know that you're trying to omit "FALSE" elements and keep "TRUE" elements
 
-data.df[data.df[,2]<74,2]    # alternative syntax without using "which()"... 
+data.df[data.df[,2]<74,2]    # alternative simpler syntax without using "which()"... 
 
 
 sub.countries<-c("Chile","Colombia","Mexico")    # create vector of character strings
@@ -231,7 +236,7 @@ which((data.df$Country %in% sub.countries) & (data.df$Product=="N"))
 
 indices <- which(data.df$Country %in% sub.countries)
 
-data.df[indices,] 
+data.df[indices,]          # print all data for a subset of observations
 
 
 
