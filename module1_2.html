@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -339,7 +344,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Spring 2020</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -447,7 +452,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 1.2</h1>
 <h4 class="author">Getting started: managing data</h4>
-<h4 class="date">TWS-WS 2020</h4>
+<h4 class="date">Fall 2020</h4>
 
 </div>
 
@@ -467,7 +472,7 @@ div.tocify {
 <p>A working directory is the folder that R uses for reading or writing files if no other directory information is specified. Every R session has a working directory, whether you specify one or not. Let’s find out what my working directory is right now:</p>
 <pre class="r"><code># Find the directory you&#39;re working in 
 getwd()          # note: the results from running this command on my machine will probably differ from yours!  </code></pre>
-<pre><code>## [1] &quot;E:/GIT/R-Bootcamp&quot;</code></pre>
+<pre><code>## [1] &quot;C:/Users/Kevin/Documents/GitHub/R-Bootcamp&quot;</code></pre>
 <p>What’s yours? Usually the default working directory is your “Documents” folder. Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file).</p>
 <div id="aside-rstudio-projects" class="section level4">
 <h4>ASIDE: RStudio Projects</h4>

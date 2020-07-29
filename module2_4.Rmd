@@ -1,7 +1,7 @@
 ---
 title: "Module 2.4"
 author: "Advanced data visualization with ggplot and more"
-date: "Fall 2019"
+date: "Fall 2020"
 output: 
   html_document: 
     theme: journal

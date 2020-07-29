@@ -1,7 +1,7 @@
 ---
 title: "Module 1.3"
 author: 'Getting started: basic plotting and statistics in R'
-date: "TWS-WS 2020"
+date: "Fall 2020"
 output:
   html_document:
     theme: journal

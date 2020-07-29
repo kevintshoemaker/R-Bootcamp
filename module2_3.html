@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -339,7 +344,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2019</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -447,7 +452,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 2.3</h1>
 <h4 class="author">The Tidyverse and Data Wrangling in R</h4>
-<h4 class="date">Fall 2019</h4>
+<h4 class="date">Fall 2020</h4>
 
 </div>
 
@@ -794,11 +799,11 @@ ymd_hms(&quot;2017-01-31 20:11:59&quot;)</code></pre>
 <pre class="r"><code># we can also have R tell us the current time or date
 
 now()</code></pre>
-<pre><code>## [1] &quot;2019-09-13 22:39:03 PDT&quot;</code></pre>
+<pre><code>## [1] &quot;2020-07-28 20:03:14 PDT&quot;</code></pre>
 <pre class="r"><code>now(tz = &quot;UTC&quot;)</code></pre>
-<pre><code>## [1] &quot;2019-09-14 05:39:03 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2020-07-29 03:03:14 UTC&quot;</code></pre>
 <pre class="r"><code>today()</code></pre>
-<pre><code>## [1] &quot;2019-09-13&quot;</code></pre>
+<pre><code>## [1] &quot;2020-07-28&quot;</code></pre>
 </div>
 <div id="working-with-dates-with-lubridate---parsing-dates" class="section level1">
 <h1>Working with Dates with lubridate - Parsing Dates</h1>

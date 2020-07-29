@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -96,7 +95,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -245,6 +243,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -273,6 +272,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -347,7 +352,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2019</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -455,7 +460,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 2.4</h1>
 <h4 class="author">Advanced data visualization with ggplot and more</h4>
-<h4 class="date">Fall 2019</h4>
+<h4 class="date">Fall 2020</h4>
 
 </div>
 
@@ -735,8 +740,8 @@ leaflet(possumsites) %&gt;%
   addTiles() %&gt;% #Adds map tiles from OpenStreetMap
   addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
              popup=c(as.character(possumsites$altitude))) #Adds markers for the sites</code></pre>
-<div id="htmlwidget-1408f61b791d2631dcc0" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1408f61b791d2631dcc0">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[-37.55,-37.6166666666667,-32.1166666666667,-28.6166666666667,-28.6166666666667,-26.4333333333333,-24.55],[145.883333333333,148.8,151.466666666667,153.333333333333,153.416666666667,152.583333333333,151.466666666667],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["800","300","300","400","200","400","600"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-37.6166666666667,-24.55],"lng":[145.883333333333,153.416666666667]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-675e1cf943bc9de5d353" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-675e1cf943bc9de5d353">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[-37.55,-37.6166666666667,-32.1166666666667,-28.6166666666667,-28.6166666666667,-26.4333333333333,-24.55],[145.883333333333,148.8,151.466666666667,153.333333333333,153.416666666667,152.583333333333,151.466666666667],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["800","300","300","400","200","400","600"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-37.6166666666667,-24.55],"lng":[145.883333333333,153.416666666667]}},"evals":[],"jsHooks":[]}</script>
 <p>Happy plotting!</p>
 </div>
 </div>

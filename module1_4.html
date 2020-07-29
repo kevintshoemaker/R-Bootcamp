@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -339,7 +344,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Spring 2020</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -447,7 +452,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 1.4</h1>
 <h4 class="author">Basic programming in R</h4>
-<h4 class="date">TWS-WS 2020</h4>
+<h4 class="date">Fall 2020</h4>
 
 </div>
 
@@ -613,7 +618,7 @@ d &lt;- sample(0:50, 10, replace = TRUE)   # note use of &quot;sample()&quot; fu
 n &lt;- rep(100, times=10)                 # total number of individuals 
 surv &lt;- survival(n = n, d = d)
 surv</code></pre>
-<pre><code>##  [1] 0.53 0.72 0.70 0.60 0.91 0.53 0.74 0.88 0.70 0.98</code></pre>
+<pre><code>##  [1] 0.90 0.60 0.81 0.84 0.76 0.69 0.82 0.94 0.96 0.92</code></pre>
 <pre class="r"><code>## Plot year-specific survival rate (random- will look different every time!)
 plot(1:10, surv, type = &#39;l&#39;,xlab=&quot;Year&quot;,ylab=&quot;Survival&quot;)</code></pre>
 <p><img src="module1_4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>

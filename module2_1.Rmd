@@ -1,7 +1,7 @@
 ---
 title: "Module 2.1"
 author: "R packages: expanding your skill set"
-date: "TWS-WS 2020"
+date: "Fall 2020"
 output: 
   html_document: 
     theme: journal

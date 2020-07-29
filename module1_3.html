@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -339,7 +344,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Spring 2020</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -447,7 +452,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 1.3</h1>
 <h4 class="author">Getting started: basic plotting and statistics in R</h4>
-<h4 class="date">TWS-WS 2020</h4>
+<h4 class="date">Fall 2020</h4>
 
 </div>
 
@@ -463,9 +468,9 @@ div.tocify {
 </ol>
 <p>Let’s get started with plotting in R!</p>
 <p>We’ll start with the ‘trees’ dataset, which is built into R. It describes the girth, height, and volume of 31 felled black cherry trees.</p>
-<pre class="r"><code>?trees      # description of built in dataset</code></pre>
-<pre><code>## starting httpd help server ... done</code></pre>
-<pre class="r"><code>dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
+<pre class="r"><code>?trees      # description of built in dataset
+
+dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
 <pre><code>## [1] 31  3</code></pre>
 <pre class="r"><code>str(trees)   # Show the structure of the trees dataframe</code></pre>
 <pre><code>## &#39;data.frame&#39;:    31 obs. of  3 variables:

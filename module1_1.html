@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -339,7 +344,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Spring 2020</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -447,7 +452,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 1.1</h1>
 <h4 class="author">Getting started: working with objects</h4>
-<h4 class="date">TWS-WS 2020</h4>
+<h4 class="date">Fall 2020</h4>
 
 </div>
 
@@ -969,32 +974,32 @@ rep(0,times=3)                # repeat 0 three times</code></pre>
 
 z &lt;- rnorm(10)                # 10 realizations from std. normal
 z</code></pre>
-<pre><code>##  [1]  0.1531699  0.1433809  0.3695570  0.1999427 -0.9948798  0.7006862
-##  [7] -1.6993735 -0.7512664  0.6911826  2.8087835</code></pre>
+<pre><code>##  [1] -0.87749312  1.08756318 -0.81067101 -0.88375120  0.55489125
+##  [6]  0.93908293 -0.20927149  0.03189169 -0.36523283 -1.01108789</code></pre>
 <pre class="r"><code>y &lt;- rnorm(10,mean=-2,sd=4)           # 10 realizations from N(-2,4^2)
 y</code></pre>
-<pre><code>##  [1] -2.3534917 -3.5732859 -0.6138528 -0.2226236  4.2901010 -0.9257079
-##  [7] -2.4898045  6.6591373  1.7588928  4.0267616</code></pre>
+<pre><code>##  [1]   1.13040365  -6.75451914  -0.16244733   1.95132369  -0.02699813
+##  [6]  -3.45491192  -4.84302274  -8.08994546 -10.33215020  -0.07484386</code></pre>
 <pre class="r"><code>rbinom(5,size=3,prob=.5)                # 5 realizations from Binom(3,0.5)</code></pre>
-<pre><code>## [1] 1 0 2 0 2</code></pre>
+<pre><code>## [1] 1 1 2 1 1</code></pre>
 <pre class="r"><code>rbinom(5,3,.1)                # 5 realizations from Binom(3,0.1)</code></pre>
-<pre><code>## [1] 1 0 1 0 0</code></pre>
+<pre><code>## [1] 0 2 0 1 0</code></pre>
 <pre class="r"><code>rbinom(5,3,.8)                # 5 realizations from Binom(3,0.8)</code></pre>
-<pre><code>## [1] 2 2 2 2 2</code></pre>
+<pre><code>## [1] 2 3 2 2 2</code></pre>
 <pre class="r"><code>rbinom(5,1:5,0.5)       # simulations from binomial w/ diff number of trials</code></pre>
-<pre><code>## [1] 0 1 2 1 3</code></pre>
+<pre><code>## [1] 1 1 2 2 3</code></pre>
 <pre class="r"><code>rbinom(5,1:5,seq(.1,.9,length=5))   # simulations from diff number of trials and probs</code></pre>
-<pre><code>## [1] 0 1 1 3 5</code></pre>
+<pre><code>## [1] 0 0 1 2 4</code></pre>
 <pre class="r"><code>runif(10)                # 10 standard uniform random variates</code></pre>
-<pre><code>##  [1] 0.43533225 0.11524089 0.26207590 0.80313381 0.94261948 0.97442669
-##  [7] 0.66681028 0.07955516 0.98293861 0.82963642</code></pre>
+<pre><code>##  [1] 0.4002596 0.5613157 0.3904838 0.7263280 0.2591831 0.1629755 0.1531609
+##  [8] 0.9742792 0.9125310 0.9110320</code></pre>
 <pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random variates on [-1,1]</code></pre>
-<pre><code>##  [1] -0.5860341  0.5805945  0.6285255 -0.6597934 -0.6904750 -0.7087711
-##  [7] -0.4244977 -0.2192225 -0.7129384  0.1953845</code></pre>
+<pre><code>##  [1]  0.5733889 -0.4901206 -0.9549406 -0.9658461  0.7720505 -0.8615891
+##  [7] -0.3929494  0.5187842 -0.5909939  0.7568917</code></pre>
 <pre class="r"><code>sample(1:10,size=5,replace=TRUE)        # 5 rvs from discrete unif. on 1:10.</code></pre>
-<pre><code>## [1] 9 5 2 3 8</code></pre>
+<pre><code>## [1] 4 7 7 3 8</code></pre>
 <pre class="r"><code>sample(1:10,size=5,replace=TRUE,prob=(1:10)/sum(1:10)) # 5 rvs from discrete pmf w/ varying probs.</code></pre>
-<pre><code>## [1] 2 7 6 6 9</code></pre>
+<pre><code>## [1] 5 6 6 2 7</code></pre>
 <p>And finally, we can make up a fake data frame using some of the tricks we just learned!</p>
 <pre class="r"><code>############
 # Make up an entire data frame!
@@ -1009,27 +1014,27 @@ my.data &lt;- data.frame(
 )
 head(my.data)</code></pre>
 <pre><code>##   Obs.Id Treatment Block Germination AvgHeight
-## 1      1         A     1           1 10.911505
-## 2      2         A     2           0  8.668143
-## 3      3         A     3           0 10.313027
-## 4      4         A     4           2 10.201915
-## 5      5         A     5           1 12.527927
-## 6      6         A     6           0  8.550467</code></pre>
+## 1      1         A     1           0  9.847973
+## 2      2         A     2           0 11.364170
+## 3      3         A     3           1 10.132780
+## 4      4         A     4           1 10.159070
+## 5      5         A     5           0  9.970470
+## 6      6         A     6           2  9.984808</code></pre>
 <pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
 <pre><code>##      Obs.Id       Treatment     Block        Germination   
 ##  Min.   :  1.00   A:20      Min.   : 1.00   Min.   : 0.00  
 ##  1st Qu.: 25.75   B:20      1st Qu.: 5.75   1st Qu.: 1.00  
-##  Median : 50.50   C:20      Median :10.50   Median : 4.00  
-##  Mean   : 50.50   D:20      Mean   :10.50   Mean   : 4.21  
+##  Median : 50.50   C:20      Median :10.50   Median : 3.00  
+##  Mean   : 50.50   D:20      Mean   :10.50   Mean   : 3.46  
 ##  3rd Qu.: 75.25   E:20      3rd Qu.:15.25   3rd Qu.: 6.00  
-##  Max.   :100.00             Max.   :20.00   Max.   :16.00  
+##  Max.   :100.00             Max.   :20.00   Max.   :13.00  
 ##    AvgHeight     
-##  Min.   : 8.079  
-##  1st Qu.:24.733  
-##  Median :29.845  
-##  Mean   :26.125  
-##  3rd Qu.:31.265  
-##  Max.   :37.831</code></pre>
+##  Min.   : 9.184  
+##  1st Qu.:23.702  
+##  Median :29.853  
+##  Mean   :26.204  
+##  3rd Qu.:32.286  
+##  Max.   :36.983</code></pre>
 <p>NOTE: the “head()” function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!</p>
 </div>
 </div>
@@ -1090,51 +1095,51 @@ d</code></pre>
 d.df=my.data[21:30,]  # only take 10 observations
 d.df</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 21     21         B     1          11  28.87157
-## 22     22         B     2           5  29.73062
-## 23     23         B     3           8  28.67837
-## 24     24         B     4           6  29.69622
-## 25     25         B     5           5  30.00710
-## 26     26         B     6           6  29.94907
-## 27     27         B     7           5  28.51203
-## 28     28         B     8           3  27.69992
-## 29     29         B     9           4  29.40945
-## 30     30         B    10           5  31.11471</code></pre>
+## 21     21         B     1           5  30.03433
+## 22     22         B     2           6  30.62326
+## 23     23         B     3           6  30.84087
+## 24     24         B     4           8  28.86910
+## 25     25         B     5           4  30.27317
+## 26     26         B     6           4  30.43175
+## 27     27         B     7           4  29.72036
+## 28     28         B     8           4  30.47326
+## 29     29         B     9           6  29.94850
+## 30     30         B    10           4  29.29143</code></pre>
 <pre class="r"><code>## many ways of accessing a particular column of a data frame
 d.df$Germination           # Subsetting a data frame</code></pre>
-<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre><code>##  [1] 5 6 6 8 4 4 4 4 6 4</code></pre>
 <pre class="r"><code>d.df[[&quot;Germination&quot;]]      # same thing!</code></pre>
-<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre><code>##  [1] 5 6 6 8 4 4 4 4 6 4</code></pre>
 <pre class="r"><code>d.df[,4]                   # same thing!</code></pre>
-<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre><code>##  [1] 5 6 6 8 4 4 4 4 6 4</code></pre>
 <pre class="r"><code>d.df[[4]]                  # same thing!</code></pre>
-<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre><code>##  [1] 5 6 6 8 4 4 4 4 6 4</code></pre>
 <pre class="r"><code>d.df[,&quot;Germination&quot;]       # same thing!</code></pre>
-<pre><code>##  [1] 11  5  8  6  5  6  5  3  4  5</code></pre>
+<pre><code>##  [1] 5 6 6 8 4 4 4 4 6 4</code></pre>
 <pre class="r"><code>d.df[&quot;Germination&quot;]        # same thing!  (or is it...)</code></pre>
 <pre><code>##    Germination
-## 21          11
-## 22           5
-## 23           8
-## 24           6
-## 25           5
-## 26           6
-## 27           5
-## 28           3
-## 29           4
-## 30           5</code></pre>
+## 21           5
+## 22           6
+## 23           6
+## 24           8
+## 25           4
+## 26           4
+## 27           4
+## 28           4
+## 29           6
+## 30           4</code></pre>
 <pre class="r"><code>d.df$AvgHeight</code></pre>
-<pre><code>##  [1] 28.87157 29.73062 28.67837 29.69622 30.00710 29.94907 28.51203
-##  [8] 27.69992 29.40945 31.11471</code></pre>
+<pre><code>##  [1] 30.03433 30.62326 30.84087 28.86910 30.27317 30.43175 29.72036
+##  [8] 30.47326 29.94850 29.29143</code></pre>
 <pre class="r"><code>d.df$AvgHeight[3]  # subset an element of a data frame</code></pre>
-<pre><code>## [1] 28.67837</code></pre>
+<pre><code>## [1] 30.84087</code></pre>
 <pre class="r"><code># Data frame can be indexed just like a matrix
 d.df[,2]</code></pre>
 <pre><code>##  [1] B B B B B B B B B B
 ## Levels: A B C D E</code></pre>
 <pre class="r"><code>d.df[2,]</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 22     22         B     2           5  29.73062</code></pre>
+## 22     22         B     2           6  30.62326</code></pre>
 <pre class="r"><code>d.df[,2:3]</code></pre>
 <pre><code>##    Treatment Block
 ## 21         B     1

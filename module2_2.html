@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -88,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -237,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,6 +264,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -339,7 +344,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2019</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -447,7 +452,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 2.2</h1>
 <h4 class="author">Parallel processing in R</h4>
-<h4 class="date">Fall 2019</h4>
+<h4 class="date">Fall 2020</h4>
 
 </div>
 
@@ -583,7 +588,7 @@ outcor</code></pre>
 
 system.time(outcor &lt;- lapply(pair,geneCor))</code></pre>
 <pre><code>##    user  system elapsed 
-##    3.27    0.00    3.26</code></pre>
+##    2.32    0.00    2.31</code></pre>
 <pre class="r"><code># Notice ONE CPU spiked.  Make note of how long it took to run.</code></pre>
 <p>Notice ONE CPU spiked. Make note of how long it took to run.</p>
 <p>Now let’s make an even bigger dataset (just repeating geneData four times), making 26 x 4 = 104 columns:</p>
@@ -608,7 +613,7 @@ geneCor2 &lt;- function(x, gene = fakeData){
 genCor2_system_time &lt;- system.time(outcor &lt;- lapply(pair[1:10],geneCor2))
 genCor2_system_time[&quot;elapsed&quot;] </code></pre>
 <pre><code>## elapsed 
-##    0.74</code></pre>
+##    0.61</code></pre>
 <p>What did you get? On my machine this operation (for 10 pairs) took around 1 second…</p>
 <p>Let’s use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again?</p>
 <pre class="r"><code>length(pair)   # how many pairs were there again?</code></pre>
@@ -619,13 +624,13 @@ genCor2_system_time[&quot;elapsed&quot;] </code></pre>
 
 genCor2_system_time[&quot;elapsed&quot;]      # time it took to run 10 pairs, in seconds</code></pre>
 <pre><code>## elapsed 
-##    0.74</code></pre>
+##    0.61</code></pre>
 <pre class="r"><code>genCor2_system_time[&quot;elapsed&quot;] *(124750/10)     # time it would take to run 124750 pairs, in seconds </code></pre>
 <pre><code>## elapsed 
-##  9231.5</code></pre>
+## 7609.75</code></pre>
 <pre class="r"><code>genCor2_system_time[&quot;elapsed&quot;] *(124750/10/60/60)    # in hours...</code></pre>
 <pre><code>##  elapsed 
-## 2.564306</code></pre>
+## 2.113819</code></pre>
 <p>Ouch! This is a good candidate for parallel processing!</p>
 </div>
 <div id="running-in-parallel" class="section level3">
@@ -639,7 +644,7 @@ pair2 &lt;- sample(pair,300)    # first extract a subsamble of all the pairs</co
 <pre class="r"><code># Let&#39;s test a sequential version of this:
 system.time(outcor &lt;- lapply(pair2,geneCor2))</code></pre>
 <pre><code>##    user  system elapsed 
-##   19.96    0.55   20.50</code></pre>
+##   17.51    0.28   17.80</code></pre>
 <pre class="r"><code># Note the elapsed time.</code></pre>
 <p>Now, we can explore implementing this operation in parallel. To do this, we will use the “parallel” package in R.</p>
 <div id="parallel-package" class="section level4">
@@ -674,7 +679,7 @@ myCluster</code></pre>
 <pre class="r"><code>length(myCluster) # One entry per &quot;worker&quot;.</code></pre>
 <pre><code>## [1] 4</code></pre>
 <pre class="r"><code>myCluster[[1]]    # more info about this &quot;worker&quot;</code></pre>
-<pre><code>## node of a socket cluster on host &#39;localhost&#39; with pid 9084</code></pre>
+<pre><code>## node of a socket cluster on host &#39;localhost&#39; with pid 25984</code></pre>
 <p>Notice you now have multiple instances of Rscript.exe running now!</p>
 <p>We can stop the cluster by using the “stopCluster()” function:</p>
 <pre class="r"><code>?stopCluster</code></pre>
@@ -692,7 +697,7 @@ myCluster &lt;- parallel::makeCluster(spec=mycorenum,type=&quot;PSOCK&quot;)</co
 ?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster</code></pre>
 <p>For example, we might run the “date()” function on each cluster! Note that the results get returned as lists:</p>
 <pre class="r"><code>date()    # run the &quot;date()&quot; function</code></pre>
-<pre><code>## [1] &quot;Fri Sep 13 22:37:34 2019&quot;</code></pre>
+<pre><code>## [1] &quot;Tue Jul 28 20:00:46 2020&quot;</code></pre>
 <pre class="r"><code>workerDates &lt;- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the &quot;date()&quot; function on all clusters 
 class(workerDates)</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
@@ -743,11 +748,11 @@ parallel::clusterCall(cl=myCluster,fun=search)</code></pre>
 
 system.time(outcor2 &lt;- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   </code></pre>
 <pre><code>##    user  system elapsed 
-##    0.15    0.03    5.75</code></pre>
+##    0.08    0.03    5.64</code></pre>
 <pre class="r"><code># vs the non-clustered version:
 system.time(outcor &lt;- lapply(pair2,geneCor2))   # takes much longer!</code></pre>
 <pre><code>##    user  system elapsed 
-##   19.84    0.28   20.14</code></pre>
+##   17.11    0.17   17.29</code></pre>
 <p>We got a big performance boost here!</p>
 <p>Don’t forget to shut down your cluster:</p>
 <pre class="r"><code>stopCluster(myCluster)   # finally, stop the cluster..</code></pre>
@@ -800,7 +805,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   20.10    0.24   20.33</code></pre>
+##   17.15    0.10   17.27</code></pre>
 <p>And now with a parallel backend!</p>
 <pre class="r"><code># Parallel mode (use a parallel backend):
 
@@ -819,7 +824,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.12    0.06    5.69</code></pre>
+##    0.15    0.01    5.35</code></pre>
 <p>Some things to notice:<br />
 - we explicitly define what packages are to be sent over using the .packages parameter<br />
 - foreach calls have access to the master’s global environment. - we can use specific functions to join the data once its done (e.g. rbind)</p>
