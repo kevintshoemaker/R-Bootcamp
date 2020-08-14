@@ -39,7 +39,7 @@ Welcome to the 2020 R bootcamp! Let's get started!!
 
 ## Get materials for this module
 
-* I recommend having a printed copy of a good base R "cheatsheet" as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to use R and learn new things in R!
+* I recommend having a printed copy of a good base R "cheatsheet" as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to learn new things and try new things in R!
 
 Here are links to good base R "cheatsheets":
 
@@ -340,7 +340,7 @@ There are many different ways to create a vector. You'll learn more about that l
 
 What happened with `vector2` and `vector4`? Looking at the script, these vectors appear to contain a mix of numeric and character types, but the resulting vector is all characters! 
 
-This is because *all elements of a vector must be the same type*. R will attempt to convert (coerce) all elements to a single type. Check the contents of `vector5`. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. `TRUE` maps to 1 and `FALSE` maps to 0.
+This is because *all elements of a vector must be the same type*. This is because most basic functions and operations in R are meant to be applied to entire vectors, so if an operation makes sense only for numbers, the vector the operation is applied to can't have a mix of characters and numbers (e.g., R wouldn't know what to do if you tried to take the sum of 3, 1, and "a").  Therefore, R will attempt to convert (coerce) all vector elements to a single type. Check the contents of `vector5`. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. `TRUE` maps to 1 and `FALSE` maps to 0.
 
 In the code above we use another function called `c()`. You can think of it as 'c for combine'. It takes several objects, and combines them together into a vector. We can even use `c()` to combine scalar (or vector) objects, like below.
 
@@ -392,7 +392,7 @@ d4    # returns: 2 4 4
 
 #### Matrix objects in R
 
-**Matrix** objects are just a bunch of vectors grouped together! To form a matrix, the vectors must be of the same length and the same **type**. If different types are provided R will attempt to coerce the elements into a common type. A matrix has two **dimensions**: rows and columns.  
+**Matrix** objects are just a bunch of vectors grouped together, either by row or by column! To form a matrix, the vectors must be of the same length and the same **type**. If different types are provided R will attempt to coerce the elements into a common type. A matrix has two **dimensions**: rows and columns.  
 
 Let's make our first matrix. One simple way to make a matrix is just by joining two vectors using the function `cbind()` (bind vectors or matrices together by column) or `rbind()` (bind vectors or matrices together by row)
 
@@ -412,10 +412,10 @@ And there are other ways to make a matrix in R. For instance, we can use the fun
 
 ```{r}
 
-d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way
+d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
 d.mat
 
-d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way
+d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way (stack rows together)
 d.mat
 
 d.mat <- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way
