@@ -43,7 +43,7 @@ Welcome to the 2020 R bootcamp! Let's get started!!
 
 Here are links to good base R "cheatsheets":
 
-[Base R Cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)           
+[Base R cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)           
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)         
 
 
@@ -53,7 +53,7 @@ Here are links to good base R "cheatsheets":
 
 2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (your working directory). The R project will automatically take the name of your working directory folder. 
 
-3. Load a blank script in RStudio. To do this, click on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). Your RStudio interface should now be divided into four quadrants. In the Rstudio default configuration, the top left panel is your **script** (a set of written commands that R can recognize and execute), the bottom left panel is your **console** (your direct connection with R- prints errors and stores a record of commands that have already been run), the top right panel is your **Environment** (container for all the objects -- data, variables, functions-- that you have defined in your current **session**), and the bottom left panel is a set of tabbed interfaces that let you view helpfiles, load packages, view graphical plots, view files in your working directory, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!
+3. Load a blank script in RStudio. To do this, click on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your **script** (a set of written commands that R can recognize and execute), the bottom left panel is your **console** (your direct connection with R- prints errors and stores a record of commands that have already been run), the top right panel is your **Workspace** (container for all the objects -- data, variables, functions-- that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view graphical plots, view files in your working directory, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!
 
 Let's get started!!
 
@@ -131,7 +131,7 @@ _use comments early and often- they are tremendously valuable_.
 
 Click on the top of the script (first line of comments). To **run** a line of code, press the "Ctrl" key (or the "Command" key) and hit "Enter". R will then run that line through the console. But of course, nothing happens because it's a comment and not meant to be interpreted by your machine[^shortcuts]. 
 
-If you click on a line of code that is not followed by a pound sign, you should see that R interprets the text on that line of code and stores any newly defined objects in memory (see top right quadrant of the Rstudio interface -- 'Environment' tab -- for a list of objects stored in memory)
+If you click on a line of code that is not followed by a pound sign, you should see that R interprets the text on that line of code and stores any newly defined objects in memory (see top right quadrant of the Rstudio interface -- 'Workspace' (or Environment) tab -- for a list of objects stored in memory)
 
 Now you know the basics of how to use R scripts. 
 

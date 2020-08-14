@@ -462,10 +462,10 @@ div.tocify {
 <div id="get-materials-for-this-module" class="section level2">
 <h2>Get materials for this module</h2>
 <ul>
-<li>I recommend having a printed copy of a good base R “cheatsheet” as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! ‘Cheatsheets’ like this can quickly and easily refresh your memory. So print out the cheatsheet and don’t worry if you don’t memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to use R and learn new things in R!</li>
+<li>I recommend having a printed copy of a good base R “cheatsheet” as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! ‘Cheatsheets’ like this can quickly and easily refresh your memory. So print out the cheatsheet and don’t worry if you don’t memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to learn new things and try new things in R!</li>
 </ul>
 <p>Here are links to good base R “cheatsheets”:</p>
-<p><a href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf">Base R Cheat sheet</a><br />
+<p><a href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf">Base R cheat sheet</a><br />
 <a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R reference card</a></p>
 </div>
 <div id="load-script-for-module-1.1" class="section level2">
@@ -473,7 +473,7 @@ div.tocify {
 <ol style="list-style-type: decimal">
 <li><p>Click <a href="module1_1.R">here</a> to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the “Save As” option from the context menu. Save the script to a convenient folder on your laptop, which will serve as your <strong>working directory</strong> for this bootcamp. I recommend creating a new folder to store all the scripts, data sets and other materials from these modules!</p></li>
 <li><p>Start a new <strong>RStudio Project</strong>. To do this, open RStudio and from the File menu select File&gt;&gt;New Project. In the menu that follows, select “Existing Directory”, and then navigate to the folder in which you saved the R script for this module (your working directory). The R project will automatically take the name of your working directory folder.</p></li>
-<li><p>Load a blank script in RStudio. To do this, click on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script). Your RStudio interface should now be divided into four quadrants. In the Rstudio default configuration, the top left panel is your <strong>script</strong> (a set of written commands that R can recognize and execute), the bottom left panel is your <strong>console</strong> (your direct connection with R- prints errors and stores a record of commands that have already been run), the top right panel is your <strong>Environment</strong> (container for all the objects – data, variables, functions– that you have defined in your current <strong>session</strong>), and the bottom left panel is a set of tabbed interfaces that let you view helpfiles, load packages, view graphical plots, view files in your working directory, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!</p></li>
+<li><p>Load a blank script in RStudio. To do this, click on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your <strong>script</strong> (a set of written commands that R can recognize and execute), the bottom left panel is your <strong>console</strong> (your direct connection with R- prints errors and stores a record of commands that have already been run), the top right panel is your <strong>Workspace</strong> (container for all the objects – data, variables, functions– that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view graphical plots, view files in your working directory, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!</p></li>
 </ol>
 <p>Let’s get started!!</p>
 <p><img src="rstudio1.jpg" /></p>
@@ -520,7 +520,7 @@ my_obj &lt;- 2+2
 <p>The first few lines (commands) of the script for this module are preceded by pound signs. R doesn’t do anything with these commands- they are called <strong>comments</strong>, and they help to keep code clear, organized and understandable to human readers.</p>
 <p><em>use comments early and often- they are tremendously valuable</em>.</p>
 <p>Click on the top of the script (first line of comments). To <strong>run</strong> a line of code, press the “Ctrl” key (or the “Command” key) and hit “Enter”. R will then run that line through the console. But of course, nothing happens because it’s a comment and not meant to be interpreted by your machine<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
-<p>If you click on a line of code that is not followed by a pound sign, you should see that R interprets the text on that line of code and stores any newly defined objects in memory (see top right quadrant of the Rstudio interface – ‘Environment’ tab – for a list of objects stored in memory)</p>
+<p>If you click on a line of code that is not followed by a pound sign, you should see that R interprets the text on that line of code and stores any newly defined objects in memory (see top right quadrant of the Rstudio interface – ‘Workspace’ (or Environment) tab – for a list of objects stored in memory)</p>
 <p>Now you know the basics of how to use R scripts.</p>
 </div>
 </div>
@@ -694,7 +694,7 @@ vector4 &lt;- c(TRUE, &#39;a&#39;, 1)
 vector5 &lt;- c(TRUE, 1.2, FALSE)</code></pre>
 <p>There are many different ways to create a vector. You’ll learn more about that later in the bootcamp. Check out some of the vectors you just created. Each vector is composed of several scalars. Each of these scalars is an <strong>element</strong> of the vector. You can still check the types of the objects with the <code>typeof()</code> function (try it yourself).</p>
 <p>What happened with <code>vector2</code> and <code>vector4</code>? Looking at the script, these vectors appear to contain a mix of numeric and character types, but the resulting vector is all characters!</p>
-<p>This is because <em>all elements of a vector must be the same type</em>. R will attempt to convert (coerce) all elements to a single type. Check the contents of <code>vector5</code>. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. <code>TRUE</code> maps to 1 and <code>FALSE</code> maps to 0.</p>
+<p>This is because <em>all elements of a vector must be the same type</em>. This is because most basic functions and operations in R are meant to be applied to entire vectors, so if an operation makes sense only for numbers, the vector the operation is applied to can’t have a mix of characters and numbers (e.g., R wouldn’t know what to do if you tried to take the sum of 3, 1, and “a”). Therefore, R will attempt to convert (coerce) all vector elements to a single type. Check the contents of <code>vector5</code>. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. <code>TRUE</code> maps to 1 and <code>FALSE</code> maps to 0.</p>
 <p>In the code above we use another function called <code>c()</code>. You can think of it as ‘c for combine’. It takes several objects, and combines them together into a vector. We can even use <code>c()</code> to combine scalar (or vector) objects, like below.</p>
 <pre class="r"><code>a &lt;- 1
 b &lt;- 2
@@ -724,7 +724,7 @@ d4    # returns: 2 4 4</code></pre>
 </div>
 <div id="matrix-objects-in-r" class="section level4">
 <h4>Matrix objects in R</h4>
-<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together! To form a matrix, the vectors must be of the same length and the same <strong>type</strong>. If different types are provided R will attempt to coerce the elements into a common type. A matrix has two <strong>dimensions</strong>: rows and columns.</p>
+<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together, either by row or by column! To form a matrix, the vectors must be of the same length and the same <strong>type</strong>. If different types are provided R will attempt to coerce the elements into a common type. A matrix has two <strong>dimensions</strong>: rows and columns.</p>
 <p>Let’s make our first matrix. One simple way to make a matrix is just by joining two vectors using the function <code>cbind()</code> (bind vectors or matrices together by column) or <code>rbind()</code> (bind vectors or matrices together by row)</p>
 <pre class="r"><code>#############
 ### MATRICES
@@ -740,13 +740,13 @@ d.mat</code></pre>
 <pre class="r"><code>class(d.mat)   # confirm that the new object &quot;d.mat&quot; is a matrix!</code></pre>
 <pre><code>## [1] &quot;matrix&quot;</code></pre>
 <p>And there are other ways to make a matrix in R. For instance, we can use the function “matrix”:</p>
-<pre class="r"><code>d.mat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way
+<pre class="r"><code>d.mat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
 d.mat</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    4
 ## [2,]    2    5
 ## [3,]    3    6</code></pre>
-<pre class="r"><code>d.mat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way
+<pre class="r"><code>d.mat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way (stack rows together)
 d.mat</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
