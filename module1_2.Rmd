@@ -194,7 +194,7 @@ data(mtcars)
 
 str(mtcars)    # examine the structure of this data object
 
-?mtcars        # learn more about this built-in data object
+# ?mtcars        # learn more about this built-in data object
 
 ```
 
