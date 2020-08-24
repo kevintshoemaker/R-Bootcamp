@@ -40,9 +40,9 @@ NOTE: this module borrows heavily from an R short course developed by a team at 
 
 ## Load script for module #1.2
 
-1. Click [here](module1_2.R) to download the script! Save the script to your working directory (project directory you set up in the previous submodule).
+1. Click [here](module1_2.R) to download the script! Save the script to your working directory (project directory you set up in the previous submodule).   
 
-2. Load your script in RStudio. To do this, open RStudio (load the RStudio project you created in the previous submodule) and click on the folder icon in the toolbar at the top and load your script. 
+2. Load your script in RStudio. To do this, open RStudio (load the RStudio project you created in the previous submodule) and click on the folder icon in the toolbar at the top and load your script.    
 
 Let's get started with data management in R!
 
@@ -65,8 +65,9 @@ What's yours? Usually the default working directory is your "Documents" folder. 
 #### ASIDE: RStudio Projects
 
 If you're using an **RStudio Project** (.Rproj extension) then the default working directory is the directory where the .Rproj file lives- which is convenient, because:
-1. That's most likely where the data for that project live anyway     
-2. If you're collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and immediately read/write data to the directory (without having to reset the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!
+
+1. That's most likely where the data for that project live anyway       
+2. If you're collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and immediately read/write data to the directory (without having to reset the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!    
 
 To start a new RStudio Project, just click on "File->New Project" in RStudio's menu bar.  
 
