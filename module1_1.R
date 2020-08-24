@@ -153,10 +153,10 @@ d.mat
 class(d.mat)   # confirm that the new object "d.mat" is a matrix!
 
 
-d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way
+d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
 d.mat
 
-d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way
+d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way (stack rows together)
 d.mat
 
 d.mat <- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way

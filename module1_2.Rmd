@@ -189,12 +189,12 @@ Let's read in one of these datasets!
 
 ```{r results=FALSE}
 
-# read built-in data on the passengers of the titanic
-data(Titanic)         
+# read built-in data on car road tests performed by Motor Trend
+data(mtcars)         
 
-str(Titanic)    # examine the structure of this data object
+str(mtcars)    # examine the structure of this data object
 
-?Titanic        # learn more about this built-in data object
+?mtcars        # learn more about this built-in data object
 
 ```
 
