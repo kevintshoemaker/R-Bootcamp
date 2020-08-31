@@ -675,7 +675,7 @@ typeof(scalar5)    # returns: logical</code></pre>
 </ul>
 <p>What happens when we try and add <code>scalar2</code> and <code>scalar4</code>? Think about the types of each scalar. Run the code below to find out.</p>
 <pre class="r"><code>## what happens when we run this line of code? Think about the types.
-scalar_2 + scalar_4</code></pre>
+scalar2 + scalar4</code></pre>
 <p>This error can be common in R. Remember that <code>scalar4</code> is a character, R cannot perform mathematical operations on characters. Double check your types with the <code>typeof()</code> function.</p>
 </div>
 <div id="vectors" class="section level4">
@@ -1274,10 +1274,10 @@ mean(c(length(vector1), length(vector2), length(vector3)))</code></pre>
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>NOTE: <code>print()</code> is an <strong>R function</strong> that comes with base R. It takes the name of an object as its <strong>argument</strong> and it responds by printing the contents of that object. We’ll get more into R functions shortly.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you’ve typed the first couple letters (e.g., “bat”), RStudio will suggest “Batmans_butler” and you can just hit “Enter” to complete the object name! The auto-type feature, unlike R, is not case sensitive!<a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>RStudio has several helpful keyboard shortcuts to make running lines of code easier. <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">Check this website</a> for a comprehensive set of keyboard shortcuts<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>Functions are essentially machines that take inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>NOTE: <code>print()</code> is an <strong>R function</strong> that comes with base R. It takes the name of an object as its <strong>argument</strong> and it responds by printing the contents of that object. We’ll get more into R functions shortly.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you’ve typed the first couple letters (e.g., “bat”), RStudio will suggest “Batmans_butler” and you can just hit “Enter” to complete the object name! The auto-type feature, unlike R, is not case sensitive!<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>RStudio has several helpful keyboard shortcuts to make running lines of code easier. <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">Check this website</a> for a comprehensive set of keyboard shortcuts<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Functions are essentially machines that take inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
@@ -1331,7 +1331,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

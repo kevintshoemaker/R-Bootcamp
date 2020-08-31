@@ -131,16 +131,14 @@ plot(1:10, surv, type = 'l',xlab="Year",ylab="Survival")
 
 ########
 # Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
-n.samples <- 1
 p <- 0.7            # probability of detection
-x <- rbinom(n = n.samples, size = 1, prob = p)
+x <- rbinom(n = 1, size = 1, prob = p)      # single 'coin flip' with prob success equal to p
 
 if (x > 0) {
     print("Detected")
 } else {
     print("Not detected")
 }
-
 
 ######
 # Make a "safe" version of the "logit" function
@@ -171,7 +169,7 @@ logit.safe(c(0.15,0.99))
 n.samples <- 100
 set.seed(2017)     # the 'seed' allows random number generators to give the same result every time!
 
-## 100 samples from a binomial disribution with detection probability = p = 0.7.
+## 100 samples from a binomial distribution with detection probability = p = 0.7.
 y <- rbinom(n = n.samples, size = 1, prob = p)
 y
 

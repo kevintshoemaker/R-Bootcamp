@@ -47,7 +47,7 @@ Let's get started with basic programming in R!
 
 ## Functions in R
 
-Everything in R can be boiled down to this one sentence: data are expressed as *vectors*, and vectors are managed, manipulated, and visualized via **functions**. Functions are absolutely central to R!
+Everything in R can be boiled down to this one sentence: data are expressed as *vectors*, and data objects are managed, manipulated, and visualized via **functions**. Functions are absolutely central to R!
 
 Let's start with a blank workspace: 
 
@@ -265,16 +265,14 @@ Let's try it!
 
 ########
 # Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
-n.samples <- 1
 p <- 0.7            # probability of detection
-x <- rbinom(n = n.samples, size = 1, prob = p)
+x <- rbinom(n = 1, size = 1, prob = p)      # single 'coin flip' with prob success equal to p
 
 if (x > 0) {
     print("Detected")
 } else {
     print("Not detected")
 }
-
 
 ######
 # Make a "safe" version of the "logit" function
@@ -312,7 +310,7 @@ Note that "if...else" only works for testing one condition at a time. If we have
 n.samples <- 100
 set.seed(2017)     # the 'seed' allows random number generators to give the same result every time!
 
-## 100 samples from a binomial disribution with detection probability = p = 0.7.
+## 100 samples from a binomial distribution with detection probability p = 0.7.
 y <- rbinom(n = n.samples, size = 1, prob = p)
 y
 

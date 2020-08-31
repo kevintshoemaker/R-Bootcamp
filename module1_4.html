@@ -468,7 +468,7 @@ div.tocify {
 </div>
 <div id="functions-in-r" class="section level2">
 <h2>Functions in R</h2>
-<p>Everything in R can be boiled down to this one sentence: data are expressed as <em>vectors</em>, and vectors are managed, manipulated, and visualized via <strong>functions</strong>. Functions are absolutely central to R!</p>
+<p>Everything in R can be boiled down to this one sentence: data are expressed as <em>vectors</em>, and data objects are managed, manipulated, and visualized via <strong>functions</strong>. Functions are absolutely central to R!</p>
 <p>Let’s start with a blank workspace:</p>
 <pre class="r"><code>#######
 # Start with blank workspace
@@ -647,9 +647,8 @@ if([some condition]){               ## if some condition is met
 
 ########
 # Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
-n.samples &lt;- 1
 p &lt;- 0.7            # probability of detection
-x &lt;- rbinom(n = n.samples, size = 1, prob = p)
+x &lt;- rbinom(n = 1, size = 1, prob = p)      # single &#39;coin flip&#39; with prob success equal to p
 
 if (x &gt; 0) {
     print(&quot;Detected&quot;)
@@ -687,12 +686,12 @@ logit.safe(c(0.15,0.99))</code></pre>
 n.samples &lt;- 100
 set.seed(2017)     # the &#39;seed&#39; allows random number generators to give the same result every time!
 
-## 100 samples from a binomial disribution with detection probability = p = 0.7.
+## 100 samples from a binomial distribution with detection probability p = 0.7.
 y &lt;- rbinom(n = n.samples, size = 1, prob = p)
 y</code></pre>
-<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0
-##  [36] 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1
-##  [71] 0 1 1 0 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
+<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0 1 1
+##  [38] 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1 0 1 1 0
+##  [75] 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
 <pre class="r"><code>## incorrect usage
 if (y == 1) {
     print(&quot;Detected&quot;)
@@ -707,36 +706,31 @@ detection.history &lt;- ifelse(y == 1, print(&quot;Detected&quot;), print(&quot;
 <pre><code>## [1] &quot;Detected&quot;
 ## [1] &quot;Not detected&quot;</code></pre>
 <pre class="r"><code>detection.history</code></pre>
-<pre><code>##   [1] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##   [5] &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;    
-##   [9] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [13] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [17] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Not detected&quot;
-##  [21] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
-##  [25] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;    
-##  [29] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [33] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [37] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [41] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [45] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [49] &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
-##  [53] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [57] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
-##  [61] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [65] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [69] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [73] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;    
-##  [77] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [81] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
-##  [85] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [89] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [93] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [97] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;</code></pre>
+<pre><code>##   [1] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##   [6] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+##  [11] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+##  [16] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Not detected&quot;
+##  [21] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;    
+##  [26] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+##  [31] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [36] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+##  [41] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [46] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
+##  [51] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [56] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
+##  [61] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
+##  [66] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+##  [71] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
+##  [76] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [81] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
+##  [86] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+##  [91] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [96] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;</code></pre>
 <pre class="r"><code>## Going the other direction.
 ifelse(detection.history == &quot;Detected&quot;, 1, 0)</code></pre>
-<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0
-##  [36] 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1
-##  [71] 0 1 1 0 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
+<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0 1 1
+##  [38] 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1 0 1 1 0
+##  [75] 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
 <pre class="r"><code>xt  &lt;-  cbind(rbinom(10, 1, .5), rbinom(10, 1, .6))
 xt</code></pre>
 <pre><code>##       [,1] [,2]
@@ -1271,7 +1265,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

@@ -102,7 +102,7 @@ typeof(scalar5)    # returns: logical
 
 
 ## what happens when we run this line of code? Think about the types.
-scalar_2 + scalar_4
+scalar2 + scalar4
 
 
 #############

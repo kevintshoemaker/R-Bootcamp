@@ -759,7 +759,7 @@ abline(m2,col="red")                                       # plot intercept only
 #  Here's a flexible method for drawing any arbitrary non-linear relationship!
 FEMWT.pred <- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
 NUMEGGS.pred <- predict(m3,newdata=FEMWT.pred)             # make prediction using "predict()" function
-points(FEMWT.pred$FEMWT,NUMEGGS.pred,col="green",typ="l")  # plot sqrt model (note the use of the "points()" function to draw a line!)
+lines(FEMWT.pred$FEMWT,NUMEGGS.pred,col="green")  # plot sqrt model (note the use of the "lines()" function to draw a line!)
 
 ########
 # Perform model selection!
