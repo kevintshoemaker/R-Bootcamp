@@ -383,13 +383,13 @@ div.tocify {
       <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Submodule 2.2: Parallel computing in R</a>
+      <a href="module2_2.html">Submodule 2.2: Using the 'tidyverse'</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Using the 'tidyverse'</a>
+      <a href="module2_3.html">Submodule 2.3: Plotting with 'ggplot'</a>
     </li>
     <li>
-      <a href="module2_4.html">Submodule 2.4: Plotting with 'ggplot'</a>
+      <a href="module2_4.html">Submodule 2.4: Parallel computing in R</a>
     </li>
     <li>
       <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
@@ -472,13 +472,15 @@ div.tocify {
 <p>The answer is that you have a whole community of researchers adding new functionality <em>all the time</em>! This new functionality is implemented in the form of <strong>R Packages</strong>, also known as <strong>libraries</strong>. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).</p>
 <div id="mode-example" class="section level3">
 <h3>Mode example</h3>
-<p>For a simple example (borrowed from <a href="https://preludeinr.com">Prelude in R</a>), base R does not include a function for computing the <em>mode</em> of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode, and then they documented it and wrapped it up into a package, called “modeest”, and made the package available in the CRAN repository.</p>
+<p>For a simple example (borrowed from <a href="https://preludeinr.com">Prelude in R</a>), base R does not include a function for computing the <em>mode</em> of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode (in many different ways!), and then they documented it and wrapped it up into a package, called “modeest”, and made the package available in the CRAN repository (the ‘official’ repository for R packages).</p>
 <p>Packages in the CRAN repository can be installed using the function “install.packages()”:</p>
 <pre class="r"><code>##############
 # PACKAGES!
 ##############
 
-install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet installed the package from CRAN!</code></pre>
+install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet installed the package from CRAN! 
+                                   # you only need to install this once, so you can comment it out if
+                                   # you already have this package installed</code></pre>
 <pre class="r"><code>library(modeest)    # load the package: This is package &#39;modeest&#39; written by P. PONCET.
 
    # install.packages(&quot;BiocManager&quot;)
@@ -497,7 +499,7 @@ mlv(newdf$Export, method=&quot;mfv&quot;, na.rm = T)    </code></pre>
 <div id="removing-a-package-from-your-environment" class="section level4">
 <h4>Removing a package from your environment</h4>
 <p>Not that you need to do this very often, but if you want to remove a package from your current session, you can use the “detach()” function:</p>
-<pre class="r"><code>detach(&quot;package:modeest&quot;)  # remove the package from the workspace</code></pre>
+<pre class="r"><code>detach(&quot;package:modeest&quot;)  # remove the package from your current working session</code></pre>
 </div>
 </div>
 <div id="d-scatterplot-example" class="section level3">
@@ -532,13 +534,13 @@ car::scatter3d(Bark~Food+Cars,surface=TRUE)</code></pre>
 </div>
 <div id="loading-packages-from-github" class="section level3">
 <h3>Loading packages from GitHub</h3>
-<p>More and more package developers are bypassing the CRAN repository, and instead using <a href="https://github.com/">GitHub</a>. In some cases, the version available on CRAN is not the latest version- for the latest version, you need to use GitHub. Also, many packages that are in development are only found on GitHub. There are actually some good reasons to put an R package on GitHub:</p>
+<p>Many package developers use <a href="https://github.com/">GitHub</a> to make their packages available. Sometimes these packages are not yet on CRAN because they are not yet ready for prime time (so be careful!). Other times developers may choose to bypass the CRAN repository entirely, and instead just use GitHub. Most of the time, developers will use both GitHub and CRAN, where the version available on CRAN is not the latest version – for the latest version, you will need to use GitHub. There are some good reasons to put an R package on GitHub:</p>
 <ol style="list-style-type: decimal">
 <li>It’s easier for others to peruse your code.<br />
 </li>
-<li>People can actually fix the problem and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, “There’s a typo in your documentation” they can say “Here, I’ve fixed a typo in your documentation.”<br />
+<li>People can actually fix any problems and send you a patch, which you can easily test and then incorporate into your package. Rather than having someone say, “There’s a typo in your documentation” they can say “Here, I’ve fixed a typo in your documentation.”<br />
 </li>
-<li>With the install_github() function in Hadley Wickham’s devtools package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)</li>
+<li>With the install_github() function in the ‘devtools’ package, it’s easy for people to install your package directly from GitHub. It doesn’t have to be on CRAN (getting your package on CRAN can be a bit difficult)</li>
 </ol>
 <p>The syntax for using “install_github()” is just install_github(“[author]/[package]”) Here’s an example using the “install_github()” function:</p>
 <pre class="r"><code>###########
@@ -599,7 +601,7 @@ vignette(&#39;brt&#39;,&#39;dismo&#39;)      # and another one!</code></pre>
 </div>
 <div id="package-demos" class="section level4">
 <h4>Package demos</h4>
-<p>Some packages include “demos”, which are a bit more interactive than the built-in examples. Here’s an example:</p>
+<p>Some packages include “demos”, which are worked examples that are available with a single click. Here’s an example:</p>
 <pre class="r"><code>########
 # package demo
 
@@ -617,7 +619,7 @@ help.start()</code></pre>
 </div>
 <div id="learning-by-example" class="section level4">
 <h4>Learning by example!</h4>
-<p>To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyes, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written.</p>
+<p>To me, there is no better way to learn (1) general coding, (2) best practices for statistical analyses, and (3) how to take advantage of specialized functions in packages than to try to work through and understand code examples that others have written.</p>
 <p>One way to do this- for base R and for packages, is to access the examples provided in the package documentation. These examples are provided at the end of the help file for any function (using ‘help()’ or ‘?’). You can also run these examples using the “example()” function. For example:</p>
 <pre class="r"><code>#########
 # Built-in examples
@@ -676,7 +678,7 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 <div id="online-forums" class="section level4">
 <h4>Online forums</h4>
 <p>In some cases you may run into issues with a particular package that you just can’t seem to solve. It’s still likely that others have had this problem! If you use some appropriate keywords in a google search you may find a link to an online forum (like <a href="https://stackoverflow.com/">stackoverflow</a>) where someone has answered a similar question. It’s amazing how many knowledgeable people are answering questions on these forums - they are a tremendously valuable resource!</p>
-<p>And of couse, if you still can’t find an answer to your question, you can ask your question on <a href="https://r-dir.com/community/forums.html">one of these online forums</a>. The best ones are probably <a href="http://r.789695.n4.nabble.com/">Nabble</a>, <a href="https://stackoverflow.com/">Stack Overflow</a>, and <a href="https://stats.stackexchange.com/questions/tagged/r">Cross Validated</a>.</p>
+<p>And of course, if you still can’t find an answer to your question, you can ask your question on <a href="https://r-dir.com/community/forums.html">one of these online forums</a>. The best ones are probably <a href="http://r.789695.n4.nabble.com/">Nabble</a>, <a href="https://stackoverflow.com/">Stack Overflow</a>, and <a href="https://stats.stackexchange.com/questions/tagged/r">Cross Validated</a>.</p>
 </div>
 <div id="ask-the-package-author" class="section level4">
 <h4>Ask the package author!!</h4>
@@ -751,7 +753,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

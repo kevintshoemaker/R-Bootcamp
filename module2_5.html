@@ -14,7 +14,7 @@
 
 <title>Module 2.5</title>
 
-<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -26,16 +26,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="site_libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
-<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="site_libs/leaflet-binding-2.0.2/leaflet.js"></script>
-<script src="site_libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
-<script src="site_libs/leaflet-providers-plugin-2.0.2/leaflet-providers-plugin.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -393,13 +383,13 @@ div.tocify {
       <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Submodule 2.2: Parallel computing in R</a>
+      <a href="module2_2.html">Submodule 2.2: Using the 'tidyverse'</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Using the 'tidyverse'</a>
+      <a href="module2_3.html">Submodule 2.3: Plotting with 'ggplot'</a>
     </li>
     <li>
-      <a href="module2_4.html">Submodule 2.4: Plotting with 'ggplot'</a>
+      <a href="module2_4.html">Submodule 2.4: Parallel computing in R</a>
     </li>
     <li>
       <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
@@ -501,19 +491,17 @@ rm(list = ls())
 
 # install.packages(c(&#39;dplyr&#39;, &#39;spData&#39;, &#39;sf&#39;, &#39;raster&#39;, &#39;rgdal&#39;, &#39;rgeos&#39;, &#39;rcartocolor&#39;, &#39;magrittr&#39;, &#39;leaflet&#39;))   # run this line if you haven&#39;t already installed these packages!
 
-file_name &lt;- &#39;http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/data.zip&#39;
+file_name &lt;- &#39;https://kevintshoemaker.github.io/R-Bootcamp/data.zip&#39;
 download.file(file_name, destfile = &#39;data.zip&#39;)
 unzip(zipfile = &#39;data.zip&#39;, exdir = &#39;.&#39;)</code></pre>
-<pre><code>## Warning in unzip(zipfile = &quot;data.zip&quot;, exdir = &quot;.&quot;): error 1 in extracting
-## from zip file</code></pre>
+<pre><code>## Warning in unzip(zipfile = &quot;data.zip&quot;, exdir = &quot;.&quot;): error 1 in extracting from
+## zip file</code></pre>
 <pre class="r"><code># load libraries and set working directory
 library(dplyr)
 library(spData)
 library(sf)
-library(raster)</code></pre>
-<pre><code>## Warning: package &#39;raster&#39; was built under R version 3.6.3</code></pre>
-<pre><code>## Warning: package &#39;sp&#39; was built under R version 3.6.3</code></pre>
-<pre class="r"><code>library(rgdal)
+library(raster)
+library(rgdal)
 library(rgeos)
 library(rcartocolor)
 library(magrittr)
@@ -641,21 +629,22 @@ reptiles &lt;- readr::read_csv(&#39;reptiles.csv&#39;)
 ## and the coordinate reference system (crs)
 sf_points &lt;- st_as_sf(x = reptiles, 
                       coords = c(&#39;x&#39;, &#39;y&#39;), 
-                      crs = &#39;+init=epsg:26911&#39;)
-
-## inspect the SpatialPoints object
+                      crs = &#39;+init=epsg:26911&#39;)</code></pre>
+<pre><code>## Warning in CPL_crs_from_input(x): GDAL Message 1: +init=epsg:XXXX syntax is
+## deprecated. It might return a CRS with a non-EPSG compliant axis order.</code></pre>
+<pre class="r"><code>## inspect the SpatialPoints object
 str(sf_points)</code></pre>
-<pre><code>## Classes &#39;sf&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:  60955 obs. of  7 variables:
-##  $ species : chr  &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; ...
-##  $ date    : Date, format: &quot;2015-04-03&quot; &quot;2015-04-03&quot; ...
-##  $ total   : num  4 1 3 1 1 1 1 1 1 1 ...
-##  $ label   : chr  &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; ...
-##  $ year    : num  2015 2015 2015 2015 2015 ...
-##  $ month   : chr  &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; ...
-##  $ geometry:sfc_POINT of length 60955; first list element:  &#39;XY&#39; num  581906 4015885
+<pre><code>## tibble [60,955 x 7] (S3: sf/tbl_df/tbl/data.frame)
+##  $ species : chr [1:60955] &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; ...
+##  $ date    : Date[1:60955], format: &quot;2015-04-03&quot; &quot;2015-04-03&quot; ...
+##  $ total   : num [1:60955] 4 1 3 1 1 1 1 1 1 1 ...
+##  $ label   : chr [1:60955] &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; ...
+##  $ year    : num [1:60955] 2015 2015 2015 2015 2015 ...
+##  $ month   : chr [1:60955] &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; ...
+##  $ geometry:sfc_POINT of length 60955; first list element:  &#39;XY&#39; num [1:2] 581906 4015885
 ##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
 ##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA
-##   ..- attr(*, &quot;names&quot;)= chr  &quot;species&quot; &quot;date&quot; &quot;total&quot; &quot;label&quot; ...</code></pre>
+##   ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;species&quot; &quot;date&quot; &quot;total&quot; &quot;label&quot; ...</code></pre>
 <p>We used the <code>st_as_sf</code> function to create an object of class <code>sf</code>. The first parameter in the function call is <code>x</code>, which is the object to be converted to class <code>sf</code>. This should be a <code>data.frame</code> like object. The second parameter, <code>coords</code>, are the names of the coordiante fields in the object supplied to <code>x</code>, given as a vector. The final parameter, <code>crs</code>, is the coordinate reference system. This data was collected using NAD83 zone 11, so we used the EPSG ID (26911) to specify the projection.</p>
 <p>Let’s review the structure and summary data of this <code>sf</code> object.</p>
 <pre class="r"><code># inspecting the sf object ----
@@ -677,17 +666,16 @@ plot(sf_points[0])</code></pre>
 ## geometry type:  POINT
 ## dimension:      XY
 ## bbox:           xmin: 408859 ymin: 4015674 xmax: 581906 ymax: 4369481
-## epsg (SRID):    26911
-## proj4string:    +proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
+## projected CRS:  NAD83 / UTM zone 11N
 ## # A tibble: 6 x 7
-##   species     date       total label     year month                geometry
-##   &lt;chr&gt;       &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
-## 1 Crotaphytu~ 2015-04-03     4 Ivanpah~  2015 Apr          (581906 4015885)
-## 2 Sauromalus~ 2015-04-03     1 Ivanpah~  2015 Apr          (581738 4015674)
-## 3 Sauromalus~ 2015-04-03     3 Ivanpah~  2015 Apr          (581630 4015679)
-## 4 Sauromalus~ 2015-04-03     1 Ivanpah~  2015 Apr          (581209 4016290)
-## 5 Sauromalus~ 2015-04-03     1 Ivanpah~  2015 Apr          (581046 4015795)
-## 6 Crotaphytu~ 2010-06-30     1 Dixie V~  2010 Jun          (408859 4369481)</code></pre>
+##   species        date       total label         year month              geometry
+##   &lt;chr&gt;          &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;POINT [m]&gt;
+## 1 Crotaphytus b~ 2015-04-03     4 Ivanpah-Pah~  2015 Apr        (581906 4015885)
+## 2 Sauromalus at~ 2015-04-03     1 Ivanpah-Pah~  2015 Apr        (581738 4015674)
+## 3 Sauromalus at~ 2015-04-03     3 Ivanpah-Pah~  2015 Apr        (581630 4015679)
+## 4 Sauromalus at~ 2015-04-03     1 Ivanpah-Pah~  2015 Apr        (581209 4016290)
+## 5 Sauromalus at~ 2015-04-03     1 Ivanpah-Pah~  2015 Apr        (581046 4015795)
+## 6 Crotaphytus b~ 2010-06-30     1 Dixie Valley  2010 Jun        (408859 4369481)</code></pre>
 <p>As you can see, this does look like a normal <code>data.frame</code> with a geometry column. In this case the geometry is a point, as shown by a coordinate pair. Just like <code>data.frames</code> we can use indexing to subset the data. One of the columns is species. Lets use this column to subset the data frame for only desert horned lizards (**Phrynosoma platyrhinos*).</p>
 <pre class="r"><code># subset an sf object ----
 phpl &lt;- sf_points[sf_points$species == &#39;Phrynosoma platyrhinos&#39;, ]
@@ -696,17 +684,16 @@ head(phpl)</code></pre>
 ## geometry type:  POINT
 ## dimension:      XY
 ## bbox:           xmin: 399708 ymin: 3978995 xmax: 678717.7 ymax: 4370088
-## epsg (SRID):    26911
-## proj4string:    +proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
+## projected CRS:  NAD83 / UTM zone 11N
 ## # A tibble: 6 x 7
-##   species    date       total label      year month                geometry
-##   &lt;chr&gt;      &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
-## 1 Phrynosom~ 2010-04-23     1 Ivanpah-~  2010 Apr          (605707 3978995)
-## 2 Phrynosom~ 2012-06-04     1 Gabbs Va~  2012 Jun          (416711 4310457)
-## 3 Phrynosom~ 2012-08-30     1 Dixie Va~  2012 Aug          (399708 4354045)
-## 4 Phrynosom~ 2013-05-04     1 Las Vega~  2013 May        (678717.7 3998239)
-## 5 Phrynosom~ 2014-05-09     1 Cactus-S~  2014 May          (516255 4099335)
-## 6 Phrynosom~ 2015-08-04     1 Dixie Va~  2015 Aug          (406478 4370088)</code></pre>
+##   species       date       total label         year month               geometry
+##   &lt;chr&gt;         &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;POINT [m]&gt;
+## 1 Phrynosoma p~ 2010-04-23     1 Ivanpah-Pah~  2010 Apr         (605707 3978995)
+## 2 Phrynosoma p~ 2012-06-04     1 Gabbs Valley  2012 Jun         (416711 4310457)
+## 3 Phrynosoma p~ 2012-08-30     1 Dixie Valley  2012 Aug         (399708 4354045)
+## 4 Phrynosoma p~ 2013-05-04     1 Las Vegas W~  2013 May       (678717.7 3998239)
+## 5 Phrynosoma p~ 2014-05-09     1 Cactus-Sarc~  2014 May         (516255 4099335)
+## 6 Phrynosoma p~ 2015-08-04     1 Dixie Valley  2015 Aug         (406478 4370088)</code></pre>
 <pre class="r"><code>## check to see that there is only one species in the data.frame
 phpl %&gt;% magrittr::extract2(&#39;species&#39;) %&gt;% unique()</code></pre>
 <pre><code>## [1] &quot;Phrynosoma platyrhinos&quot;</code></pre>
@@ -721,17 +708,16 @@ sf_points %&gt;%
 ## geometry type:  POINT
 ## dimension:      XY
 ## bbox:           xmin: 399708 ymin: 3978995 xmax: 678717.7 ymax: 4370088
-## epsg (SRID):    26911
-## proj4string:    +proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
+## projected CRS:  NAD83 / UTM zone 11N
 ## # A tibble: 6 x 7
-##   species    date       total label      year month                geometry
-##   &lt;chr&gt;      &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;             &lt;POINT [m]&gt;
-## 1 Phrynosom~ 2010-04-23     1 Ivanpah-~  2010 Apr          (605707 3978995)
-## 2 Phrynosom~ 2012-06-04     1 Gabbs Va~  2012 Jun          (416711 4310457)
-## 3 Phrynosom~ 2012-08-30     1 Dixie Va~  2012 Aug          (399708 4354045)
-## 4 Phrynosom~ 2013-05-04     1 Las Vega~  2013 May        (678717.7 3998239)
-## 5 Phrynosom~ 2014-05-09     1 Cactus-S~  2014 May          (516255 4099335)
-## 6 Phrynosom~ 2015-08-04     1 Dixie Va~  2015 Aug          (406478 4370088)</code></pre>
+##   species       date       total label         year month               geometry
+##   &lt;chr&gt;         &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;POINT [m]&gt;
+## 1 Phrynosoma p~ 2010-04-23     1 Ivanpah-Pah~  2010 Apr         (605707 3978995)
+## 2 Phrynosoma p~ 2012-06-04     1 Gabbs Valley  2012 Jun         (416711 4310457)
+## 3 Phrynosoma p~ 2012-08-30     1 Dixie Valley  2012 Aug         (399708 4354045)
+## 4 Phrynosoma p~ 2013-05-04     1 Las Vegas W~  2013 May       (678717.7 3998239)
+## 5 Phrynosoma p~ 2014-05-09     1 Cactus-Sarc~  2014 May         (516255 4099335)
+## 6 Phrynosoma p~ 2015-08-04     1 Dixie Valley  2015 Aug         (406478 4370088)</code></pre>
 <p>Finally, let’s plot this data. The plot function provided by <code>sf</code> behaves slightly differently than it does for most other classes. It’ll create a plot for each attribute column in the <code>sf</code> objecct. I think this behavior is strange, I don’t like it. But it is handy.</p>
 <pre class="r"><code>## plot with sf::plot
 plot(head(sf_points, n = 100))</code></pre>
@@ -763,23 +749,22 @@ counties &lt;- st_read(dsn = &#39;data/nv_counties/NV_Admin_Counties.shp&#39;)</
 ## geometry type:  POLYGON
 ## dimension:      XY
 ## bbox:           xmin: 240110.2 ymin: 3875834 xmax: 765543.5 ymax: 4653630
-## epsg (SRID):    26911
-## proj4string:    +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs</code></pre>
+## projected CRS:  NAD83 / UTM zone 11N</code></pre>
 <pre class="r"><code>## once finished check the structure
 str(counties, max.level = 3)</code></pre>
 <pre><code>## Classes &#39;sf&#39; and &#39;data.frame&#39;:   17 obs. of  7 variables:
-##  $ ST        : Factor w/ 1 level &quot;NV&quot;: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ CNTYNAME  : Factor w/ 17 levels &quot;Carson City&quot;,..: 16 5 8 7 9 14 17 2 11 15 ...
-##  $ COV_NAME  : Factor w/ 17 levels &quot;CARSON&quot;,&quot;CHURCHILL&quot;,..: 16 5 8 7 9 14 17 2 11 15 ...
-##  $ STATEPLANE: Factor w/ 3 levels &quot;4601&quot;,&quot;4626&quot;,..: 3 1 3 1 2 3 1 3 3 3 ...
-##  $ STATEPLA_1: Factor w/ 3 levels &quot;Central  Zone&quot;,..: 3 2 3 2 1 3 2 3 3 3 ...
+##  $ ST        : chr  &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; ...
+##  $ CNTYNAME  : chr  &quot;Washoe&quot; &quot;Elko&quot; &quot;Humboldt&quot; &quot;Eureka&quot; ...
+##  $ COV_NAME  : chr  &quot;WASHOE&quot; &quot;ELKO&quot; &quot;HUMBOLDT&quot; &quot;EUREKA&quot; ...
+##  $ STATEPLANE: chr  &quot;4651&quot; &quot;4601&quot; &quot;4651&quot; &quot;4601&quot; ...
+##  $ STATEPLA_1: chr  &quot;West Zone&quot; &quot;East Zone&quot; &quot;West Zone&quot; &quot;East Zone&quot; ...
 ##  $ Acres     : num  4194677 11007449 6177805 2673373 3529614 ...
 ##  $ geometry  :sfc_POLYGON of length 17; first list element: List of 1
 ##   ..$ : num [1:1486, 1:2] 307493 307395 307254 307197 307152 ...
-##   ..- attr(*, &quot;class&quot;)= chr  &quot;XY&quot; &quot;POLYGON&quot; &quot;sfg&quot;
+##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;XY&quot; &quot;POLYGON&quot; &quot;sfg&quot;
 ##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
 ##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA
-##   ..- attr(*, &quot;names&quot;)= chr  &quot;ST&quot; &quot;CNTYNAME&quot; &quot;COV_NAME&quot; &quot;STATEPLANE&quot; ...</code></pre>
+##   ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;ST&quot; &quot;CNTYNAME&quot; &quot;COV_NAME&quot; &quot;STATEPLANE&quot; ...</code></pre>
 <pre class="r"><code>## some data management
 ### check the contents of the geometry field
 counties$geometry</code></pre>
@@ -787,23 +772,96 @@ counties$geometry</code></pre>
 ## geometry type:  POLYGON
 ## dimension:      XY
 ## bbox:           xmin: 240110.2 ymin: 3875834 xmax: 765543.5 ymax: 4653630
-## epsg (SRID):    26911
-## proj4string:    +proj=utm +zone=11 +datum=NAD83 +units=m +no_defs
+## projected CRS:  NAD83 / UTM zone 11N
 ## First 5 geometries:</code></pre>
 <pre class="r"><code>### let&#39;s double check that projection of the counties
 st_crs(counties)</code></pre>
 <pre><code>## Coordinate Reference System:
-##   EPSG: 26911 
-##   proj4string: &quot;+proj=utm +zone=11 +datum=NAD83 +units=m +no_defs&quot;</code></pre>
+##   User input: NAD83 / UTM zone 11N 
+##   wkt:
+## PROJCRS[&quot;NAD83 / UTM zone 11N&quot;,
+##     BASEGEOGCRS[&quot;NAD83&quot;,
+##         DATUM[&quot;North American Datum 1983&quot;,
+##             ELLIPSOID[&quot;GRS 1980&quot;,6378137,298.257222101,
+##                 LENGTHUNIT[&quot;metre&quot;,1]]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         ID[&quot;EPSG&quot;,4269]],
+##     CONVERSION[&quot;UTM zone 11N&quot;,
+##         METHOD[&quot;Transverse Mercator&quot;,
+##             ID[&quot;EPSG&quot;,9807]],
+##         PARAMETER[&quot;Latitude of natural origin&quot;,0,
+##             ANGLEUNIT[&quot;Degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8801]],
+##         PARAMETER[&quot;Longitude of natural origin&quot;,-117,
+##             ANGLEUNIT[&quot;Degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8802]],
+##         PARAMETER[&quot;Scale factor at natural origin&quot;,0.9996,
+##             SCALEUNIT[&quot;unity&quot;,1],
+##             ID[&quot;EPSG&quot;,8805]],
+##         PARAMETER[&quot;False easting&quot;,500000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8806]],
+##         PARAMETER[&quot;False northing&quot;,0,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8807]]],
+##     CS[Cartesian,2],
+##         AXIS[&quot;(E)&quot;,east,
+##             ORDER[1],
+##             LENGTHUNIT[&quot;metre&quot;,1]],
+##         AXIS[&quot;(N)&quot;,north,
+##             ORDER[2],
+##             LENGTHUNIT[&quot;metre&quot;,1]],
+##     ID[&quot;EPSG&quot;,26911]]</code></pre>
 <pre class="r"><code>### How does this projection compare to the sf_points object?
 ### double check the sf_points projection
 st_crs(sf_points)</code></pre>
 <pre><code>## Coordinate Reference System:
-##   EPSG: 26911 
-##   proj4string: &quot;+proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;</code></pre>
+##   User input: +init=epsg:26911 
+##   wkt:
+## PROJCRS[&quot;NAD83 / UTM zone 11N&quot;,
+##     BASEGEOGCRS[&quot;NAD83&quot;,
+##         DATUM[&quot;North American Datum 1983&quot;,
+##             ELLIPSOID[&quot;GRS 1980&quot;,6378137,298.257222101,
+##                 LENGTHUNIT[&quot;metre&quot;,1]]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         ID[&quot;EPSG&quot;,4269]],
+##     CONVERSION[&quot;UTM zone 11N&quot;,
+##         METHOD[&quot;Transverse Mercator&quot;,
+##             ID[&quot;EPSG&quot;,9807]],
+##         PARAMETER[&quot;Latitude of natural origin&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8801]],
+##         PARAMETER[&quot;Longitude of natural origin&quot;,-117,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8802]],
+##         PARAMETER[&quot;Scale factor at natural origin&quot;,0.9996,
+##             SCALEUNIT[&quot;unity&quot;,1],
+##             ID[&quot;EPSG&quot;,8805]],
+##         PARAMETER[&quot;False easting&quot;,500000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8806]],
+##         PARAMETER[&quot;False northing&quot;,0,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8807]],
+##         ID[&quot;EPSG&quot;,16011]],
+##     CS[Cartesian,2],
+##         AXIS[&quot;(E)&quot;,east,
+##             ORDER[1],
+##             LENGTHUNIT[&quot;metre&quot;,1,
+##                 ID[&quot;EPSG&quot;,9001]]],
+##         AXIS[&quot;(N)&quot;,north,
+##             ORDER[2],
+##             LENGTHUNIT[&quot;metre&quot;,1,
+##                 ID[&quot;EPSG&quot;,9001]]],
+##     USAGE[
+##         SCOPE[&quot;unknown&quot;],
+##         AREA[&quot;North America - 120Â°W to 114Â°W and NAD83 by country&quot;],
+##         BBOX[30.88,-120,83.5,-114]]]</code></pre>
 <pre class="r"><code>### then explicitly compare them using boolean logic
 st_crs(counties) == st_crs(sf_points)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>### let&#39;s reproject the points to our desired CRS, utm
 ### we will go into more detail on reprojections later
 counties &lt;- st_transform(counties, st_crs(sf_points))
@@ -863,57 +921,57 @@ rslt &lt;- st_join(sf_points, counties)
 
 ## what does rslt look like?
 str(rslt)</code></pre>
-<pre><code>## Classes &#39;sf&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:  60955 obs. of  13 variables:
+<pre><code>## Classes &#39;sf&#39; and &#39;data.frame&#39;:   60955 obs. of  13 variables:
 ##  $ species   : chr  &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; ...
 ##  $ date      : Date, format: &quot;2015-04-03&quot; &quot;2015-04-03&quot; ...
 ##  $ total     : num  4 1 3 1 1 1 1 1 1 1 ...
 ##  $ label     : chr  &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; ...
 ##  $ year      : num  2015 2015 2015 2015 2015 ...
 ##  $ month     : chr  &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; ...
-##  $ geometry  :sfc_POINT of length 60955; first list element:  &#39;XY&#39; num  581906 4015885
-##  $ ST        : Factor w/ 1 level &quot;NV&quot;: 1 1 1 1 1 1 NA 1 1 1 ...
-##  $ CNTYNAME  : Factor w/ 17 levels &quot;Carson City&quot;,..: 13 13 13 13 13 2 NA 13 2 2 ...
-##  $ COV_NAME  : Factor w/ 17 levels &quot;CARSON&quot;,&quot;CHURCHILL&quot;,..: 13 13 13 13 13 2 NA 13 2 2 ...
-##  $ STATEPLANE: Factor w/ 3 levels &quot;4601&quot;,&quot;4626&quot;,..: 2 2 2 2 2 3 NA 2 3 3 ...
-##  $ STATEPLA_1: Factor w/ 3 levels &quot;Central  Zone&quot;,..: 1 1 1 1 1 3 NA 1 3 3 ...
+##  $ ST        : chr  &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; ...
+##  $ CNTYNAME  : chr  &quot;Nye&quot; &quot;Nye&quot; &quot;Nye&quot; &quot;Nye&quot; ...
+##  $ COV_NAME  : chr  &quot;NYE&quot; &quot;NYE&quot; &quot;NYE&quot; &quot;NYE&quot; ...
+##  $ STATEPLANE: chr  &quot;4626&quot; &quot;4626&quot; &quot;4626&quot; &quot;4626&quot; ...
+##  $ STATEPLA_1: chr  &quot;Central  Zone&quot; &quot;Central  Zone&quot; &quot;Central  Zone&quot; &quot;Central  Zone&quot; ...
 ##  $ Acres     : num  11613744 11613744 11613744 11613744 11613744 ...
+##  $ geometry  :sfc_POINT of length 60955; first list element:  &#39;XY&#39; num  581906 4015885
 ##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
 ##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA NA NA ...
-##   ..- attr(*, &quot;names&quot;)= chr  &quot;species&quot; &quot;date&quot; &quot;total&quot; &quot;label&quot; ...</code></pre>
+##   ..- attr(*, &quot;names&quot;)= chr [1:12] &quot;species&quot; &quot;date&quot; &quot;total&quot; &quot;label&quot; ...</code></pre>
 <pre class="r"><code>## how about summary
 summary(rslt)</code></pre>
-<pre><code>##    species               date                total       
-##  Length:60955       Min.   :2010-03-18   Min.   : 1.000  
-##  Class :character   1st Qu.:2011-06-13   1st Qu.: 1.000  
-##  Mode  :character   Median :2013-05-25   Median : 1.000  
-##                     Mean   :2013-03-19   Mean   : 1.093  
-##                     3rd Qu.:2014-08-18   3rd Qu.: 1.000  
-##                     Max.   :2016-09-14   Max.   :88.000  
-##                                                          
-##     label                year         month          
-##  Length:60955       Min.   :2010   Length:60955      
-##  Class :character   1st Qu.:2011   Class :character  
-##  Mode  :character   Median :2013   Mode  :character  
-##                     Mean   :2013                     
-##                     3rd Qu.:2014                     
-##                     Max.   :2016                     
-##                                                      
-##           geometry        ST             CNTYNAME          COV_NAME    
-##  POINT        :60955   NV  :60825   Churchill:25455   CHURCHILL:25455  
-##  epsg:26911   :    0   NA&#39;s:  130   Nye      :21557   NYE      :21557  
-##  +proj=utm ...:    0                Mineral  : 7496   MINERAL  : 7496  
-##                                     Clark    : 2819   CLARK    : 2819  
-##                                     Washoe   : 1730   WASHOE   : 1730  
-##                                     (Other)  : 1768   (Other)  : 1768  
-##                                     NA&#39;s     :  130   NA&#39;s     :  130  
-##  STATEPLANE           STATEPLA_1        Acres         
-##  4601: 2926   Central  Zone:21579   Min.   :  168888  
-##  4626:21579   East Zone    : 2926   1st Qu.: 3213476  
-##  4651:36320   West Zone    :36320   Median : 3213476  
-##  NA&#39;s:  130   NA&#39;s         :  130   Mean   : 6174634  
-##                                     3rd Qu.:11613744  
-##                                     Max.   :11613744  
-##                                     NA&#39;s   :130</code></pre>
+<pre><code>##    species               date                total           label          
+##  Length:60955       Min.   :2010-03-18   Min.   : 1.000   Length:60955      
+##  Class :character   1st Qu.:2011-06-13   1st Qu.: 1.000   Class :character  
+##  Mode  :character   Median :2013-05-25   Median : 1.000   Mode  :character  
+##                     Mean   :2013-03-19   Mean   : 1.093                     
+##                     3rd Qu.:2014-08-18   3rd Qu.: 1.000                     
+##                     Max.   :2016-09-14   Max.   :88.000                     
+##                                                                             
+##       year         month                ST              CNTYNAME        
+##  Min.   :2010   Length:60955       Length:60955       Length:60955      
+##  1st Qu.:2011   Class :character   Class :character   Class :character  
+##  Median :2013   Mode  :character   Mode  :character   Mode  :character  
+##  Mean   :2013                                                           
+##  3rd Qu.:2014                                                           
+##  Max.   :2016                                                           
+##                                                                         
+##    COV_NAME          STATEPLANE         STATEPLA_1            Acres         
+##  Length:60955       Length:60955       Length:60955       Min.   :  168888  
+##  Class :character   Class :character   Class :character   1st Qu.: 3213476  
+##  Mode  :character   Mode  :character   Mode  :character   Median : 3213476  
+##                                                           Mean   : 6174634  
+##                                                           3rd Qu.:11613744  
+##                                                           Max.   :11613744  
+##                                                           NA&#39;s   :130       
+##           geometry    
+##  POINT        :60955  
+##  epsg:NA      :    0  
+##  +proj=utm ...:    0  
+##                       
+##                       
+##                       
+## </code></pre>
 <p><code>rslt</code> is an <code>sf</code> object with 60,955 observations of 13 columns (all the columns of each <code>sf</code> object in the functino call). If you look at <code>sf_points</code> there are 60,955 elements, and <code>rslt</code> has 60,955 elements, this is a good sign! To reiterate <code>st_join()</code> has taken each point in our first geometry, <code>sf_points</code>, and looked at the polygons in <code>counties</code> to see which polygon that point lies within, then binds those colunns together to make a new <code>sf</code> object.</p>
 <p>Notice that the geometry column for of <code>rslt</code> is still a <code>POINT</code>. What does happens if you switch the order of <code>sf_points</code> and <code>counties</code>? Run the code chunk below to find out.</p>
 <pre class="r"><code>## what happens if you change the order of the input objects?
@@ -1011,8 +1069,19 @@ us_states &lt;- spData::us_states
 ## check the CRS
 st_crs(us_states)</code></pre>
 <pre><code>## Coordinate Reference System:
-##   EPSG: 4269 
-##   proj4string: &quot;+proj=longlat +datum=NAD83 +no_defs&quot;</code></pre>
+##   User input: EPSG:4269 
+##   wkt:
+## GEOGCS[&quot;NAD83&quot;,
+##     DATUM[&quot;North_American_Datum_1983&quot;,
+##         SPHEROID[&quot;GRS 1980&quot;,6378137,298.257222101,
+##             AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]],
+##         TOWGS84[0,0,0,0,0,0,0],
+##         AUTHORITY[&quot;EPSG&quot;,&quot;6269&quot;]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],
+##     UNIT[&quot;degree&quot;,0.0174532925199433,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],
+##     AUTHORITY[&quot;EPSG&quot;,&quot;4269&quot;]]</code></pre>
 <pre class="r"><code>plot(st_geometry(us_states), 
      col = &#39;white&#39;,
      graticule = st_crs(us_states), 
@@ -1030,7 +1099,7 @@ plot(st_geometry(wgs_usa),
 <pre class="r"><code>## we can do this with other reprojections as well so you can really tell a difference
 layout(matrix(1:8, nrow = 2))
 us_states %&gt;% st_geometry() %&gt;% 
-  st_transform(crs = &#39;+proj=aea&#39;) %&gt;% 
+  st_transform(crs = &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs&quot; ) %&gt;%   
   plot(col = &#39;white&#39;, 
        graticule = st_crs(wgs_usa),
        axes = T, main = &#39;Albers Equal Area&#39;)
@@ -1063,8 +1132,10 @@ us_states %&gt;% st_geometry() %&gt;%
   st_transform(crs = &#39;+init=epsg:26911&#39;) %&gt;% 
   plot(col = &#39;white&#39;, 
        graticule = st_crs(wgs_usa),
-       axes = T, main = &#39;NAD83 Zone 11&#39;)
-us_states %&gt;% st_geometry() %&gt;% 
+       axes = T, main = &#39;NAD83 Zone 11&#39;)</code></pre>
+<pre><code>## Warning in CPL_crs_from_input(x): GDAL Message 1: +init=epsg:XXXX syntax is
+## deprecated. It might return a CRS with a non-EPSG compliant axis order.</code></pre>
+<pre class="r"><code>us_states %&gt;% st_geometry() %&gt;% 
   st_transform(crs = &#39;+init=epsg:26921&#39;) %&gt;% 
   plot(col = &#39;white&#39;, 
        graticule = st_crs(wgs_usa),
@@ -1075,7 +1146,7 @@ us_states %&gt;% st_geometry() %&gt;%
 layout(matrix(1:2, nrow = 2))
 
 us_states %&gt;% st_geometry() %&gt;% 
-  st_transform(crs = &#39;+proj=lcc&#39;) %&gt;% 
+  st_transform(crs = &#39;+proj=lcc +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs&#39;) %&gt;% 
   plot(col = &#39;white&#39;,
        graticule = st_crs(wgs_usa),
        axes = T, main = &#39;Lambert Conformal Standard&#39;)
@@ -1101,9 +1172,10 @@ rm(list = ls())
 load(&#39;data/module2_6.RData&#39;)
 
 ## load a raster
-dem &lt;- raster(&#39;data/nv_dem_coarse.grd&#39;)
-
-## check dem structure
+dem &lt;- raster(&#39;data/nv_dem_coarse.grd&#39;)</code></pre>
+<pre><code>## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
+##  but +towgs84= values preserved</code></pre>
+<pre class="r"><code>## check dem structure
 str(dem)</code></pre>
 <pre><code>## Formal class &#39;RasterLayer&#39; [package &quot;raster&quot;] with 12 slots
 ##   ..@ file    :Formal class &#39;.RasterFile&#39; [package &quot;raster&quot;] with 13 slots
@@ -1172,9 +1244,10 @@ image(dem, asp = 1, col = terrain_colors)</code></pre>
 <p><img src="module2_5_files/figure-html/plot%20a%20raster-2.png" width="672" /></p>
 <p>Let’s load a second raster. This next one represents major roads in Nevada (from the Census TIGER dataset). I’ve converted the data from a <code>LINES</code> object to a <code>raster</code> so that we can do some computations with it. The plot below looks like a road network. If you look closely down near Las Vegas you’ll see some darker green colors. Those cells are all the roads and highways lumped together in a single raster cell. The value of each cell in this data is the number of roads in that cell.</p>
 <pre class="r"><code># load a second raster, distance to roads ----
-road_rast &lt;- raster(&#39;data/road_dist.grd&#39;)
-
-## plot
+road_rast &lt;- raster(&#39;data/road_dist.grd&#39;)</code></pre>
+<pre><code>## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
+##  but +towgs84= values preserved</code></pre>
+<pre class="r"><code>## plot
 plot(road_rast, col = rcartocolor::carto_pal(7, &#39;Mint&#39;))</code></pre>
 <p><img src="module2_5_files/figure-html/distance%20to%20roads%20raster-1.png" width="672" /></p>
 <p>Check the projection on our Raster objects. The rasters we just loaded should be the same. What about when we compare it to <code>nv</code>? This is one of those instances, again, where the datasets are using the same coordinate reference system, however two different methods have been used to apply that coordinate reference system to the data. To prove they are the same coordinate reference system, we can plot the state border over the dem raster.</p>
@@ -1187,7 +1260,7 @@ projection(road_rast)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>## compare to nv SpatialPolygonsDataFrame
 identicalCRS(dem, as(nv, &#39;Spatial&#39;))</code></pre>
-<pre><code>## [1] TRUE</code></pre>
+<pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>## proof these are the same crs
 plot(dem, col = terrain_colors)
 plot(nv, lwd = 3, add = T)</code></pre>
@@ -1202,15 +1275,18 @@ plot(nv, lwd = 3, add = T)</code></pre>
 <h3>Distance to Roads</h3>
 <p>Lets create a distance to roads raster from <code>road_rast</code>. We can later use this to perform spatial overlays, intersections, or joins. This should be a relatively quick operation. If you have an older computer with a slower processor and few RAM patience is required.</p>
 <pre class="r"><code># create distance to roads ----
-road_dist &lt;- distance(road_rast, filename = &quot;road_dist.grd&quot;, overwrite = T)
-
-## cool, what does this look like?
+road_dist &lt;- distance(road_rast, filename = &quot;road_dist.grd&quot;, overwrite = T)</code></pre>
+<pre><code>## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
+##  but +towgs84= values preserved</code></pre>
+<pre class="r"><code>## cool, what does this look like?
 plot(road_dist)
 plot(nv, lwd = 3, add = T)</code></pre>
 <p><img src="module2_5_files/figure-html/distance%20to%20roads-1.png" width="672" /></p>
 <p>Very cool! This raster represents a continuous measure of distance to roads across the landscape. White pixels are directly on roads, so the cell value is 0. The darker the and greener the color, the further away from major roads that cell is. The units for each cell are meters. This isn’t as clean as the DEM we have loaded. The lower left corner is all in California, and because we didn’t include any California roads in the calculation of this raster, that data isn’t accurate. Instead of including California roads we will clip or mask this raster to the state border.</p>
 <pre class="r"><code>## mask raster to NV border. This will set all values outside NV to NA
 nv_road_dist &lt;- mask(road_dist, mask = as(nv, &#39;Spatial&#39;), filename = &#39;nv_road_dist.grd&#39;, overwrite = T)</code></pre>
+<pre><code>## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
+##  but +towgs84= values preserved</code></pre>
 <p><em>If you need to overwrite a file that already exists on disk provide the <code>overwrite = T</code> parameter. Without this the operation will error out.</em></p>
 <pre class="r"><code>## plot our new raster, with nevada border
 plot(nv_road_dist)
@@ -1224,20 +1300,18 @@ summary(road_dist)</code></pre>
 ## Min.         0.000
 ## 1st Qu.   6324.555
 ## Median   16124.516
-## 3rd Qu.  39395.430
-## Max.    323932.094
+## 3rd Qu.  39293.766
+## Max.    322552.312
 ## NA&#39;s         0.000</code></pre>
 <pre class="r"><code>summary(nv_road_dist)</code></pre>
-<pre><code>## Warning in sampleInt(length(x), size): size changed to n because it cannot be larger than n when replace is FALSE
-
-## Warning in sampleInt(length(x), size): summary is an estimate based on a sample of 1e+05 cells (97.75% of all cells)</code></pre>
+<pre><code>## Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (97.75% of all cells)</code></pre>
 <pre><code>##            layer
 ## Min.        0.00
 ## 1st Qu.  4000.00
-## Median  10000.00
+## Median  10198.04
 ## 3rd Qu. 20000.00
 ## Max.    64124.88
-## NA&#39;s        0.00</code></pre>
+## NA&#39;s    30352.00</code></pre>
 </div>
 <div id="overlay-operations" class="section level3">
 <h3>Overlay Operations</h3>
@@ -1286,22 +1360,16 @@ library(leaflet)
 leaflet::leaflet(wgs_pts) %&gt;% 
   addTiles() %&gt;% 
   addCircleMarkers(radius = 5)</code></pre>
-<div id="htmlwidget-afb68c0dddd0c9aee6c0" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-afb68c0dddd0c9aee6c0">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
 <p>We can change the basemap too.</p>
 <pre class="r"><code>## leaflet provider tiles
 leaflet::leaflet(wgs_pts) %&gt;% 
   addProviderTiles(providers$Esri.WorldTopoMap) %&gt;% 
   addCircleMarkers(radius = 5)</code></pre>
-<div id="htmlwidget-4e8ef0da4987c94df28b" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4e8ef0da4987c94df28b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
 <p>And popups!</p>
 <pre class="r"><code>## and popups
 leaflet::leaflet(wgs_pts) %&gt;% 
   addTiles() %&gt;% 
   addCircleMarkers(radius = 5, popup = paste(wgs_pts$species))</code></pre>
-<div id="htmlwidget-83ee225381f270823a4f" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-83ee225381f270823a4f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[36.2844529013833,36.2825651210429,36.2826193394688,36.2881626694183,36.2837142589868,39.4700915669845,38.939095408972,39.4785774872729,39.4804456132142,39.4786892183079,39.468536823641,39.4790249272071,39.4765390417417,39.475564091709,39.4753555063411,39.4750609359987,39.4831094630361,38.5943584011618,39.3429920470921,39.3300127343055,39.4537390632927,36.1123805574392,39.3131359156203,39.4350305665061,37.0400871328096,38.2531149397546,39.1239242144708,36.680068756442,36.6959640338587,39.4408761742465,39.4755690699925,39.4753045429999,39.4753045429999,39.4753045429999,39.4255834645556,39.0827838605395,35.9743530430756,36.5270585545245,36.5364025792245,38.9342182191008,38.9372430191073,39.4477775514557,39.1988305361886,39.4641966333726,38.8970800607058,39.4686007179142,38.2350208383295,39.3159340446769,38.2304088103281,39.4153486489593,39.3360082246396,39.4754593101653,36.5724726911757,38.287854541955,36.288162585203,36.2844709301224,36.2916296390376,39.3332501329894,36.2477082018601,38.9341972116864,36.5516998496733,36.5706700633973,39.4478535986125,36.2844709301224,39.7706654661927,39.7627823314936,35.0762682623825,39.527805425156,39.4329758629665,38.3539253549488,38.2606667777159,38.2606487577632,38.2606487577632,38.2606487577632,38.260325980982,38.2594798341484,38.2586755267695,38.2585150602235,38.2579342860119,38.2579342860119,38.3548900355515,38.3552794408791,38.3553696713452,38.2574780695401,38.3556804986721,38.2567250492328,38.2567250492328,38.2567250492328,38.2567250492328,38.256320916225,38.2555257394779,38.2553022001674,38.2551594874788,38.2547907354091,38.2545760740328,38.3549291903616,38.2539117016321,38.252997678251,38.2511578560741,38.2511578560741],[-116.087947006577,-116.089839621021,-116.091041551998,-116.09566535303,-116.097531682371,-118.059572043847,-117.96102541681,-118.372469743289,-118.174790521233,-118.404607678162,-118.398463209827,-118.097018152943,-118.092130881734,-118.090406573839,-118.081869660517,-118.079632868787,-118.060781174247,-118.047630602417,-118.188174625249,-118.163625414438,-118.397225636476,-115.014361111452,-118.252207495133,-118.262799645757,-116.817214507817,-118.35006371487,-118.278626418988,-116.497335080404,-116.510844058911,-119.202543905278,-118.085058567616,-118.08733319807,-118.08733319807,-118.08733319807,-118.299190309778,-118.233210252098,-115.855761733678,-116.523749937151,-116.515895002054,-117.956898412729,-117.959454331537,-118.38036004601,-118.056480952314,-118.404967191753,-117.992862061352,-118.398394740015,-118.23963060968,-118.242502068413,-118.205688332852,-118.207116764675,-118.174933351886,-118.08812619281,-116.555514562768,-118.125570044488,-116.095654218389,-116.087946796785,-116.09277449942,-118.169654416221,-116.20160993052,-117.88176626403,-116.542996182036,-116.558039573051,-118.30991237162,-116.087946796785,-119.223319181218,-117.643665994845,-114.722690204314,-118.417766845546,-118.257011119358,-118.35597367566,-118.353986711908,-118.353986377402,-118.353986377402,-118.353986377402,-118.353843230023,-118.353758948057,-118.353172551915,-118.353020993517,-118.352587338329,-118.352587338329,-118.354377995576,-118.354213582426,-118.354203818805,-118.35229314931,-118.353820492105,-118.351947746991,-118.351947746991,-118.351947746991,-118.351947746991,-118.351825967314,-118.351228359066,-118.351075643591,-118.350947283437,-118.350883311162,-118.35074219146,-118.352547603732,-118.350524175606,-118.350072973537,-118.349410378968,-118.349410378968],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,["Crotaphytus bicinctores","Sauromalus ater","Sauromalus ater","Sauromalus ater","Sauromalus ater","Crotaphytus bicinctores","Phrynosoma platyrhinos","Gambelia wislizenii","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Gambelia wislizenii","Phrynosoma platyrhinos","Crotaphytus bicinctores","Phrynosoma platyrhinos","Gambelia wislizenii","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Gambelia wislizenii","Callisaurus draconoides","Callisaurus draconoides","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Dipsosaurus dorsalis","Dipsosaurus dorsalis","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Sceloporus uniformis","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Callisaurus draconoides","Phrynosoma platyrhinos","Crotaphytus bicinctores","Phrynosoma platyrhinos","Callisaurus draconoides","Sauromalus ater","Sauromalus ater","Sauromalus ater","Phrynosoma platyrhinos","Sauromalus ater","Crotaphytus bicinctores","Dipsosaurus dorsalis","Dipsosaurus dorsalis","Sceloporus occidentalis","Sauromalus ater","Crotaphytus bicinctores","Sceloporus occidentalis","Sauromalus ater","Sceloporus uniformis","Uta stansburiana","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Phrynosoma platyrhinos","Crotaphytus bicinctores","Gambelia wislizenii","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Phrynosoma platyrhinos","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores","Crotaphytus bicinctores"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[35.0762682623825,39.7706654661927],"lng":[-119.223319181218,-114.722690204314]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="challenge-spatial-lines" class="section level2">
 <h2>Challenge: Spatial Lines</h2>
@@ -1353,10 +1421,10 @@ leaflet::leaflet(wgs_pts) %&gt;%
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>The <code>raster</code> and <code>dplyr</code> libraries each have a function called <code>select</code>. I prefer to load <code>dplyr</code> first and have the <code>raster</code> library mask the <code>select</code> function in the <code>dplyr</code> library. In order to call the <code>select</code> function in the <code>raster</code> library we need to explicitly reference the library we want to use with two colons: <code>dplyr::select</code>. When using double colons the libraries namespace (list of functions, variable, etc.) is loaded, but not attached to the session. This allows us to call function from libraries we haven’t explicitly loaded with <code>library()</code> or <code>requrie()</code> function. I have a tendancy to (over)use this method. It is very helpful when writing your own functions and libraries as those functions will not throw errors about a library not being loaded.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will almost always be refering to the geographic data .<a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>The European Petroleum Survey Group maintains a list of IDs to all the projection systems. These are a nice shorthand for create coordinate reference strings in R. <a href="epsg.io">epsg.io</a> is a great interactive site to discover EPSG IDs.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>R supports two different class types, S3 classes and S4 classes. All we really need to now about them right now is how they differ in terms of accessing values. The <code>@</code> symbol is analogous to the <code>$</code> symbol for lists. It access named items from an S4 class. These items in S4 classes are called slots.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>The <code>raster</code> and <code>dplyr</code> libraries each have a function called <code>select</code>. I prefer to load <code>dplyr</code> first and have the <code>raster</code> library mask the <code>select</code> function in the <code>dplyr</code> library. In order to call the <code>select</code> function in the <code>raster</code> library we need to explicitly reference the library we want to use with two colons: <code>dplyr::select</code>. When using double colons the libraries namespace (list of functions, variable, etc.) is loaded, but not attached to the session. This allows us to call function from libraries we haven’t explicitly loaded with <code>library()</code> or <code>requrie()</code> function. I have a tendancy to (over)use this method. It is very helpful when writing your own functions and libraries as those functions will not throw errors about a library not being loaded.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will almost always be refering to the geographic data .<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>The European Petroleum Survey Group maintains a list of IDs to all the projection systems. These are a nice shorthand for create coordinate reference strings in R. <a href="epsg.io">epsg.io</a> is a great interactive site to discover EPSG IDs.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>R supports two different class types, S3 classes and S4 classes. All we really need to now about them right now is how they differ in terms of accessing values. The <code>@</code> symbol is analogous to the <code>$</code> symbol for lists. It access named items from an S4 class. These items in S4 classes are called slots.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
@@ -1410,7 +1478,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

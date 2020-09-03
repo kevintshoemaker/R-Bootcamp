@@ -1,6 +1,11 @@
 base
-modeest
-boot
-foreach
-iterators
-doParallel
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+lubridate

@@ -19,11 +19,11 @@ navbar:
       menu:
         - text: "Submodule 2.1: R packages"
           href: module2_1.html
-        - text: "Submodule 2.2: Parallel computing in R"
+        - text: "Submodule 2.2: Using the 'tidyverse'"
           href: module2_2.html
-        - text: "Submodule 2.3: Using the 'tidyverse'"
+        - text: "Submodule 2.3: Plotting with 'ggplot'"
           href: module2_3.html
-        - text: "Submodule 2.4: Plotting with 'ggplot'"
+        - text: "Submodule 2.4: Parallel computing in R"
           href: module2_4.html
         - text: "Submodule 2.5: Spatial analysis"
           href: module2_5.html

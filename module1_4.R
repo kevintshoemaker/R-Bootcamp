@@ -169,7 +169,7 @@ logit.safe(c(0.15,0.99))
 n.samples <- 100
 set.seed(2017)     # the 'seed' allows random number generators to give the same result every time!
 
-## 100 samples from a binomial distribution with detection probability = p = 0.7.
+## 100 samples from a binomial distribution with detection probability p = 0.7.
 y <- rbinom(n = n.samples, size = 1, prob = p)
 y
 

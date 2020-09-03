@@ -1,6 +1,6 @@
 ---
 title: "Module 2.4"
-author: "Advanced data visualization with ggplot and more"
+author: "Parallel processing in R"
 date: "Fall 2020"
 output: 
   html_document: 
@@ -9,8 +9,9 @@ output:
     toc_float: yes
 ---
 
-```{r setup, include=FALSE}
+```{r GlobalOptions, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+options(knitr.duplicate.label = 'allow')
 ```
 
 ```{r echo=FALSE}
@@ -23,494 +24,676 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ####                                          #### 
 ##################################################
 
+##################################################
+####  Parallel processing in R                ####
+####  Developed by: Jonathan Greenberg         ####
+####     jgreenberg@unr.edu                   ####
+##################################################
 
-#############################################
-####  Data Visualization with 'ggplot2'  ####
-####                                     ####
-####  Author: Stephanie Freund           ####
-#############################################
 
 ```
 
+NOTE: Jonathan Greenberg (https://naes.unr.edu/gears/) developed this module  
 
-Thanks to Stephanie Freund, who pulled this module together!
+This is the first of the modules that really go *beyond the basics*. Module 2.5 also provides a "whirlwhind" tour of more advanced things you can do in R, from parallel computing, to sophisticated visualizations to geographic analysis.  
 
-Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. On Day 1, you learned how to create several types of plots in base R. Base R is great for whipping up some quick plots for initial data exploration, and you can make them quite beautiful looking as well. 
+## Load script for module #2.4
 
-When you start creating a lot of plots for which you might want to quickly and easily adjust graphical elements, or want to create more complex plots that display a lot of information in one place, the data visualization package *ggplot2* is extremely useful. In this module, we'll introduce ggplot syntax and briefly survey some of the package's plotting capabilities.
+1. Click [here](module2_4.R) to download the script! Save the script to a convenient folder on your laptop. [alternative: [load Jonathan's original script](greenberg_code.R)]
 
-### Load script for module #2.4
+2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar. 
 
-1. Click [here](module2_4.R) to download the script! Save the script to a convenient folder on your laptop.
+Let's get started with parallel processing in R!
 
-2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
+## Running R in parallel!
 
-### Using ggplot2
+This is a huge topic, but the basic concept of parallel computing is the following:
 
-ggplot2 is an R package developed by Hadley Wickham and colleagues that is based on Leland Wilkinson's ["Grammar of Graphics"](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448). If you are interested in learning more about the philosophy behind ggplot2 and object-oriented design, you can read Hadley's paper about it [here](http://vita.had.co.nz/papers/layered-grammar.pdf). 
+Given some problem X that can be divided into subproblems x1, x2, x3, each subproblem can be sent to a different "worker" processor (which may be located on a different physical computer).  
 
-All graphics produced in ggplot2 are built using elements of this grammatical framework. ggplot2 is modular, so that you can easily modify how your plot looks by adding or editing layers, and it generates more features by default (e.g. gridlines, legends with titles, etc) than base R. This saves you time spent cobbling together all of these elements from scratch.
+Each processor then sends the results of its subproblem back to a central "master". The master often then pieces the subproblems back together to return to the user.
 
-#### Basics
 
-A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying your dataset. You can then add geometric objects, beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and to adjust how the data are displayed. **`aes()`** can also be used within the initial call to **`ggplot()`**.
+Parallel computing is not a cure-all, and not all problems will benefit from it.  We'll come back to this issue in a bit.
 
-To demonstrate, we'll use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
+There are a lot of packages to realize parallel computing within R, and current versions of R even come with some parallel computing packages built-in.  A full list can be found [here](http://cran.r-project.org/web/views/HighPerformanceComputing.html).
 
-First, install and load ggplot2 and the other packages we'll be using for this module.
+I will be following the examples from [http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf](http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf). 
 
-```{r warning=FALSE, message=FALSE}
 
-########
-# Load packages!
+### Set up your workspace
 
-## note: if you don't already have these packages you will need to install them first!
+First, let's set up our workspace to run an example using a genomics data set. This example uses [bioconductor](https://www.bioconductor.org/), which provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses R and is open source and open development.
 
-library(tidyverse)
-library(ggplot2)
-library(ggthemes)
-library(carData)
-library(DAAG)
-library(RColorBrewer)
-library(leaflet)
+Installing the packages for this module can take a while, so hopefully you have already had a chance to do this prior to coming to this workshop! 
+
+```{r eval=FALSE}
+
+################
+# Set up the workspace (can take a surprisingly long time!)
+
+# examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
+
+# First, load this script directly from the web (which also installs required packages for you!):
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("Biobase")
+
 
 ```
 
-Now load the dataset.
+NOTE: if you had trouble running the above code, you can just load the example dataset [here](geneData.csv)
+
+We are going to run a test using gene expression data-- let's load the example dataset! 
 
 ```{r}
 
-##############
-# Load the example data!
+data(geneData, package = "Biobase")   # load example data from Biobase package between all pairs of genes across all samples.
+  # geneData <- read.csv("geneData.csv")    # alternative!
 
-data(Soils,package = "carData")    # load example data
 
-#See what variables it contains...
-soil <- data.frame(Soils)
-head(soil)
+# This data represents 500 genes (organized by rows)
+# with expression data (numerical). 
+
+# The goal is to calculate the correlation coefficient
+# between all pairs of genes across all samples.  For example,
+# to test gene 12 vs 13:
 
 ```
 
-We'll start with a basic boxplot. Let's say we're interested in how pH, a continuous variable, varies with the contour position, a categorical factor.  
+
+### Example: A simple yet computationally intensive problem
+
+This data represents 500 genes (organized by rows) with expression data (numerical) across 26 samples. The goal is to calculate the correlation coefficient between all pairs of genes across all samples. 
+
+For example, let's examine the correlation between gene 12 vs 13:
+
+```{r eval=FALSE}
+
+?cor    # view help page for "cor()" function
+geneData[12,]
+geneData[13,]
+
+```
+
 
 ```{r}
 
-########
-# basic boxplot...
-
-ggplot(soil) +
-  geom_boxplot(aes(x=Contour, y=pH))
+plot(geneData[12,],geneData[13,])    # plot the correlation between two genes
+cor(geneData[12,],geneData[13,])
 
 ```
 
-You can see that the default plot includes a gray background with white gridlines. This makes all of the elements on this plot easy to see, but as you start adjusting colors and identifying your personal preferences, you'll probably want to customize this -- ggplot has a ton of options for doing so. 
 
-Let's try a scatterplot of two continuous variables, Calcium content and pH.
+The total number of paired correlations will be 500 x 499 / 2 = **124,750 correlations**!
+
+We can identify all combinations in a vector using the "combn() function:
+
+```{r eval=FALSE}
+
+?combn    # function to determine all combination ids
+
+```
+
+
+We are going to leave this as a list, for now...
 
 ```{r}
 
-###########
-# basic scatterplot
+pair <- combn(1:nrow(geneData),2,simplify=F)   #leave this as a list, for now...
 
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca))
+length(pair)
+head(pair,n=3)     # note that the "head()" and "tail()" functions can be used on lists in addition to data frames...
+tail(pair,n=3)
 
 ```
 
-Now let's say you wanted to examine how the relationship between pH and Ca varies with depth. You could go back to your scatterplot and use color to identify points from the different sampling depths. ggplot will select default colors that display well against the default gray background.
+
+It often makes sense to break a problem like this down a set of repeated tasks, each of which is expressed as a function. 
+
+Let's write (and test) a function to accept a pair in the database and returns the correlation:
 
 ```{r}
-
-########
-# Color the points by depth
-
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca, color=Depth))
-```
-
-We can play with how those points look if we want them to show up more boldly. Take note that arguments that affect all of the points equally, and don't relate to how *variables* are displayed, fall outside of the **`aes`** function.
-
-```{r}
-
-##########
-# make additional alterations (outside the "aes" function)
-
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5)
-
-```
-
-Cool! Let's use the same grammar to plot relationships between pH and several soil nutrients on the same graph. Notice that the y axis label defaults to the first set of points (Ca), and we'd need to modify it. The depths in the legend also have no units! You'll see how to change things like axis labels and legend titles in a moment.
-
-```{r}
-
-######
-# Plot several relationships on same graphics window
-
-ggplot(soil, aes(x=pH)) +
-  geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
-  geom_point(aes(y=Mg), shape=21, fill="blue", color="black", size=4, stroke=1.5) +
-  geom_point(aes(y=Na), shape=21, fill="gray30", color="black", size=4, stroke=1.5)
-
-```
-
-Here's another way to plot multiple series, after reshaping with tidyr. This lets us plot our different nutrients as factor levels without typing each one with its specifications on its own line, and generates a legend that identifies the series (and also gives the default ggplot colors).
-
-```{r}
-
-#########
-# Use 'tidyverse' tricks to simplify the syntax for ggplot to color by nutrient
-
-soil.nut <- gather(soil, nutrient, value, c(10,11,13))
-ggplot(soil.nut) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
-
-```
-
-What if instead of Na, we had K as our third nutrient of interest?
-
-```{r}
-
-######
-# or if we wanted to plot different nutrients...
-
-soil.nut2 <- gather(soil, nutrient, value, c(10,11,12))
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
-
-```
-
-The problem here is that K occurs at natural concentrations that differ from the other nutrients by an order of magnitude, so it's difficult to examine them all on the same scale. One approach we can take is to plot them separately. While we're at it, let's also make sure that we specify the response units on the y-axis. 
-
-#### Facets, scales, and themes
-
-The next plot introduces: 
-
-* **facets**, which allow you to display data on separate panels using some grouping variable 
-
-* **scales**, which allow you to adjust how to represent the data with axes and colors
-
-* **themes**, which allow you to adjust the entire plot aesthetic (using **`theme_X()`**) as well as individual elements of legends, text, and more (using **`theme()`**).
-
-
-```{r fig.height=6, fig.width=14}
-
-##########
-# plot with facets, scales, and themes!
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), 
-             shape=21, color="black", size=4, stroke=1.5) +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_bw() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-    
-```
-
-
-In this plot, we've kept the different colors for each nutrient, but suppressed the legend that is auto-generated by ggplot, because this information is now redundant with the headers of the three facets. In the **`facet_wrap`** function, we used **`scales`** to specify that the y-axis should be bounded to fit the data within each facet. There are some cases where you would probably want the axes to be the same -- e.g. if you were comparing raw values across groups, rather than the distributions or trends of the data.
-
-We also changed the theme! ggplot has [8 built-in themes](http://r4ds.had.co.nz/images/visualization-themes.png) to choose from. There are also lots of other themes built into extension packages such as ggthemes. Here are a few examples of different themes applied to the plot we just made.
-
-```{r fig.height=6, fig.width=14, echo=FALSE}
-
-########
-# Try different themes! 
-
-    ## igray:
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_igray() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-```
-**`theme_igray`**
-
-```{r fig.height=6, fig.width=14, echo=FALSE}
-
-   ## economist:
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_economist() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-```
-**`theme_economist`**
-
-```{r fig.height=6, fig.width=14, echo=FALSE}
-
-    ## gdocs:
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_gdocs() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-```
-**`theme_gdocs`**
-
-
-Check out the options and play around with different themes until you find some that appeal to you and lend themselves to the type of data visualization and color scales you plan to use. 
-
-You can also fine-tune pretty much any of the details (gridlines or no? plot borders? line weight of the borders and gridlines? axis label angles?) to your heart's content using the arguments in the **`theme()`** function.
-
-Speaking of color...
-
-#### Specifying colors
-
-Sometimes sticking to the default colors in ggplot isn't the best choice. You might have factors representing ordered ranks, like in an experiment with different levels of light exposure, and want to represent these levels on a monochromatic scale. Or you might want to make a map displaying regions of positive or negative change in forest cover, using a diverging color scale. Or you don't even like the default ggplot colors, and have your own preferred color schemes. It's also important to remember that red-green colorblindness is fairly common, so if you are presenting data that must be distinguished by colors in a single plotting area, you should probably avoid this combination or combine it with changes in value (light to dark) in order for your plot to be accessible.
-
-Going back to our earlier example showing Ca content by pH at different depths, let's say we want a color scheme where deeper depths are represented by darker values of the same color. We can do this by using another scale function.
-
-One method is to use **`scale_fill_brewer`**, and select an already composed color palette from RColorBrewer (a package you'll need to install). You can check out all of the options available in RColorBrewer by entering **`display.brewer.all()`**, which shows the sequential palettes, then categorical palettes, than diverging palettes.
-
-```{r fig.height=8, fig.width=6}
 
 ############
-# Playing with colors in ggplot!
+# New function: accepts a gene pair and the database as arguments and returns
+# the correlation:
 
-display.brewer.all()
+geneCor <- function(pair,gene=geneData){
+  cor(gene[pair[1],],gene[pair[2],])
+}
 
-```
-
-I'm going to pick the YlOrBr (Yellow-Orange-Brown) palette, because those seem like good soil-y colors. Notice that because **`fill`** is mapped to the values of the data, inside this function is where I can change the title of the legend (and the labels for the different values, if I wanted to do that).
-
-```{r}
-
-#########
-# Choose a new color palette from the RColorBrewer package
-
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
-  theme_bw() +
-  ylab("Ca (mg/100g soil)") +
-  scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
+# Test the function:
+cor(geneData[12,],geneData[13,])
+geneCor(pair=c(12,13),gene=geneData)    # should be the same result as the previous command...
 
 ```
 
-Another method is to use **`scale_fill_manual`**, with which you define your own palette.
-To pick out your colors, you can use the [names of colors]('http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) already recognized by R, or use [hex codes](https://htmlcolorcodes.com/) for any color you want.
+We left our pairs as a list, so we can use *lapply*!  Recall that *lapply* takes each element in a list (in sequence), applies a specified function to that element, and returns the results from the function in another list.  
+
+Let's just test the first 3 pairs:
 
 
 ```{r}
-
-#########
-# Choose your own palette!
-
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
-  theme_bw() +
-  ylab("Ca (mg/100g soil)") +
-  scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
-
-```
-
-What if depth were a continuous variable, rather than a set of four discrete categories? We could use **`scale_fill_gradient`**, supply the hues we want (one for monochromatic, two for diverging) and R would map the soil depth values to color values along the gradient.
-
-#### Trendlines
-
-Next, we might want to add a trendline to each set of points. Try it for the plot we made of different nutrient concentrations as a function of pH. Arguments in the **`geom_smooth()`** function allow us to change the confidence level, the smoothing method, and other details.
-
-```{r fig.height=6, fig.width=14}
-
-##########
-# add trendlines
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), 
-             shape=21, color="black", size=4, stroke=1.5) +
-  geom_smooth(aes(x=pH, y=value), method="lm", color="black") +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_bw() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-    
-```
-
-#### Density curves and error bars
-
-Using **`geom_smooth`** to plot trendlines is a useful way to get more information from your scatterplots. To get an idea for how other kinds of statistical elements can be drawn onto ggplot plots, we'll look at examples using histograms and boxplots.
-
-First, a simple histogram of 3 soil nutrients.
-
-```{r fig.height=6, fig.width=14}
-
-###########
-# Adding density/smooth curves to plots
-
-   ## first produce some histograms
-
-ggplot(soil.nut) +
-  geom_histogram(aes(x=value), color="black", fill="white", bins=15) +
-  facet_wrap(~nutrient, scales="free") +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-```
-
-Here is how to add a density curve to the histogram with another **`geom`**:
-
-```{r fig.height=6, fig.width=14}
 
 ########
-# Then add density curves
+# use "lapply" to run our function on the first three gene pairs
 
-ggplot(soil.nut) +
-  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
-  geom_density(aes(x=value,color=nutrient), size=1.5) +
-  facet_wrap(~nutrient, scales="free") +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
+pair[1:3]
+outcor <- lapply(pair[1:3],geneCor)
+outcor
 
 ```
 
-And here's how we can compare our distributions to a normal distribution, using a **`stat`** function:
+Now let's do the whole calculation.  First, open your task manager by hitting control-alt-delete (on Windows) and choosing "Start Task Manager". 
 
-```{r fig.height=6, fig.width=14}
+Click the "Performance" tab. You may also need to click on another link to open the "Resource Monitor". Notice you have a few graphs next to "CPU Usage", which shows each processor you have on your machine.
+
+Type the following in R and watch the CPU Usage History graph. Note the use of the "system.time()" function, which allows us to keep track of processing time for one or more R commands. Processing time can vary substantially among machines. 
+
+```{r}
+
+#################
+# Examine processor use and speed
+
+# First, open your task manager to view processor usage (see website for more details).
+
+system.time(outcor <- lapply(pair,geneCor))
+
+# Notice ONE CPU spiked.  Make note of how long it took to run.
+
+```
+
+Notice ONE CPU spiked.  Make note of how long it took to run. 
+
+Now let's make an even bigger dataset (just repeating geneData four times), making 26 x 4 = 104 columns:
+
+```{r}
+
+fakeData <- cbind(geneData,geneData,geneData,geneData)    # make an even bigger dataset!
+
+```
+
+
+Now lets make a more complex, computationally intensive function that calculates the 95% confidence intervals of the correlation coefficients through a process of *bootstrapping*:
+
+
+```{r}
 
 ###########
-# And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
+# New, more complex function that generates bootstrap confidence intervals for correlation coefficients
 
-ggplot(soil.nut) +
-  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
-  stat_function(fun = dnorm, color = "blue", size = 1.5,
-                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
-  facet_wrap(~nutrient, scales="free") +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
+library(boot)   # load the "boot" library for performing bootstrapping analysis
+
+# 'x' represents vector with two elements, indicating the pair of genes to compare
+# 'gene' represents a gene expression database
+
+geneCor2 <- function(x, gene = fakeData){
+  mydata <- cbind(gene[x[1], ], gene[x[2], ])      # extract the rows (genes) to compare
+  mycor <- function(x, i) cor(x[i,1], x[i,2])     # function (correlation) to perform bootstrap analysis with
+  boot.out <- boot(mydata, mycor, 1000)           # perform bootstrap analysis (1000 iterations)
+  boot.ci(boot.out, type = "bca")$bca[4:5]         # extract and return the bootstrap confidence interval
+}
 
 ```
 
-Let's go back to our basic boxplot, the default plot for visualizing continuous data against categories.
+How long would it take to run correlation analyses using this new function for just 10 gene pairs?
 
-First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of ~~principle~~ personal preference, but if capless whiskers look "off" to you, then you can work around it using **`stat_boxplot`**. **`stat`** functions are another group of functions for creating layers based on statistical properties of the data. Another example is **`stat_summary`**, which we use in the example below to add means to the boxplot. 
+```{r}
+
+# Test how long 10 pairs would take:
+genCor2_system_time <- system.time(outcor <- lapply(pair[1:10],geneCor2))
+genCor2_system_time["elapsed"] 
+
+```
+
+What did you get? On my machine this operation (for 10 pairs) took around 1 second...
+
+Let's use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again? 
+
+```{r}
+
+length(pair)   # how many pairs were there again?
+
+```
+
+Okay, so there are 124,750 pairs...  So let's figure out how long 124,750 pairs will take:
+
+
+```{r}
+
+############
+# estimate time to run 124,750 pairs
+
+genCor2_system_time["elapsed"]      # time it took to run 10 pairs, in seconds
+
+genCor2_system_time["elapsed"] *(124750/10)     # time it would take to run 124750 pairs, in seconds 
+genCor2_system_time["elapsed"] *(124750/10/60/60)    # in hours...
+
+```
+
+
+Ouch!  This is a good candidate for parallel processing! 
+
+### Running in Parallel!
+
+Let's take a subsample of all the pairs for exploring this further:
+
+```{r}
+
+###########
+# Explore parallel processing vs sequential processing
+
+pair2 <- sample(pair,300)    # first extract a subsamble of all the pairs
+
+```
+
+
+The opposite of parallel processing is "sequential processing". Let's first test a sequential version of this task:
+
+```{r}
+
+# Let's test a sequential version of this:
+system.time(outcor <- lapply(pair2,geneCor2))
+
+# Note the elapsed time.
+
+```
+
+Now, we can explore implementing this operation in parallel. To do this, we will use the "parallel" package in R. 
+
+#### 'parallel' package
+
+Parallel's basic concept is to launch "worker" instances of R on other processors, and then send the subproblems to each R instance. This means that if you want to use 4 processors ("cores"), after you start a parallel cluster, you will have 5 copies of R running: the master copy (the one you are typing into) and 4 worker copies.  
+
+The "cluster" of processors can be either a single computer with multiple processors (like the one you are working on), or a network of computers linked by some clustering framework.   
+
+The basic order of operations with using 'parallel' is as follows:
+1. library("parallel")   
+2. Make a parallel cluster using makeCluster(...)   
+3. Load packages that your function needs into the workers using clusterEvalQ(cl=...,library(...))    
+4. Load objects (data) from the master environment into the worker environments using clusterExport(cl=...)    
+5. Following basic lapply() semantics, use e.g. clusterApplyLB(cl=...) to apply your function to an input list, where each iteration of the "loop" will be sent to an available processor. The output is usually a list.    
+6. Shut down your cluster using stopCluster(...)    
+
+
+So the first step is to load the 'parallel' package:
+
+```{r}
+
+###########
+# Run this operation in parallel!!
+
+### parallel: built-in parallel computation package.
+library("parallel")       # load the package (comes with basic R installation)
+
+```
+
+We're also going to grab the "future" package for later use:
+
+```{r eval=FALSE}
+install.packages("future")    # install "future" package, which we will use later
+```
+
+```{r  eval=FALSE}
+library("future")
+
+```
+
+
+The way parallel works, is we first have to make an R cluster via "makeCluster()":   
+
+```{r eval=FALSE}
+
+?makeCluster    # learn more about "makeCluster()"
+
+```
+
+
+We are going to create a cluster with 4 cpus of type "PSOCK". 
+
+Click the task manager "Processes" (Windows) or Activity Monitor (mac), and scroll down to the "R"s:
+
+```{r}
+
+########
+# Make a cluster
+
+myCluster <- parallel::makeCluster(spec=4,type="PSOCK")    # make cluster with 4 cpus of type "PSOCK"
+myCluster
+
+length(myCluster) # One entry per "worker".
+
+myCluster[[1]]    # more info about this "worker"
+
+```
+
+Notice you now have multiple instances of Rscript.exe running now!
+
+
+We can stop the cluster by using the "stopCluster()" function:
+
+```{r eval=FALSE}
+
+?stopCluster
+```
+
+```{r eval=FALSE}
+parallel::stopCluster(myCluster)
+
+```
+
+
+Now let's make a new cluster using all available cores.
+
+```{r  eval=FALSE}
+
+######
+# Make a cluster with all available cores
+
+mycorenum <- availableCores()   # determine number of available cores
+myCluster <- parallel::makeCluster(spec=mycorenum,type="PSOCK")
+
+```
+
+
+We can send the same function to each node (worker) in the cluster using "clusterCall()":
+
+```{r eval=FALSE}
+
+######
+# Run a function on each cluster:
+
+?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster
+
+```
+
+For example, we might run the "date()" function on each cluster! Note that the results get returned as lists:
+
+```{r}
+
+date()    # run the "date()" function
+
+workerDates <- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the "date()" function on all clusters 
+class(workerDates)
+length(workerDates) # One list element per worker.
+
+```
+
+You need to remember that each worker instance of R that is running is essentially "empty" -- it won't, be default, have access to the environment of the master.  Thus, we need to send some commands/data to them in anticipation of running the code.  
+
+For example, the "search()" function tells us what packages and data are loaded (attached). Let's explore what packages are loaded in our worker environments:
+
+```{r eval=FALSE}
+
+####
+# explore packages loaded in our worker environments
+
+search()      # packages loaded in global environment
+workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)     # .. and worker environments
+# workerPackages
+
+```
+
+
+We are using a package called "boot" in our function, so we need to load up this package on every worker using the "clusterEvalQ()" function:
+
+```{r eval=FALSE}
+
+#########
+# load required packages on every worker:
+
+?clusterEvalQ
+```
+
+```{r}
+loadOnCls <- parallel::clusterEvalQ(cl=myCluster,library("boot"))   
+
+```
+
+```{r eval=FALSE}
+# We can confirm the boot package is now loaded:
+parallel::clusterCall(cl=myCluster,fun=search)
+
+```
+
+Next, we will export the dataset "fakeData" to each worker using the "clusterExport()" function. 
+
+First, look at the worker Rs and note how much memory they are using (in task manager).
+
+```{r eval=FALSE}
+
+########
+# Load required data on every worker
+
+?clusterExport
+```
+
+```{r}
+loadData <- parallel::clusterExport(cl=myCluster,"fakeData")
+```
+
+```{r eval=FALSE}
+parallel::clusterEvalQ(cl=myCluster,ls())   # Check the environment on each worker- make sure data are loaded
+
+```
+
+Check the memory now. Note that each worker is using more memory, since we loaded the fakeData into each of those worker Rs.
+
+Note we could send the entire Global environment over to the workers! To do this, we could use the "ls()" function:
+
+```{r  eval=FALSE}
+
+#### alternatively, load all data in our environment into each worker:
+# loadData <- parallel::clusterExport(cl=myCluster,ls())
+```
+
+```{r eval=FALSE}
+# parallel::clusterEvalQ(cl=myCluster,ls())
+
+```
+
+
+#### Finally: run corrlation analysis in parallel!
+
+Now comes the actual function call. To do this, we use the "clusterApplyLB()" function:
+
+```{r eval=FALSE}
+
+############
+# Spread function calls across workers using an "lapply"-like function
+
+?clusterApplyLB     # function for performing the actual function call
+
+```
+
+This is VERY similar to an 'lapply' statement, except we identify the cluster to send the command to. Let's call the "geneCor2()" function for each gene pair, using parallel processing. We can compare the speed of the parallel vs sequential processing using the "system.time()" function.
+
+Let's call the "geneCor2()" function for each gene pair, using parallel processing!
+
+Watch your Performance tab as your cores light up:
 
 ```{r}
 
 #######
-# add error bars and other stat summaries (e.g., mean) to boxplot
+# Call the "geneCor2()" function for each gene pair, using parallel processing
 
-ggplot(soil, aes(x=Contour, y=pH)) +
-  stat_boxplot(geom="errorbar", width=0.2) +  
-  geom_boxplot() +
-  stat_summary(fun.y=mean, geom="point", size=5, color="black")
-  
+system.time(outcor2 <- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   
 ```
-
-### Beyond ggplot
-
-ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:
-
-##### ggplot extensions
-
-Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](http://www.ggplot2-exts.org/gallery/). 
-
-##### Technique-specific plotting libraries
-
-Several analytical packages come with their own plotting functions that produce some very nice visualizations. There are dozens out there, but a few of them are [visreg](https://cran.r-project.org/web/packages/visreg/visreg.pdf) for regression plots, [corrplot](https://cran.r-project.org/web/packages/corrplot/index.html) (and its ggplot counterpart, [ggcorrplot](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2)) for graphical presentation of correlation matrices, and [rpart.plot](https://cran.r-project.org/web/packages/rpart.plot/index.html) as a companion to the decision tree package rpart.
-
-##### Interactive plots: leaflet and plotly
-
-Increasingly, scientific journals are providing platforms for interactive graphics on their websites to accompany published articles. Interactive plots are also popular for personal, lab, and organizational websites, and they can provide another option for your own data exploration. Two of the most popular in R are [plotly](https://plot.ly/r/), which offers a huge variety of 2D and 3D plots, and [leaflet](https://rstudio.github.io/leaflet/), which is specifically for mapping.
-
-Here's a quick and simple example of leaflet in action using the "possumsites" dataframe that accompanies the "possum" dataset in the DAAG package. The dataset contains body measurements of several possums in Australia. Where did they catch these possums?
 
 ```{r}
 
+# vs the non-clustered version:
+system.time(outcor <- lapply(pair2,geneCor2))   # takes much longer!
+
+```
+
+
+We got a big performance boost here!
+
+Don't forget to shut down your cluster:
+
+```{r  eval=FALSE}
+
+stopCluster(myCluster)   # finally, stop the cluster..
+
+```
+
+
+### 'foreach': making parallel computing EVEN EASIER
+
+There are multiple parallel "backends" to R, including 'parallel', 'snow', 'multicore', 'Rmpi', to name a few.
+
+'foreach' is a meta-wrapper that works on many parallel backends. What this means is you can write one set of code, and not have to modify it if the user prefers to use Rmpi instead of parallel (in which case the commands are very different).
+
+The basic order of ops with using 'foreach' is as follows:
+
+1. library("foreach")       
+2. Load a parallel backend and foreach registration package        
+    e.g. library("doParallel")      
+3. Start a parallel backend with e.g. makeCluster(...)      
+4. Register the parallel backend with foreach,      
+    e.g.: registerDoParallel(...)      
+5. Use foreach(...) %dopar% function() to run your function in parallel.       
+6. Use '.packages' parameter in foreach(...) to load needed packages.     
+7. Stop your cluster using e.g. stopCluster(...)      
+8. Register the sequential backend to foreach using registerDoSEQ()         
+
+```{r eval=FALSE}
+
 ##########
-# use leaflet for interactive mapping!
+# Parallel processing using 'foreach'
 
-leaflet(possumsites) %>%
-  addTiles() %>% #Adds map tiles from OpenStreetMap
-  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
-             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
-
-```
-
-Happy plotting!
-
-
-### Challenge exercises
-
-1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, fit a trendline to each cloud of points. Have the color of the trendline match the color of each cloud of points, and remove the confidence band from the trendlines.
-
-```{r include=FALSE, echo=FALSE}
-
-#Solution
-
-ggplot(soil) +
-  geom_point(aes(pH, Ca, fill=Depth), shape=21, color='black', size=4, stroke=1.5) +
-  geom_smooth(method='lm', aes(pH, Ca, color=Depth), se=FALSE) +
-  theme_bw() +
-  ylab('Ca (mg/100g soil)') +
-  scale_fill_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'), name='Depth (cm)') +
-  scale_color_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'))
+install.packages("foreach")
+# Install the parallel backend to foreach:
+install.packages("doParallel")
 
 ```
 
-2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
+```{r}
 
-
-```{r include=FALSE, echo=FALSE}
-
-#Solution
-
-ggplot(soil.nut) +
-  geom_boxplot(aes(nutrient, value, fill=Contour)) +
-  stat_summary(aes(nutrient, value), 
-               fun.y=mean, geom="point", shape=18, size=4, color='black')
-  
-```
-
-3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color in order to see overlapping areas.
-
-```{r include=FALSE, echo=FALSE}
-
-#Solution
-
-ggplot(soil.nut) +
-  geom_density(aes(x=value, fill=nutrient), color="black", alpha=0.5) +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
+library("foreach")
+library("doParallel")
 
 ```
 
+```{r eval=FALSE}
+
+?foreach
+```
+
+Try running in sequential mode...
+
+```{r}
+
+# sequential mode:
+registerDoSEQ() # Avoids warnings
+
+system.time(
+  outcor <- foreach(
+    p = pair2, 
+    .packages="boot", 
+    .combine="rbind") %dopar% { 
+      return(geneCor2(p)) 
+    }
+)
+
+```
+
+
+
+And now with a parallel backend!
+
+```{r eval=FALSE}
+
+# Parallel mode (use a parallel backend):
+
+# Create a cluster using parallel:
+myCluster <- makeCluster(spec=4,type="PSOCK")
+```
+
+
+```{r}
+
+# Register the backend with foreach (doParallel):
+registerDoParallel(myCluster)
+# Run our code! Notice I didn't change the foreach call at all:
+
+system.time(
+  outcor <- foreach(
+    p = pair2, 
+    .packages="boot",
+    .combine="rbind") %dopar% {
+      return(geneCor2(p)) 
+    }
+)
+
+```
+
+
+Some things to notice:     
+- we explicitly define what packages are to be sent over using the .packages parameter    
+- foreach calls have access to the master's global environment.
+- we can use specific functions to join the data once its done (e.g. rbind)
+
+Don't forget to stop the cluster:
+
+```{r}
+
+stopCluster(myCluster)     # Don't forget to stop the cluster:
+
+```
+
+You should also register the default, non-parallel backend for 'foreach'. Otherwise the next time you use 'foreach' it will not work.
+
+```{r eval=FALSE}
+
+registerDoSEQ()    # register the default, non-parallel backend for foreach
+
+```
+
+
+### Sources of overhead
+
+Parallel computing, optimally, should be linear in terms of number of processors vs. time.  However, this is never the case.  A process running on one core does not take twice the time as a process running on two cores.  There are losses along the way from various sources.  These need to be thought about when writing the most efficient code.
+
+First, many programs will have parallel and non-parallel components. If your non-parallel components take X amount of time, no matter how many processors you have available, you will never run faster than X amount of time.
+
+#### Chunking
+Chunking is one of the most important considerations.  So far, we've been iterating one "row" at a time.  For faster computations, this may not be very efficient, as the overhead of sending/receiving/managing the parallel cluster swamps out gains from the processing. We can get more clever with this by sending MULTIPLE rows at one time to a worker.  This optimization of the chunk size (number of rows to send at one time to a single worker) can dramatically speed up your computation, at the cost of heavier RAM usage.
+
+#### Shared-memory machines
+A single computer like the one you are working on is a "shared memory machine" -- each processor has access to the same physical RAM.  When two processors "ask" for an R object in RAM they must compete against each other.  One process will have to wait until the other process are done reading that area of memory.  Memory access, thus, can be a bottleneck.
+
+####Networked systems of computers
+A cluster computer ("supercomputer") is really just a bunch of individual computers networked together. Each individual computer ("node" in cluster terminology) has its own set of processors, memory, and hard drive space.  When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer.  This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.  
+
+For instance, you could copy the data the function will work on to each node in a cluster, so the data does not have to be transferred from the master R to the worker Rs.
+
+Note that two nodes in a cluster do not share memory.
+
+#### Other things to worry about
+
+**RACE CONDITIONS.** This comes in to play if your workers are all writing to the same output file (say, a raster file).  As we discussed before, in general only one "thread" (worker) can write to a file at a time, otherwise the file may get corrupt.  In parallel computing, we can increase the chance that this might happen if we aren't careful.  This often requires a programmer to be able to "lock" a file -- i.e. before a worker tries to write to a file, it 1) checks if the file is "locked", 2) if it finds it unlocked it first locks the file itself, 3) it opens/writes/close to the file, 4) it unlocks the file for other workers.
+
+**Embarrassingly parallel applications and those that aren't:** the term "embarrassingly parallel" refers to problems that are absolutely trivial to parallelize.  The function we've been looking at is embarassingly parallel.  Each iteration takes (basically) the same amount of time, uses the same amount of memory, doesn't require cross-talk between workers, etc.  Raster processing, as we will see, is often an embarrassingly parallel problem -- we process an image one line at a time, sending each line to a different processor.
+
+Vector based processing, on the other hand, is often not embarrassingly parallel, and takes a lot more thought to properly parallelize a function.
+
+Parallel computing takes a lot of practice and understanding of the underlying systems to get good at.  Other issues start popping up such as load balancing (what if the functions take non-constant amounts of time on each processor), optimization of the chunk size, and a host of other issues.
+
+Debugging can also be tricky, as the various parallel backends do not typically allows workers to print to your main screen, so you have to have them dump their outputs to a file that you then do a post-mortem on.  'foreach' makes this a bit easier, since you can test a function on a single node (using registerDoSEQ()), debug it, and once it works on one node, try it out on a cluster.
 
 [--go to next module--](module2_5.html)
+
+
+
+
+
+
+
+
+
+
+

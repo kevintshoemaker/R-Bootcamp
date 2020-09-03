@@ -1,0 +1,16 @@
+base
+carData
+car
+usethis
+devtools
+modeest
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+lubridate

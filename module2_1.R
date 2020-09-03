@@ -18,7 +18,9 @@
 # PACKAGES!
 ##############
 
-install.packages("modeest")    # run this if you haven't yet installed the package from CRAN!
+install.packages("modeest")    # run this if you haven't yet installed the package from CRAN! 
+                                   # you only need to install this once, so you can comment it out if
+                                   # you already have this package installed
 
 
 library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
@@ -38,7 +40,7 @@ newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 mlv(newdf$Export, method="mfv", na.rm = T)    
 
 
-detach("package:modeest")  # remove the package from the workspace
+detach("package:modeest")  # remove the package from your current working session
 
 
 #########

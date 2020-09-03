@@ -1,6 +1,6 @@
 ---
 title: "Module 2.3"
-author: "The Tidyverse and Data Wrangling in R"
+author: "Advanced data visualization with ggplot and more"
 date: "Fall 2020"
 output: 
   html_document: 
@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```
 
 ```{r echo=FALSE}
@@ -24,419 +24,493 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE, warning = FALSE, message = FALS
 ##################################################
 
 
-#########################################
-####  Data Wrangling with Tidyverse  ####
-####                                 ####
-####  Author: Christine Albano       ####
-#########################################
-
+#############################################
+####  Data Visualization with 'ggplot2'  ####
+####                                     ####
+####  Author: Stephanie Freund           ####
+#############################################
 
 ```
 
-Thanks to Christine Albano, who pulled this module together!
 
-# Load script for module #2.3
+Thanks to Stephanie Freund, who pulled this module together!
+
+Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. On Day 1, you learned how to create several types of plots in base R. Base R is great for whipping up some quick plots for initial data exploration, and you can make them quite beautiful looking as well. 
+
+When you start creating a lot of plots for which you might want to quickly and easily adjust graphical elements, or want to create more complex plots that display a lot of information in one place, the data visualization package *ggplot2* is extremely useful. In this module, we'll introduce ggplot syntax and briefly survey some of the package's plotting capabilities.
+
+### Load script for module #2.3
+
 1. Click [here](module2_3.R) to download the script! Save the script to a convenient folder on your laptop.
 
-2. Load your script in RStudio.
+2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
 
-In this tutorial we introduce the 'Tidyverse' set of packages, which were designed to facilitate everyday data management and visualization tasks in R using a consistent data structure and syntax. Much of the content in this tutorial is based on the online resource [R for Data Science](http://r4ds.had.co.nz/) by Garrett Grolemund and Hadley Wickham. 
+### Using ggplot2
 
-![](http://r4ds.had.co.nz/diagrams/data-science-wrangle.png)
+ggplot2 is an R package developed by Hadley Wickham and colleagues that is based on Leland Wilkinson's ["Grammar of Graphics"](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448). If you are interested in learning more about the philosophy behind ggplot2 and object-oriented design, you can read Hadley's paper about it [here](http://vita.had.co.nz/papers/layered-grammar.pdf). 
 
-The core tidyverse set of packages includes all of the below (plus a handfull of others). For now, just focused on the first four for data wrangling:
+All graphics produced in ggplot2 are built using elements of this grammatical framework. ggplot2 is modular, so that you can easily modify how your plot looks by adding or editing layers, and it generates more features by default (e.g. gridlines, legends with titles, etc) than base R. This saves you time spent cobbling together all of these elements from scratch.
 
-* dplyr, for data manipulation
+#### Basics
 
-* tidyr, for data tidying
+A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying your dataset. You can then add geometric objects, beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and to adjust how the data are displayed. **`aes()`** can also be used within the initial call to **`ggplot()`**.
 
-* readr, for data import
+To demonstrate, we'll use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
 
-* tibble, for tibbles, a modern re-imagining of data frames
+First, install and load ggplot2 and the other packages we'll be using for this module.
 
-* ggplot2, for data visualisation
+```{r warning=FALSE, message=FALSE}
 
-* purrr, for functional programming
+########
+# Load packages!
 
-* stringr, for strings
+## note: if you don't already have these packages you will need to install them first!
 
-* forcats, for factors
-
-
-# Learning goals
-
-  * Use *Tidyverse* grammar (piping) and data structures to perform basic data manipulation tasks 
-  
-  * Use *tidyr* and *dplyr* data transformation verbs to wrangle data
-      
-  * Work with and parse dates using *lubridate*
-
-
-
-
-```{r setupworkspace}
-
-# install.packages("tidyverse")
 library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(carData)
+library(DAAG)
+library(RColorBrewer)
+library(leaflet)
 
 ```
 
-# Using the pipe operator `%>%` in R
-The 'tidyverse' set of packages takes advantage of the pipe operator `%>%`, which provides a clean and intuitive way to structure code and perform sequential operations in R.
+Now load the dataset.
 
-Key advantages include:
+```{r}
 
-* code is more readable and intuitive --  reads left to right, rather than inside out as is the case for nested function
+##############
+# Load the example data!
 
-* perform multiple operations without creating a bunch of intermediate (temporary) datasets
+data(Soils,package = "carData")    # load example data
 
-This operator originally comes from the *magrittr* package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m. When reading code out loud, use 'then' for the pipe. For example the command here:
-
-```
-
-x %>% log() %>% round(digits=2)
+#See what variables it contains...
+soil <- data.frame(Soils)
+head(soil)
 
 ```
 
-can be interpreted as follows:
+We'll start with a basic boxplot. Let's say we're interested in how pH, a continuous variable, varies with the contour position, a categorical factor.  
 
-> Take the object "x", THEN take its natural logarithm, THEN round that value to 2 significant figures 
+```{r}
 
+########
+# basic boxplot...
 
-The structure is simple. Start with the object you want to manipulate, and apply actions (e.g., functions) to that object in the order in which you want to apply them. 
-
-Here is a quick example.
-
-```{r piping1}
-
-####
-####  Using the pipe operator %>% (ctrl-shift-m)
-####
-
-# start with a simple example
-x <- 3
-
-# calculate the log of x
-log(x) # form f(x) is equivalent to
-
-x %>% log() # form x %>% f
-
-# example of multiple steps in pipe
-round(log(x), digits=2) # form g(f(x)) is equivalent to
-
-x %>% log() %>% round(digits=2) # form x %>% f %>%  g
+ggplot(soil) +
+  geom_boxplot(aes(x=Contour, y=pH))
 
 ```
 
-# Importing data into *R* using *readr*
+You can see that the default plot includes a gray background with white gridlines. This makes all of the elements on this plot easy to see, but as you start adjusting colors and identifying your personal preferences, you'll probably want to customize this -- ggplot has a ton of options for doing so. 
 
-Here, we import meteorological data from Hungry Horse and Polson Kerr Dams in Montana as a *tibble* dataframe. The *readr* package imports data as a special type of dataframe called a *tibble*. The *tibble* dataframe has several advantages over the 'regular' dataframe, including nicely formatted printing, more useful defaults, faster imports, and it also flags potential issues in your dataset early on -- which can save you a lot of time later! All this said, tibble and regular dataframes are readily converted to one type vs. the other if the need arises.
+Let's try a scatterplot of two continuous variables, Calcium content and pH.
 
+```{r}
 
-## Download an example dataset
+###########
+# basic scatterplot
 
-The next few examples use meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams. You can download this data set by clicking [here](MTMetStations.csv).  
-
-## Import as a *tibble*
-
-```{r dataimport}
-
-####
-####  Import data as a Tibble dataframe and take a quick glance
-####
-
-# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
-clim_data <- read_csv("MTMetStations.csv")
-
-# display tibble - note nice formatting and variable info, entire dataset is not displayed as is case in read.csv
-clim_data
-
- # display the last few lines of the data frame
-tail(clim_data)
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca))
 
 ```
 
-#  Making data tidy using *tidyr*
+Now let's say you wanted to examine how the relationship between pH and Ca varies with depth. You could go back to your scatterplot and use color to identify points from the different sampling depths. ggplot will select default colors that display well against the default gray background.
 
-All of the tidyverse set of packages are designed to work with *Tidy* formatted data.
+```{r}
 
-This means:
+########
+# Color the points by depth
 
-  - Each variable must have its own column.
-  - Each observation must have its own row.
-  - Each value must have its own cell.
- 
- This is what it looks like:
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, color=Depth))
+```
+
+We can play with how those points look if we want them to show up more boldly. Take note that arguments that affect all of the points equally, and don't relate to how *variables* are displayed, fall outside of the **`aes`** function.
+
+```{r}
+
+##########
+# make additional alterations (outside the "aes" function)
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5)
+
+```
+
+Cool! Let's use the same grammar to plot relationships between pH and several soil nutrients on the same graph. Notice that the y axis label defaults to the first set of points (Ca), and we'd need to modify it. The depths in the legend also have no units! You'll see how to change things like axis labels and legend titles in a moment.
+
+```{r}
+
+######
+# Plot several relationships on same graphics window
+
+ggplot(soil, aes(x=pH)) +
+  geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Mg), shape=21, fill="blue", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Na), shape=21, fill="gray30", color="black", size=4, stroke=1.5)
+
+```
+
+Here's another way to plot multiple series, after reshaping with tidyr. This lets us plot our different nutrients as factor levels without typing each one with its specifications on its own line, and generates a legend that identifies the series (and also gives the default ggplot colors).
+
+```{r}
+
+#########
+# Use 'tidyverse' tricks to simplify the syntax for ggplot to color by nutrient
+
+soil.nut <- gather(soil, nutrient, value, c(10,11,13))
+ggplot(soil.nut) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+
+```
+
+What if instead of Na, we had K as our third nutrient of interest?
+
+```{r}
+
+######
+# or if we wanted to plot different nutrients...
+
+soil.nut2 <- gather(soil, nutrient, value, c(10,11,12))
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+
+```
+
+The problem here is that K occurs at natural concentrations that differ from the other nutrients by an order of magnitude, so it's difficult to examine them all on the same scale. One approach we can take is to plot them separately. While we're at it, let's also make sure that we specify the response units on the y-axis. 
+
+#### Facets, scales, and themes
+
+The next plot introduces: 
+
+* **facets**, which allow you to display data on separate panels using some grouping variable 
+
+* **scales**, which allow you to adjust how to represent the data with axes and colors
+
+* **themes**, which allow you to adjust the entire plot aesthetic (using **`theme_X()`**) as well as individual elements of legends, text, and more (using **`theme()`**).
+
+
+```{r fig.height=6, fig.width=14}
+
+##########
+# plot with facets, scales, and themes!
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+    
+```
+
+
+In this plot, we've kept the different colors for each nutrient, but suppressed the legend that is auto-generated by ggplot, because this information is now redundant with the headers of the three facets. In the **`facet_wrap`** function, we used **`scales`** to specify that the y-axis should be bounded to fit the data within each facet. There are some cases where you would probably want the axes to be the same -- e.g. if you were comparing raw values across groups, rather than the distributions or trends of the data.
+
+We also changed the theme! ggplot has [8 built-in themes](http://r4ds.had.co.nz/images/visualization-themes.png) to choose from. There are also lots of other themes built into extension packages such as ggthemes. Here are a few examples of different themes applied to the plot we just made.
+
+```{r fig.height=6, fig.width=14, echo=FALSE}
+
+########
+# Try different themes! 
+
+    ## igray:
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_igray() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+```
+**`theme_igray`**
+
+```{r fig.height=6, fig.width=14, echo=FALSE}
+
+   ## economist:
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_economist() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+```
+**`theme_economist`**
+
+```{r fig.height=6, fig.width=14, echo=FALSE}
+
+    ## gdocs:
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_gdocs() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+```
+**`theme_gdocs`**
+
+
+Check out the options and play around with different themes until you find some that appeal to you and lend themselves to the type of data visualization and color scales you plan to use. 
+
+You can also fine-tune pretty much any of the details (gridlines or no? plot borders? line weight of the borders and gridlines? axis label angles?) to your heart's content using the arguments in the **`theme()`** function.
+
+Speaking of color...
+
+#### Specifying colors
+
+Sometimes sticking to the default colors in ggplot isn't the best choice. You might have factors representing ordered ranks, like in an experiment with different levels of light exposure, and want to represent these levels on a monochromatic scale. Or you might want to make a map displaying regions of positive or negative change in forest cover, using a diverging color scale. Or you don't even like the default ggplot colors, and have your own preferred color schemes. It's also important to remember that red-green colorblindness is fairly common, so if you are presenting data that must be distinguished by colors in a single plotting area, you should probably avoid this combination or combine it with changes in value (light to dark) in order for your plot to be accessible.
+
+Going back to our earlier example showing Ca content by pH at different depths, let's say we want a color scheme where deeper depths are represented by darker values of the same color. We can do this by using another scale function.
+
+One method is to use **`scale_fill_brewer`**, and select an already composed color palette from RColorBrewer (a package you'll need to install). You can check out all of the options available in RColorBrewer by entering **`display.brewer.all()`**, which shows the sequential palettes, then categorical palettes, than diverging palettes.
+
+```{r fig.height=8, fig.width=6}
+
+############
+# Playing with colors in ggplot!
+
+display.brewer.all()
+
+```
+
+I'm going to pick the YlOrBr (Yellow-Orange-Brown) palette, because those seem like good soil-y colors. Notice that because **`fill`** is mapped to the values of the data, inside this function is where I can change the title of the legend (and the labels for the different values, if I wanted to do that).
+
+```{r}
+
+#########
+# Choose a new color palette from the RColorBrewer package
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
+
+```
+
+Another method is to use **`scale_fill_manual`**, with which you define your own palette.
+To pick out your colors, you can use the [names of colors]('http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) already recognized by R, or use [hex codes](https://htmlcolorcodes.com/) for any color you want.
+
+
+```{r}
+
+#########
+# Choose your own palette!
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
+
+```
+
+What if depth were a continuous variable, rather than a set of four discrete categories? We could use **`scale_fill_gradient`**, supply the hues we want (one for monochromatic, two for diverging) and R would map the soil depth values to color values along the gradient.
+
+#### Trendlines
+
+Next, we might want to add a trendline to each set of points. Try it for the plot we made of different nutrient concentrations as a function of pH. Arguments in the **`geom_smooth()`** function allow us to change the confidence level, the smoothing method, and other details.
+
+```{r fig.height=6, fig.width=14}
+
+##########
+# add trendlines
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  geom_smooth(aes(x=pH, y=value), method="lm", color="black") +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+    
+```
+
+#### Density curves and error bars
+
+Using **`geom_smooth`** to plot trendlines is a useful way to get more information from your scatterplots. To get an idea for how other kinds of statistical elements can be drawn onto ggplot plots, we'll look at examples using histograms and boxplots.
+
+First, a simple histogram of 3 soil nutrients.
+
+```{r fig.height=6, fig.width=14}
+
+###########
+# Adding density/smooth curves to plots
+
+   ## first produce some histograms
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value), color="black", fill="white", bins=15) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+```
+
+Here is how to add a density curve to the histogram with another **`geom`**:
+
+```{r fig.height=6, fig.width=14}
+
+########
+# Then add density curves
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  geom_density(aes(x=value,color=nutrient), size=1.5) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+```
+
+And here's how we can compare our distributions to a normal distribution, using a **`stat`** function:
+
+```{r fig.height=6, fig.width=14}
+
+###########
+# And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  stat_function(fun = dnorm, color = "blue", size = 1.5,
+                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+```
+
+Let's go back to our basic boxplot, the default plot for visualizing continuous data against categories.
+
+First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of ~~principle~~ personal preference, but if capless whiskers look "off" to you, then you can work around it using **`stat_boxplot`**. **`stat`** functions are another group of functions for creating layers based on statistical properties of the data. Another example is **`stat_summary`**, which we use in the example below to add means to the boxplot. 
+
+```{r}
+
+#######
+# add error bars and other stat summaries (e.g., mean) to boxplot
+
+ggplot(soil, aes(x=Contour, y=pH)) +
+  stat_boxplot(geom="errorbar", width=0.2) +  
+  geom_boxplot() +
+  stat_summary(fun.y=mean, geom="point", size=5, color="black")
   
-  
-  ![](http://r4ds.had.co.nz/images/tidy-1.png)
+```
 
-The *tidyr* package has several functions to help you get your data into this format.
+### Beyond ggplot
 
-Use "gather()" to get all of the values and variables into a single column.
+ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:
 
-![](http://r4ds.had.co.nz/images/tidy-9.png)
+##### ggplot extensions
 
-Use "separate()" to separate a single column into two separate columns. "unite()" does the opposite
+Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](http://www.ggplot2-exts.org/gallery/). 
 
-![](http://r4ds.had.co.nz/images/tidy-17.png)
+##### Technique-specific plotting libraries
 
-Use "spread()" to distribute two variables in a single ('key') column into separate columns, with their data values('value')
+Several analytical packages come with their own plotting functions that produce some very nice visualizations. There are dozens out there, but a few of them are [visreg](https://cran.r-project.org/web/packages/visreg/visreg.pdf) for regression plots, [corrplot](https://cran.r-project.org/web/packages/corrplot/index.html) (and its ggplot counterpart, [ggcorrplot](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2)) for graphical presentation of correlation matrices, and [rpart.plot](https://cran.r-project.org/web/packages/rpart.plot/index.html) as a companion to the decision tree package rpart.
 
-![](http://r4ds.had.co.nz/images/tidy-8.png)
+##### Interactive plots: leaflet and plotly
 
-```{r make data tidy}
+Increasingly, scientific journals are providing platforms for interactive graphics on their websites to accompany published articles. Interactive plots are also popular for personal, lab, and organizational websites, and they can provide another option for your own data exploration. Two of the most popular in R are [plotly](https://plot.ly/r/), which offers a huge variety of 2D and 3D plots, and [leaflet](https://rstudio.github.io/leaflet/), which is specifically for mapping.
 
-####
-####  Use Tidyr verbs to make data 'tidy'
-####
+Here's a quick and simple example of leaflet in action using the "possumsites" dataframe that accompanies the "possum" dataset in the DAAG package. The dataset contains body measurements of several possums in Australia. Where did they catch these possums?
 
-# look at clim_data -- is it in tidy format? What do we need to do to get it there?
-head(clim_data)
+```{r eval=FALSE}
 
-# gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column.
-gather_clim_vars <- gather(clim_data, 
-                           key = climvar_station, 
-                           value = value, 
-                           -Date)
+##########
+# use leaflet for interactive mapping!
 
-gather_clim_vars
-
-# separate the climvar_station column into two separate columns that identify the climate variable and the station
-separate_clim_vars <- gather_clim_vars %>%
-  separate(climvar_station, 
-           into = c("Station","climvar"))
-
-separate_clim_vars
-
-# spread distributes the clim_var column into separate columns, with the data values from the 'value' column
-tidy_clim_data <- spread(separate_clim_vars, 
-                        key = climvar, 
-                        value = value)
-
-tidy_clim_data
-
-  
-# repeat above as single pipe series without creation of intermediate datasets
-  
-tidy_clim_data <- clim_data %>% 
-  gather(key = climvar_station,
-         value = value,
-         -Date) %>% 
-  separate(climvar_station, 
-           into = c("Station","climvar")) %>% 
-  spread(key = climvar,
-         value = value)
-  
-tidy_clim_data
+leaflet(possumsites) %>%
+  addTiles() %>% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
 
 ```
 
-# Using dplyr -- the data wrangling workhorse
-
-dplyr is by far one of the most useful packages in all of the tidyverse as it allows you to quickly and easily summarize and manipulate your data once you have it in tidy form. The basic dplyr verbs include:
-
-      * grouping data with *group_by()*
-
-      * filtering rows with *filter()*
-      
-      * creating new variables with *mutate()*
-      
-      * summarizing with *summarize()*
-      
-      * selecting columns with *select()*
-      
-      * sorting columns by row with *arrange()*
-
-you can add variants _all (affects all variables), _at (affects selected variables), _if (affects variables that meet criteria) to most of these verbs
-
-```{r dplyr verbs}
+Happy plotting!
 
 
-####
-####  Use dplyr verbs to wrangle data
-####
+### Challenge exercises
 
-# example of simple data selection and summary using group_by, summarize, and mutate verbs
+1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, fit a trendline to each cloud of points. Have the color of the trendline match the color of each cloud of points, and remove the confidence band from the trendlines.
 
-# take tidy_clim_data, then
-# group data by station, then 
-# calculate summaries and put in columns with names mean.precip.in, mean.TMax.F, and mean.Tmin.F, then 
-# transform to metric and put in new columns mean.precip.in, mean.TMax.F, and mean.Tmin.F
+```{r include=FALSE, echo=FALSE}
 
-station_mean1 <- tidy_clim_data %>%
-  group_by(Station) %>% 
-  summarize(
-    mean.precip.in = mean(PrcpIN, na.rm=TRUE),
-    mean.TMax.F = mean(TMaxF, na.rm=TRUE),
-    mean.TMin.F = mean(TMinF, na.rm=TRUE)) %>%
-  mutate(
-    mean.precip.mm = mean.precip.in * 25.4,
-    mean.TMax.C = (mean.TMax.F - 32) * 5 / 9,
-    mean.TMin.C = (mean.TMin.F - 32) * 5 / 9
-  )
-  
-station_mean1
-  
-# using variants
+#Solution
 
-# take tidy_clim_data, then
-# group data by station, then 
-# calculate summary (mean of all non-NA values) for numeric data only, then 
-# transform temp data (.) from F to C, then
-# transform precip data (.) from in to mm
+ggplot(soil) +
+  geom_point(aes(pH, Ca, fill=Depth), shape=21, color='black', size=4, stroke=1.5) +
+  geom_smooth(method='lm', aes(pH, Ca, color=Depth), se=FALSE) +
+  theme_bw() +
+  ylab('Ca (mg/100g soil)') +
+  scale_fill_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'), name='Depth (cm)') +
+  scale_color_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'))
+
+```
+
+2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
 
 
-station_mean2 <- tidy_clim_data %>%
-  group_by(Station) %>% 
-  summarize_if(is.numeric, mean, na.rm=TRUE) %>%
-  mutate_at(vars(TMaxF, TMinF), funs(C=(.-32)*5/9)) %>% 
-  mutate_at(vars(PrcpIN), funs(Prcp.mm=.*25.4))
+```{r include=FALSE, echo=FALSE}
 
-station_mean2
+#Solution
+
+ggplot(soil.nut) +
+  geom_boxplot(aes(nutrient, value, fill=Contour)) +
+  stat_summary(aes(nutrient, value), 
+               fun.y=mean, geom="point", shape=18, size=4, color='black')
   
 ```
 
-#  Working with Dates with *lubridate* - Date from character string
-Dates can be tricky to work with and we often want to eventually get to the point that we can summarize our data by years, seasons, months, or even day of the year. The *lubridate* package in R (also part of the tidyverse) is very useful for creating and parsing dates for this purpose. Date/time data often comes as strings in a variety of orders/formats. Lubridate is useful because it automatically works out the date format once you specify the order of the components. To to do this, identify the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date. For example:
+3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color in order to see overlapping areas.
 
-```{r lubridate1}
+```{r include=FALSE, echo=FALSE}
 
-#### 
-####  Using lubridate to format and create date data types
-####
+#Solution
 
-library(lubridate)
+ggplot(soil.nut) +
+  geom_density(aes(x=value, fill=nutrient), color="black", alpha=0.5) +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
 
-date_string <- ("2017-01-31")
-
-# convert date string into date format by identifing the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date
-
-date_dtformat <- ymd(date_string)
-
-# note the different formats of the date_string and date_dtformat objects in the environment window.
-
-# a variety of other formats/orders can also be accommodated. Note how each of these are reformatted to "2017-01-31" A timezone can be specified using tz=
-
-mdy("January 31st, 2017")
-dmy("31-Jan-2017")
-ymd(20170131)
-ymd(20170131, tz = "UTC")
-
-# can also make a date from components. this is useful if you have columns for year, month, day in a dataframe
-year<-2017
-month<-1
-day<-31
-make_date(year, month, day)
-
-
-# times can be included as well. Note that unless otherwise specified, R assumes UTC time
-
-ymd_hms("2017-01-31 20:11:59")
-mdy_hm("01/31/2017 08:01")
-
-# we can also have R tell us the current time or date
-
-now()
-now(tz = "UTC")
-today()
 ```
-
-#  Working with Dates with lubridate - Parsing Dates
-Once dates are in date format, we can easily pull out their individual components like this:
-
-```{r lubridate components}
-####
-####  Parsing dates with lubridate
-####
-
-datetime <- ymd_hms("2016-07-08 12:34:56")
-
-# year
-year(datetime)
-
-# month as numeric
-month(datetime)
-
-# month as name
-month(datetime, label = TRUE)
-
-# day of month
-mday(datetime)
-
-# day of year (julian day)
-yday(datetime)
-
-# day of week
-wday(datetime)
-wday(datetime, label = TRUE, abbr = FALSE)
-```
-
-##  Working with Dates - Parsing Dates Example
-We can use lubridate and dplyr to make new columns from a date for year, month, day of month, and day of year
-
-first we convert the character string date into date format. Here we are naming the new column "Date", so R will replace character string with date formatted dates
-
-```{r lubridate3}
-
-#### 
-####  Using lubridate with dataframes and dplyr verbs
-####
-
-# going back to our tidy_clim_data dataset we see that the date column is formatted as character, not date
-head(tidy_clim_data)
-
-# change format of date column
-tidy_clim_data <- tidy_clim_data %>% 
-  mutate(Date = mdy(Date))
-tidy_clim_data
-```
-
-now we can use mutate to create individual columns for the date components
-
-```{r mutate date}
-# parse date into year, month, day, and day of year columns
-tidy_clim_data <- tidy_clim_data %>% mutate(
-  Year = year(Date),
-  Month = month(Date),
-  Day = mday(Date),
-  Yday = yday(Date))
-
-tidy_clim_data
-
-# calculate total annual precipitation by station and year
-annual_sum_precip_by_station <- tidy_clim_data %>%
-  group_by(Station, Year) %>%
-  summarise(PrecipSum = sum(PrcpIN))
-
-annual_sum_precip_by_station 
-```
-
-
-#  Challenge Exercises
-
-#  Exercise 1 - make data tidy
-
-- Create a tibble dataframe using the code below and make it tidy. Do you need to spread or gather? What are the variables? what are the observations?
- 
-``` 
-pregnancy <- tribble(         
-    ~pregnant, ~male, ~female,          
-    "yes",     NA,    10,           
-    "no",      20,    12        
-)
-```
-  
-#  Exercise 2 - data summary with dplyr
-
-- use the dplyr verbs and the tidy_clim_data dataset you created above to calculate monthly average Tmin and Tmax for each station
-
-# Exercise 3 - make and parse a date with lubridate
-
-make a date object out of a character string of your birthday and find the day of year it occurs on.
 
 
 [--go to next module--](module2_4.html)
-
-
-
