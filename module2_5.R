@@ -20,7 +20,7 @@ rm(list = ls())
 
 # install.packages(c('dplyr', 'spData', 'sf', 'raster', 'rgdal', 'rgeos', 'rcartocolor', 'magrittr', 'leaflet'))   # run this line if you haven't already installed these packages!
 
-file_name <- 'http://naes.unr.edu/shoemaker/teaching/R-Bootcamp/data.zip'
+file_name <- 'https://kevintshoemaker.github.io/R-Bootcamp/data.zip'
 download.file(file_name, destfile = 'data.zip')
 unzip(zipfile = 'data.zip', exdir = '.')
 
@@ -274,7 +274,7 @@ plot(st_geometry(wgs_usa),
 ## we can do this with other reprojections as well so you can really tell a difference
 layout(matrix(1:8, nrow = 2))
 us_states %>% st_geometry() %>% 
-  st_transform(crs = '+proj=aea') %>% 
+  st_transform(crs = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" ) %>%   
   plot(col = 'white', 
        graticule = st_crs(wgs_usa),
        axes = T, main = 'Albers Equal Area')
@@ -319,7 +319,7 @@ us_states %>% st_geometry() %>%
 layout(matrix(1:2, nrow = 2))
 
 us_states %>% st_geometry() %>% 
-  st_transform(crs = '+proj=lcc') %>% 
+  st_transform(crs = '+proj=lcc +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs') %>% 
   plot(col = 'white',
        graticule = st_crs(wgs_usa),
        axes = T, main = 'Lambert Conformal Standard')

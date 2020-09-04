@@ -44,7 +44,7 @@ In this tutorial we introduce the 'Tidyverse' set of packages, which were design
 
 ![](data-science-wrangle.png)
 
-The core tidyverse set of packages includes all of the below (plus a handfull of others). For now, just focused on the first four for data wrangling:
+The core tidyverse set of packages includes many packages. For now, we will focus on five that are commonly used for data wrangling:
 
 * dplyr, for data manipulation
 
@@ -52,9 +52,13 @@ The core tidyverse set of packages includes all of the below (plus a handfull of
 
 * readr, for data import
 
-* tibble, for tibbles, a modern re-imagining of data frames
+* tibble, for tibbles, a re-imagining of data frames
 
-* ggplot2, for data visualisation
+* magrittr, for implementing the 'pipe' operator
+
+![](magritte.jpg)
+
+* ggplot2, for data visualisation (the subject of the next module)
 
 * purrr, for functional programming
 
@@ -65,9 +69,9 @@ The core tidyverse set of packages includes all of the below (plus a handfull of
 
 # Learning goals
 
-  * Use *Tidyverse* grammar (piping) and data structures to perform basic data manipulation tasks 
+  * Use *Tidyverse* grammar (e.g., piping) and data structures to perform basic data manipulation tasks 
   
-  * Use *tidyr* and *dplyr* data transformation verbs to wrangle data
+  * Use *tidyr* and *dplyr* data transformation 'verbs' to wrangle data
       
   * Work with and parse dates using *lubridate*
 
@@ -90,7 +94,7 @@ Key advantages include:
 
 * perform multiple operations without creating a bunch of intermediate (temporary) datasets
 
-This operator originally comes from the *magrittr* package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m. When reading code out loud, use 'then' for the pipe. For example the command here:
+This operator comes from the *magrittr* package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m ('m' is for Magritte). When reading code out loud, use 'then' for the pipe. For example the command here:
 
 ```
 
@@ -100,7 +104,7 @@ x %>% log() %>% round(digits=2)
 
 can be interpreted as follows:
 
-> Take the object "x", THEN take its natural logarithm, THEN round that value to 2 significant figures 
+> Take "x", THEN take its natural logarithm, THEN round the resulting value to 2 significant figures 
 
 
 The structure is simple. Start with the object you want to manipulate, and apply actions (e.g., functions) to that object in the order in which you want to apply them. 
@@ -173,17 +177,21 @@ This means:
 
 The *tidyr* package has several functions to help you get your data into this format.
 
-Use "gather()" to get all of the values and variables into a single column.
+Use "pivot_longer()" to get all of the values and variables from multiple columns into a single column. 
 
 ![](tidy-9.png)
+
+Use "pivot_wider()" to distribute two variables in a single column into separate columns, with their data values('value')
+
+![](tidy-8.png)
+
+For a nice intro to 'pivot_wider' and 'pivot_longer', see [this link](https://tidyr.tidyverse.org/articles/pivot.html)
+
 
 Use "separate()" to separate a single column into two separate columns. "unite()" does the opposite
 
 ![](tidy-17.png)
 
-Use "spread()" to distribute two variables in a single ('key') column into separate columns, with their data values('value')
-
-![](tidy-8.png)
 
 ```{r make data tidy}
 
@@ -195,24 +203,27 @@ Use "spread()" to distribute two variables in a single ('key') column into separ
 head(clim_data)
 
 # gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column.
-gather_clim_vars <- gather(clim_data, 
-                           key = climvar_station, 
-                           value = value, 
-                           -Date)
+clim_vars_longer <- clim_data %>% pivot_longer( 
+                           cols = !Date,
+                           names_to = "climvar_station",
+                           values_to = "value"
+                    )
 
-gather_clim_vars
+clim_vars_longer
 
 # separate the climvar_station column into two separate columns that identify the climate variable and the station
-separate_clim_vars <- gather_clim_vars %>%
-  separate(climvar_station, 
-           into = c("Station","climvar"))
+clim_vars_separate <- clim_vars_longer %>% separate(
+                           col = climvar_station, 
+                           into = c("Station","climvar")
+                      )
 
-separate_clim_vars
+clim_vars_separate
 
-# spread distributes the clim_var column into separate columns, with the data values from the 'value' column
-tidy_clim_data <- spread(separate_clim_vars, 
-                        key = climvar, 
-                        value = value)
+# pivot_wider distributes the clim_var column into separate columns, with the data values from the 'value' column
+tidy_clim_data <- clim_vars_separate %>% pivot_wider( 
+                        names_from = climvar, 
+                        values_from = value
+                  )
 
 tidy_clim_data
 
@@ -220,13 +231,13 @@ tidy_clim_data
 # repeat above as single pipe series without creation of intermediate datasets
   
 tidy_clim_data <- clim_data %>% 
-  gather(key = climvar_station,
-         value = value,
-         -Date) %>% 
-  separate(climvar_station, 
+  pivot_longer(cols = !Date,
+               names_to = "climvar_station",
+               values_to = "value") %>% 
+  separate(col = climvar_station, 
            into = c("Station","climvar")) %>% 
-  spread(key = climvar,
-         value = value)
+  pivot_wider(names_from = climvar, 
+              values_from = value)
   
 tidy_clim_data
 
@@ -340,12 +351,14 @@ mdy_hm("01/31/2017 08:01")
 now()
 now(tz = "UTC")
 today()
+
 ```
 
 #  Working with Dates with lubridate - Parsing Dates
 Once dates are in date format, we can easily pull out their individual components like this:
 
 ```{r lubridate components}
+
 ####
 ####  Parsing dates with lubridate
 ####
@@ -370,6 +383,7 @@ yday(datetime)
 # day of week
 wday(datetime)
 wday(datetime, label = TRUE, abbr = FALSE)
+
 ```
 
 ##  Working with Dates - Parsing Dates Example
@@ -410,6 +424,7 @@ annual_sum_precip_by_station <- tidy_clim_data %>%
   summarise(PrecipSum = sum(PrcpIN))
 
 annual_sum_precip_by_station 
+
 ```
 
 

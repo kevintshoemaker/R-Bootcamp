@@ -466,13 +466,17 @@ div.tocify {
 </ol>
 <p>In this tutorial we introduce the ‘Tidyverse’ set of packages, which were designed to facilitate everyday data management and visualization tasks in R using a consistent data structure and syntax. Much of the content in this tutorial is based on the online resource <a href="http://r4ds.had.co.nz/">R for Data Science</a> by Garrett Grolemund and Hadley Wickham.</p>
 <p><img src="data-science-wrangle.png" /></p>
-<p>The core tidyverse set of packages includes all of the below (plus a handfull of others). For now, just focused on the first four for data wrangling:</p>
+<p>The core tidyverse set of packages includes many packages. For now, we will focus on five that are commonly used for data wrangling:</p>
 <ul>
 <li><p>dplyr, for data manipulation</p></li>
 <li><p>tidyr, for data tidying</p></li>
 <li><p>readr, for data import</p></li>
-<li><p>tibble, for tibbles, a modern re-imagining of data frames</p></li>
-<li><p>ggplot2, for data visualisation</p></li>
+<li><p>tibble, for tibbles, a re-imagining of data frames</p></li>
+<li><p>magrittr, for implementing the ‘pipe’ operator</p></li>
+</ul>
+<p><img src="magritte.jpg" /></p>
+<ul>
+<li><p>ggplot2, for data visualisation (the subject of the next module)</p></li>
 <li><p>purrr, for functional programming</p></li>
 <li><p>stringr, for strings</p></li>
 <li><p>forcats, for factors</p></li>
@@ -481,8 +485,8 @@ div.tocify {
 <div id="learning-goals" class="section level1">
 <h1>Learning goals</h1>
 <ul>
-<li><p>Use <em>Tidyverse</em> grammar (piping) and data structures to perform basic data manipulation tasks</p></li>
-<li><p>Use <em>tidyr</em> and <em>dplyr</em> data transformation verbs to wrangle data</p></li>
+<li><p>Use <em>Tidyverse</em> grammar (e.g., piping) and data structures to perform basic data manipulation tasks</p></li>
+<li><p>Use <em>tidyr</em> and <em>dplyr</em> data transformation ‘verbs’ to wrangle data</p></li>
 <li><p>Work with and parse dates using <em>lubridate</em></p></li>
 </ul>
 <pre class="r"><code># install.packages(&quot;tidyverse&quot;)
@@ -496,13 +500,13 @@ library(tidyverse)</code></pre>
 <li><p>code is more readable and intuitive – reads left to right, rather than inside out as is the case for nested function</p></li>
 <li><p>perform multiple operations without creating a bunch of intermediate (temporary) datasets</p></li>
 </ul>
-<p>This operator originally comes from the <em>magrittr</em> package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m. When reading code out loud, use ‘then’ for the pipe. For example the command here:</p>
+<p>This operator comes from the <em>magrittr</em> package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m (‘m’ is for Magritte). When reading code out loud, use ‘then’ for the pipe. For example the command here:</p>
 <pre><code>
 x %&gt;% log() %&gt;% round(digits=2)
 </code></pre>
 <p>can be interpreted as follows:</p>
 <blockquote>
-<p>Take the object “x”, THEN take its natural logarithm, THEN round that value to 2 significant figures</p>
+<p>Take “x”, THEN take its natural logarithm, THEN round the resulting value to 2 significant figures</p>
 </blockquote>
 <p>The structure is simple. Start with the object you want to manipulate, and apply actions (e.g., functions) to that object in the order in which you want to apply them.</p>
 <p>Here is a quick example.</p>
@@ -581,12 +585,13 @@ tail(clim_data)</code></pre>
 <p>This is what it looks like:</p>
 <p><img src="tidy-1.png" /></p>
 <p>The <em>tidyr</em> package has several functions to help you get your data into this format.</p>
-<p>Use “gather()” to get all of the values and variables into a single column.</p>
+<p>Use “pivot_longer()” to get all of the values and variables from multiple columns into a single column.</p>
 <p><img src="tidy-9.png" /></p>
+<p>Use “pivot_wider()” to distribute two variables in a single column into separate columns, with their data values(‘value’)</p>
+<p><img src="tidy-8.png" /></p>
+<p>For a nice intro to ‘pivot_wider’ and ‘pivot_longer’, see <a href="https://tidyr.tidyverse.org/articles/pivot.html">this link</a></p>
 <p>Use “separate()” to separate a single column into two separate columns. “unite()” does the opposite</p>
 <p><img src="tidy-17.png" /></p>
-<p>Use “spread()” to distribute two variables in a single (‘key’) column into separate columns, with their data values(‘value’)</p>
-<p><img src="tidy-8.png" /></p>
 <pre class="r"><code>####
 ####  Use Tidyr verbs to make data &#39;tidy&#39;
 ####
@@ -603,91 +608,94 @@ head(clim_data)</code></pre>
 ## 5 1/5/2013       29       20         0       24       13       0  
 ## 6 1/6/2013       36       25         0       30       20       0.1</code></pre>
 <pre class="r"><code># gather column names into a new column called &#39;climvar_station&#39;, and all of the numeric precip and temp values into a column called &#39;value&#39;. By including -Date, we indicate that we don&#39;t want to gather this column.
-gather_clim_vars &lt;- gather(clim_data, 
-                           key = climvar_station, 
-                           value = value, 
-                           -Date)
+clim_vars_longer &lt;- clim_data %&gt;% pivot_longer( 
+                           cols = !Date,
+                           names_to = &quot;climvar_station&quot;,
+                           values_to = &quot;value&quot;
+                    )
 
-gather_clim_vars</code></pre>
+clim_vars_longer</code></pre>
 <pre><code>## # A tibble: 10,404 x 3
-##    Date      climvar_station value
-##    &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;
-##  1 1/1/2013  PK.TMaxF           27
-##  2 1/2/2013  PK.TMaxF           27
-##  3 1/3/2013  PK.TMaxF           23
-##  4 1/4/2013  PK.TMaxF           25
-##  5 1/5/2013  PK.TMaxF           29
-##  6 1/6/2013  PK.TMaxF           36
-##  7 1/7/2013  PK.TMaxF           35
-##  8 1/8/2013  PK.TMaxF           39
-##  9 1/9/2013  PK.TMaxF           44
-## 10 1/10/2013 PK.TMaxF           39
+##    Date     climvar_station value
+##    &lt;chr&gt;    &lt;chr&gt;           &lt;dbl&gt;
+##  1 1/1/2013 PK.TMaxF           27
+##  2 1/1/2013 PK.TMinF           19
+##  3 1/1/2013 PK.PrcpIN           0
+##  4 1/1/2013 HH.TMaxF           26
+##  5 1/1/2013 HH.TMinF           22
+##  6 1/1/2013 HH.PrcpIN           0
+##  7 1/2/2013 PK.TMaxF           27
+##  8 1/2/2013 PK.TMinF           22
+##  9 1/2/2013 PK.PrcpIN           0
+## 10 1/2/2013 HH.TMaxF           27
 ## # ... with 10,394 more rows</code></pre>
 <pre class="r"><code># separate the climvar_station column into two separate columns that identify the climate variable and the station
-separate_clim_vars &lt;- gather_clim_vars %&gt;%
-  separate(climvar_station, 
-           into = c(&quot;Station&quot;,&quot;climvar&quot;))
+clim_vars_separate &lt;- clim_vars_longer %&gt;% separate(
+                           col = climvar_station, 
+                           into = c(&quot;Station&quot;,&quot;climvar&quot;)
+                      )
 
-separate_clim_vars</code></pre>
+clim_vars_separate</code></pre>
 <pre><code>## # A tibble: 10,404 x 4
-##    Date      Station climvar value
-##    &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
-##  1 1/1/2013  PK      TMaxF      27
-##  2 1/2/2013  PK      TMaxF      27
-##  3 1/3/2013  PK      TMaxF      23
-##  4 1/4/2013  PK      TMaxF      25
-##  5 1/5/2013  PK      TMaxF      29
-##  6 1/6/2013  PK      TMaxF      36
-##  7 1/7/2013  PK      TMaxF      35
-##  8 1/8/2013  PK      TMaxF      39
-##  9 1/9/2013  PK      TMaxF      44
-## 10 1/10/2013 PK      TMaxF      39
+##    Date     Station climvar value
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
+##  1 1/1/2013 PK      TMaxF      27
+##  2 1/1/2013 PK      TMinF      19
+##  3 1/1/2013 PK      PrcpIN      0
+##  4 1/1/2013 HH      TMaxF      26
+##  5 1/1/2013 HH      TMinF      22
+##  6 1/1/2013 HH      PrcpIN      0
+##  7 1/2/2013 PK      TMaxF      27
+##  8 1/2/2013 PK      TMinF      22
+##  9 1/2/2013 PK      PrcpIN      0
+## 10 1/2/2013 HH      TMaxF      27
 ## # ... with 10,394 more rows</code></pre>
-<pre class="r"><code># spread distributes the clim_var column into separate columns, with the data values from the &#39;value&#39; column
-tidy_clim_data &lt;- spread(separate_clim_vars, 
-                        key = climvar, 
-                        value = value)
+<pre class="r"><code># pivot_wider distributes the clim_var column into separate columns, with the data values from the &#39;value&#39; column
+tidy_clim_data &lt;- clim_vars_separate %&gt;% pivot_wider( 
+                        names_from = climvar, 
+                        values_from = value
+                  )
 
 tidy_clim_data</code></pre>
 <pre><code>## # A tibble: 3,468 x 5
-##    Date     Station PrcpIN TMaxF TMinF
-##    &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 1/1/2013 HH        0       26    22
-##  2 1/1/2013 PK        0       27    19
-##  3 1/1/2014 HH        0       38    27
-##  4 1/1/2014 PK        0       35    24
-##  5 1/1/2015 HH        0        7     0
-##  6 1/1/2015 PK        0        7    -1
-##  7 1/1/2016 HH        0       22    15
-##  8 1/1/2016 PK        0       22    17
-##  9 1/1/2017 HH        0.16    30    16
-## 10 1/1/2017 PK        0.34    22     7
+##    Date     Station TMaxF TMinF PrcpIN
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1/1/2013 PK         27    19      0
+##  2 1/1/2013 HH         26    22      0
+##  3 1/2/2013 PK         27    22      0
+##  4 1/2/2013 HH         27    23      0
+##  5 1/3/2013 PK         23    14      0
+##  6 1/3/2013 HH         25    21      0
+##  7 1/4/2013 PK         25    19      0
+##  8 1/4/2013 HH         22    13      0
+##  9 1/5/2013 PK         29    20      0
+## 10 1/5/2013 HH         24    13      0
 ## # ... with 3,458 more rows</code></pre>
 <pre class="r"><code># repeat above as single pipe series without creation of intermediate datasets
   
 tidy_clim_data &lt;- clim_data %&gt;% 
-  gather(key = climvar_station,
-         value = value,
-         -Date) %&gt;% 
-  separate(climvar_station, 
+  pivot_longer(cols = !Date,
+               names_to = &quot;climvar_station&quot;,
+               values_to = &quot;value&quot;) %&gt;% 
+  separate(col = climvar_station, 
            into = c(&quot;Station&quot;,&quot;climvar&quot;)) %&gt;% 
-  spread(key = climvar,
-         value = value)
+  pivot_wider(names_from = climvar, 
+              values_from = value)
   
 tidy_clim_data</code></pre>
 <pre><code>## # A tibble: 3,468 x 5
-##    Date     Station PrcpIN TMaxF TMinF
-##    &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 1/1/2013 HH        0       26    22
-##  2 1/1/2013 PK        0       27    19
-##  3 1/1/2014 HH        0       38    27
-##  4 1/1/2014 PK        0       35    24
-##  5 1/1/2015 HH        0        7     0
-##  6 1/1/2015 PK        0        7    -1
-##  7 1/1/2016 HH        0       22    15
-##  8 1/1/2016 PK        0       22    17
-##  9 1/1/2017 HH        0.16    30    16
-## 10 1/1/2017 PK        0.34    22     7
+##    Date     Station TMaxF TMinF PrcpIN
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1/1/2013 PK         27    19      0
+##  2 1/1/2013 HH         26    22      0
+##  3 1/2/2013 PK         27    22      0
+##  4 1/2/2013 HH         27    23      0
+##  5 1/3/2013 PK         23    14      0
+##  6 1/3/2013 HH         25    21      0
+##  7 1/4/2013 PK         25    19      0
+##  8 1/4/2013 HH         22    13      0
+##  9 1/5/2013 PK         29    20      0
+## 10 1/5/2013 HH         24    13      0
 ## # ... with 3,458 more rows</code></pre>
 </div>
 <div id="using-dplyr-the-data-wrangling-workhorse" class="section level1">
@@ -799,11 +807,11 @@ ymd_hms(&quot;2017-01-31 20:11:59&quot;)</code></pre>
 <pre class="r"><code># we can also have R tell us the current time or date
 
 now()</code></pre>
-<pre><code>## [1] &quot;2020-09-03 12:28:36 PDT&quot;</code></pre>
+<pre><code>## [1] &quot;2020-09-04 14:22:01 PDT&quot;</code></pre>
 <pre class="r"><code>now(tz = &quot;UTC&quot;)</code></pre>
-<pre><code>## [1] &quot;2020-09-03 19:28:36 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2020-09-04 21:22:01 UTC&quot;</code></pre>
 <pre class="r"><code>today()</code></pre>
-<pre><code>## [1] &quot;2020-09-03&quot;</code></pre>
+<pre><code>## [1] &quot;2020-09-04&quot;</code></pre>
 </div>
 <div id="working-with-dates-with-lubridate---parsing-dates" class="section level1">
 <h1>Working with Dates with lubridate - Parsing Dates</h1>

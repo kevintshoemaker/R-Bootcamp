@@ -60,24 +60,27 @@ tail(clim_data)
 head(clim_data)
 
 # gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column.
-gather_clim_vars <- gather(clim_data, 
-                           key = climvar_station, 
-                           value = value, 
-                           -Date)
+clim_vars_longer <- clim_data %>% pivot_longer( 
+                           cols = !Date,
+                           names_to = "climvar_station",
+                           values_to = "value"
+                    )
 
-gather_clim_vars
+clim_vars_longer
 
 # separate the climvar_station column into two separate columns that identify the climate variable and the station
-separate_clim_vars <- gather_clim_vars %>%
-  separate(climvar_station, 
-           into = c("Station","climvar"))
+clim_vars_separate <- clim_vars_longer %>% separate(
+                           col = climvar_station, 
+                           into = c("Station","climvar")
+                      )
 
-separate_clim_vars
+clim_vars_separate
 
-# spread distributes the clim_var column into separate columns, with the data values from the 'value' column
-tidy_clim_data <- spread(separate_clim_vars, 
-                        key = climvar, 
-                        value = value)
+# pivot_wider distributes the clim_var column into separate columns, with the data values from the 'value' column
+tidy_clim_data <- clim_vars_separate %>% pivot_wider( 
+                        names_from = climvar, 
+                        values_from = value
+                  )
 
 tidy_clim_data
 
@@ -85,13 +88,13 @@ tidy_clim_data
 # repeat above as single pipe series without creation of intermediate datasets
   
 tidy_clim_data <- clim_data %>% 
-  gather(key = climvar_station,
-         value = value,
-         -Date) %>% 
-  separate(climvar_station, 
+  pivot_longer(cols = !Date,
+               names_to = "climvar_station",
+               values_to = "value") %>% 
+  separate(col = climvar_station, 
            into = c("Station","climvar")) %>% 
-  spread(key = climvar,
-         value = value)
+  pivot_wider(names_from = climvar, 
+              values_from = value)
   
 tidy_clim_data
 
@@ -178,6 +181,8 @@ mdy_hm("01/31/2017 08:01")
 now()
 now(tz = "UTC")
 today()
+
+
 ####
 ####  Parsing dates with lubridate
 ####
@@ -202,6 +207,7 @@ yday(datetime)
 # day of week
 wday(datetime)
 wday(datetime, label = TRUE, abbr = FALSE)
+
 
 #### 
 ####  Using lubridate with dataframes and dplyr verbs
@@ -229,3 +235,4 @@ annual_sum_precip_by_station <- tidy_clim_data %>%
   summarise(PrecipSum = sum(PrcpIN))
 
 annual_sum_precip_by_station 
+
