@@ -458,7 +458,7 @@ div.tocify {
 
 
 <p>Thanks to Stephanie Freund, who pulled this module together!</p>
-<p>Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. On Day 1, you learned how to create several types of plots in base R. Base R is great for whipping up some quick plots for initial data exploration, and you can make them quite beautiful looking as well.</p>
+<p>Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. On Day 1, you learned how to create several types of plots in base R. Base R is great for plotting, and you can make them quite beautiful looking as well. But it can be quite difficult to make nice looking figures in base R.</p>
 <p>When you start creating a lot of plots for which you might want to quickly and easily adjust graphical elements, or want to create more complex plots that display a lot of information in one place, the data visualization package <em>ggplot2</em> is extremely useful. In this module, we’ll introduce ggplot syntax and briefly survey some of the package’s plotting capabilities.</p>
 <div id="load-script-for-module-2.3" class="section level3">
 <h3>Load script for module #2.3</h3>
@@ -470,10 +470,10 @@ div.tocify {
 <div id="using-ggplot2" class="section level3">
 <h3>Using ggplot2</h3>
 <p>ggplot2 is an R package developed by Hadley Wickham and colleagues that is based on Leland Wilkinson’s <a href="https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448">“Grammar of Graphics”</a>. If you are interested in learning more about the philosophy behind ggplot2 and object-oriented design, you can read Hadley’s paper about it <a href="http://vita.had.co.nz/papers/layered-grammar.pdf">here</a>.</p>
-<p>All graphics produced in ggplot2 are built using elements of this grammatical framework. ggplot2 is modular, so that you can easily modify how your plot looks by adding or editing layers, and it generates more features by default (e.g. gridlines, legends with titles, etc) than base R. This saves you time spent cobbling together all of these elements from scratch.</p>
+<p>All graphics produced in ggplot2 are built using elements of this grammatical framework. ggplot2 is modular, so that you can easily modify how your plot looks by adding or editing layers, and it generates more features by default (e.g. gridlines, legends with titles, etc) than base R. This saves you time spent cobbling together all of these elements from scratch (if you’re happy with the ggplot defaults!).</p>
 <div id="basics" class="section level4">
 <h4>Basics</h4>
-<p>A typical workflow begins with initiating plotting with the <strong><code>ggplot()</code></strong> function and specifying your dataset. You can then add geometric objects, beginning with <strong><code>geom_</code></strong>, to represent your data in the form of a boxplot (<strong><code>geom_boxplot()</code></strong>), scatterplot (<strong><code>geom_point()</code></strong>), or a variety of other types of plots. The <strong><code>aes()</code></strong> function can be called within these “geoms” to specify which variables to display and to adjust how the data are displayed. <strong><code>aes()</code></strong> can also be used within the initial call to <strong><code>ggplot()</code></strong>.</p>
+<p>A typical workflow begins with initiating plotting with the <strong><code>ggplot()</code></strong> function and specifying the data you want to visualize. You can then add geometric objects, beginning with <strong><code>geom_</code></strong>, to represent your data in the form of a boxplot (<strong><code>geom_boxplot()</code></strong>), scatterplot (<strong><code>geom_point()</code></strong>), or a variety of other types of plots. The <strong><code>aes()</code></strong> function can be called within these “geoms” to specify which variables to display and how these data should be displayed (which data should be used to represent the bar height, or the x coordinate, or the point size, etc.). <strong><code>aes()</code></strong> can also be used within the initial call to <strong><code>ggplot()</code></strong>.</p>
 <p>To demonstrate, we’ll use the Soils dataset from the ‘carData’ package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.</p>
 <p>First, install and load ggplot2 and the other packages we’ll be using for this module.</p>
 <pre class="r"><code>########
@@ -546,7 +546,8 @@ ggplot(soil, aes(x=pH)) +
 <pre class="r"><code>#########
 # Use &#39;tidyverse&#39; tricks to simplify the syntax for ggplot to color by nutrient
 
-soil.nut &lt;- gather(soil, nutrient, value, c(10,11,13))
+soil.nut &lt;- pivot_longer(soil, cols=c(&quot;Ca&quot;,&quot;Mg&quot;,&quot;Na&quot;), names_to=&quot;nutrient&quot;,values_to = &quot;value&quot; )
+
 ggplot(soil.nut) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
 <p><img src="module2_3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
@@ -554,7 +555,8 @@ ggplot(soil.nut) +
 <pre class="r"><code>######
 # or if we wanted to plot different nutrients...
 
-soil.nut2 &lt;- gather(soil, nutrient, value, c(10,11,12))
+soil.nut2 &lt;- pivot_longer(soil, cols=c(&quot;Ca&quot;,&quot;Mg&quot;,&quot;K&quot;), names_to=&quot;nutrient&quot;,values_to = &quot;value&quot; )
+
 ggplot(soil.nut2) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
 <p><img src="module2_3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>

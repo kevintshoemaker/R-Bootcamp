@@ -59,6 +59,7 @@ ggplot(soil) +
 ggplot(soil) +
   geom_point(aes(x=pH, y=Ca, color=Depth))
 
+
 ##########
 # make additional alterations (outside the "aes" function)
 
@@ -78,7 +79,8 @@ ggplot(soil, aes(x=pH)) +
 #########
 # Use 'tidyverse' tricks to simplify the syntax for ggplot to color by nutrient
 
-soil.nut <- gather(soil, nutrient, value, c(10,11,13))
+soil.nut <- pivot_longer(soil, cols=c("Ca","Mg","Na"), names_to="nutrient",values_to = "value" )
+
 ggplot(soil.nut) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
 
@@ -86,7 +88,8 @@ ggplot(soil.nut) +
 ######
 # or if we wanted to plot different nutrients...
 
-soil.nut2 <- gather(soil, nutrient, value, c(10,11,12))
+soil.nut2 <- pivot_longer(soil, cols=c("Ca","Mg","K"), names_to="nutrient",values_to = "value" )
+
 ggplot(soil.nut2) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
 
