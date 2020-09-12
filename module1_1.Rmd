@@ -846,13 +846,13 @@ c(3,6)
 5. Take your matrix 'd.mat2' and convert it to a vector containing all elements in the matrix. HINT: use the "as.vector()" function.
 
 
-6: Create a list named 'd.list' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).
+6. Create a list named 'd.list' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).
 
 
-7: Extract (subset) the 2nd row of the 3rd matrix in the array in 'd.list' (the list created in challenge 6 above).
+7. Extract (subset) the 2nd row of the 3rd matrix in the array in 'd.list' (the list created in challenge 6 above).
 
 
-8: (extra challenging!) Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
+8. (extra challenging!) Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
 HINT: you don't need to type each location in by hand!
 
@@ -879,6 +879,10 @@ abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
 ```
 
 It should look something like this (above)!
+
+
+[--go to next module--](module1_2.html)
+
 
 
 #### Finally: some more advanced exploration of functions
@@ -908,7 +912,5 @@ Let's walk through this last line of code together. We are use 3 different funct
 
 Throughout your R journey you will see these properties used many times. Maybe not so much when first starting. But they are important concepts. Especially the fact that the R has first-class functions. Functions are often used as arguments to other functions as a shortcut. It saves the intermediate step of saving the results to another variable, then providing that variable as an argument. It also tends to save memory, as we are no longer storing that variable in memory.
 
-
-[--go to next module--](module1_2.html)
 
 
