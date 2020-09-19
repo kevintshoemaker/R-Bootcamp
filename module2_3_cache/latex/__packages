@@ -14,3 +14,8 @@ lattice
 DAAG
 RColorBrewer
 leaflet
+car
+usethis
+devtools
+modeest
+lubridate

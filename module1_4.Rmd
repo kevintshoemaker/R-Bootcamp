@@ -625,7 +625,7 @@ for(i in 1:18){
 
 2. Using the function in part 1, with $\beta_0 = 2$, and $\beta_1= -1$ use a FOR loop to calculate $y$ for the values of $x$ = 1,...,10. Plot the results.
 
-3. Write a function that conducts a two-sided t test for a given null hypothesis. Here is a code skeleton to get you started!! 
+3. Write a function that conducts a one-sample, two-sided t test for a given null hypothesis. Here is a code skeleton to get you started!! 
 
 ```{r eval=FALSE}
 
@@ -648,10 +648,10 @@ get.t.test <- function(data, mu0, alpha = 0.05) {
 
 ```
 
-4. Calculate the standard deviation as an index of ruggedness from the rows of the volcano elevation data "Z", using the "apply()" function. Which row has the most rugged terrain?
+4. Calculate the standard deviation of elevation as an index of ruggedness from the rows of the volcano elevation data "Z", using the "apply()" function. Which row has the most rugged terrain?
 
 
-5: Wrap the code below in a FOR loop to simulate the sun rising and setting over the volcano data by looping over values of "lphi" (the light angle). Try replacing "readline()" with "Sys.sleep(.5)" from the example above.
+5: Wrap the code below in a FOR loop to simulate the sun rising and setting over the volcano data by looping over values of "lphi" (the light angle). Try replacing "readline()" with "Sys.sleep(.5)".
 
 
 ```{r eval=FALSE}
@@ -659,9 +659,7 @@ get.t.test <- function(data, mu0, alpha = 0.05) {
 #######
 # Example code to get you started with challenge problem 5... 
 
-persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?,
-                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
+persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?, scale = FALSE,  ltheta = -120, shade = 0.75, border = NA, box = FALSE)
 print(?)
 readline()
 

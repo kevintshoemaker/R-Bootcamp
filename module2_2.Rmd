@@ -430,9 +430,9 @@ annual_sum_precip_by_station
 
 #  Challenge Exercises
 
-#  Exercise 1 - make data tidy
+##  Exercise 1 - make data tidy
 
-- Create a tibble dataframe using the code below and make it tidy. Do you need to spread or gather? What are the variables? what are the observations?
+- Create a tibble dataframe using the code below and make it tidy. Do you need to pivot_longer or pivot_wider? What are the variables? what are the observations?
  
 ``` 
 pregnancy <- tribble(         
@@ -442,11 +442,11 @@ pregnancy <- tribble(
 )
 ```
   
-#  Exercise 2 - data summary with dplyr
+##  Exercise 2 - data summary with dplyr
 
 - use the dplyr verbs and the tidy_clim_data dataset you created above to calculate monthly average Tmin and Tmax for each station
 
-# Exercise 3 - make and parse a date with lubridate
+## Exercise 3 - make and parse a date with lubridate
 
 make a date object out of a character string of your birthday and find the day of year it occurs on.
 

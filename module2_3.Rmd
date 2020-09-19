@@ -495,7 +495,7 @@ ggplot(soil) +
 ggplot(soil.nut) +
   geom_boxplot(aes(nutrient, value, fill=Contour)) +
   stat_summary(aes(nutrient, value), 
-               fun.y=mean, geom="point", shape=18, size=4, color='black')
+               fun=mean, geom="point", shape=18, size=4, color='black')
   
 ```
 

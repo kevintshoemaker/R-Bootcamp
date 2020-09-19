@@ -18,3 +18,8 @@ boot
 foreach
 iterators
 doParallel
+car
+usethis
+devtools
+modeest
+lubridate

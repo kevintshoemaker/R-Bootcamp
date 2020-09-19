@@ -1077,7 +1077,7 @@ for(i in 1:18){
 <ol style="list-style-type: decimal">
 <li><p>Create a function to calculate the value of <span class="math inline">\(y\)</span> for the equation <span class="math inline">\(y = \beta_0 + \beta_1*x\)</span> for any value of <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(x\)</span>.</p></li>
 <li><p>Using the function in part 1, with <span class="math inline">\(\beta_0 = 2\)</span>, and <span class="math inline">\(\beta_1= -1\)</span> use a FOR loop to calculate <span class="math inline">\(y\)</span> for the values of <span class="math inline">\(x\)</span> = 1,…,10. Plot the results.</p></li>
-<li><p>Write a function that conducts a two-sided t test for a given null hypothesis. Here is a code skeleton to get you started!!</p></li>
+<li><p>Write a function that conducts a one-sample, two-sided t test for a given null hypothesis. Here is a code skeleton to get you started!!</p></li>
 </ol>
 <pre class="r"><code>##########
 # Challenge problem 3: code skeleton to get you started!   
@@ -1096,15 +1096,13 @@ get.t.test &lt;- function(data, mu0, alpha = 0.05) {
     print(answer)
 }</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>Calculate the standard deviation as an index of ruggedness from the rows of the volcano elevation data “Z”, using the “apply()” function. Which row has the most rugged terrain?</li>
+<li>Calculate the standard deviation of elevation as an index of ruggedness from the rows of the volcano elevation data “Z”, using the “apply()” function. Which row has the most rugged terrain?</li>
 </ol>
-<p>5: Wrap the code below in a FOR loop to simulate the sun rising and setting over the volcano data by looping over values of “lphi” (the light angle). Try replacing “readline()” with “Sys.sleep(.5)” from the example above.</p>
+<p>5: Wrap the code below in a FOR loop to simulate the sun rising and setting over the volcano data by looping over values of “lphi” (the light angle). Try replacing “readline()” with “Sys.sleep(.5)”.</p>
 <pre class="r"><code>#######
 # Example code to get you started with challenge problem 5... 
 
-persp(X, Y, Z, theta = 30, phi = 30, col = &quot;green3&quot;,  lphi = ?,
-                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
+persp(X, Y, Z, theta = 30, phi = 30, col = &quot;green3&quot;,  lphi = ?, scale = FALSE,  ltheta = -120, shade = 0.75, border = NA, box = FALSE)
 print(?)
 readline()</code></pre>
 <p><a href="module2_1.html">–go to next module–</a></p>
