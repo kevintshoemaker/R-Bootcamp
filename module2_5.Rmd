@@ -127,6 +127,8 @@ Raster data is represented by a matrix of the spatial extent we are interested i
 
 We will likely not have much time to cover raster data because of our limited time together, and the amount of time loading and working with raster can take. I'll provide a few short examples at the end to run on your own.  
 
+A new raster package is under development to better work with `sf`. There is also a completely redeveloped alternative called `stars`.
+
 ## Coordinate Reference Systems
 
 <div style="margin: 16px 0">
