@@ -1,7 +1,7 @@
 ---
 title: "Module 1.1"
 author: "Getting started: working with objects"
-date: "Fall 2020"
+date: "Fall 2021"
 output: 
   html_document: 
     theme: journal
@@ -35,16 +35,17 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
     - Thanks to Perry Williams for allowing us to use these materials!!
     
-Welcome to the 2020 R bootcamp! Let's get started!! 
+Welcome to the 2021 R bootcamp! Let's get started!! 
 
 ## Get materials for this module
 
-* I recommend having a printed copy of a good base R "cheatsheet" as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to learn new things and try new things in R!
+* I recommend having a printed copy of a good base R "cheatsheet" (or two) as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to learn new things and try new things in R!
 
 Here are links to good base R "cheatsheets":
 
-[Base R cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)           
-[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)         
+[Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
+[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)                
+[More advanced base R cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf)             
 
 
 ## Load script for module #1.1
@@ -68,7 +69,6 @@ The R console is located in the left half or bottom left of the RStudio interfac
 1. Click on the console just to the right of one of the ">" prompts.  
 
 2. You can use the console like a calculator. For example, type `2+2` at the prompt and hit enter. What does R do? 
-
 3. Now hit the "up" arrow. The R console remembers all previous commands that it has executed in this **session**, which allows you to re-run commands relatively easily. However, if you accidentally hit the "up" arrow you lose everything you had been typing!
 
 4. Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing `# 2+2` and hitting "Enter". Nothing happens, right?
