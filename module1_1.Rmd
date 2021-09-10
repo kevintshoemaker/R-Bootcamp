@@ -223,9 +223,9 @@ pred <- predict(model1,newdata=data.frame(Girth=xvals),interval = "confidence",l
 plot(trees$Volume~trees$Girth,xlab="Girth (inches)",ylab="Volume (cubic feet)",main="Black Cherry",
      xlim=range(xvals),ylim=c(0,100))         # Make a pretty scatterplot
 
-abline(model1,lwd=2,col="green")                # Add the regression line
-lines(xvals,pred[,"upr"],col="green",lty=2)       # Add the upper bound of the confidence interval
-lines(xvals,pred[,"lwr"],col="green",lty=2)       #      ... and the lower bound
+abline(model1,lwd=2,col="brown")                # Add the regression line
+lines(xvals,pred[,"upr"],col="brown",lty=2)       # Add the upper bound of the confidence interval
+lines(xvals,pred[,"lwr"],col="brown",lty=2)       #      ... and the lower bound
 text(10,80,sprintf("Volume = %s + %s*Girth",round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))       # Add the regression coefficients
 text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3)))     # Add the p-value
 
@@ -244,7 +244,7 @@ The workspace (environment) panel window in R can become cluttered as we create 
 
 R has many different kinds of objects that you can define and store in memory. These are the building blocks of the language. 
 
-Object **classes** that enable storage of information and data are: *scalars*, *vectors*, *matrices*, *lists*, and *data frames*.
+Object **classes** that enable storage of information and data (data storage structures) are: *scalars*, *vectors*, *matrices*, *lists*, and *data frames*.
 
 Objects that transform data and perform data operations/statistics/visualizations etc. are called *functions*.
 
