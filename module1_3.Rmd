@@ -252,7 +252,6 @@ plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector,
 
 But ... **this is not good programming practice!!**. We want to make our code general (if you get new data you don't want to re-write your code) and fool-proof and the above code is neither general (it applies only to this data set) nor fool-proof (there is no guarantee that it is correct- it's based only on an eyeballing approach!).
 
-
 ### A better method!
 
 What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. Our strategy here is to directly match the 'Species' column with the "plot.colors" vector.
@@ -324,6 +323,8 @@ plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector,
 We use the `legend()` function to add a legend to an existing plot. You can customize the legend if you wish. Here I pass a character vector to the `legend=` argument so that I can include the first letter of the genus in the second plot and use the `bty='n'` argument to remove the box around the legend. We can also Italicize the labels in the legend using `text.font=3`, as in the third plot.
 
 ```{r}
+########
+# experiment with legends
 
 # ?legend
 
@@ -381,7 +382,7 @@ First, let's plot fuel economy (mpg) as a function of vehicle weight:
 
 ## Plot fuel economy by weight
 
-plot(mpg~wt,  data=mtcars,pch=20,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)")      # note the tilde, which can be read "as a function of" -- i.e., "mpg as a function of wt"   
+plot(mpg~wt,  data=mtcars,pch=20,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)")      # note the tilde, which can be read "as a function of" -- i.e., "plot mpg as a function of wt"   
  
 ```
 
@@ -454,7 +455,7 @@ We'll use the `arrows()` function to add arrows to an existing plot. With some m
 
 ```{r}
 
-CI <- 2 * by(iris$Sepal.Length, iris$Species, sd)
+CI <- 2 * tapply(iris$Sepal.Length, iris$Species, sd)
 lwr <- bar.heights - CI
 upr <- bar.heights + CI
 
@@ -537,7 +538,7 @@ legend("topleft", pch=19, col=plot.colors, legend=unique(ToothGrowth$supp))
 
 ### Bar Plots Challenge
 
-The following data represent survivorship of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:
+The following data represent survival of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:
 
 ```{r}
 

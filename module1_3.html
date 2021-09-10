@@ -643,7 +643,10 @@ plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector,
 <div id="add-a-legend" class="section level2">
 <h2>Add a Legend</h2>
 <p>We use the <code>legend()</code> function to add a legend to an existing plot. You can customize the legend if you wish. Here I pass a character vector to the <code>legend=</code> argument so that I can include the first letter of the genus in the second plot and use the <code>bty='n'</code> argument to remove the box around the legend. We can also Italicize the labels in the legend using <code>text.font=3</code>, as in the third plot.</p>
-<pre class="r"><code># ?legend
+<pre class="r"><code>########
+# experiment with legends
+
+# ?legend
 
 layout(matrix(1:3, nrow=1, ncol=3))
 
@@ -688,7 +691,7 @@ head(mtcars)</code></pre>
 <p>First, let’s plot fuel economy (mpg) as a function of vehicle weight:</p>
 <pre class="r"><code>## Plot fuel economy by weight
 
-plot(mpg~wt,  data=mtcars,pch=20,xlab=&quot;Vehicle weight (1000 lbs)&quot;,ylab=&quot;Fuel economy (mpg)&quot;)      # note the tilde, which can be read &quot;as a function of&quot; -- i.e., &quot;mpg as a function of wt&quot;   </code></pre>
+plot(mpg~wt,  data=mtcars,pch=20,xlab=&quot;Vehicle weight (1000 lbs)&quot;,ylab=&quot;Fuel economy (mpg)&quot;)      # note the tilde, which can be read &quot;as a function of&quot; -- i.e., &quot;plot mpg as a function of wt&quot;   </code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Now what if we want to look at another factor that might influence fuel economy: gross horsepower. We might imagine that cars with greater horsepower within a weight class will tend to have lower fuel economy. One way to do this is to use the size of the dots to indicate horsepower…</p>
 <pre class="r"><code>## Plot fuel economy by weight and horsepower
@@ -730,7 +733,7 @@ barplot(bar.heights, names.arg=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot
 <h2>Error bars</h2>
 <p>Adding error bars to our barplot. These can be added to scatter plots in a similar way. We’ll plot error bars representing 2 standard deviations from the expected value. The object that you called your barplot (<code>b</code>) is interpreted by R as the x values in the middle of each bar <code>b</code> (which are very hard to guess, as you’ll see!).</p>
 <p>We’ll use the <code>arrows()</code> function to add arrows to an existing plot. With some modifications, our arrows will have an arrowhead at each end (<code>code=3</code>), and the ‘arrowhead’ will actually be perpendicular to the arrow shaft (<code>angle=90</code>)</p>
-<pre class="r"><code>CI &lt;- 2 * by(iris$Sepal.Length, iris$Species, sd)
+<pre class="r"><code>CI &lt;- 2 * tapply(iris$Sepal.Length, iris$Species, sd)
 lwr &lt;- bar.heights - CI
 upr &lt;- bar.heights + CI
 
@@ -790,7 +793,7 @@ head(ToothGrowth)</code></pre>
 </div>
 <div id="bar-plots-challenge" class="section level3">
 <h3>Bar Plots Challenge</h3>
-<p>The following data represent survivorship of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:</p>
+<p>The following data represent survival of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:</p>
 <pre class="r"><code>prop &lt;- c(0.18, 0.25, 0.13, 0.05)
 asympLCL &lt;- c(0.14, 0.20, 0.11, 0.035)
 asympUCL &lt;- c(0.24, 0.33, 0.18, 0.09)</code></pre>

@@ -171,6 +171,8 @@ color.vector <- rep(x=plot.colors, each=50)
 plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector, 
      main="Plot of Iris colored by species (not!)")
 
+########
+# experiment with legends
 
 # ?legend
 
@@ -215,7 +217,7 @@ head(mtcars)
 
 ## Plot fuel economy by weight
 
-plot(mpg~wt,  data=mtcars,pch=20,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)")      # note the tilde, which can be read "as a function of" -- i.e., "mpg as a function of wt"   
+plot(mpg~wt,  data=mtcars,pch=20,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)")      # note the tilde, which can be read "as a function of" -- i.e., "plot mpg as a function of wt"   
  
 
 ## Plot fuel economy by weight and horsepower
@@ -255,7 +257,7 @@ barplot(bar.heights, names.arg=c("I. setosa", "I. versicolor", "I. virginica"),
         main="Sepal length for 3 Irises", ylab="Sepal length (cm)")
 
 
-CI <- 2 * by(iris$Sepal.Length, iris$Species, sd)
+CI <- 2 * tapply(iris$Sepal.Length, iris$Species, sd)
 lwr <- bar.heights - CI
 upr <- bar.heights + CI
 
