@@ -16,7 +16,7 @@
 ############################################
 
 
-?trees      # description of built in dataset
+# ?trees      # description of built in dataset  (uncomment to run)
 
 dim(trees)   # Show the dimension of the trees dataframe                                              
 
@@ -41,6 +41,8 @@ par()   # view the default graphical parameters (can be kind of overwhelming!)
 # Use "layout" to define a 2 row x 2 column matrix with elements 1, 2, 3, and 4.
 # This divides the image into four sections and then fills these with the plot function
 layout(matrix(1:4, nrow=2, ncol=2))
+
+# layout.show(4)   # uncomment to run
 
   # par(mfrow=c(2,2))  # (alternative way to do this)
 

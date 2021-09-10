@@ -51,7 +51,7 @@ We'll start with the 'trees' dataset, which is built into R. It describes the gi
 
 ```{r}
 
-?trees      # description of built in dataset
+# ?trees      # description of built in dataset  (uncomment to run)
 
 dim(trees)   # Show the dimension of the trees dataframe                                              
 
@@ -107,6 +107,8 @@ The default plot type for two quantitative variables is points (classic scatterp
 # This divides the image into four sections and then fills these with the plot function
 layout(matrix(1:4, nrow=2, ncol=2))
 
+# layout.show(4)   # uncomment to run
+
   # par(mfrow=c(2,2))  # (alternative way to do this)
 
 plot(x=trees$Girth, y=trees$Volume)             # points
@@ -147,7 +149,7 @@ plot(x=trees$Girth, y=trees$Volume, pch=11)     # star
 
 ```
 
-You might want to remember a couple favorites (for example, I like to use pch=19). Alternatively, you might consider saving a useful guide like this:
+You might want to remember a couple favorites (for example, I like to use pch=20). Alternatively, you might consider saving a useful guide like this:
 
 ![](points.png)
 
