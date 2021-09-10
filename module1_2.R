@@ -31,7 +31,7 @@ getwd()          # note: the results from running this command on my machine wil
 setwd(choose.dir())
 
 
-# Names of files in working directory
+# Contents of working directory
 dir()
 
 
@@ -69,7 +69,7 @@ head(brain.df)
 dim(brain.df)
 
 
-# Built in data files
+# Built-in data files
 data()   
 
 
@@ -79,7 +79,7 @@ data(mtcars)
 
 str(mtcars)    # examine the structure of this data object
 
-# ?mtcars        # learn more about this built-in data object
+# ?mtcars        # learn more about this built-in data set
 
 
 ####
@@ -145,8 +145,8 @@ load(file="Module2.RData")   # load the objects back!
 # <- assignment operator: required for functions
 # =  alternative assignment operator
 
-a <- 3     # assign the value "3" to the object "a"
-a = 3      # assign the value "3" to the object "a"
+a <- 3     # assign the value "3" to the object named "a"
+a = 3      # assign the value "3" to the object named "a"
 a == 3     # answer the question: "does the object "a" equal "3"? 
 a == 2
 
@@ -199,7 +199,7 @@ data.df[,2]==74    # tests each element of column to see whether it is equal to 
 which(data.df[,2]==74)       # elements of the data column that are equal to 74
 which(data.df[,2]!=74)       # elements of the data column that are NOT equal to 74
 which(data.df[,2]<74)        #  and so on...
-which((data.df[,2]<74)|(data.df[,2]==91))   # use the OR operator
+which((data.df[,2]<74)|(data.df[,2]==91))   # use the logical OR operator
 
 data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
@@ -281,10 +281,11 @@ bad.turtles.df
 ####  Data Manipulation using subsetting
 ####
 
-# Setting the length for all turtles with weight 5 or heavier to 48
+# Setting the body length for all turtles with weight 5 or heavier to 48
 turtles.df$carapace_length[which(turtles.df$weight >=5)] = 48
 
 # Sets the TRUE indexes from above to 2
+turtles.df$size.class <- NA
 turtles.df$size.class[turtles.df$weight >= 6] <- 1        # make a new variable "size.class" based on the "weight" variable  
 turtles.df$size.class[turtles.df$weight < 6] <- 2
 
@@ -439,4 +440,19 @@ class(newmat[1,])    # what? why is it no longer a matrix????
 
 newmat[1,,drop=FALSE]
 class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
+
+
+############
+### CHALLENGE EXERCISES
+############
+
+# 1: Create a new data frame by saving the file ["comm_data.txt"](comm_data.txt) to your working directory. For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: "Class","Downstream", "Upstream".
+# 
+# 2: Read in the file "turtle_data.txt', and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory. 
+#   
+# 3: I am trying to create a data frame with only male turtles using the "which()" function.  Would the following command work? Why or why not? What other method could I use to create this without using "which()"?
+
+# male_turtles <- turtles[,which(turtles$sex=="male")]  # uncomment this to run it...
+
+
 

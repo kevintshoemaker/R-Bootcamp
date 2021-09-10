@@ -60,7 +60,7 @@ getwd()          # note: the results from running this command on my machine wil
 
 ```
 
-What's yours? Usually the default working directory is your "Documents" folder. Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file).
+What's yours? Usually the default working directory is your "Documents" folder. Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file for your project).
 
 #### ASIDE: RStudio Projects
 
@@ -97,7 +97,7 @@ Once you have set the working directory, you can use the "dir()" function to see
 
 ```{r eval=FALSE}
 
-# Names of files in working directory
+# Contents of working directory
 dir()
 
 ```
@@ -120,7 +120,7 @@ Before we can read data in, we need to put some data files in our working direct
    - [Whitespace delimited data file](data.txt)      
    - [Comma delimited data file](data.csv)      
    
-2. Make sure the data files are stored in your working directory!
+2. Make sure the data files are stored in your working directory (project directory)!
    
 Once you have saved these files to your working directory, open one or two of them up (e.g., in Excel or a text editor) to see what's inside. 
 
@@ -178,7 +178,7 @@ R has many useful built-in data sets. You can explore these datasets with the fo
 
 ```{r eval=FALSE}
 
-# Built in data files
+# Built-in data files
 data()   
 
 
@@ -194,18 +194,18 @@ data(mtcars)
 
 str(mtcars)    # examine the structure of this data object
 
-# ?mtcars        # learn more about this built-in data object
+# ?mtcars        # learn more about this built-in data set
 
 ```
 
 
-#### Aside: Tips on naming objects in R
-1. No spaces within object names (same for column names in data files, use . or _ instead)       
+#### Aside: Tips on naming objects (and data frame columns) in R
+1. No spaces within object names (same for column names in data files) -- use dot or underscore instead!          
 2. Try not to name an object with a similar/same as a function (e.g. don't name your data "data.frame"). NOTE: this can be hard- there are lots of functions in base R!           
-3. Can't start object names with a number      
+3. Can't start object names (or column names in data frame) with a number      
 
 ## Basic data checking
-As you've already seen, data objects can be vectors, matrices, arrays, data frames, and lists.
+As you've already seen, data structures include vectors, matrices, arrays, data frames, and lists.
 
 *Elements* of vectors, matrices, etc. can represent numbers (numeric), characters, logicals (TRUE/FALSE), factors etc. 
 
@@ -278,7 +278,7 @@ write.table(data.df[,c("Country","Product")], file="data_export.csv", sep=",", c
 
 ### Saving (and loading) data
 
-The data loaded in your **R workspace** are stored in your computer's memory as **binary** representations that are efficient but not particulary human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data *outside* of R.
+The data loaded in your **R workspace** are stored in your computer's memory as **binary** representations that are efficient but not particularly human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data *outside* of R.
 
 To do this we can use the "save()" (or "save.image()") and "load()" functions in R:
 
@@ -340,8 +340,8 @@ NOTE: don't get confused between the equals sign ("="), which is an alternative 
 # <- assignment operator: required for functions
 # =  alternative assignment operator
 
-a <- 3     # assign the value "3" to the object "a"
-a = 3      # assign the value "3" to the object "a"
+a <- 3     # assign the value "3" to the object named "a"
+a = 3      # assign the value "3" to the object named "a"
 a == 3     # answer the question: "does the object "a" equal "3"? 
 a == 2
 
@@ -394,7 +394,7 @@ data.df[,2]==74    # tests each element of column to see whether it is equal to 
 
 Boolean operations are great for subsetting data - that is, we can select only those rows/observations that meet a certain condition (where [some condition] is TRUE). 
 
-The useful "which()" function returns the indices of a vector that meet a certain spedified condition. Here's how it works:
+The useful "which()" function returns the indices of a vector that meet a certain specified condition. Here's how it works:
 
 
 ```{r}
@@ -409,7 +409,7 @@ The useful "which()" function returns the indices of a vector that meet a certai
 which(data.df[,2]==74)       # elements of the data column that are equal to 74
 which(data.df[,2]!=74)       # elements of the data column that are NOT equal to 74
 which(data.df[,2]<74)        #  and so on...
-which((data.df[,2]<74)|(data.df[,2]==91))   # use the OR operator
+which((data.df[,2]<74)|(data.df[,2]==91))   # use the logical OR operator
 
 data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
@@ -458,7 +458,7 @@ data.df[indices,]          # print all data for a subset of observations
 ```
 
 
-## Practice exercise!
+## More practice with data processing!
 
 Let's practice some of what we've learned. Here we will use a different data file. Take a couple minutes to make sure you understand this code.  
 
@@ -517,10 +517,11 @@ We can use subsetting operations to manipulate (alter) data- for example, to cor
 ####  Data Manipulation using subsetting
 ####
 
-# Setting the length for all turtles with weight 5 or heavier to 48
+# Setting the body length for all turtles with weight 5 or heavier to 48
 turtles.df$carapace_length[which(turtles.df$weight >=5)] = 48
 
 # Sets the TRUE indexes from above to 2
+turtles.df$size.class <- NA
 turtles.df$size.class[turtles.df$weight >= 6] <- 1        # make a new variable "size.class" based on the "weight" variable  
 turtles.df$size.class[turtles.df$weight < 6] <- 2
 
@@ -712,7 +713,9 @@ detach(data.df)   # Remember to detach
 BUT this just leads to problems in the end. Our recommendation: just don't use it!!
 
 
-2. When reading in data, R automatically codes character data (any column containing even one character element) as a **factor**. This often leads to problems, since factor data (while sometimes useful) are actually integers and can confuse novice and expert R users alike. This is one of the most common problems that new R users face! 
+2. When reading in data, R automatically codes character data (any column containing even one character element) as a **factor**. This often leads to problems, since factor data (while sometimes useful) are actually integers and can confuse novice and expert R users alike. This is one of the most common problems that new R users face!
+
+NOTE: newer versions of R read in character data as character data, so this is no longer as big a problem!
 
 My recommendation is that, when reading in data, use the function argument "stringsAsFactors=FALSE" so that R reads these variables in as character strings rather than as factors: 
 
@@ -758,6 +761,25 @@ male_turtles <- turtles[,which(turtles$sex=="male")]
 Why or why not? 
 
 What other method could I use to create this without using "which()"?
+
+
+```{r}
+
+############
+### CHALLENGE EXERCISES
+############
+
+# 1: Create a new data frame by saving the file ["comm_data.txt"](comm_data.txt) to your working directory. For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: "Class","Downstream", "Upstream".
+# 
+# 2: Read in the file "turtle_data.txt', and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory. 
+#   
+# 3: I am trying to create a data frame with only male turtles using the "which()" function.  Would the following command work? Why or why not? What other method could I use to create this without using "which()"?
+
+# male_turtles <- turtles[,which(turtles$sex=="male")]  # uncomment this to run it...
+
+
+
+```
 
 
 
