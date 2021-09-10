@@ -62,7 +62,7 @@ Let's get started!!
 
 ## Explore the R console
 
-The R console (what you see if you opened R directly without going through RStudio) is a **command line** interface, and is *your direct connection with the R statistical programming language*. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make effective use of the console! In fact, after this short demo you will rarely interact directly with the console (instead, you will use a script!)!
+The R console (what you see if you opened R directly without going through RStudio) is a **command line** interface, and is *your direct connection with the R statistical programming language*. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make effective use of R! In fact, after this short demo you will rarely interact directly with the console (instead, you will use scripts!)!
 
 The R console is located in the left half or bottom left of the RStudio interface (see figure above). 
 
@@ -117,13 +117,13 @@ Now highlight the text you just wrote (or place the cursor somewhere within the 
 
 Click on a new (blank) line in the script and type `2+2`. Now hit "Ctrl+Enter" (or "Command+Enter") to run the line of code. 
 
-Of course, it's always a good idea to save your scripts often -- make sure to save your new script before you move on.
+Of course, it's always a good idea to save your scripts often -- so feel free to save your new script before you move on.
 
 ### Load Existing script
 
 Remember the file you downloaded at the beginning of this submodule? That file is an R script- Let's load it up now!  
 
-To do this, click on the "folder" icon on the Rstudio toolbar (or File>>Open File) and choose the script you downloaded earlier.
+To do this, click on the "folder" icon on the Rstudio toolbar (or File >> Open File) and choose the script you downloaded earlier.
 
 The first few lines (commands) of the script for this module are preceded by pound signs. R doesn't do anything with these commands- they are called **comments**, and they help to keep code clear, organized and understandable to human readers. 
 
@@ -167,8 +167,8 @@ Next, we can examine the data object in r. Again, we will get into this in much 
 #########
 # explore the data object
 
-summary(trees)
-str(trees)
+summary(trees)    # summary statistics for all variables in data frame
+str(trees)        # summary of the data structure
 
 ```
 
@@ -186,7 +186,7 @@ hist(trees$Height)                       # visualize the distribution of height 
 hist(trees$Girth)                        # visualize the distribution of girth data
 hist(trees$Volume)                       # visualize the distribution of volume data
 
-   # scatterplots:
+   # bivariate scatterplots:
 
 layout(matrix(1:2,nrow=1,byrow = T))      # set graphics device with 2 plots side by side
 plot(trees$Volume~trees$Girth)            # scatterplot of volume against girth
@@ -210,6 +210,19 @@ summary(model1)    # examine the results
 
 ```
 
+Then we can perform some diagnostic tests to make sure the data meet the assumptions of the analysis:
+
+```{r}
+
+######
+# test key assumptions visually
+
+layout(matrix(1:4,nrow=2,byrow=T))  # set up graphics window
+plot(model1)  # run diagnostic plots for our regression
+
+```
+
+
 And finally, let's visualize the results:
 
 ```{r}
@@ -223,7 +236,7 @@ pred <- predict(model1,newdata=data.frame(Girth=xvals),interval = "confidence",l
 plot(trees$Volume~trees$Girth,xlab="Girth (inches)",ylab="Volume (cubic feet)",main="Black Cherry",
      xlim=range(xvals),ylim=c(0,100))         # Make a pretty scatterplot
 
-abline(model1,lwd=2,col="brown")                # Add the regression line
+abline(model1,lwd=2,col="brown")              # Add the regression line
 lines(xvals,pred[,"upr"],col="brown",lty=2)       # Add the upper bound of the confidence interval
 lines(xvals,pred[,"lwr"],col="brown",lty=2)       #      ... and the lower bound
 text(10,80,sprintf("Volume = %s + %s*Girth",round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))       # Add the regression coefficients
@@ -244,13 +257,15 @@ The workspace (environment) panel window in R can become cluttered as we create 
 
 R has many different kinds of objects that you can define and store in memory. These are the building blocks of the language. 
 
-Object **classes** that enable storage of information and data (data storage structures) are: *scalars*, *vectors*, *matrices*, *lists*, and *data frames*.
+Object **classes** that enable storage of information and data (data storage structures) include: *scalars*, *vectors*, *matrices*, *lists*, and *data frames*.
 
 Objects that transform data and perform data operations/statistics/visualizations etc. are called *functions*.
 
+ASIDE: if you are familiar with encapsulated object-oriented programming in C++/Python/Javascript then it may take you a while to feel comfortable with R, as it is much more oriented to functional programming (which is well suited for data analysis!). 
+
 ### Data types
 
-It is important to note that all R data objects have a property called **type** (sometimes refered to as data types), which describes the type of data that is stored within the object. The most common data types in R are:
+It is important to note that all R data objects have a property called **type** (sometimes referred to as data types), which describes the type of data that is stored within the object. The most common data types in R are:
 
 + "numeric" (numbers)      
 + "character" (text strings)
@@ -298,10 +313,10 @@ typeof(scalar5)    # returns: logical
 
 Again, scalars can contain any of the most common data types:
 
-* numeric (2, 8.2)
-* character ('a', 'scalar')
-* logical (`TRUE`, `FALSE`)
-* factor (factor("a",levels="a"))  [NOTE: we'll cover factors in more detail later. Scalar factors are not really useful!]
+* numeric (2, 8.2)    
+* character ('a', 'scalar')     
+* logical (`TRUE`, `FALSE`)      
+* factor (factor("a",levels=c("a","b")))  [NOTE: we'll cover factors in more detail later. Scalar factors are not really useful!]    
 
 What happens when we try and add `scalar2` and `scalar4`? Think about the types of each scalar. Run the code below to find out.
 
@@ -386,6 +401,7 @@ d4    # returns: 2 4 4
 
 ```
 
+
 *NOTE: the last command we ran, "d1+c(1,2)", produced a **warning message**. Remember to take warning messages seriously- a warning message means "the command ran but the results might not make sense"! In this case, the warning was that we tried to add two vectors of different length. R's default is to repeat (recycle) the shorter vector until it matches the length of the longer vector.*
 
 
@@ -408,7 +424,7 @@ class(d.mat)   # confirm that the new object "d.mat" is a matrix!
 
 ```
 
-And there are other ways to make a matrix in R. For instance, we can use the function "matrix":
+And there are other ways to make a matrix in R. For instance, we can use the function "matrix()" (this is a constructor function for matrices):
 
 ```{r}
 
@@ -418,7 +434,7 @@ d.mat
 d.mat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way (stack rows together)
 d.mat
 
-d.mat <- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way
+d.mat <- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way (stacking three vectors)
 d.mat
 
 ```
@@ -427,14 +443,16 @@ We can do math with matrices too:
 
 ```{r}
 
+# math with matrices
+
 d.mat + 2
 d.mat/sum(d.mat)
 
 ```
 
-#### Arrays
+#### Multi-dimensional arrays
 
-We can structure information in more than two dimensions using objects of the "array" class. Again, all elements of an array must be of the same data type.
+We can structure information in more than two dimensions using objects of the "array" class. Again, all elements of an array must be of the _same data type_.
 
 ```{r}
 
@@ -458,7 +476,7 @@ d.array[1,,]    # view a slice of the array
 
 #### Lists
 
-**List objects** are far more general than either matrices or arrays. **List** objects are just a bunch of potentially unrelated objects grouped together! The elements of a list don't even need to be the same length or the same **type**. The elements of a list can be vectors, arrays, matrices, functions, or other lists - they could be literally any R object.  
+**List objects** are far more general than either matrices or arrays. **List** objects are just a bunch of potentially unrelated R data objects grouped together! The elements of a list don't even need to be the same length or the same **type**. The elements of a list can be vectors, arrays, matrices, functions, or other lists - they could be literally any R object.  
 
 Let's make our first list:
 
@@ -469,7 +487,7 @@ Let's make our first list:
 #############
 
 d.list <- list()        # create empty list
-d.list[[1]] <- c(1,2,3)     # note the double brackets- this is one way to reference a specified list element. 
+d.list[[1]] <- c(1,2,3)     # note the double brackets- this is one way to reference and define a specified list element. 
 d.list[[2]] <- c(4,5)
 d.list[[3]] <- "Alfred Pennyworth"
 d.list
@@ -483,7 +501,7 @@ d.list
 
 _Data frames are the basic data storage structure in R_. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on that observation unit. 
 
-Let's make our first data frame. We will use the function "data.frame()". 
+Let's make our first data frame. We will use the constructor function "data.frame()". 
 
 ```{r}
 
@@ -497,7 +515,7 @@ d.df
 
 Now we have a data frame with three observation units and two measurements (variables).
 
-Alternatively, we can convert a matrix to a data frame:
+Alternatively, we can convert (coerce) a matrix to a data frame:
 
 ```{r}
 
@@ -527,7 +545,7 @@ d.df
 
 ### Functions
 
-Functions are an essential building block in R. Without functions we would need to write out every bit of logic for everything we want to accomplish in R. We've already used a few functions (`typeof`, `c`) without fully understanding what they are. That is about to change!
+Functions are an essential building block in R. We've already used a few functions (`typeof`, `c`) without fully understanding what they are. That is about to change!
 
 Functions are essentially machines that take any inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. The basic syntax looks like the code snippet below.
 
@@ -562,7 +580,7 @@ help(sum)
 
 ```
 
-We will revisit functions in more detail in the "Programming" submodule.
+We will revisit functions in more detail (and build our own functions) in the "Programming" submodule.
 
 ## Making up data!
 
@@ -579,9 +597,9 @@ One task that comes up a lot is generating sequences of numbers. We certainly do
 #############
 
 #######
-# Sequences
+# Generating vector sequences
 
-1:10                        # sequence from 1 to 10
+1:10                        # sequential vector from 1 to 10
 10:1                        # reverse the order
 rev(1:10)                   # a different way to reverse the order
 
@@ -599,7 +617,7 @@ Another task is to group regular recurring sequences together:
 ```{r}
 
 ##############
-# Repeating sequences
+# Repeating vector sequences
 
 rep(0,times=3)                # repeat 0 three times
 rep(1:3,times=2)              # repeat 1:3 two times
@@ -642,7 +660,7 @@ And finally, we can make up a fake data frame using some of the tricks we just l
 ```{r}
 
 ############
-# Make up an entire data frame!
+# Make up an entire fake data frame!
 
 
 my.data <- data.frame(
@@ -673,7 +691,7 @@ To access a particular element of a vector, we just enclose the element(s) we wa
 ### Accessing, indexing and subsetting data
 ############
 
-# X[i]         access the ith element of X
+# X[i]         access the ith element of vector X
 
 d.vec <- 2:10
 d.vec
@@ -727,14 +745,14 @@ d.df[["Germination"]]      # same thing!
 d.df[,4]                   # same thing!
 d.df[[4]]                  # same thing!
 d.df[,"Germination"]       # same thing!
-d.df["Germination"]        # same thing!  (or is it...)
+d.df["Germination"]        # same thing!  (or is it...??)
 
 
 d.df$AvgHeight
 d.df$AvgHeight[3]  # subset an element of a data frame
 
 
-# Data frame can be indexed just like a matrix
+# Data frame can also be indexed just like a matrix
 d.df[,2]
 d.df[2,]
 d.df[,2:3]
@@ -768,6 +786,10 @@ str(my.data)      # look at the "internals" of an object (useful for making sens
 Here are some basic mathematical operations you can do in R:
 
 ```{r results=F}
+
+########
+# basic mathematical operations
+
 2+3              # addition
           
 6-10             # subtraction
@@ -821,11 +843,11 @@ c(3,6)
 
 ### Challenge 4: Create a 3 by 1 (3 rows, 1 column) matrix called 'd.mat3' with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command '1:3')? HINT: use the "dim()" function, which returns the dimensionality of an object.
 
-### Challenge 5: Take your matrix 'd.mat2' and convert it to a vector containing all elements in the matrix. HINT: use the "as.vector()" function.
+### Challenge 5: Take your matrix 'd.mat2' and convert (coerce) it to a vector containing all elements in the matrix. HINT: use the "as.vector()" function.
 
 ### Challenge 6: Create a list named 'd.list' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).
 
-### Challenge 7: Extract (subset) the 2nd row of the 3rd matrix in the array in 'd.list' (the list created in challenge 6 above).
+### Challenge 7: Extract (subset) the 2nd row of the 3rd matrix in the array in 'd.list' (the list created in challenge 6 above). For this exercise, please consider the array to be indexed as [row #, column #, matrix #]. 
 
 ### Challenge 8: (extra challenging!) Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
@@ -849,7 +871,7 @@ c(3,6)
 6. Create a list named 'd.list' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).
 
 
-7. Extract (subset) the 2nd row of the 3rd matrix in the array in 'd.list' (the list created in challenge 6 above).
+7. Extract (subset) the 2nd row of the 3rd matrix in the array in 'd.list' (the list created in challenge 6 above). For this exercise, please consider the array to be indexed as [row #, column #, matrix #]. 
 
 
 8. (extra challenging!) Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 

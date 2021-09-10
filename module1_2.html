@@ -14,12 +14,22 @@
 
 <title>Module 1.2</title>
 
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,12 +37,16 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -45,32 +59,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -80,10 +69,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -100,40 +85,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 61px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h2 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h3 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h4 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h5 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h6 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -161,7 +119,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -173,7 +131,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -184,10 +142,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -199,7 +170,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -325,7 +295,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -344,7 +314,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2021</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -446,13 +416,13 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
 <h1 class="title toc-ignore">Module 1.2</h1>
 <h4 class="author">Getting started: managing data</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2021</h4>
 
 </div>
 
@@ -472,7 +442,7 @@ div.tocify {
 <p>A working directory is the folder that R uses for reading or writing files if no other directory information is specified. Every R session has a working directory, whether you specify one or not. Let’s find out what my working directory is right now:</p>
 <pre class="r"><code># Find the directory you&#39;re working in 
 getwd()          # note: the results from running this command on my machine will probably differ from yours!  </code></pre>
-<pre><code>## [1] &quot;C:/Users/Kevin/Documents/GitHub/R-Bootcamp&quot;</code></pre>
+<pre><code>## [1] &quot;E:/GIT/R-Bootcamp&quot;</code></pre>
 <p>What’s yours? Usually the default working directory is your “Documents” folder. Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file).</p>
 <div id="aside-rstudio-projects" class="section level4">
 <h4>ASIDE: RStudio Projects</h4>
@@ -603,10 +573,10 @@ class(data.df)</code></pre>
 <pre class="r"><code># ?str: displays the internal structure of the data object
 str(data.df)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    20 obs. of  4 variables:
-##  $ Country: Factor w/ 20 levels &quot;Bolivia&quot;,&quot;Brazil&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ Country: chr  &quot;Bolivia&quot; &quot;Brazil&quot; &quot;Chile&quot; &quot;Colombia&quot; ...
 ##  $ Import : int  46 74 89 77 84 89 68 70 60 55 ...
 ##  $ Export : int  0 0 16 16 21 15 14 6 13 9 ...
-##  $ Product: Factor w/ 2 levels &quot;A&quot;,&quot;N&quot;: 2 2 2 1 1 1 1 1 1 1 ...</code></pre>
+##  $ Product: chr  &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;A&quot; ...</code></pre>
 <p>As we’ve already seen, we can use the “head()” function to see the first few rows of our data (or the “tail()” function to see the last few rows):</p>
 <pre class="r"><code># ?head: displays first n elements of object (default=6)
 head(data.df)</code></pre>
@@ -632,14 +602,13 @@ tail(data.df)</code></pre>
 ## 20      Venezuela     91      7       N</code></pre>
 <p>And we can use the “summary()” function to get a brief summary of what’s in our data frame:</p>
 <pre class="r"><code>summary(data.df)</code></pre>
-<pre><code>##       Country       Import         Export      Product
-##  Bolivia  : 1   Min.   :35.0   Min.   : 0.00   A:13   
-##  Brazil   : 1   1st Qu.:66.0   1st Qu.: 3.00   N: 7   
-##  Chile    : 1   Median :74.0   Median : 8.00          
-##  Colombia : 1   Mean   :72.1   Mean   : 9.55          
-##  CostaRica: 1   3rd Qu.:84.0   3rd Qu.:15.25          
-##  Cuba     : 1   Max.   :91.0   Max.   :23.00          
-##  (Other)  :14</code></pre>
+<pre><code>##    Country              Import         Export        Product         
+##  Length:20          Min.   :35.0   Min.   : 0.00   Length:20         
+##  Class :character   1st Qu.:66.0   1st Qu.: 3.00   Class :character  
+##  Mode  :character   Median :74.0   Median : 8.00   Mode  :character  
+##                     Mean   :72.1   Mean   : 9.55                     
+##                     3rd Qu.:84.0   3rd Qu.:15.25                     
+##                     Max.   :91.0   Max.   :23.00</code></pre>
 </div>
 <div id="exporting-and-saving-data-in-r" class="section level2">
 <h2>Exporting and saving data in R</h2>
@@ -785,10 +754,8 @@ which(data.df[,1]==&quot;Chile&quot;) </code></pre>
 <pre><code>## [1] 3</code></pre>
 <pre class="r"><code># This command doesn&#39;t work because sub.countries is a vector, not a single character string. 
 which (data.df[,1]==sub.countries) </code></pre>
-<pre><code>## Warning in `==.default`(data.df[, 1], sub.countries): longer object length
-## is not a multiple of shorter object length</code></pre>
-<pre><code>## Warning in is.na(e1) | is.na(e2): longer object length is not a multiple of
-## shorter object length</code></pre>
+<pre><code>## Warning in data.df[, 1] == sub.countries: longer object length is not a multiple
+## of shorter object length</code></pre>
 <pre><code>## integer(0)</code></pre>
 <p>When we want all elements of a vector that match one of a group (vector) of possibilities, we use the “%in%” operator:</p>
 <pre class="r"><code># Instead we use %in%
@@ -904,8 +871,8 @@ turtles.df$size.class</code></pre>
 
 # Sort works for ordering along one vector
 sort(turtles.df$carapace_length)  </code></pre>
-<pre><code>##  [1] 24.3 28.0 28.7 29.2 32.0 32.0 35.0 35.1 48.0 48.0 48.0 48.0 48.0 48.0
-## [15] 48.0 48.0 48.0 48.0 48.0 48.0 48.0</code></pre>
+<pre><code>##  [1] 24.3 28.0 28.7 29.2 32.0 32.0 35.0 35.1 48.0 48.0 48.0 48.0 48.0 48.0 48.0
+## [16] 48.0 48.0 48.0 48.0 48.0 48.0</code></pre>
 <pre class="r"><code># Order returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
 order(turtles.df$carapace_length)</code></pre>
 <pre><code>##  [1]  3 10  4 20  5 12 13 14  1  2  6  7  8  9 11 15 16 17 18 19 21</code></pre>
@@ -1025,14 +992,14 @@ missing.df &lt;- missing.df[!complete.cases(missing.df),]
 
 # Can summarize your data and tell you how many NA&#39;s per col
 summary(missing.mean.df)</code></pre>
-<pre><code>##       Country       Import          Export      Product
-##  Bolivia  : 1   Min.   :35.00   Min.   : 0.00   A:13   
-##  Brazil   : 1   1st Qu.:60.00   1st Qu.: 3.75   N: 7   
-##  Chile    : 1   Median :74.00   Median :10.22          
-##  Colombia : 1   Mean   :70.53   Mean   :10.22          
-##  CostaRica: 1   3rd Qu.:84.00   3rd Qu.:15.25          
-##  Cuba     : 1   Max.   :89.00   Max.   :23.00          
-##  (Other)  :14   NA&#39;s   :3</code></pre>
+<pre><code>##    Country              Import          Export        Product         
+##  Length:20          Min.   :35.00   Min.   : 0.00   Length:20         
+##  Class :character   1st Qu.:60.00   1st Qu.: 3.75   Class :character  
+##  Mode  :character   Median :74.00   Median :10.22   Mode  :character  
+##                     Mean   :70.53   Mean   :10.22                     
+##                     3rd Qu.:84.00   3rd Qu.:15.25                     
+##                     Max.   :89.00   Max.   :23.00                     
+##                     NA&#39;s   :3</code></pre>
 <pre class="r"><code># Summarize one individual col
 summary(missing.mean.df$Export)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -1142,7 +1109,7 @@ detach(data.df)   # Remember to detach</code></pre>
 
 newmat &lt;- matrix(c(1:6),nrow=3,byrow = T)
 class(newmat)</code></pre>
-<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
 <pre class="r"><code>newmat[1,]</code></pre>
 <pre><code>## [1] 1 2</code></pre>
 <pre class="r"><code>class(newmat[1,])    # what? why is it no longer a matrix????</code></pre>
@@ -1151,7 +1118,7 @@ class(newmat)</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2</code></pre>
 <pre class="r"><code>class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! </code></pre>
-<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
 <p>This default behavior in R can lead to enormous problems when programming in R- just remember that the “drop=FALSE” argument can be your friend!!!</p>
 </div>
 <div id="challenge-exercises" class="section level2">
@@ -1176,7 +1143,7 @@ class(newmat)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1194,7 +1161,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -1203,6 +1170,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

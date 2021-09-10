@@ -1,7 +1,7 @@
 ---
 title: "Module 1.4"
 author: "Basic programming in R"
-date: "Fall 2020"
+date: "Fall 2021"
 output: 
   html_document: 
     theme: journal
