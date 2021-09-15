@@ -14,12 +14,22 @@
 
 <title>Module 1.4</title>
 
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,12 +37,16 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -45,32 +59,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -80,10 +69,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -100,40 +85,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 61px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h2 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h3 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h4 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h5 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h6 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -161,7 +119,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -173,7 +131,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -184,10 +142,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -199,7 +170,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -325,7 +295,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -344,7 +314,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2021</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -446,13 +416,13 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
 <h1 class="title toc-ignore">Module 1.4</h1>
 <h4 class="author">Basic programming in R</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2021</h4>
 
 </div>
 
@@ -551,27 +521,23 @@ x &lt;- seq(from = 0, to = 1, by = 0.01)
 ## Caclulate the logit of a vector.
 logit.x &lt;- logit(x)
 logit.x</code></pre>
-<pre><code>##   [1]        -Inf -4.59511985 -3.89182030 -3.47609869 -3.17805383
-##   [6] -2.94443898 -2.75153531 -2.58668934 -2.44234704 -2.31363493
-##  [11] -2.19722458 -2.09074110 -1.99243016 -1.90095876 -1.81528997
-##  [16] -1.73460106 -1.65822808 -1.58562726 -1.51634749 -1.45001018
-##  [21] -1.38629436 -1.32492541 -1.26566637 -1.20831121 -1.15267951
-##  [26] -1.09861229 -1.04596856 -0.99462258 -0.94446161 -0.89538405
-##  [31] -0.84729786 -0.80011930 -0.75377180 -0.70818506 -0.66329422
-##  [36] -0.61903921 -0.57536414 -0.53221681 -0.48954823 -0.44731222
-##  [41] -0.40546511 -0.36396538 -0.32277339 -0.28185115 -0.24116206
-##  [46] -0.20067070 -0.16034265 -0.12014431 -0.08004271 -0.04000533
-##  [51]  0.00000000  0.04000533  0.08004271  0.12014431  0.16034265
-##  [56]  0.20067070  0.24116206  0.28185115  0.32277339  0.36396538
-##  [61]  0.40546511  0.44731222  0.48954823  0.53221681  0.57536414
-##  [66]  0.61903921  0.66329422  0.70818506  0.75377180  0.80011930
-##  [71]  0.84729786  0.89538405  0.94446161  0.99462258  1.04596856
-##  [76]  1.09861229  1.15267951  1.20831121  1.26566637  1.32492541
-##  [81]  1.38629436  1.45001018  1.51634749  1.58562726  1.65822808
-##  [86]  1.73460106  1.81528997  1.90095876  1.99243016  2.09074110
-##  [91]  2.19722458  2.31363493  2.44234704  2.58668934  2.75153531
-##  [96]  2.94443898  3.17805383  3.47609869  3.89182030  4.59511985
-## [101]         Inf</code></pre>
+<pre><code>##   [1]        -Inf -4.59511985 -3.89182030 -3.47609869 -3.17805383 -2.94443898
+##   [7] -2.75153531 -2.58668934 -2.44234704 -2.31363493 -2.19722458 -2.09074110
+##  [13] -1.99243016 -1.90095876 -1.81528997 -1.73460106 -1.65822808 -1.58562726
+##  [19] -1.51634749 -1.45001018 -1.38629436 -1.32492541 -1.26566637 -1.20831121
+##  [25] -1.15267951 -1.09861229 -1.04596856 -0.99462258 -0.94446161 -0.89538405
+##  [31] -0.84729786 -0.80011930 -0.75377180 -0.70818506 -0.66329422 -0.61903921
+##  [37] -0.57536414 -0.53221681 -0.48954823 -0.44731222 -0.40546511 -0.36396538
+##  [43] -0.32277339 -0.28185115 -0.24116206 -0.20067070 -0.16034265 -0.12014431
+##  [49] -0.08004271 -0.04000533  0.00000000  0.04000533  0.08004271  0.12014431
+##  [55]  0.16034265  0.20067070  0.24116206  0.28185115  0.32277339  0.36396538
+##  [61]  0.40546511  0.44731222  0.48954823  0.53221681  0.57536414  0.61903921
+##  [67]  0.66329422  0.70818506  0.75377180  0.80011930  0.84729786  0.89538405
+##  [73]  0.94446161  0.99462258  1.04596856  1.09861229  1.15267951  1.20831121
+##  [79]  1.26566637  1.32492541  1.38629436  1.45001018  1.51634749  1.58562726
+##  [85]  1.65822808  1.73460106  1.81528997  1.90095876  1.99243016  2.09074110
+##  [91]  2.19722458  2.31363493  2.44234704  2.58668934  2.75153531  2.94443898
+##  [97]  3.17805383  3.47609869  3.89182030  4.59511985         Inf</code></pre>
 <pre class="r"><code>## Plot x on x-axis, and logit(x) on y axis.
 plot(x, logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;logit(x)&quot;)    # View the output graphically.</code></pre>
 <p><img src="module1_4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
@@ -618,7 +584,7 @@ d &lt;- sample(0:50, 10, replace = TRUE)   # note use of &quot;sample()&quot; fu
 n &lt;- rep(100, times=10)                 # total number of individuals 
 surv &lt;- survival(n = n, d = d)
 surv</code></pre>
-<pre><code>##  [1] 0.90 0.60 0.81 0.84 0.76 0.69 0.82 0.94 0.96 0.92</code></pre>
+<pre><code>##  [1] 0.98 0.90 0.67 0.50 0.93 0.92 0.66 0.52 0.53 0.90</code></pre>
 <pre class="r"><code>## Plot year-specific survival rate (random- will look different every time!)
 plot(1:10, surv, type = &#39;l&#39;,xlab=&quot;Year&quot;,ylab=&quot;Survival&quot;)</code></pre>
 <p><img src="module1_4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
@@ -760,7 +726,7 @@ xt</code></pre>
 <p>The basic syntax for iterating in R is called a “FOR loop”, and looks like this:</p>
 <pre><code>
 for([iteration variable] in [iteration vector of length x]){
-  [perform specified operation(s) x times, with the iteration variable alternately set at each value of the iteration vector]
+  [perform specified operation(s) x times, with the iteration variable set at each value of the iteration vector in succession]
 }
 </code></pre>
 <p>For example…</p>
@@ -817,7 +783,7 @@ for(i in 1:n.iter){
 <p>Essentially, R starts this FOR loop by setting the value of the placeholder <em>iteration variable</em> “i” to the first value of the <em>iteration vector</em> (i.e., the value 1). It then runs the two commands in the body of the for loop [count &lt;- count+1; print(count)]. Then, it sets the iteration variable “i” to the next value in the <em>iteration vector</em> (i.e., the value 2) and runs the commands again. It keeps doing this until it reaches the end of the iteration vector, at which point it stops!</p>
 <p>It is often useful to reference the iteration variable directly within the FOR loop. Here are some examples:</p>
 <pre class="r"><code>## Using the iteration variable &quot;i&quot; within the for loop:
-
+n.iter &lt;- 5
 count &lt;- 0
 for(i in 1:n.iter){
   count &lt;- count+i            # assign a new value of count equal to the old value of count + i
@@ -827,12 +793,7 @@ for(i in 1:n.iter){
 ## [1] 3
 ## [1] 6
 ## [1] 10
-## [1] 15
-## [1] 21
-## [1] 28
-## [1] 36
-## [1] 45
-## [1] 55</code></pre>
+## [1] 15</code></pre>
 <pre class="r"><code>## A for-loop for dependent sequence (here, the Fibonacci sequence)
 n.iter &lt;- 10
 x &lt;- rep(0, n.iter)           # set up vector of all zeros
@@ -846,7 +807,7 @@ x</code></pre>
 <div id="iterating-using-the-apply-family-of-functions-in-r" class="section level3">
 <h3>Iterating using the “apply() family of functions in R”</h3>
 <pre class="r"><code>###
-### apply (A more efficient way to iterate)
+### apply (another way to iterate)
 ###
 
 W &lt;- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
@@ -887,7 +848,7 @@ lapply(1:5,function(x) exp(x)) </code></pre>
 ## 
 ## [[5]]
 ## [1] 148.4132</code></pre>
-<pre class="r"><code>lapply(1:5, function(x) sqrt(trees$Volume[x]))</code></pre>
+<pre class="r"><code>lapply(1:5, function(t) sqrt(trees$Volume[t]))</code></pre>
 <pre><code>## [[1]]
 ## [1] 3.209361
 ## 
@@ -903,10 +864,14 @@ lapply(1:5,function(x) exp(x)) </code></pre>
 ## [[5]]
 ## [1] 4.335897</code></pre>
 <pre class="r"><code>##########
-# sapply: apply a function across a list or vector, and simplify the returned object (usually returns a vector)
+# sapply: same thing as &#39;lapply&#39; but simplifies the returned object (into a vector if possible)
 
-sapply(1:5,function(x) exp(x)) </code></pre>
-<pre><code>## [1]   2.718282   7.389056  20.085537  54.598150 148.413159</code></pre>
+mylist &lt;- list()
+mylist[[1]] &lt;- seq(-1,1,length=10)
+mylist[[2]] &lt;- c(1,.5,-.4)
+mylist[[3]] &lt;- matrix(rnorm(12),nrow=3)
+sapply(mylist,function(x) sum(exp(x))) </code></pre>
+<pre><code>## [1] 12.163382  5.037323 17.580375</code></pre>
 <pre class="r"><code>#########
 # tapply: summarize a vector by group (apply a summary function separately to each group)
 
@@ -916,11 +881,11 @@ df.new &lt;- data.frame(
 )
 tapply(df.new$var1,df.new$group,sum)</code></pre>
 <pre><code>##        A        B 
-## 2.948623 1.336062</code></pre>
+## 1.902469 2.777040</code></pre>
 </div>
 </div>
-<div id="practice-exercises" class="section level2">
-<h2>Practice exercises</h2>
+<div id="more-practice" class="section level2">
+<h2>More Practice</h2>
 <div id="using-conditional-statements" class="section level3">
 <h3>Using conditional statements</h3>
 <div id="reject-null-hypothesis" class="section level4">
@@ -929,7 +894,7 @@ tapply(df.new$var1,df.new$group,sum)</code></pre>
 <p>In the example below, we simulate data (n=100) from a normal distribution with mean of 1, and we use a Student’s t-test to assess whether or not we can reject the null hypothesis that the data were derived from a distribution with mean of zero. Here, the <em>test statistic</em> is the t-statistic (representing the standardized difference of the sample mean from zero), and the <em>critical value</em> is determined as a pre-specified quantile of the “t” distribution (here, we use a two-tailed test holding alpha=0.05).</p>
 <p>The act of rejecting or failing to reject a null hypothesis is an instance of conditional logic (if…then…else). Let’s see how we might implement this test in R:</p>
 <pre class="r"><code>####################
-####  Practice exercises ####
+####  More Practice ####
 ####################
 
 
@@ -967,26 +932,26 @@ habitat &lt;- rnorm(20, 0, 2)    # simulate environmental covariate
 Data &lt;- cbind(observations, habitat)       # bind into single matrix.
 Data</code></pre>
 <pre><code>##                                                 habitat             
-##  [1,] &quot;Detected&quot;    &quot;1&quot;           &quot;Detected&quot;    &quot;-1.31838013069218&quot; 
-##  [2,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-0.959218095366536&quot;
-##  [3,] &quot;1&quot;           &quot;Detected&quot;    &quot;Detected&quot;    &quot;2.31665529967448&quot;  
-##  [4,] &quot;0&quot;           &quot;Detected&quot;    &quot;Detected&quot;    &quot;-0.600024626226216&quot;
-##  [5,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;1&quot;           &quot;-1.19162607148504&quot; 
-##  [6,] &quot;1&quot;           &quot;1&quot;           &quot;Detected&quot;    &quot;0.952650163756112&quot; 
-##  [7,] &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;1&quot;           &quot;3.31960806917777&quot;  
-##  [8,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-2.82432188658575&quot; 
-##  [9,] &quot;NotDetected&quot; &quot;1&quot;           &quot;Detected&quot;    &quot;2.00889649628675&quot;  
-## [10,] &quot;0&quot;           &quot;0&quot;           &quot;NotDetected&quot; &quot;3.37380275696964&quot;  
-## [11,] &quot;1&quot;           &quot;1&quot;           &quot;NotDetected&quot; &quot;-1.38505429366756&quot; 
-## [12,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;1&quot;           &quot;0.818397336733175&quot; 
-## [13,] &quot;0&quot;           &quot;0&quot;           &quot;0&quot;           &quot;-1.01972896373415&quot; 
-## [14,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;Detected&quot;    &quot;-2.96852211723634&quot; 
-## [15,] &quot;0&quot;           &quot;0&quot;           &quot;NotDetected&quot; &quot;-2.15312731331142&quot; 
-## [16,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-2.08564204039605&quot; 
-## [17,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;1&quot;           &quot;-0.725906188492338&quot;
-## [18,] &quot;1&quot;           &quot;1&quot;           &quot;0&quot;           &quot;3.02404054801466&quot;  
-## [19,] &quot;Detected&quot;    &quot;1&quot;           &quot;NotDetected&quot; &quot;0.237107059656618&quot; 
-## [20,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;0.773745221715878&quot;</code></pre>
+##  [1,] &quot;Detected&quot;    &quot;1&quot;           &quot;0&quot;           &quot;-1.01972896373415&quot; 
+##  [2,] &quot;1&quot;           &quot;Detected&quot;    &quot;0&quot;           &quot;-2.96852211723634&quot; 
+##  [3,] &quot;NotDetected&quot; &quot;1&quot;           &quot;Detected&quot;    &quot;-2.15312731331142&quot; 
+##  [4,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;-2.08564204039605&quot; 
+##  [5,] &quot;1&quot;           &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-0.725906188492338&quot;
+##  [6,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;3.02404054801466&quot;  
+##  [7,] &quot;1&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;0.237107059656618&quot; 
+##  [8,] &quot;NotDetected&quot; &quot;1&quot;           &quot;1&quot;           &quot;0.773745221715878&quot; 
+##  [9,] &quot;0&quot;           &quot;0&quot;           &quot;0&quot;           &quot;1.74770636242436&quot;  
+## [10,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;NotDetected&quot; &quot;0.0841186100995515&quot;
+## [11,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;-3.3810253129317&quot;  
+## [12,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;1&quot;           &quot;0.841672269980858&quot; 
+## [13,] &quot;Detected&quot;    &quot;1&quot;           &quot;Detected&quot;    &quot;0.0997555434833619&quot;
+## [14,] &quot;1&quot;           &quot;0&quot;           &quot;0&quot;           &quot;-2.35257749480205&quot; 
+## [15,] &quot;1&quot;           &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;-1.27098003363229&quot; 
+## [16,] &quot;NotDetected&quot; &quot;1&quot;           &quot;0&quot;           &quot;3.03583050294013&quot;  
+## [17,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;1&quot;           &quot;0.686551469718866&quot; 
+## [18,] &quot;NotDetected&quot; &quot;0&quot;           &quot;1&quot;           &quot;0.191828681947982&quot; 
+## [19,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;0&quot;           &quot;-3.40291520964907&quot; 
+## [20,] &quot;Detected&quot;    &quot;0&quot;           &quot;1&quot;           &quot;0.724004758512111&quot;</code></pre>
 <p>As you can see, non-detections are coded here as both “NotDetected” and “0”, and likewise, detection events also have two alternative codes. To clean up this data set, let’s do the following:</p>
 <ul>
 <li>Make sure that detections and non-detections are coded in a consistent manner!<br />
@@ -1004,26 +969,26 @@ NewData &lt;- cbind(NewObs, NewHabitat) # bind the columns to form a matrix.
 colnames(NewData) &lt;- c(&quot;obs1&quot;, &quot;obs2&quot;, &quot;obs3&quot;, &quot;Habitat&quot;)  # provide column names
 NewData</code></pre>
 <pre><code>##       obs1 obs2 obs3 Habitat
-##  [1,]    1    1    1   -1.32
-##  [2,]    1    1    0   -0.96
-##  [3,]    1    1    1    2.32
-##  [4,]    0    1    1   -0.60
-##  [5,]    0    1    1   -1.19
-##  [6,]    1    1    1    0.95
-##  [7,]    0    0    1    3.32
-##  [8,]    1    1    0   -2.82
-##  [9,]    0    1    1    2.01
-## [10,]    0    0    0    3.37
-## [11,]    1    1    0   -1.39
-## [12,]    1    0    1    0.82
-## [13,]    0    0    0   -1.02
-## [14,]    1    0    1   -2.97
-## [15,]    0    0    0   -2.15
-## [16,]    1    1    0   -2.09
-## [17,]    1    1    1   -0.73
-## [18,]    1    1    0    3.02
-## [19,]    1    1    0    0.24
-## [20,]    0    0    1    0.77</code></pre>
+##  [1,]    1    1    0   -1.02
+##  [2,]    1    1    0   -2.97
+##  [3,]    0    1    1   -2.15
+##  [4,]    1    0    0   -2.09
+##  [5,]    1    1    0   -0.73
+##  [6,]    0    0    1    3.02
+##  [7,]    1    0    1    0.24
+##  [8,]    0    1    1    0.77
+##  [9,]    0    0    0    1.75
+## [10,]    0    1    0    0.08
+## [11,]    0    0    1   -3.38
+## [12,]    1    0    1    0.84
+## [13,]    1    1    1    0.10
+## [14,]    1    0    0   -2.35
+## [15,]    1    0    0   -1.27
+## [16,]    0    1    0    3.04
+## [17,]    1    1    1    0.69
+## [18,]    0    0    1    0.19
+## [19,]    1    0    0   -3.40
+## [20,]    1    0    1    0.72</code></pre>
 <p>Looks a lot better now, right!</p>
 </div>
 </div>
@@ -1049,7 +1014,7 @@ Y &lt;- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to 
 # Z   # make sure the elevation matrix looks right
 
 par(bg = &quot;white&quot;)
-layout(matrix(c(1,1),nrow=1))
+layout(1)   # reset graphics
 persp(X,  Y, Z, theta = 135, phi = 30, col = &quot;green3&quot;,    # &quot;persp()&quot; produces a 3D &quot;perspective plot&quot;
       scale = FALSE, ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)</code></pre>
@@ -1149,7 +1114,7 @@ abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is cl
 abline(v = mean(means), col = 2, lwd = 4)</code></pre>
 <p><img src="module1_4_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
 <pre class="r"><code>mean(means)                                # Close to true mean of 5</code></pre>
-<pre><code>## [1] 3.99954</code></pre>
+<pre><code>## [1] 3.99953</code></pre>
 </div>
 <div id="practice-putting-it-all-together" class="section level3">
 <h3>Practice putting it all together!</h3>
@@ -1224,7 +1189,7 @@ plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1242,7 +1207,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -1251,6 +1216,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

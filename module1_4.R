@@ -221,7 +221,7 @@ for(i in 1:n.iter){
 
 
 ## Using the iteration variable "i" within the for loop:
-
+n.iter <- 5
 count <- 0
 for(i in 1:n.iter){
   count <- count+i            # assign a new value of count equal to the old value of count + i
@@ -241,7 +241,7 @@ x
 
 
 ###
-### apply (A more efficient way to iterate)
+### apply (another way to iterate)
 ###
 
 W <- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
@@ -268,13 +268,17 @@ apply(W, 1, MyFunc)
 
 lapply(1:5,function(x) exp(x)) 
 
-lapply(1:5, function(x) sqrt(trees$Volume[x]))
+lapply(1:5, function(t) sqrt(trees$Volume[t]))
 
 
 ##########
-# sapply: apply a function across a list or vector, and simplify the returned object (usually returns a vector)
+# sapply: same thing as 'lapply' but simplifies the returned object (into a vector if possible)
 
-sapply(1:5,function(x) exp(x)) 
+mylist <- list()
+mylist[[1]] <- seq(-1,1,length=10)
+mylist[[2]] <- c(1,.5,-.4)
+mylist[[3]] <- matrix(rnorm(12),nrow=3)
+sapply(mylist,function(x) sum(exp(x))) 
 
 
 #########
@@ -289,7 +293,7 @@ tapply(df.new$var1,df.new$group,sum)
 
 
 ####################
-####  Practice exercises ####
+####  More Practice ####
 ####################
 
 
@@ -348,7 +352,7 @@ Y <- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to W)
 # Z   # make sure the elevation matrix looks right
 
 par(bg = "white")
-layout(matrix(c(1,1),nrow=1))
+layout(1)   # reset graphics
 persp(X,  Y, Z, theta = 135, phi = 30, col = "green3",    # "persp()" produces a 3D "perspective plot"
       scale = FALSE, ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)
@@ -393,9 +397,7 @@ get.t.test <- function(data, mu0, alpha = 0.05) {
 #######
 # Example code to get you started with challenge problem 5... 
 
-persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?,
-                                                          scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)
+persp(X, Y, Z, theta = 30, phi = 30, col = "green3",  lphi = ?, scale = FALSE,  ltheta = -120, shade = 0.75, border = NA, box = FALSE)
 print(?)
 readline()
 
