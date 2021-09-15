@@ -1,7 +1,7 @@
 ---
 title: "Module 2.1"
 author: "R packages: expanding your skill set"
-date: "Fall 2020"
+date: "Fall 2021"
 output: 
   html_document: 
     theme: journal
@@ -32,7 +32,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```
 
 
-In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed **packages** (also called *libraries*). 
+In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed **packages**. 
 
 Whether you are an expert or a novice, you will always encounter situations where you don't know exactly what to do. The great thing about R is that there is *nearly always a way to do it* (whether in base R or via **packages** contributed by R users from around the world), and once you get familiar with the basics, it's usually not that hard to figure out how to accomplish your analysis objectives!
 
@@ -47,7 +47,7 @@ Whether you are an expert or a novice, you will always encounter situations wher
 
 How is it possible to have so many features implemented in a single programming environment? 
 
-The answer is that you have a whole community of researchers adding new functionality _all the time_! This new functionality is implemented in the form of **R Packages**, also known as **libraries**. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).
+The answer is that you have a whole community of researchers adding new functionality _all the time_! This new functionality is implemented in the form of **R Packages**. Each package includes a set of functions and other objects for accomplishing specific tasks (and associated help files!).
 
 ### Mode example
 
@@ -92,7 +92,7 @@ Let's try to use it! If you haven't already loaded the "data.missing.txt" datase
 
 newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 
-?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
+# ?mlv   # learn more about the function for computing the mode (most likely value). Who knew there were so many methods for computing the mode?
 
   # lets find the most frequent value(s) in the "Export" column:
 mlv(newdf$Export, method="mfv", na.rm = T)    
@@ -174,8 +174,8 @@ The syntax for using "install_github()" is just install_github("[author]/[packag
 ###########
 # install package from GitHub:
 
- # install.packages("devtools")    # run this if you haven't already installed the "devtools" package
-library(devtools)
+ # install.packages("remotes")    # run this if you haven't already installed the "remotes" package
+library(remotes)
 install_github("kbroman/broman")  # install a random package from GitHub!
 
 ```
@@ -247,7 +247,7 @@ Or let's take a look at the "dismo" package, which is for species distribution m
 #############
 # 1. Use code examples provided by others
 
-install.packages("dismo")     # install "dismo" for species distribution modeling
+# install.packages("dismo")     # install "dismo" for species distribution modeling
 
 browseVignettes('dismo')
 vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.

@@ -34,7 +34,7 @@ library(help = "modeest")    # get overview of package
 
 newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 
-?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
+# ?mlv   # learn more about the function for computing the mode (most likely value). Who knew there were so many methods for computing the mode?
 
   # lets find the most frequent value(s) in the "Export" column:
 mlv(newdf$Export, method="mfv", na.rm = T)    
@@ -75,8 +75,8 @@ car::scatter3d(Bark~Food+Cars,surface=TRUE)
 ###########
 # install package from GitHub:
 
- # install.packages("devtools")    # run this if you haven't already installed the "devtools" package
-library(devtools)
+ # install.packages("remotes")    # run this if you haven't already installed the "remotes" package
+library(remotes)
 install_github("kbroman/broman")  # install a random package from GitHub!
 
 
@@ -104,7 +104,7 @@ vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' pa
 #############
 # 1. Use code examples provided by others
 
-install.packages("dismo")     # install "dismo" for species distribution modeling
+# install.packages("dismo")     # install "dismo" for species distribution modeling
 
 browseVignettes('dismo')
 vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.

@@ -14,12 +14,22 @@
 
 <title>Module 2.1</title>
 
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,12 +37,16 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -45,32 +59,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -80,10 +69,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -100,40 +85,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 61px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h2 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h3 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h4 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h5 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h6 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -161,7 +119,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -173,7 +131,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -184,10 +142,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -199,7 +170,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -325,7 +295,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -344,7 +314,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2021</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -446,18 +416,18 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
 <h1 class="title toc-ignore">Module 2.1</h1>
 <h4 class="author">R packages: expanding your skill set</h4>
-<h4 class="date">Fall 2020</h4>
+<h4 class="date">Fall 2021</h4>
 
 </div>
 
 
-<p>In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed <strong>packages</strong> (also called <em>libraries</em>).</p>
+<p>In this module we will talk about how you can continue learning, gaining confidence, and expanding what you can do in R using contributed <strong>packages</strong>.</p>
 <p>Whether you are an expert or a novice, you will always encounter situations where you don’t know exactly what to do. The great thing about R is that there is <em>nearly always a way to do it</em> (whether in base R or via <strong>packages</strong> contributed by R users from around the world), and once you get familiar with the basics, it’s usually not that hard to figure out how to accomplish your analysis objectives!</p>
 <div id="load-script-for-module-2.1" class="section level2">
 <h2>Load script for module #2.1</h2>
@@ -469,7 +439,7 @@ div.tocify {
 <div id="packages" class="section level2">
 <h2>Packages</h2>
 <p>How is it possible to have so many features implemented in a single programming environment?</p>
-<p>The answer is that you have a whole community of researchers adding new functionality <em>all the time</em>! This new functionality is implemented in the form of <strong>R Packages</strong>, also known as <strong>libraries</strong>. Each package includes a set (library) of functions for accomplishing specific tasks (and associated help files!).</p>
+<p>The answer is that you have a whole community of researchers adding new functionality <em>all the time</em>! This new functionality is implemented in the form of <strong>R Packages</strong>. Each package includes a set of functions and other objects for accomplishing specific tasks (and associated help files!).</p>
 <div id="mode-example" class="section level3">
 <h3>Mode example</h3>
 <p>For a simple example (borrowed from <a href="https://preludeinr.com">Prelude in R</a>), base R does not include a function for computing the <em>mode</em> of a vector. BUT, some R user decided that functionality would be useful! They coded up a function for computing the mode (in many different ways!), and then they documented it and wrapped it up into a package, called “modeest”, and made the package available in the CRAN repository (the ‘official’ repository for R packages).</p>
@@ -481,9 +451,9 @@ div.tocify {
 install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet installed the package from CRAN! 
                                    # you only need to install this once, so you can comment it out if
                                    # you already have this package installed</code></pre>
-<pre class="r"><code>library(modeest)    # load the package: This is package &#39;modeest&#39; written by P. PONCET.
-
-   # install.packages(&quot;BiocManager&quot;)
+<pre class="r"><code>library(modeest)    # load the package: This is package &#39;modeest&#39; written by P. PONCET.</code></pre>
+<pre><code>## Warning: package &#39;modeest&#39; was built under R version 4.1.1</code></pre>
+<pre class="r"><code>   # install.packages(&quot;BiocManager&quot;)
    # BiocManager::install(&quot;genefilter&quot;)    # you might need to install a dependency in order to make this work!</code></pre>
 <p>Now that we have installed and loaded the package in our current R session, we can learn more about it! One quick way to get a quick overview of the package is to use the following syntax:</p>
 <pre class="r"><code>library(help = &quot;modeest&quot;)    # get overview of package</code></pre>
@@ -491,7 +461,7 @@ install.packages(&quot;modeest&quot;)    # run this if you haven&#39;t yet insta
 <p>Let’s try to use it! If you haven’t already loaded the “data.missing.txt” dataset, download it <a href="data_missing.txt">here</a> and save to your working directory.</p>
 <pre class="r"><code>newdf &lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)
 
-?mlv   # learn more about the function for computing the mode. Who knew there were so many methods for computing the mode?
+# ?mlv   # learn more about the function for computing the mode (most likely value). Who knew there were so many methods for computing the mode?
 
   # lets find the most frequent value(s) in the &quot;Export&quot; column:
 mlv(newdf$Export, method=&quot;mfv&quot;, na.rm = T)    </code></pre>
@@ -546,8 +516,8 @@ car::scatter3d(Bark~Food+Cars,surface=TRUE)</code></pre>
 <pre class="r"><code>###########
 # install package from GitHub:
 
- # install.packages(&quot;devtools&quot;)    # run this if you haven&#39;t already installed the &quot;devtools&quot; package
-library(devtools)
+ # install.packages(&quot;remotes&quot;)    # run this if you haven&#39;t already installed the &quot;remotes&quot; package
+library(remotes)
 install_github(&quot;kbroman/broman&quot;)  # install a random package from GitHub!</code></pre>
 </div>
 <div id="finding-the-right-package-for-the-job" class="section level3">
@@ -593,7 +563,7 @@ vignette(&#39;embedding&#39;,&#39;car&#39;)   # pull up the &quot;embedding&quot
 #############
 # 1. Use code examples provided by others
 
-install.packages(&quot;dismo&quot;)     # install &quot;dismo&quot; for species distribution modeling
+# install.packages(&quot;dismo&quot;)     # install &quot;dismo&quot; for species distribution modeling
 
 browseVignettes(&#39;dismo&#39;)
 vignette(&#39;sdm&#39;,&#39;dismo&#39;)      # pull up one of the helpful vignettes from the &#39;dismo&#39; package, with useful code examples! Many packages have built-in vignettes.
@@ -637,8 +607,8 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 <pre><code>## 
 ## To cite the car package in publications use:
 ## 
-##   John Fox and Sanford Weisberg (2019). An {R} Companion to
-##   Applied Regression, Third Edition. Thousand Oaks CA: Sage. URL:
+##   John Fox and Sanford Weisberg (2019). An {R} Companion to Applied
+##   Regression, Third Edition. Thousand Oaks CA: Sage. URL:
 ##   https://socialsciences.mcmaster.ca/jfox/Books/Companion/
 ## 
 ## A BibTeX entry for LaTeX users is
@@ -656,9 +626,9 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 <pre><code>## 
 ## To cite R in publications use:
 ## 
-##   R Core Team (2019). R: A language and environment for
-##   statistical computing. R Foundation for Statistical Computing,
-##   Vienna, Austria. URL https://www.R-project.org/.
+##   R Core Team (2021). R: A language and environment for statistical
+##   computing. R Foundation for Statistical Computing, Vienna, Austria.
+##   URL https://www.R-project.org/.
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
@@ -667,13 +637,13 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 ##     author = {{R Core Team}},
 ##     organization = {R Foundation for Statistical Computing},
 ##     address = {Vienna, Austria},
-##     year = {2019},
+##     year = {2021},
 ##     url = {https://www.R-project.org/},
 ##   }
 ## 
-## We have invested a lot of time and effort in creating R, please
-## cite it when using it for data analysis. See also
-## &#39;citation(&quot;pkgname&quot;)&#39; for citing R packages.</code></pre>
+## We have invested a lot of time and effort in creating R, please cite it
+## when using it for data analysis. See also &#39;citation(&quot;pkgname&quot;)&#39; for
+## citing R packages.</code></pre>
 </div>
 <div id="online-forums" class="section level4">
 <h4>Online forums</h4>
@@ -714,7 +684,7 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -732,7 +702,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -741,6 +711,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
