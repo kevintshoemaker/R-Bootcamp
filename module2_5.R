@@ -10,7 +10,7 @@
 
 ######################################################
 ####  Introduction to Spatial Data Analysis in R  ####
-####     Facilitator: Mitch Gritts                ####
+####     Assembled by: Mitch Gritts                ####
 ######################################################
 
 

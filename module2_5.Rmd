@@ -1,7 +1,7 @@
 ---
 title: "Module 2.5"
 author: "Introduction to Spatial Data (Mitch Gritts)"
-date: "Fall 2020"
+date: "Fall 2021"
 output:
   html_document:
     theme: journal
@@ -26,12 +26,11 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ######################################################
 ####  Introduction to Spatial Data Analysis in R  ####
-####     Facilitator: Mitch Gritts                ####
+####     Assembled by: Mitch Gritts                ####
 ######################################################
 
 ```
 
-**Guest presenter**: Mitch Gritts (who also pulled this module together!)
 
 ## Load script for module 2.5
 
