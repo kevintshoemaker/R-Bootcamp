@@ -44,11 +44,12 @@ In this tutorial we introduce the 'Tidyverse' set of packages, which were design
 
 ![](data-science-wrangle.png)
 
-The core tidyverse set of packages includes many packages. For now, we will focus on five that are commonly used for data wrangling:
+The core tidyverse set of packages includes many packages.
 
-* dplyr, for data manipulation
 
 * tidyr, for data tidying
+
+* dplyr, for data transformation
 
 * readr, for data import
 
@@ -58,6 +59,7 @@ The core tidyverse set of packages includes many packages. For now, we will focu
 
 ![](magritte.jpg)
 
+
 * ggplot2, for data visualisation (the subject of the next module)
 
 * purrr, for functional programming
@@ -65,6 +67,8 @@ The core tidyverse set of packages includes many packages. For now, we will focu
 * stringr, for strings
 
 * forcats, for factors
+
+* lubridate, for dates
 
 
 # Learning goals
@@ -74,7 +78,6 @@ The core tidyverse set of packages includes many packages. For now, we will focu
   * Use *tidyr* and *dplyr* data transformation 'verbs' to wrangle data
       
   * Work with and parse dates using *lubridate*
-
 
 
 
@@ -95,6 +98,7 @@ Key advantages include:
 * perform multiple operations without creating a bunch of intermediate (temporary) datasets
 
 This operator comes from the *magrittr* package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m ('m' is for Magritte). When reading code out loud, use 'then' for the pipe. For example the command here:
+
 
 ```
 
