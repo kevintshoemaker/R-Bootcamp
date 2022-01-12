@@ -39,13 +39,13 @@ Welcome to the 2021 R bootcamp! Let's get started!!
 
 ## Get materials for this module
 
-* I recommend having a printed copy of a good base R "cheatsheet" (or two) as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to learn new things and try new things in R!
+* I recommend having a printed copy of a good base R "cheatsheet" (or two) as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we do together in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!), to feel comfortable doing some basic data operations in R, and most importantly, we hope the workshop gives you confidence to learn and try new things in R!
 
 Here are links to good base R "cheatsheets":
 
 [Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)                
-[More advanced base R cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf)             
+[More advanced base R cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf)  (NOTE: this one is quite advanced- only for those interested in really understanding how R works as a programming language- not necessary for those of you interested in doing data science operations)            
 
 
 ## Load script for module #1.1

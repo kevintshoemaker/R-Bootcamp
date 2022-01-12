@@ -1,7 +1,7 @@
 ---
 title: "Welcome to R Bootcamp!"
 author: "A hopefully more-or-less painless introduction to R"
-date: "Fall 2021"
+date: "Spring 2022"
 output:
   html_document:
     theme: journal
@@ -13,23 +13,23 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
- * **When?** Saturday September 11 and 18 2021
- * **Where?** Davidson Math and Science Building, room 103 (Zoom link will be sent via email) 
+ * **When?** Tuesday Feb 8, 2022
+ * **Where?** Peppermill Resort --Reno, NV  
  * **What to prepare?** You will need your laptop computer, with R and RStudio installed prior to starting the workshop (see [links](Links.html)). 
  
-## Facilitator
+## Facilitators
 
 [Kevin Shoemaker](https://www.unr.edu/nres/people/shoemaker-kevin)		 
 Department of Natural Resources and Environmental Science       
 Office: Fleischmann Agriculture 220E					
 Email: [kevinshoemaker@unr.edu](kevinshoemaker@unr.edu)
 
-
-## Contributors
-
 [Mitchell Gritts](http://mgritts.github.io/cv/)     
 Nevada Department of Wildlife          
 Email: mgritts(at)ndow(dot)org 
+
+
+## Contributors
 
 [Perry Williams](http://www.perrywilliams.us/)  
 Department of Natural Resources and Environmental Science   
@@ -182,6 +182,9 @@ rmarkdown::render("module2_2.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("module2_3.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("module2_4.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("module2_5.Rmd",rmarkdown::pdf_document())
+
+
+#Davidson Math and Science Building, room 103 (Zoom link will be sent via email)
 
 ```
 
