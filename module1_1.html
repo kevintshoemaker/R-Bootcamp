@@ -14,8 +14,8 @@
 
 <title>Module 1.1</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -467,7 +467,7 @@ div.tocify {
 <pre class="r"><code>myname &lt;- &#39;Alfred&#39; </code></pre>
 <p>Then hit “Enter”. What does R return?</p>
 <p>NOTHING!</p>
-<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface). You should see that you now have a new <strong>object</strong> in your environment, called “myname”, and this object contains a <strong>text string</strong> (“Alfred”).</p>
+<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface- list of all the objects you’ve defined in this session). You should see that you now have a new <strong>object</strong> in your environment, called “myname”, and this object contains a <strong>text string</strong> (“Alfred”).</p>
 <p>Now type <code>myname</code> into the R console and hit “Enter”. What happens?</p>
 <p>If you enter the name of an object at the command line, R automatically prints the value of the object!</p>
 <p>NOTE: RStudio has a useful autofill feature, which can save you lots of time and headaches. After you’ve typed the first couple letters (e.g., “my”), RStudio will suggest “myname” and you can just hit “Enter” to complete the object name! The auto-type feature, unlike R, is not case sensitive! Also note that you can hit the ‘tab’ key to trigger autofill anytime after you start typing in RStudio.</p>
@@ -483,26 +483,24 @@ div.tocify {
 <pre><code>
 my_obj &lt;- 6+11
 </code></pre>
-<p>Now place the cursor somewhere within the line of text you just wrote and hit ‘Ctrl+Enter’ (or ‘Command+Enter’) to run that line of code! You should see a new object (‘my_obj’) pop up in your environment.</p>
+<p>Now place the cursor somewhere within the line of text you just wrote and hit ‘Ctrl+Enter’ (or ‘Command+Enter’) to run that line of code! You should see a new object (‘my_obj’) pop up in your environment.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <p>In the next line of your script, enter a pound sign (hashtag) followed by the command <code>2+2</code>. Nothing happens, right?</p>
 <p>Now delete the hashtag and try again. Now R recognizes and runs the command. Interesting…</p>
-<p>Take a few minutes to get comfortable defining new objects using your new R script.</p>
+<p>Take a few minutes to get comfortable running commands and defining new objects using your new R script.</p>
 <p>Of course, it’s always a good idea to save your scripts often – so feel free to save your new script before you move on.</p>
 </div>
 <div id="load-an-existing-script" class="section level3">
 <h3>Load an Existing script</h3>
 <p>Remember the file you downloaded at the beginning of this submodule? That file is an R script- Let’s load it up now!</p>
 <p>To do this, click on the “folder” icon on the Rstudio toolbar (or File &gt;&gt; Open File) and choose the script you downloaded earlier.</p>
-<p>The first few lines (commands) of the script for this module are preceded by pound signs. R doesn’t do anything with these commands- they are called <strong>comments</strong>, and they help to keep code clear, organized and understandable to human readers.</p>
+<p>The first few lines of the script for this module are preceded by pound signs. As you have already seen, R ignores these lines (anything preceded by a pound sign is ignored)- they are called <strong>comments</strong>, and they help to keep code organized and understandable.</p>
 <p><em>use comments early and often- they are tremendously valuable</em>.</p>
-<p>Click on the top of the script (first line of comments). To <strong>run</strong> a line of code, press the “Ctrl” key (or the “Command” key) and hit “Enter”. R will then run that line through the console. But of course, nothing happens because it’s a comment and not meant to be interpreted by your machine<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
-<p>If you click on a line of code that is not followed by a pound sign, you should see that R interprets the text on that line of code and stores any newly defined objects in memory (see top right quadrant of the Rstudio interface – ‘Workspace’ (or Environment) tab – for a list of objects stored in memory)</p>
-<p>Now you know the basics of how to use R scripts.</p>
+<p>Now you know the basics of how to use R scripts! Now, let’s keep working through the remainder of the script you just opened.</p>
 </div>
 </div>
 <div id="a-quick-r-demo" class="section level2">
 <h2>A quick R demo</h2>
-<p>Before we get into the basics, let’s just run through some of what R can do! Don’t worry if you don’t understand something- we will go over all of this in much greater detail later!</p>
+<p>Before we get into the basics, let’s just run through some of what R can do! Don’t worry if you don’t understand something- we will go over all of this in greater detail later!</p>
 <p>To get started quickly, we will first load a data set that is built into R!</p>
 <pre class="r"><code>###############
 # R DEMO: 
@@ -549,7 +547,7 @@ plot(trees$Volume~trees$Height)           # scatterplot of volume against height
 <p><img src="module1_1_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
 <pre class="r"><code>pairs(trees)    # plots all scatterplots together as a scatterplot matrix!</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
-<p>Now we can perform some basic statistics, like a regression analysis:</p>
+<p>Now we can perform some basic statistics, like a linear regression analysis for example:</p>
 <pre class="r"><code>##########
 # perform linear regression analysis
 
@@ -600,568 +598,52 @@ text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;
 </div>
 <div id="workspace-management" class="section level2">
 <h2>Workspace management</h2>
-<p>The workspace (environment) panel window in R can become cluttered as we create variables and assignments in R. As we work through the modules in this bootcamp it will be helpful to clear the workspace every once in a while to maintain our sanity. Earlier we assigned the value “Alfred Pennyworth” to the variable <code>Batmans_butler</code>. Let’s remove that from the workspace. There are several ways to do this.</p>
+<p>The workspace (environment) in R can become cluttered as we create variables and assignments in R. As we work through the modules in this workshop it will be helpful to clear the workspace every once in a while. Earlier we assigned the value “Alfred” to the variable <code>myname</code>. Let’s remove that from the workspace. There are several ways to do this.</p>
 <ol style="list-style-type: decimal">
 <li>In the ‘environment’ panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire workspace.<br />
 </li>
-<li>Use <code>rm(Batmans_butler)</code> to clear just the <code>Batmans_butler</code> variable.</li>
+<li>Use <code>rm(myname)</code> to clear just the <code>myname</code> variable.</li>
 <li>Use this handy one-liner <code>rm(list=ls())</code> to clear the entire workspace.</li>
 </ol>
 </div>
 <div id="back-to-basics-r-objects" class="section level2">
 <h2>Back to basics! R Objects</h2>
-<p>R has many different kinds of objects that you can define and store in memory. These are the building blocks of the language.</p>
-<p>Object <strong>classes</strong> that enable storage of information and data (data storage structures) include: <em>scalars</em>, <em>vectors</em>, <em>matrices</em>, <em>lists</em>, and <em>data frames</em>.</p>
-<p>Objects that transform data and perform data operations/statistics/visualizations etc. are called <em>functions</em>.</p>
-<p>ASIDE: if you are familiar with encapsulated object-oriented programming in C++/Python/Javascript then it may take you a while to feel comfortable with R, as it is much more oriented to functional programming (which is well suited for data analysis!).</p>
-<div id="data-types" class="section level3">
-<h3>Data types</h3>
-<p>It is important to note that all R data objects have a property called <strong>type</strong> (sometimes referred to as data types), which describes the type of data that is stored within the object. The most common data types in R are:</p>
-<ul>
-<li>“numeric” (numbers)<br />
-</li>
-<li>“character” (text strings)</li>
-<li>“logical” (TRUE/FALSE)<br />
-</li>
-<li>“factor” (categorical)</li>
-</ul>
-</div>
-<div id="data-storage-objects" class="section level3">
-<h3>Data storage objects</h3>
-<div id="scalars" class="section level4">
-<h4>Scalars</h4>
-<p>Scalars are the simplest objects in R. A scalar is just a single value. Remember when we assigned the text string ‘Alfred Pennyworth’ to the <code>Batmans_butler</code> object? When we did that we created a scalar data object that contained a single text string. Scalars can be a single value of any data type.</p>
-<pre class="r"><code>##################
-####  Create R Objects 
-##################
-
-#############
-### scalars
-#############
-
-scalar1 &lt;- &#39;this is a scalar&#39;
-scalar2 &lt;- 104
-scalar3 &lt;- 5 + 6.5    # evaluates to the single value 11.5
-scalar4 &lt;- &#39;4&#39;</code></pre>
-<p>Scalars do have a specific type. In the example above, <code>scalar1</code> is a character, <code>scalar2</code> and <code>scalar3</code> are both numeric. What is the data type for <code>scalar4</code>?</p>
-<p>If you are uncertain about the type of any R object the R function <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> <code>typeof()</code> will come in handy. Lets work through the code below.</p>
-<pre class="r"><code>typeof(scalar4)    # returns: character
-
-## what is this type?
-scalar5 &lt;- TRUE
-typeof(scalar5)    # returns: logical</code></pre>
-<p>Again, scalars can contain any of the most common data types:</p>
-<ul>
-<li>numeric (2, 8.2)<br />
-</li>
-<li>character (‘a’, ‘scalar’)<br />
-</li>
-<li>logical (<code>TRUE</code>, <code>FALSE</code>)<br />
-</li>
-<li>factor (factor(“a”,levels=c(“a”,“b”))) [NOTE: we’ll cover factors in more detail later. Scalar factors are not really useful!]</li>
-</ul>
-<p>What happens when we try and add <code>scalar2</code> and <code>scalar4</code>? Think about the types of each scalar. Run the code below to find out.</p>
-<pre class="r"><code>## what happens when we run this line of code? Think about the types.
-scalar2 + scalar4</code></pre>
-<p>This error can be common in R. Remember that <code>scalar4</code> is a character, R cannot perform mathematical operations on characters. Double check your types with the <code>typeof()</code> function.</p>
-</div>
-<div id="vectors" class="section level4">
-<h4>Vectors</h4>
-<p>Vectors are combinations of scalars stored as a single object.</p>
-<p>NOTE: strictly speaking, there are no true scalars in R- scalars are actually just vectors with 1 element!</p>
-<p>Let’s create some vectors:</p>
-<pre class="r"><code>#############
-### VECTORS
-#############
-
-vector1 &lt;- c(1.1, 2.1, 3.1, 4)
-vector2 &lt;- c(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)
-vector3 &lt;- c(1, &#39;a&#39;, 2, &#39;b&#39;)
-vector4 &lt;- c(TRUE, &#39;a&#39;, 1)
-vector5 &lt;- c(TRUE, 1.2, FALSE)</code></pre>
-<p>There are many different ways to create a vector. You’ll learn more about that later in the bootcamp. Check out some of the vectors you just created. Each vector is composed of several scalars. Each of these scalars is an <strong>element</strong> of the vector. You can still check the types of the objects with the <code>typeof()</code> function (try it yourself).</p>
-<p>What happened with <code>vector2</code> and <code>vector4</code>? Looking at the script, these vectors appear to contain a mix of numeric and character types, but the resulting vector is all characters!</p>
-<p>This is because <em>all elements of a vector must be the same type</em>. This is because most basic functions and operations in R are meant to be applied to entire vectors, so if an operation makes sense only for numbers, the vector the operation is applied to can’t have a mix of characters and numbers (e.g., R wouldn’t know what to do if you tried to take the sum of 3, 1, and “a”). Therefore, R will attempt to convert (coerce) all vector elements to a single type. Check the contents of <code>vector5</code>. The types of each element are logical, numeric, logical. In this case R has decided to convert the logical elements to numeric. <code>TRUE</code> maps to 1 and <code>FALSE</code> maps to 0.</p>
-<p>In the code above we use another function called <code>c()</code>. You can think of it as ‘c for combine’. It takes several objects, and combines them together into a vector. We can even use <code>c()</code> to combine scalar (or vector) objects, like below.</p>
-<pre class="r"><code>a &lt;- 1
-b &lt;- 2
-c &lt;- c(3,4)
-
-d.vec &lt;- c(a, b, c)
-d.vec</code></pre>
-<pre><code>## [1] 1 2 3 4</code></pre>
-<p><code>d.vec</code> is a vector with 3 elements: 1, 2, 3 and 4. Alternatively, we could create the vector “d.vec” with the following code:</p>
-<pre class="r"><code>d.vec &lt;- c(1,2,3,4)            # another way to construct the vector &quot;d.vec&quot;
-d.vec = c(1,2,3,4)             # the &quot;equals&quot; sign can also be an assignment operator
-d.vec &lt;- 1:4                   # we can use the colon operator as a shorthand for creating a sequence of integers</code></pre>
-<p>Now let’s do some stuff with vectors!</p>
-<pre class="r"><code>length(d.vec)    # the &quot;length()&quot; function returns the number of elements in a vector
-
-d1 &lt;- d.vec           # copy the vector &quot;d.vec&quot;
-d2 &lt;- d.vec+3         # add 3 to all elements of the vector &quot;d.vec&quot;
-d3 &lt;- d1+d2           # elementwise addition
-d4 &lt;- d1+c(1,2)       # what does this do?
-
-## inspect the objects by calling them in the console (or script window)
-d1    # returns: 1 2 3
-d2    # returns: 4 5 6
-d3    # returns: 5 7 9
-d4    # returns: 2 4 4</code></pre>
-<p><em>NOTE: the last command we ran, “d1+c(1,2)”, produced a <strong>warning message</strong>. Remember to take warning messages seriously- a warning message means “the command ran but the results might not make sense”! In this case, the warning was that we tried to add two vectors of different length. R’s default is to repeat (recycle) the shorter vector until it matches the length of the longer vector.</em></p>
-</div>
-<div id="matrix-objects-in-r" class="section level4">
-<h4>Matrix objects in R</h4>
-<p><strong>Matrix</strong> objects are just a bunch of vectors grouped together, either by row or by column! To form a matrix, the vectors must be of the same length and the same <strong>type</strong>. If different types are provided R will attempt to coerce the elements into a common type. A matrix has two <strong>dimensions</strong>: rows and columns.</p>
-<p>Let’s make our first matrix. One simple way to make a matrix is just by joining two vectors using the function <code>cbind()</code> (bind vectors or matrices together by column) or <code>rbind()</code> (bind vectors or matrices together by row)</p>
-<pre class="r"><code>#############
-### MATRICES
-#############
-
-d.mat &lt;- cbind(d1,d2)        # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
-d.mat</code></pre>
-<pre><code>##      d1 d2
-## [1,]  1  4
-## [2,]  2  5
-## [3,]  3  6
-## [4,]  4  7</code></pre>
-<pre class="r"><code>class(d.mat)   # confirm that the new object &quot;d.mat&quot; is a matrix!</code></pre>
-<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
-<p>And there are other ways to make a matrix in R. For instance, we can use the function “matrix()” (this is a constructor function for matrices):</p>
-<pre class="r"><code>d.mat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
-d.mat</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    1    4
-## [2,]    2    5
-## [3,]    3    6</code></pre>
-<pre class="r"><code>d.mat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way (stack rows together)
-d.mat</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    1    2
-## [2,]    3    4
-## [3,]    5    6</code></pre>
-<pre class="r"><code>d.mat &lt;- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way (stacking three vectors)
-d.mat</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    1    4
-## [2,]    2    5
-## [3,]    3    6</code></pre>
-<p>We can do math with matrices too:</p>
-<pre class="r"><code># math with matrices
-
-d.mat + 2</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    3    6
-## [2,]    4    7
-## [3,]    5    8</code></pre>
-<pre class="r"><code>d.mat/sum(d.mat)</code></pre>
-<pre><code>##            [,1]      [,2]
-## [1,] 0.04761905 0.1904762
-## [2,] 0.09523810 0.2380952
-## [3,] 0.14285714 0.2857143</code></pre>
-</div>
-<div id="multi-dimensional-arrays" class="section level4">
-<h4>Multi-dimensional arrays</h4>
-<p>We can structure information in more than two dimensions using objects of the “array” class. Again, all elements of an array must be of the <em>same data type</em>.</p>
-<pre class="r"><code>############
-### ARRAYS!
-############
-
-d.array=array(0,dim=c(3,2,4))       # create 3 by 2 by 4 array full of zeros
-d.array                                   # see what it looks like</code></pre>
-<pre><code>## , , 1
-## 
-##      [,1] [,2]
-## [1,]    0    0
-## [2,]    0    0
-## [3,]    0    0
-## 
-## , , 2
-## 
-##      [,1] [,2]
-## [1,]    0    0
-## [2,]    0    0
-## [3,]    0    0
-## 
-## , , 3
-## 
-##      [,1] [,2]
-## [1,]    0    0
-## [2,]    0    0
-## [3,]    0    0
-## 
-## , , 4
-## 
-##      [,1] [,2]
-## [1,]    0    0
-## [2,]    0    0
-## [3,]    0    0</code></pre>
-<pre class="r"><code>d.mat=matrix(1:6,nrow=3)
-d.array[,,1]=d.mat                      # enter d as the first slice of the array
-d.array[,,2]=d.mat*2                    # enter d*2 as the second slide...
-d.array[,,3]=d.mat*3
-d.array[,,4]=d.mat*4
-d.array                                   # view the array </code></pre>
-<pre><code>## , , 1
-## 
-##      [,1] [,2]
-## [1,]    1    4
-## [2,]    2    5
-## [3,]    3    6
-## 
-## , , 2
-## 
-##      [,1] [,2]
-## [1,]    2    8
-## [2,]    4   10
-## [3,]    6   12
-## 
-## , , 3
-## 
-##      [,1] [,2]
-## [1,]    3   12
-## [2,]    6   15
-## [3,]    9   18
-## 
-## , , 4
-## 
-##      [,1] [,2]
-## [1,]    4   16
-## [2,]    8   20
-## [3,]   12   24</code></pre>
-<pre class="r"><code>d.array[1,2,4]  # view an element of the array</code></pre>
-<pre><code>## [1] 16</code></pre>
-<pre class="r"><code>d.array[1,,]    # view a slice of the array</code></pre>
-<pre><code>##      [,1] [,2] [,3] [,4]
-## [1,]    1    2    3    4
-## [2,]    4    8   12   16</code></pre>
-</div>
-<div id="lists" class="section level4">
-<h4>Lists</h4>
-<p><strong>List objects</strong> are far more general than either matrices or arrays. <strong>List</strong> objects are just a bunch of potentially unrelated R data objects grouped together! The elements of a list don’t even need to be the same length or the same <strong>type</strong>. The elements of a list can be vectors, arrays, matrices, functions, or other lists - they could be literally any R object.</p>
-<p>Let’s make our first list:</p>
-<pre class="r"><code>#############
-### LISTS
-#############
-
-d.list &lt;- list()        # create empty list
-d.list[[1]] &lt;- c(1,2,3)     # note the double brackets- this is one way to reference and define a specified list element. 
-d.list[[2]] &lt;- c(4,5)
-d.list[[3]] &lt;- &quot;Alfred Pennyworth&quot;
-d.list</code></pre>
-<pre><code>## [[1]]
-## [1] 1 2 3
-## 
-## [[2]]
-## [1] 4 5
-## 
-## [[3]]
-## [1] &quot;Alfred Pennyworth&quot;</code></pre>
-<div id="data-frames-a-very-special-kind-of-list" class="section level5">
-<h5>Data frames (a very special kind of list)</h5>
-<p><strong>Data frame</strong> objects are a special type of <strong>list</strong> in which each element of the list is a <em>vector</em> object. Importantly, in a data frame object, <em>all of the component vectors must have the same number of elements</em>. The <em>j</em>th element (vector object) of a data frame is also known as the <em>j</em>th <em>column</em>. The <em>row</em> of a data frame refers to the <em>i</em>th element of each of the <em>j</em> vectors. Data frames superficially resemble matrices, since both types of objects have two <strong>dimensions</strong>: rows and columns. However, data frames are really much more general than matrices; in data frames, unlike matrices, the columns of a data frame can represent different <strong>types</strong> (i.e., character, logical, numeric, factor), and can thereby code for very different types of information!</p>
-<p><em>Data frames are the basic data storage structure in R</em>. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on that observation unit.</p>
-<p>Let’s make our first data frame. We will use the constructor function “data.frame()”.</p>
-<pre class="r"><code>#############
-### DATA FRAMES
-#############
-d.df &lt;- data.frame(d1=c(1,2,3),d2=c(4,5,6))        # create a ‘data frame’ with two columns. Each column is a vector of length 3
-d.df</code></pre>
-<pre><code>##   d1 d2
-## 1  1  4
-## 2  2  5
-## 3  3  6</code></pre>
-<p>Now we have a data frame with three observation units and two measurements (variables).</p>
-<p>Alternatively, we can convert (coerce) a matrix to a data frame:</p>
-<pre class="r"><code>d.df=data.frame(d.mat)        # create data frame another way - directly from a matrix
-d.df</code></pre>
-<pre><code>##   X1 X2
-## 1  1  4
-## 2  2  5
-## 3  3  6</code></pre>
-<p>We can use the “names()” function to see the names of each element of a list or data frame (column of a data frame), or to change these names!</p>
-<pre class="r"><code>names(d.df)          # view or change column names</code></pre>
-<pre><code>## [1] &quot;X1&quot; &quot;X2&quot;</code></pre>
-<pre class="r"><code>names(d.df)=c(&quot;meas_1&quot;,&quot;meas_2&quot;)        # provide new names for columns
-d.df</code></pre>
-<pre><code>##   meas_1 meas_2
-## 1      1      4
-## 2      2      5
-## 3      3      6</code></pre>
-<p>And we can view or change the row names of a data frame (or matrix) using the “rownames()” function:</p>
-<pre class="r"><code>rownames(d.df) &lt;- c(&quot;obs1&quot;,&quot;obs2&quot;,&quot;obs3&quot;)
-d.df</code></pre>
-<pre><code>##      meas_1 meas_2
-## obs1      1      4
-## obs2      2      5
-## obs3      3      6</code></pre>
-</div>
-</div>
-</div>
+<p>R has many different kinds of objects that you can define and store in memory.</p>
+<p>Objects that enable storage of information (data objects) include: <em>vectors</em>, <em>matrices</em>, <em>lists</em>, and <em>data frames</em>.</p>
+<p>Objects that transform data and perform statistics/visualizations etc. on data objects are called <em>functions</em>.</p>
 <div id="functions" class="section level3">
 <h3>Functions</h3>
-<p>Functions are an essential building block in R. We’ve already used a few functions (<code>typeof</code>, <code>c</code>) without fully understanding what they are. That is about to change!</p>
-<p>Functions are essentially machines that take any inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. The basic syntax looks like the code snippet below.</p>
+<p>Functions are routines that take inputs (usually data objects) (also called <strong>arguments</strong>) and produce something in return (summaries, plots, tables, statistics, files). In R, the name of the function is followed by parentheses, and any arguments are entered inside the parentheses. The basic syntax looks like the code snippet below.</p>
 <p><img src="funcmach.png" /></p>
 <pre><code>## function syntax
-functionName(input1=[user input #1], input2=[user input #2])</code></pre>
-<p>Let’s use another function called <code>sum()</code>. This function takes a set of several values and computes the sum of those numbers.</p>
+functionName([enter arguments here])</code></pre>
+<p>If you don’t type the parenthesis, the function is not run- instead, the function definition is shown.</p>
+<p>Here are some examples:</p>
 <pre class="r"><code>#############
 ### functions
 #############
 
 sum(1, 2, 3, 10)    # returns: 15
 
-## sum can be used with one of the vectors we created
-sum(vector1)        # returns: 10.3</code></pre>
-<p>If you ever forget the arguments of a function, or how it works there are several ways to get help. There is a built in function called <code>help()</code> that will takes a function name as an argument, and looks up the help documents for the given function. The <code>?</code> is an alternative to the <code>help</code> function.</p>
-<pre class="r"><code>help(sum)
-?sum    # this is an alternative to &#39;help(sum)&#39;!</code></pre>
+c(1, 2, 3, 10)   # combine four numbers into a single data object (a vector!)
+
+floor(67.8)  # removes the decimal component of a number
+round(67.8)  # rounds a number
+
+round     # oops, we forgot to add parenthesis!
+
+help(round)  # a function for getting help with functions!!</code></pre>
+<pre><code>## starting httpd help server ... done</code></pre>
+<pre class="r"><code>?round         # shortcut for the &#39;help&#39; function</code></pre>
 <p>We will revisit functions in more detail (and build our own functions) in the “Programming” submodule.</p>
-</div>
-</div>
-<div id="making-up-data" class="section level2">
-<h2>Making up data!</h2>
-<p>In this section, we will ‘make up’ a bunch of data objects. In the next submodule we’ll practice working with real data!</p>
-<div id="generating-sequences-of-numbers" class="section level3">
-<h3>Generating sequences of numbers</h3>
-<p>One task that comes up a lot is generating sequences of numbers. We certainly don’t want to do this entirely by hand! Here are some shortcuts:</p>
-<pre class="r"><code>#############
-### MAKING UP DATA!
-#############
-
-#######
-# Generating vector sequences
-
-1:10                        # sequential vector from 1 to 10</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>10:1                        # reverse the order</code></pre>
-<pre><code>##  [1] 10  9  8  7  6  5  4  3  2  1</code></pre>
-<pre class="r"><code>rev(1:10)                   # a different way to reverse the order</code></pre>
-<pre><code>##  [1] 10  9  8  7  6  5  4  3  2  1</code></pre>
-<pre class="r"><code>seq(from=1,to=10,by=1)      # equivalent to 1:10</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>seq(10,1,-1)                # equivalent to 10:1</code></pre>
-<pre><code>##  [1] 10  9  8  7  6  5  4  3  2  1</code></pre>
-<pre class="r"><code>seq(1,10,length=10)         # equivalent to 1:10</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>seq(0,1,length=10)          # sequence of length 10 between 0 and 1 </code></pre>
-<pre><code>##  [1] 0.0000000 0.1111111 0.2222222 0.3333333 0.4444444 0.5555556 0.6666667
-##  [8] 0.7777778 0.8888889 1.0000000</code></pre>
-<p>Another task is to group regular recurring sequences together:</p>
-<pre class="r"><code>##############
-# Repeating vector sequences
-
-rep(0,times=3)                # repeat 0 three times</code></pre>
-<pre><code>## [1] 0 0 0</code></pre>
-<pre class="r"><code>rep(1:3,times=2)              # repeat 1:3 two times</code></pre>
-<pre><code>## [1] 1 2 3 1 2 3</code></pre>
-<pre class="r"><code>rep(1:3,each=2)               # repeat each element of 1:3 two times</code></pre>
-<pre><code>## [1] 1 1 2 2 3 3</code></pre>
-<p>And finally, we can fill up a vector with random numbers using one of R’s built in <strong>random number generators</strong>:</p>
-<pre class="r"><code>###########
-# Random numbers
-
-z &lt;- rnorm(10)                # 10 realizations from std. normal
-z</code></pre>
-<pre><code>##  [1] -0.025681513  0.248170432  0.496908680 -0.817497060 -1.816093865
-##  [6]  0.865196031  1.374689019 -0.003261195  0.245227369 -0.897005936</code></pre>
-<pre class="r"><code>y &lt;- rnorm(10,mean=-2,sd=4)           # 10 realizations from N(-2,4^2)
-y</code></pre>
-<pre><code>##  [1]  -5.610811   2.821611  -2.054477  -5.624679   4.543343  -2.347034
-##  [7]  -3.152993 -10.280337  -1.913949  -6.016089</code></pre>
-<pre class="r"><code>rbinom(5,size=3,prob=.5)                # 5 realizations from Binom(3,0.5)</code></pre>
-<pre><code>## [1] 1 1 2 0 2</code></pre>
-<pre class="r"><code>rbinom(5,3,.1)                # 5 realizations from Binom(3,0.1)</code></pre>
-<pre><code>## [1] 2 0 0 1 2</code></pre>
-<pre class="r"><code>rbinom(5,3,.8)                # 5 realizations from Binom(3,0.8)</code></pre>
-<pre><code>## [1] 3 3 3 1 3</code></pre>
-<pre class="r"><code>rbinom(5,1:5,0.5)       # simulations from binomial w/ diff number of trials</code></pre>
-<pre><code>## [1] 0 2 2 4 2</code></pre>
-<pre class="r"><code>rbinom(5,1:5,seq(.1,.9,length=5))   # simulations from diff number of trials and probs</code></pre>
-<pre><code>## [1] 0 0 1 4 5</code></pre>
-<pre class="r"><code>runif(10)                # 10 standard uniform random variates</code></pre>
-<pre><code>##  [1] 0.62178810 0.42931983 0.45686031 0.44153974 0.69498519 0.71163476
-##  [7] 0.88147940 0.04802608 0.13046124 0.84121288</code></pre>
-<pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random variates on [-1,1]</code></pre>
-<pre><code>##  [1]  0.53025162 -0.10111889  0.40945158  0.67474318  0.58274991  0.53550796
-##  [7]  0.14780340 -0.08683614 -0.10620695 -0.38214293</code></pre>
-<pre class="r"><code>sample(1:10,size=5,replace=TRUE)        # 5 rvs from discrete unif. on 1:10.</code></pre>
-<pre><code>## [1] 1 6 8 3 9</code></pre>
-<pre class="r"><code>sample(1:10,size=5,replace=TRUE,prob=(1:10)/sum(1:10)) # 5 rvs from discrete pmf w/ varying probs.</code></pre>
-<pre><code>## [1] 10  3  8  7  9</code></pre>
-<p>And finally, we can make up a fake data frame using some of the tricks we just learned!</p>
-<pre class="r"><code>############
-# Make up an entire fake data frame!
-
-
-my.data &lt;- data.frame(
-  Obs.Id = 1:100,
-  Treatment = rep(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;),each=20),
-  Block = rep(1:20,times=5),
-  Germination = rpois(100,lambda=rep(c(1,5,4,7,1),each=20)),
-  AvgHeight = rnorm(100,mean=rep(c(10,30,31,25,35,7),each=20))
-)
-head(my.data)</code></pre>
-<pre><code>##   Obs.Id Treatment Block Germination AvgHeight
-## 1      1         A     1           2  9.493036
-## 2      2         A     2           1  9.990907
-## 3      3         A     3           1  9.464219
-## 4      4         A     4           2  8.883230
-## 5      5         A     5           1 10.767882
-## 6      6         A     6           2  9.410822</code></pre>
-<pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
-<pre><code>##      Obs.Id        Treatment             Block        Germination   
-##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   : 0.00  
-##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.: 1.00  
-##  Median : 50.50   Mode  :character   Median :10.50   Median : 3.00  
-##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.91  
-##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 6.00  
-##  Max.   :100.00                      Max.   :20.00   Max.   :12.00  
-##    AvgHeight     
-##  Min.   : 8.085  
-##  1st Qu.:24.173  
-##  Median :29.672  
-##  Mean   :26.185  
-##  3rd Qu.:31.905  
-##  Max.   :36.707</code></pre>
-<p>NOTE: the “head()” function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!</p>
-</div>
-</div>
-<div id="accessing-indexing-and-subsetting-data" class="section level2">
-<h2>Accessing, indexing and subsetting data</h2>
-<p>In any data analysis project, we will need to manage, manipulate and process your data objects. To do this, we need to be able to access elements and subsets of our data objects.</p>
-<p>To access a particular element of a vector, we just enclose the element(s) we want in brackets:</p>
-<pre class="r"><code>############
-### Accessing, indexing and subsetting data
-############
-
-# X[i]         access the ith element of vector X
-
-d.vec &lt;- 2:10
-d.vec</code></pre>
-<pre><code>## [1]  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>d.vec[3]</code></pre>
-<pre><code>## [1] 4</code></pre>
-<pre class="r"><code>d.vec[c(1,5)]</code></pre>
-<pre><code>## [1] 2 6</code></pre>
-<pre class="r"><code>d.vec[-3]</code></pre>
-<pre><code>## [1]  2  3  5  6  7  8  9 10</code></pre>
-<p>It is even more intuitive to access elements of a <strong>named vector</strong>:</p>
-<pre class="r"><code>d.vec &lt;- 1:4
-names(d.vec) &lt;- c(&quot;fred&quot;,&quot;sally&quot;,&quot;mimi&quot;,&quot;terrence&quot;)
-d.vec</code></pre>
-<pre><code>##     fred    sally     mimi terrence 
-##        1        2        3        4</code></pre>
-<pre class="r"><code>d.vec[&quot;terrence&quot;]</code></pre>
-<pre><code>## terrence 
-##        4</code></pre>
-<pre class="r"><code>d.vec[c(&quot;sally&quot;,&quot;fred&quot;)]</code></pre>
-<pre><code>## sally  fred 
-##     2     1</code></pre>
-<p>We can similarly subset matrices using brackets, but we need to specify the rows AND columns we’re interested in extracting!</p>
-<pre class="r"><code># X[a,b]       access row a, column b element of matrix/data frame X
-# X[,b]        access column b of matrix/data frame X
-# X[a,]        access row a of matrix/data frame X
-
-d &lt;- matrix(1:6,3,2)
-d</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    1    4
-## [2,]    2    5
-## [3,]    3    6</code></pre>
-<pre class="r"><code>d[,2]                # 2nd column of d</code></pre>
-<pre><code>## [1] 4 5 6</code></pre>
-<pre class="r"><code>d[2,]                # 2nd row of d</code></pre>
-<pre><code>## [1] 2 5</code></pre>
-<pre class="r"><code>d[2:3,]        # 2nd and 3rd rows of d in a matrix</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    2    5
-## [2,]    3    6</code></pre>
-<p>Subsetting works much the same for lists and data frames. However, now we can reference data frame columns (variables) and other list elements using the dollar sign operator:</p>
-<pre class="r"><code># $            access component of an object (data frame or list)
-# Z_list[[i]]  access the ith element of list Z
-
-d.df=my.data[21:30,]  # only take 10 observations
-d.df</code></pre>
-<pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 21     21         B     1           8  30.49835
-## 22     22         B     2           5  29.80082
-## 23     23         B     3           7  31.61261
-## 24     24         B     4           7  30.84133
-## 25     25         B     5           5  29.09355
-## 26     26         B     6           3  29.53823
-## 27     27         B     7           7  29.98440
-## 28     28         B     8           6  29.59782
-## 29     29         B     9           8  30.69920
-## 30     30         B    10           7  30.41864</code></pre>
-<pre class="r"><code>## many ways of accessing a particular column of a data frame
-d.df$Germination           # Subsetting a data frame</code></pre>
-<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
-<pre class="r"><code>d.df[[&quot;Germination&quot;]]      # same thing!</code></pre>
-<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
-<pre class="r"><code>d.df[,4]                   # same thing!</code></pre>
-<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
-<pre class="r"><code>d.df[[4]]                  # same thing!</code></pre>
-<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
-<pre class="r"><code>d.df[,&quot;Germination&quot;]       # same thing!</code></pre>
-<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
-<pre class="r"><code>d.df[&quot;Germination&quot;]        # same thing!  (or is it...??)</code></pre>
-<pre><code>##    Germination
-## 21           8
-## 22           5
-## 23           7
-## 24           7
-## 25           5
-## 26           3
-## 27           7
-## 28           6
-## 29           8
-## 30           7</code></pre>
-<pre class="r"><code>d.df$AvgHeight</code></pre>
-<pre><code>##  [1] 30.49835 29.80082 31.61261 30.84133 29.09355 29.53823 29.98440 29.59782
-##  [9] 30.69920 30.41864</code></pre>
-<pre class="r"><code>d.df$AvgHeight[3]  # subset an element of a data frame</code></pre>
-<pre><code>## [1] 31.61261</code></pre>
-<pre class="r"><code># Data frame can also be indexed just like a matrix
-d.df[,2]</code></pre>
-<pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
-<pre class="r"><code>d.df[2,]</code></pre>
-<pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 22     22         B     2           5  29.80082</code></pre>
-<pre class="r"><code>d.df[,2:3]</code></pre>
-<pre><code>##    Treatment Block
-## 21         B     1
-## 22         B     2
-## 23         B     3
-## 24         B     4
-## 25         B     5
-## 26         B     6
-## 27         B     7
-## 28         B     8
-## 29         B     9
-## 30         B    10</code></pre>
-<pre class="r"><code>d.df[2,2:3]</code></pre>
-<pre><code>##    Treatment Block
-## 22         B     2</code></pre>
-<p>Here are some useful R functions for exploring data objects:</p>
-<pre class="r"><code>###############
-# Other data exploration tricks in R
-
-length(d2)        # Obtain length (# elements) of vector d2
-dim(d.mat)        # Obtain dimensions of matrix or array
-summary(my.data)  # summarize columns in a data frame. 
-names(my.data)    # get names of variables in a data frame (or names of elements in a named vector)
-nrow(my.data)     # get number of rows/observations in a data frame
-ncol(my.data)     # get number of columns/variables in a data frame
-str(my.data)      # look at the &quot;internals&quot; of an object (useful for making sense of complex objects!)</code></pre>
-</div>
-<div id="basic-mathematical-operations" class="section level2">
-<h2>Basic mathematical operations</h2>
-<p>Here are some basic mathematical operations you can do in R:</p>
+<div id="basic-mathematical-operations" class="section level4">
+<h4>Basic mathematical operations</h4>
+<p>Some very basic functions in R have ‘shorthands’ that make R behave like a fancy calculator. Here are some basic mathematical operations you can do in R:</p>
 <pre class="r"><code>########
 # basic mathematical operations
 
-2+3              # addition
+2+3              # addition 
+&#39;+&#39;(2,3)                 # see, this is really a function in disguise!
           
 6-10             # subtraction
           
@@ -1183,20 +665,412 @@ log10(147.9108)  # common logarithm
 
 log(147.9108, base=10) 
 
-factorial(5)     # factorial
+factorial(5)     # factorial</code></pre>
+</div>
+</div>
+<div id="data-objects-and-variables" class="section level3">
+<h3>Data objects and variables</h3>
+<div id="data-types" class="section level4">
+<h4>Data types</h4>
+<p>The basic data types in R are:</p>
+<ul>
+<li>“numeric” (numbers)<br />
+</li>
+<li>“character” (text strings)</li>
+<li>“logical” (TRUE/FALSE)<br />
+</li>
+<li>“factor” (categorical)</li>
+</ul>
+</div>
+<div id="scalars" class="section level4">
+<h4>Scalars</h4>
+<p>Scalars are the simplest data objects. A scalar is just a single value. Scalars can be a single value of any data type.</p>
+<pre class="r"><code>##################
+####  Create R Objects 
+##################
 
-21 %% 5          # modulus   </code></pre>
+#############
+### scalars
+#############
+
+scalar1 &lt;- &#39;this is a scalar&#39;
+scalar2 &lt;- 104
+scalar3 &lt;- 5 + 6.5    # evaluates to the single value 11.5
+scalar4 &lt;- &#39;4&#39;</code></pre>
+<p>Scalars can store information of any type: numeric, character, logical, or factor. In the example above, <code>scalar1</code> is a character, <code>scalar2</code> and <code>scalar3</code> are both numeric. What is the data type for <code>scalar4</code>?</p>
+<p>If you’re uncertain about the type of any R object the R function <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> <code>typeof()</code> will come in handy.</p>
+<pre class="r"><code>typeof(scalar4)    # returns: character
+
+## what is this type?
+scalar5 &lt;- TRUE
+typeof(scalar5)    # returns: logical</code></pre>
+<p>What happens when we try and add <code>scalar2</code> and <code>scalar4</code>? Think about the types of each scalar. Run the code below to find out.</p>
+<pre class="r"><code>## what happens when we run this line of code? Think about the types.
+scalar2 + scalar4</code></pre>
+<p>This operation is not possible, and R gives you an error. Remember that <code>scalar4</code> is a character, and it doesn’t make sense to perform mathematical operations on character strings.</p>
+</div>
+<div id="vectors" class="section level4">
+<h4>Vectors</h4>
+<p>Vectors combine multiple scalars in a single object.</p>
+<p>First let’s create some vectors. In the code below we use a function called <code>c()</code>. You can think of it as the ‘combine’ function. It takes several objects, and combines them together into a vector. We can even use <code>c()</code> to combine scalar (or vector) objects, like below.</p>
+<pre class="r"><code>#############
+### VECTORS
+#############
+
+vector1 &lt;- c(1.1, 2.1, 3.1, 4)   # the &quot;c()&quot; function combines smaller data objects into a larger object
+vector2 &lt;- c(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)
+vector3 &lt;- c(TRUE, &#39;a&#39;, 1)</code></pre>
+<p>There are many different ways to create a vector. You’ll learn more about that later. Check out the vectors you just created. Each vector is composed of one or more scalar <strong>elements</strong>.</p>
+<p>What happened with <code>vector2</code> and <code>vector4</code>? Looking at the script, these vectors appear to contain a mix of numeric and character elements, but the resulting vector is all characters! This is because <em>all elements of a vector must be the same type</em>. Therefore, R will attempt to convert (coerce) all vector elements to a single type.</p>
+<p>In the following code, we create a vector <code>myvec</code> from three existing data objects: <code>a</code> (1 element), <code>b</code> (1 element), and <code>c</code> (2 element vector):</p>
+<pre class="r"><code>a &lt;- 1
+b &lt;- 2
+c &lt;- c(3,4)
+
+myvec &lt;- c(a, b, c)   # create a vector from existing data objects
+myvec</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<p>Now let’s do some stuff with vectors!</p>
+<pre class="r"><code>length(myvec)    # the &quot;length()&quot; function returns the number of elements in a vector
+
+d1 &lt;- myvec           # copy the vector &quot;myvec&quot;
+d2 &lt;- myvec+3         # add 3 to all elements of the vector &quot;myvec&quot;
+d3 &lt;- d1+d2           # elementwise addition
+d4 &lt;- d1+c(1,2)       # what does this do?
+
+## inspect the objects by calling them in the console (or script window)
+d1    # returns: 1 2 3
+d2    # returns: 4 5 6
+d3    # returns: 5 7 9
+d4    # returns: 2 4 4</code></pre>
+<p><em>NOTE: the last command we ran, “d1+c(1,2)”, produced a <strong>warning message</strong>. Remember to take warning messages seriously- a warning message means “the command ran but the results might not make sense”! In this case, the warning was that we tried to add two vectors of different length. R’s default is to repeat (recycle) the shorter vector until it matches the length of the longer vector.</em></p>
+<p>NOTE: strictly speaking, there are no true scalars in R- scalars are just vectors with 1 element!</p>
+</div>
+<div id="matrices" class="section level4">
+<h4>Matrices</h4>
+<p><strong>Matrix</strong> data objects have two <strong>dimensions</strong>: rows and columns. You can think of matrices as a bunch of vectors grouped together, either by row or by column! All of the elements in a matrix must be of the same length and the same <strong>type</strong> (if different types are provided R will attempt to coerce the elements into a common type).</p>
+<p>Let’s make our first matrix. One simple way to make a matrix is just by joining two vectors using the function <code>cbind()</code> (bind vectors or matrices together by column) or <code>rbind()</code> (bind vectors or matrices together by row)</p>
+<pre class="r"><code>#############
+### MATRICES
+#############
+
+mymat &lt;- cbind(d1,d2)        # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
+mymat</code></pre>
+<pre><code>##      d1 d2
+## [1,]  1  4
+## [2,]  2  5
+## [3,]  3  6
+## [4,]  4  7</code></pre>
+<pre class="r"><code>class(mymat)   # confirm that the new object &quot;mymat&quot; is a matrix using the &#39;class()&#39; function</code></pre>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<p>And there are other ways to make a matrix in R. For instance, we can use the function “matrix()” (this is a function for matrix construction!):</p>
+<pre class="r"><code>mymat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
+mymat</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6</code></pre>
+<pre class="r"><code>mymat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way (stack rows together)
+mymat</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    2
+## [2,]    3    4
+## [3,]    5    6</code></pre>
+<pre class="r"><code>mymat &lt;- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way (stacking three vectors on top of one another)
+mymat</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6</code></pre>
+<p>We can do math with matrices too:</p>
+<pre class="r"><code># math with matrices
+
+mymat + 2</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    3    6
+## [2,]    4    7
+## [3,]    5    8</code></pre>
+<pre class="r"><code>mymat/sum(mymat)</code></pre>
+<pre><code>##            [,1]      [,2]
+## [1,] 0.04761905 0.1904762
+## [2,] 0.09523810 0.2380952
+## [3,] 0.14285714 0.2857143</code></pre>
+</div>
+<div id="lists" class="section level4">
+<h4>Lists</h4>
+<p><strong>List objects</strong> are far more general than matrices. <strong>List</strong> objects are just a bunch of potentially unrelated data objects (<strong>list elements</strong>) grouped together into a single object! The elements of a list don’t need to be the same length or the same <strong>type</strong>. The elements of a list can be vectors, matrices, functions, or other lists - they could be literally any R object.</p>
+<p>Let’s make our first list:</p>
+<pre class="r"><code>#############
+### LISTS
+#############
+
+mylist &lt;- list()        # create empty list
+mylist[[1]] &lt;- c(1,2,3)     # note the double brackets- this is one way to reference list elements. 
+mylist[[2]] &lt;- c(4,5)
+mylist[[3]] &lt;- &quot;Alfred&quot;
+mylist</code></pre>
+<pre><code>## [[1]]
+## [1] 1 2 3
+## 
+## [[2]]
+## [1] 4 5
+## 
+## [[3]]
+## [1] &quot;Alfred&quot;</code></pre>
+<div id="data-frames-a-special-kind-of-list" class="section level5">
+<h5>Data frames (a special kind of list)</h5>
+<p><strong>Data frame</strong> objects are a special type of <strong>list</strong> in which list element is a <em>vector</em> object. Importantly, in a data frame, <em>each of the component vectors must have the same number of vector elements</em>. Each vector object in a data frame is also known as a <em>column</em>. The <em>row</em> of a data frame refers to the <em>i</em>th element of each of the vectors.</p>
+<p>Data frames superficially resemble matrices, since both types of objects have two <strong>dimensions</strong>: rows and columns. However, data frames are really much more general than matrices; in data frames, unlike matrices, the columns of a data frame can represent different <strong>types</strong> (i.e., character, logical, numeric, factor), and can thereby code for very different types of information!</p>
+<p><em>Data frames are the basic data storage structure in R</em>. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on that observation unit.</p>
+<p>Let’s make our first data frame. We will use the data frame constructor function “data.frame()”.</p>
+<pre class="r"><code>#############
+### DATA FRAMES
+#############
+mydf &lt;- data.frame(col1=c(1,2,3),colW2=c(4,5,6))        # create a ‘data frame’ with two columns. Each column is a vector of length 3
+mydf</code></pre>
+<pre><code>##   col1 colW2
+## 1    1     4
+## 2    2     5
+## 3    3     6</code></pre>
+<p>Now we have a data frame with three observation units and two measurements (variables).</p>
+<p>We can use the “names()” function to see the names of column of a data frame- or to change these names!</p>
+<pre class="r"><code>names(mydf)          # view or change column names</code></pre>
+<pre><code>## [1] &quot;col1&quot;  &quot;colW2&quot;</code></pre>
+<pre class="r"><code>names(mydf)=c(&quot;meas_1&quot;,&quot;meas_2&quot;)        # provide new names for columns
+mydf</code></pre>
+<pre><code>##   meas_1 meas_2
+## 1      1      4
+## 2      2      5
+## 3      3      6</code></pre>
+<p>And we can view or change the row names of a data frame (or matrix) using the “rownames()” function:</p>
+<pre class="r"><code>rownames(mydf) &lt;- c(&quot;obs1&quot;,&quot;obs2&quot;,&quot;obs3&quot;)
+mydf</code></pre>
+<pre><code>##      meas_1 meas_2
+## obs1      1      4
+## obs2      2      5
+## obs3      3      6</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="making-up-data" class="section level2">
+<h2>Making up data!</h2>
+<p>In this section, we will make a bunch of fake data objects. In the next submodule we’ll practice working with real data!</p>
+<div id="generating-sequences-of-numbers" class="section level3">
+<h3>Generating sequences of numbers</h3>
+<p>One task that comes up a lot is generating sequences of numbers. We certainly don’t want to do this entirely by hand! Here are some shortcuts:</p>
+<pre class="r"><code>#############
+### MAKING UP DATA!
+#############
+
+#######
+# Generating vector sequences
+
+1:10                        # sequential vector from 1 to 10</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>10:1                        # reverse the order</code></pre>
+<pre><code>##  [1] 10  9  8  7  6  5  4  3  2  1</code></pre>
+<pre class="r"><code>seq(from=1,to=10,by=1)      # equivalent to 1:10</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>seq(10,1,-1)                # equivalent to 10:1</code></pre>
+<pre><code>##  [1] 10  9  8  7  6  5  4  3  2  1</code></pre>
+<pre class="r"><code>seq(1,10,length=10)         # equivalent to 1:10</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>seq(0,1,length=5)          # sequence of length 10 between 0 and 1 </code></pre>
+<pre><code>## [1] 0.00 0.25 0.50 0.75 1.00</code></pre>
+<p>Another task is to group regular recurring sequences together:</p>
+<pre class="r"><code>##############
+# Repeating vector sequences
+
+rep(0,times=3)                # repeat 0 three times</code></pre>
+<pre><code>## [1] 0 0 0</code></pre>
+<pre class="r"><code>rep(1:3,times=2)              # repeat 1:3 two times</code></pre>
+<pre><code>## [1] 1 2 3 1 2 3</code></pre>
+<pre class="r"><code>rep(1:3,each=2)               # repeat each element of 1:3 two times</code></pre>
+<pre><code>## [1] 1 1 2 2 3 3</code></pre>
+<p>And finally, we can fill up a vector with random numbers using one of R’s built in <strong>random number generators</strong>:</p>
+<pre class="r"><code>###########
+# Random numbers
+
+z &lt;- rnorm(10)                # 10 realizations from std. normal
+z</code></pre>
+<pre><code>##  [1] -1.1646415 -1.0018524 -0.4166887  0.3762916  1.5229710  0.8670203
+##  [7] -0.9615852 -1.3248221 -0.1428627 -1.2995470</code></pre>
+<pre class="r"><code>y &lt;- rnorm(10,mean=-2,sd=4)           # 10 realizations from N(-2,4^2)
+y</code></pre>
+<pre><code>##  [1]  8.7745903 -3.5360368  1.2071946 -0.6456831 -3.2359154 -2.7673310
+##  [7] -0.9160426 -8.9540820  0.8155751 -5.6625501</code></pre>
+<pre class="r"><code>rbinom(5,size=3,prob=.5)                # 5 realizations from Binom(3,0.5)</code></pre>
+<pre><code>## [1] 0 1 2 2 1</code></pre>
+<pre class="r"><code>rbinom(5,3,.1)                # 5 realizations from Binom(3,0.1)</code></pre>
+<pre><code>## [1] 1 1 0 0 1</code></pre>
+<pre class="r"><code>runif(10)                # 10 standard uniform random numbers</code></pre>
+<pre><code>##  [1] 0.78613603 0.17973245 0.82683070 0.01338101 0.60096950 0.83431938
+##  [7] 0.66839399 0.47146922 0.40110613 0.66307921</code></pre>
+<pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random variates on [-1,1]</code></pre>
+<pre><code>##  [1]  0.4219521  0.2076946  0.4267920  0.4460656  0.6315999  0.9983255
+##  [7] -0.5050987  0.3636933  0.2413905  0.6965792</code></pre>
+<p>And finally, we can make up a fake data frame using some of the tricks we just learned!</p>
+<pre class="r"><code>############
+# Make up an entire fake data frame!
+
+my.data &lt;- data.frame(
+  Obs.Id = 1:100,
+  Treatment = rep(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;),each=20),
+  Block = rep(1:20,times=5),
+  Germination = rpois(100,lambda=rep(c(1,5,4,7,1),each=20)),   # random poisson variable
+  AvgHeight = rnorm(100,mean=rep(c(10,30,31,25,35,7),each=20))
+)
+head(my.data)</code></pre>
+<pre><code>##   Obs.Id Treatment Block Germination AvgHeight
+## 1      1         A     1           1  9.196712
+## 2      2         A     2           1  9.403593
+## 3      3         A     3           1 10.575880
+## 4      4         A     4           2  8.376719
+## 5      5         A     5           1 10.172626
+## 6      6         A     6           0 10.398289</code></pre>
+<pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
+<pre><code>##      Obs.Id        Treatment             Block        Germination   
+##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   : 0.00  
+##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.: 1.00  
+##  Median : 50.50   Mode  :character   Median :10.50   Median : 3.00  
+##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.71  
+##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 6.00  
+##  Max.   :100.00                      Max.   :20.00   Max.   :12.00  
+##    AvgHeight     
+##  Min.   : 8.188  
+##  1st Qu.:24.480  
+##  Median :29.633  
+##  Mean   :26.248  
+##  3rd Qu.:31.756  
+##  Max.   :37.096</code></pre>
+<p>NOTE: the “head()” function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!</p>
+</div>
+</div>
+<div id="accessing-indexing-and-subsetting-data" class="section level2">
+<h2>Accessing, indexing and subsetting data</h2>
+<p>In any data analysis project, we will need to manage, manipulate and process your data objects. To do this, we need to be able to access elements and subsets of our data objects.</p>
+<p>To access a particular element of a vector, we just enclose the element(s) we want in brackets:</p>
+<pre class="r"><code>############
+### Accessing, indexing and subsetting data
+############
+
+# X[i]         access the ith element of vector X
+
+myvec &lt;- 2:10
+myvec</code></pre>
+<pre><code>## [1]  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>myvec[3]</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>myvec[c(1,5)]</code></pre>
+<pre><code>## [1] 2 6</code></pre>
+<pre class="r"><code>myvec[-3]</code></pre>
+<pre><code>## [1]  2  3  5  6  7  8  9 10</code></pre>
+<p>It is even more intuitive to access elements of a <strong>named vector</strong>:</p>
+<pre class="r"><code>myvec &lt;- 1:4
+names(myvec) &lt;- c(&quot;fred&quot;,&quot;sally&quot;,&quot;mimi&quot;,&quot;terrence&quot;)
+myvec</code></pre>
+<pre><code>##     fred    sally     mimi terrence 
+##        1        2        3        4</code></pre>
+<pre class="r"><code>myvec[&quot;terrence&quot;]</code></pre>
+<pre><code>## terrence 
+##        4</code></pre>
+<pre class="r"><code>myvec[c(&quot;sally&quot;,&quot;fred&quot;)]</code></pre>
+<pre><code>## sally  fred 
+##     2     1</code></pre>
+<p>For matrices, we need to specify rows AND columns!</p>
+<pre class="r"><code># X[a,b]       access row a, column b element of matrix/data frame X
+# X[,b]        access all rows of column b of matrix/data frame X
+# X[a,]        access row a of matrix/data frame X
+
+d &lt;- matrix(1:6,nrow=3,ncol=2)
+d</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6</code></pre>
+<pre class="r"><code>d[,2]                # 2nd column of d</code></pre>
+<pre><code>## [1] 4 5 6</code></pre>
+<pre class="r"><code>d[2,]                # 2nd row of d</code></pre>
+<pre><code>## [1] 2 5</code></pre>
+<pre class="r"><code>d[2:3,]        # 2nd and 3rd rows of d in a matrix</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    2    5
+## [2,]    3    6</code></pre>
+<p>Subsetting works much the same for lists and data frames. However, now we can reference data frame columns (variables) and other list elements using the dollar sign or double-bracket operator:</p>
+<pre class="r"><code># $            access component of an object (data frame or list)
+# Z_list[[i]]  access the ith element of list Z
+
+mydf=my.data[21:30,]  # only keep 10 rows
+mydf</code></pre>
+<pre><code>##    Obs.Id Treatment Block Germination AvgHeight
+## 21     21         B     1           2  30.11275
+## 22     22         B     2           2  29.32447
+## 23     23         B     3           6  30.89018
+## 24     24         B     4           7  30.07338
+## 25     25         B     5           0  29.70535
+## 26     26         B     6           5  29.15887
+## 27     27         B     7           4  31.30083
+## 28     28         B     8           8  30.42173
+## 29     29         B     9           6  29.37911
+## 30     30         B    10           6  30.04384</code></pre>
+<pre class="r"><code>## many ways of accessing a particular column of a data frame
+mydf$Germination           # Subsetting a data frame</code></pre>
+<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre class="r"><code>mydf[[&quot;Germination&quot;]]      # same thing!</code></pre>
+<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre class="r"><code>mydf[,4]                   # same thing!</code></pre>
+<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre class="r"><code>mydf[[4]]                  # same thing!</code></pre>
+<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre class="r"><code>mydf[,&quot;Germination&quot;]       # same thing!</code></pre>
+<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre class="r"><code># Data frame can also be indexed just like a matrix
+mydf[,2]</code></pre>
+<pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
+<pre class="r"><code>mydf[2,]</code></pre>
+<pre><code>##    Obs.Id Treatment Block Germination AvgHeight
+## 22     22         B     2           2  29.32447</code></pre>
+<pre class="r"><code>mydf[,2:3]</code></pre>
+<pre><code>##    Treatment Block
+## 21         B     1
+## 22         B     2
+## 23         B     3
+## 24         B     4
+## 25         B     5
+## 26         B     6
+## 27         B     7
+## 28         B     8
+## 29         B     9
+## 30         B    10</code></pre>
+<pre class="r"><code>mydf[2,2:3]</code></pre>
+<pre><code>##    Treatment Block
+## 22         B     2</code></pre>
+<p>Here are some useful R functions for exploring data objects:</p>
+<pre class="r"><code>###############
+# Other data exploration tricks in R
+
+length(d2)        # Obtain length (# elements) of vector d2
+dim(mymat)        # Obtain dimensions of matrix or array
+summary(my.data)  # summarize columns in a data frame. 
+names(my.data)    # get names of variables in a data frame (or names of elements in a named vector)
+nrow(my.data)     # get number of rows/observations in a data frame
+ncol(my.data)     # get number of columns/variables in a data frame
+str(my.data)      # look at the &quot;internals&quot; of an object (useful for making sense of complex objects!)</code></pre>
 </div>
 <div id="challenge-exercises" class="section level2">
 <h2>Challenge exercises!</h2>
 <ol style="list-style-type: decimal">
-<li>Create a 3 by 2 matrix equivalent to d.mat by binding rows (HINT: use the “rbind()” function), using the following as rows:</li>
+<li>Create a 3 by 2 matrix equivalent to mymat by binding rows (HINT: use the “rbind()” function), using the following as rows:</li>
 </ol>
+<pre><code>c(1,4) 
+c(2,5) 
+c(3,6)</code></pre>
 <pre class="r"><code>############
 ### CHALLENGE EXERCISES
 ############
 
-### Challenge 1: Create a 3 by 2 matrix equivalent to d.mat by binding rows 
+### Challenge 1: Create a 3 by 2 matrix equivalent to mymat by binding rows 
 
 # (HINT: use the &quot;rbind()&quot; function), using the following as rows:
 
@@ -1206,31 +1080,31 @@ c(1,4) </code></pre>
 <pre><code>## [1] 2 5</code></pre>
 <pre class="r"><code>c(3,6)</code></pre>
 <pre><code>## [1] 3 6</code></pre>
-<pre class="r"><code>### Challenge 2: Is d.mat[-c(1,2),] a matrix or a vector? HINT: you can use the &quot;class()&quot; function to help out.
+<pre class="r"><code>### Challenge 2: Is mymat[-c(1,2),] a matrix or a vector? HINT: you can use the &quot;class()&quot; function to help out.
 
-### Challenge 3: Create a new matrix &#39;d.mat2&#39; by converting directly from data frame d.df, and using only columns 3 to 5 of the object &#39;d.df&#39;.
+### Challenge 3: Create a new matrix &#39;mymat2&#39; that represents only columns 3 to 5 of data frame mydf.
 
-### Challenge 4: Create a 3 by 1 (3 rows, 1 column) matrix called &#39;d.mat3&#39; with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command &#39;1:3&#39;)? HINT: use the &quot;dim()&quot; function, which returns the dimensionality of an object.
+### Challenge 4: Create a 3 by 1 (3 rows, 1 column) matrix called &#39;mymat3&#39; with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command &#39;1:3&#39;)? HINT: use the &quot;dim()&quot; function, which returns the dimensionality of an object.
 
-### Challenge 5: Take your matrix &#39;d.mat2&#39; and convert (coerce) it to a vector containing all elements in the matrix. HINT: use the &quot;as.vector()&quot; function.
+### Challenge 5: Take your matrix &#39;mymat2&#39; and convert (coerce) it to a vector containing all elements in the matrix. HINT: use the &#39;c()&#39; function to combine the first column and the second column into a single vector object.
 
-### Challenge 6: Create a list named &#39;d.list&#39; that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).
+### Challenge 6: Create a list named &#39;mylist&#39; that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c(&quot;a&quot;,&quot;a&quot;,&quot;b&quot;)).
 
-### Challenge 7: Extract (subset) the 2nd row of the 3rd matrix in the array in &#39;d.list&#39; (the list created in challenge 6 above). For this exercise, please consider the array to be indexed as [row #, column #, matrix #]. 
+### Challenge 7: Extract the first and third observation from the 2nd row of the data frame in &#39;d.list&#39; (the list created in challenge 6 above).
 
 ### Challenge 8: (extra challenging!) Create a data frame named &#39;df_spatial&#39; that contains 25 locations, with &#39;long&#39; and &#39;lat&#39; as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
-###     HINT: you don&#39;t need to type each location in by hand!</code></pre>
+###     HINT: you don&#39;t need to type each location in by hand! Use the &#39;rep()&#39; and &#39;seq()&#39; functions instead.</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Is d.mat[-c(1,2),] a matrix or a vector? HINT: you can use the “class()” function to help out.</p></li>
-<li><p>Create a new matrix ‘d.mat2’ by converting directly from data frame d.df, and using only columns 3 to 5 of the object ‘d.df’.</p></li>
-<li><p>Create a 3 by 1 (3 rows, 1 column) matrix called ‘d.mat3’ with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command ‘1:3’)? HINT: use the “dim()” function, which returns the dimensionality of an object.</p></li>
-<li><p>Take your matrix ‘d.mat2’ and convert it to a vector containing all elements in the matrix. HINT: use the “as.vector()” function.</p></li>
-<li><p>Create a list named ‘d.list’ that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and an array: array(1:24,dim=c(3,2,4)).</p></li>
-<li><p>Extract (subset) the 2nd row of the 3rd matrix in the array in ‘d.list’ (the list created in challenge 6 above). For this exercise, please consider the array to be indexed as [row #, column #, matrix #].</p></li>
+<li><p>Is mymat[-c(1,2),] a matrix or a vector? HINT: you can use the “class()” function to help out.</p></li>
+<li><p>Create a new matrix ‘mymat2’ that represents only columns 3 to 5 of data frame mydf.</p></li>
+<li><p>Create a 3 by 1 (3 rows, 1 column) matrix called ‘mymat3’ with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command ‘1:3’)? HINT: use the “dim()” function, which returns the dimensionality of an object.</p></li>
+<li><p>Take your matrix ‘mymat2’ and convert (coerce) it to a vector containing all elements in the matrix. HINT: use the ‘c()’ function to combine the first column and the second column into a single vector object.</p></li>
+<li><p>Create a list named ‘mylist’ that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c(“a”,“a”,“b”)).</p></li>
+<li><p>Extract the first and third observation from the 2nd row of the data frame in ‘d.list’ (the list created in challenge 6 above).</p></li>
 <li><p>(extra challenging!) Create a data frame named ‘df_spatial’ that contains 25 locations, with ‘long’ and ‘lat’ as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1].</p></li>
 </ol>
-<p>HINT: you don’t need to type each location in by hand!</p>
+<p>HINT: you don’t need to type each location in by hand! Use the ‘rep()’ and ‘seq()’ functions instead.</p>
 <p>To make sure you got it right, use the following commands in R:</p>
 <p>Don’t worry if you don’t understand the code- we’ll talk about plotting soon enough!</p>
 <pre class="r"><code>########
@@ -1238,29 +1112,9 @@ c(1,4) </code></pre>
 
 plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <p>It should look something like this (above)!</p>
 <p><a href="module1_2.html">–go to next module–</a></p>
-<div id="finally-some-more-advanced-exploration-of-functions" class="section level4">
-<h4>Finally: some more advanced exploration of functions</h4>
-<p>Here is some code to help you get more familiar with some of the less intuitive aspects of R functions:</p>
-<pre class="r"><code>#################
-# More advanced exploration of functions!
-
-########
-## first class functions
-
-## assign functions to values
-sum2 &lt;- sum
-sum2(1, 2, 3, 10)    # use the value sum2 as a function!
-
-## use functions as arguments in other functions
-## lets compute the average length of some of the vectors we&#39;ve created
-## this should return 3.66
-mean(c(length(vector1), length(vector2), length(vector3)))</code></pre>
-<p>Let’s walk through this last line of code together. We are use 3 different functions: <code>c</code>, <code>length</code>, <code>mean</code>. <code>length</code> is calculating the length of each vector. We are then taking the results of length and creating a vector with the <code>c</code> functions. The result of this is then used as the argument for the <code>mean</code> function.</p>
-<p>Throughout your R journey you will see these properties used many times. Maybe not so much when first starting. But they are important concepts. Especially the fact that the R has first-class functions. Functions are often used as arguments to other functions as a shortcut. It saves the intermediate step of saving the results to another variable, then providing that variable as an argument. It also tends to save memory, as we are no longer storing that variable in memory.</p>
-</div>
 </div>
 <div class="footnotes">
 <hr />
