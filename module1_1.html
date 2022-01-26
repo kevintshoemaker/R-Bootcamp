@@ -14,8 +14,8 @@
 
 <title>Module 1.1</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -422,7 +422,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 1.1</h1>
 <h4 class="author">Getting started: working with objects</h4>
-<h4 class="date">Fall 2021</h4>
+<h4 class="date">TWS-WS 2022</h4>
 
 </div>
 
@@ -432,65 +432,70 @@ div.tocify {
 <div id="get-materials-for-this-module" class="section level2">
 <h2>Get materials for this module</h2>
 <ul>
-<li>I recommend having a printed copy of a good base R “cheatsheet” (or two) as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! ‘Cheatsheets’ like this can quickly and easily refresh your memory. So print out the cheatsheet and don’t worry if you don’t memorize everything we tell you in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!) and how to learn how to do things in R. And most importantly, we hope the workshop gives you confidence to learn new things and try new things in R!</li>
+<li>I recommend having a printed copy of a good base R “cheatsheet” (or two) as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! ‘Cheatsheets’ like this can quickly and easily refresh your memory. So print out the cheatsheet and don’t worry if you don’t memorize everything we do together in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!), to feel comfortable doing some basic data operations in R, and most importantly, we hope the workshop gives you confidence to learn and try new things in R!</li>
 </ul>
 <p>Here are links to good base R “cheatsheets”:</p>
 <p><a href="https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf">Base R Cheat sheet</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R reference card</a><br />
-<a href="https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf">More advanced base R cheat sheet</a></p>
+<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R reference card</a></p>
 </div>
 <div id="load-script-for-module-1.1" class="section level2">
 <h2>Load script for module #1.1</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module1_1.R">here</a> to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the “Save As” option from the context menu. Save the script to a convenient folder on your laptop, which will serve as your <strong>working directory</strong> for this bootcamp. I recommend creating a new folder to store all the scripts, data sets and other materials from these modules!</p></li>
-<li><p>Start a new <strong>RStudio Project</strong>. To do this, open RStudio and from the File menu select File&gt;&gt;New Project. In the menu that follows, select “Existing Directory”, and then navigate to the folder in which you saved the R script for this module (your working directory). The R project will automatically take the name of your working directory folder.</p></li>
-<li><p>Load a blank script in RStudio. To do this, click on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your <strong>script</strong> (a set of written commands that R can recognize and execute), the bottom left panel is your <strong>console</strong> (your direct connection with R- prints errors and stores a record of commands that have already been run), the top right panel is your <strong>Workspace</strong> (container for all the objects – data, variables, functions– that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view graphical plots, view files in your working directory, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!</p></li>
+<li><p>Click <a href="module1_1.R">here</a> to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the “Save As” option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called “RBootcamp2022”), which will serve as your <strong>working directory</strong> for this bootcamp.</p></li>
+<li><p>Start a new <strong>RStudio Project</strong>. To do this, open RStudio and from the File menu select File&gt;&gt;New Project. In the menu that follows, select “Existing Directory”, and then navigate to the folder in which you saved the R script for this module (your working directory). Select this folder to be your <strong>project directory</strong>. Every time you open this project (File &gt;&gt; Open Project), this project directory will be the first place that R looks for data files and code, and will be the default location for saving data and code.</p></li>
+<li><p>Load a blank script in RStudio. To do this, click on the “blank paper” icon at the far left of the RStudio toolbar (or File &gt;&gt; New File &gt;&gt; R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your <strong>script</strong> (a set of written commands that R can recognize and execute), the bottom left panel is your <strong>console</strong> (your direct connection with R), the top right panel is your <strong>Workspace</strong> (displays all the objects – data sets, variables, functions– that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view plots, view files in your working directory, etc.</p></li>
 </ol>
-<p>Let’s get started!!</p>
+<p>Take a couple minutes to familiarize yourself with the RStudio environment.</p>
+<p>Let’s get started!</p>
 <p><img src="rstudio1.jpg" /></p>
 </div>
 <div id="explore-the-r-console" class="section level2">
 <h2>Explore the R console</h2>
-<p>The R console (what you see if you opened R directly without going through RStudio) is a <strong>command line</strong> interface, and is <em>your direct connection with the R statistical programming language</em>. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make effective use of R! In fact, after this short demo you will rarely interact directly with the console (instead, you will use scripts!)!</p>
 <p>The R console is located in the left half or bottom left of the RStudio interface (see figure above).</p>
+<p>The R console (what you see if you opened R directly instead of RStudio) is a <strong>command line</strong> interface, and is <em>your direct connection with R</em>: you give R a command at the prompt and R executes that command.</p>
+<p>You generally shouldn’t work in the console, at least for writing important code- use an R script instead (see below).</p>
+<p>However, let’s take a few minutes to work with the console:</p>
 <ol style="list-style-type: decimal">
-<li><p>Click on the console just to the right of one of the “&gt;” prompts.</p></li>
-<li><p>You can use the console like a calculator. For example, type <code>2+2</code> at the prompt and hit enter. What does R do?</p></li>
-<li><p>Now hit the “up” arrow. The R console remembers all previous commands that it has executed in this <strong>session</strong>, which allows you to re-run commands relatively easily. However, if you accidentally hit the “up” arrow you lose everything you had been typing!</p></li>
-<li><p>Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing <code># 2+2</code> and hitting “Enter”. Nothing happens, right?</p></li>
+<li><p>Click on the console, just to the right of one of the “&gt;” prompts.</p></li>
+<li><p>You can use the console like a calculator. For example, type <code>6+11</code> at the prompt and hit enter.</p></li>
+<li><p>Now hit the “up” arrow. The R console remembers all previous commands that it has executed in this <strong>session</strong>, which allows you to re-run commands relatively easily.</p></li>
+<li><p>Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing <code># 2+2</code> and hitting “Enter”. Nothing happens, right? We will come back to this shortly.</p></li>
 </ol>
 <div id="lets-create-our-first-object" class="section level3">
 <h3>Let’s create our first object</h3>
-<p>Objects are defined using R’s <strong>assignment operator</strong>, which looks like a left arrow (<code>&lt;-</code>). Type the following statement directly into the console:</p>
-<pre class="r"><code>Batmans_butler &lt;- &#39;Alfred Pennyworth&#39;  </code></pre>
+<p>Objects are defined using R’s <strong>assignment operator</strong> (Windows shortcut: Alt + -)(Mac: replace Alt with Option), which looks like a left arrow (<code>&lt;-</code>). Type the following statement directly into the console:</p>
+<pre class="r"><code>myname &lt;- &#39;Alfred&#39; </code></pre>
 <p>Then hit “Enter”. What does R return?</p>
 <p>NOTHING!</p>
-<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface). You should see that you now have a new <strong>object</strong> in your environment, called “Batmans_butler”, and this object contains a <strong>text string</strong> (“Alfred Pennyworth”).</p>
-<p>Now type <code>print(Batmans_butler)</code><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> into the R console and hit “Enter”. What happens? <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
-<p>If you enter the name of an object at the command line, R automatically prints the value of the object- you don’t need to use the <code>print()</code> function… Try it: type <code>Batmans_butler</code> into the R console and hit “Enter”. R dutifully returns the name of Bruce Wayne’s loyal and tireless butler, best friend and surrogate father figure. In fact, when you type the name of an object and hit “Enter”, R will automatically print the contents of that object back to the console.</p>
+<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface). You should see that you now have a new <strong>object</strong> in your environment, called “myname”, and this object contains a <strong>text string</strong> (“Alfred”).</p>
+<p>Now type <code>myname</code> into the R console and hit “Enter”. What happens?</p>
+<p>If you enter the name of an object at the command line, R automatically prints the value of the object!</p>
+<p>NOTE: RStudio has a useful autofill feature, which can save you lots of time and headaches. After you’ve typed the first couple letters (e.g., “my”), RStudio will suggest “myname” and you can just hit “Enter” to complete the object name! The auto-type feature, unlike R, is not case sensitive! Also note that you can hit the ‘tab’ key to trigger autofill anytime after you start typing in RStudio.</p>
 </div>
 </div>
 <div id="graduating-to-r-scripts" class="section level2">
 <h2>Graduating to R Scripts</h2>
-<p>You will quickly realize that although the command-line R console is nice for some things, there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the “.R” extension) is called an <strong>R script</strong>. Again, the top left quadrant of the RStudio interface (at least by default) is where you can view and edit your R scripts.</p>
+<p>You will quickly realize that although the command-line R console is nice to use for some things (e.g., quick things that don’t need to be saved), there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the “.R” extension) is called an <strong>R script</strong>.</p>
 <div id="new-script" class="section level3">
 <h3>New script</h3>
-<p>If you haven’t done it already, create a new R script by clicking on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script).</p>
-<p>In your blank script, define a new object. For example:</p>
+<p>If you haven’t done it already, create a new R script by clicking on the “blank paper” icon at the far left of the RStudio toolbar (or File&gt;&gt;New File&gt;&gt;R script). The top left quadrant of the RStudio interface (at least by default) should now contain a blank R script.</p>
+<p>In your blank script, let’s define a new object. For example:</p>
 <pre><code>
-my_obj &lt;- 2+2
+my_obj &lt;- 6+11
 </code></pre>
-<p>Now highlight the text you just wrote (or place the cursor somewhere within the text) and hit ‘Ctrl+Enter’ (or ‘Command+Enter’) to run that line of code!</p>
-<p>Click on a new (blank) line in the script and type <code>2+2</code>. Now hit “Ctrl+Enter” (or “Command+Enter”) to run the line of code.</p>
+<p>Now place the cursor somewhere within the line of text you just wrote and hit ‘Ctrl+Enter’ (or ‘Command+Enter’) to run that line of code! You should see a new object (‘my_obj’) pop up in your environment.</p>
+<p>In the next line of your script, enter a pound sign (hashtag) followed by the command <code>2+2</code>. Nothing happens, right?</p>
+<p>Now delete the hashtag and try again. Now R recognizes and runs the command. Interesting…</p>
+<p>Take a few minutes to get comfortable defining new objects using your new R script.</p>
 <p>Of course, it’s always a good idea to save your scripts often – so feel free to save your new script before you move on.</p>
 </div>
-<div id="load-existing-script" class="section level3">
-<h3>Load Existing script</h3>
+<div id="load-an-existing-script" class="section level3">
+<h3>Load an Existing script</h3>
 <p>Remember the file you downloaded at the beginning of this submodule? That file is an R script- Let’s load it up now!</p>
 <p>To do this, click on the “folder” icon on the Rstudio toolbar (or File &gt;&gt; Open File) and choose the script you downloaded earlier.</p>
 <p>The first few lines (commands) of the script for this module are preceded by pound signs. R doesn’t do anything with these commands- they are called <strong>comments</strong>, and they help to keep code clear, organized and understandable to human readers.</p>
 <p><em>use comments early and often- they are tremendously valuable</em>.</p>
-<p>Click on the top of the script (first line of comments). To <strong>run</strong> a line of code, press the “Ctrl” key (or the “Command” key) and hit “Enter”. R will then run that line through the console. But of course, nothing happens because it’s a comment and not meant to be interpreted by your machine<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<p>Click on the top of the script (first line of comments). To <strong>run</strong> a line of code, press the “Ctrl” key (or the “Command” key) and hit “Enter”. R will then run that line through the console. But of course, nothing happens because it’s a comment and not meant to be interpreted by your machine<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <p>If you click on a line of code that is not followed by a pound sign, you should see that R interprets the text on that line of code and stores any newly defined objects in memory (see top right quadrant of the Rstudio interface – ‘Workspace’ (or Environment) tab – for a list of objects stored in memory)</p>
 <p>Now you know the basics of how to use R scripts.</p>
 </div>
@@ -639,7 +644,7 @@ scalar2 &lt;- 104
 scalar3 &lt;- 5 + 6.5    # evaluates to the single value 11.5
 scalar4 &lt;- &#39;4&#39;</code></pre>
 <p>Scalars do have a specific type. In the example above, <code>scalar1</code> is a character, <code>scalar2</code> and <code>scalar3</code> are both numeric. What is the data type for <code>scalar4</code>?</p>
-<p>If you are uncertain about the type of any R object the R function <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> <code>typeof()</code> will come in handy. Lets work through the code below.</p>
+<p>If you are uncertain about the type of any R object the R function <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> <code>typeof()</code> will come in handy. Lets work through the code below.</p>
 <pre class="r"><code>typeof(scalar4)    # returns: character
 
 ## what is this type?
@@ -958,32 +963,32 @@ rep(0,times=3)                # repeat 0 three times</code></pre>
 
 z &lt;- rnorm(10)                # 10 realizations from std. normal
 z</code></pre>
-<pre><code>##  [1]  1.4537117  0.6365061 -1.6755194  0.4394276 -0.4975630  0.2644075
-##  [7] -0.5488092  0.7337206  1.6665146 -2.1062529</code></pre>
+<pre><code>##  [1] -0.025681513  0.248170432  0.496908680 -0.817497060 -1.816093865
+##  [6]  0.865196031  1.374689019 -0.003261195  0.245227369 -0.897005936</code></pre>
 <pre class="r"><code>y &lt;- rnorm(10,mean=-2,sd=4)           # 10 realizations from N(-2,4^2)
 y</code></pre>
-<pre><code>##  [1] -5.24807496  0.66098733 -0.27511942 -4.11638590 -2.93527197 -6.48810090
-##  [7] -0.65936713 -0.25330161 -0.06662933 -3.87977122</code></pre>
+<pre><code>##  [1]  -5.610811   2.821611  -2.054477  -5.624679   4.543343  -2.347034
+##  [7]  -3.152993 -10.280337  -1.913949  -6.016089</code></pre>
 <pre class="r"><code>rbinom(5,size=3,prob=.5)                # 5 realizations from Binom(3,0.5)</code></pre>
-<pre><code>## [1] 1 2 3 2 2</code></pre>
+<pre><code>## [1] 1 1 2 0 2</code></pre>
 <pre class="r"><code>rbinom(5,3,.1)                # 5 realizations from Binom(3,0.1)</code></pre>
-<pre><code>## [1] 0 1 0 0 0</code></pre>
+<pre><code>## [1] 2 0 0 1 2</code></pre>
 <pre class="r"><code>rbinom(5,3,.8)                # 5 realizations from Binom(3,0.8)</code></pre>
-<pre><code>## [1] 3 2 3 3 3</code></pre>
+<pre><code>## [1] 3 3 3 1 3</code></pre>
 <pre class="r"><code>rbinom(5,1:5,0.5)       # simulations from binomial w/ diff number of trials</code></pre>
-<pre><code>## [1] 0 0 2 3 0</code></pre>
+<pre><code>## [1] 0 2 2 4 2</code></pre>
 <pre class="r"><code>rbinom(5,1:5,seq(.1,.9,length=5))   # simulations from diff number of trials and probs</code></pre>
-<pre><code>## [1] 0 0 1 2 4</code></pre>
+<pre><code>## [1] 0 0 1 4 5</code></pre>
 <pre class="r"><code>runif(10)                # 10 standard uniform random variates</code></pre>
-<pre><code>##  [1] 0.05415913 0.16011170 0.68150789 0.29587720 0.64462661 0.83240521
-##  [7] 0.36827331 0.07255974 0.25219255 0.91626563</code></pre>
+<pre><code>##  [1] 0.62178810 0.42931983 0.45686031 0.44153974 0.69498519 0.71163476
+##  [7] 0.88147940 0.04802608 0.13046124 0.84121288</code></pre>
 <pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random variates on [-1,1]</code></pre>
-<pre><code>##  [1]  0.21828378  0.13223725  0.93541284  0.24659510 -0.02755055  0.34602654
-##  [7]  0.74904925 -0.05954047 -0.34390981 -0.34769387</code></pre>
+<pre><code>##  [1]  0.53025162 -0.10111889  0.40945158  0.67474318  0.58274991  0.53550796
+##  [7]  0.14780340 -0.08683614 -0.10620695 -0.38214293</code></pre>
 <pre class="r"><code>sample(1:10,size=5,replace=TRUE)        # 5 rvs from discrete unif. on 1:10.</code></pre>
-<pre><code>## [1] 2 7 3 1 8</code></pre>
+<pre><code>## [1] 1 6 8 3 9</code></pre>
 <pre class="r"><code>sample(1:10,size=5,replace=TRUE,prob=(1:10)/sum(1:10)) # 5 rvs from discrete pmf w/ varying probs.</code></pre>
-<pre><code>## [1] 5 7 9 9 7</code></pre>
+<pre><code>## [1] 10  3  8  7  9</code></pre>
 <p>And finally, we can make up a fake data frame using some of the tricks we just learned!</p>
 <pre class="r"><code>############
 # Make up an entire fake data frame!
@@ -998,27 +1003,27 @@ my.data &lt;- data.frame(
 )
 head(my.data)</code></pre>
 <pre><code>##   Obs.Id Treatment Block Germination AvgHeight
-## 1      1         A     1           2 11.095688
-## 2      2         A     2           0 10.735637
-## 3      3         A     3           1  9.921545
-## 4      4         A     4           0 10.646437
-## 5      5         A     5           2  9.639875
-## 6      6         A     6           2  9.396094</code></pre>
+## 1      1         A     1           2  9.493036
+## 2      2         A     2           1  9.990907
+## 3      3         A     3           1  9.464219
+## 4      4         A     4           2  8.883230
+## 5      5         A     5           1 10.767882
+## 6      6         A     6           2  9.410822</code></pre>
 <pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
 <pre><code>##      Obs.Id        Treatment             Block        Germination   
 ##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   : 0.00  
 ##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.: 1.00  
 ##  Median : 50.50   Mode  :character   Median :10.50   Median : 3.00  
-##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.65  
+##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.91  
 ##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 6.00  
-##  Max.   :100.00                      Max.   :20.00   Max.   :14.00  
+##  Max.   :100.00                      Max.   :20.00   Max.   :12.00  
 ##    AvgHeight     
-##  Min.   : 9.396  
-##  1st Qu.:24.001  
-##  Median :29.351  
-##  Mean   :26.189  
-##  3rd Qu.:31.649  
-##  Max.   :37.731</code></pre>
+##  Min.   : 8.085  
+##  1st Qu.:24.173  
+##  Median :29.672  
+##  Mean   :26.185  
+##  3rd Qu.:31.905  
+##  Max.   :36.707</code></pre>
 <p>NOTE: the “head()” function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!</p>
 </div>
 </div>
@@ -1079,50 +1084,50 @@ d</code></pre>
 d.df=my.data[21:30,]  # only take 10 observations
 d.df</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 21     21         B     1           6  30.18191
-## 22     22         B     2           4  29.69007
-## 23     23         B     3           4  29.37562
-## 24     24         B     4           6  29.09281
-## 25     25         B     5           4  30.41765
-## 26     26         B     6           8  29.26896
-## 27     27         B     7           4  28.01265
-## 28     28         B     8           6  29.77800
-## 29     29         B     9           2  31.55788
-## 30     30         B    10           3  29.62046</code></pre>
+## 21     21         B     1           8  30.49835
+## 22     22         B     2           5  29.80082
+## 23     23         B     3           7  31.61261
+## 24     24         B     4           7  30.84133
+## 25     25         B     5           5  29.09355
+## 26     26         B     6           3  29.53823
+## 27     27         B     7           7  29.98440
+## 28     28         B     8           6  29.59782
+## 29     29         B     9           8  30.69920
+## 30     30         B    10           7  30.41864</code></pre>
 <pre class="r"><code>## many ways of accessing a particular column of a data frame
 d.df$Germination           # Subsetting a data frame</code></pre>
-<pre><code>##  [1] 6 4 4 6 4 8 4 6 2 3</code></pre>
+<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
 <pre class="r"><code>d.df[[&quot;Germination&quot;]]      # same thing!</code></pre>
-<pre><code>##  [1] 6 4 4 6 4 8 4 6 2 3</code></pre>
+<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
 <pre class="r"><code>d.df[,4]                   # same thing!</code></pre>
-<pre><code>##  [1] 6 4 4 6 4 8 4 6 2 3</code></pre>
+<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
 <pre class="r"><code>d.df[[4]]                  # same thing!</code></pre>
-<pre><code>##  [1] 6 4 4 6 4 8 4 6 2 3</code></pre>
+<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
 <pre class="r"><code>d.df[,&quot;Germination&quot;]       # same thing!</code></pre>
-<pre><code>##  [1] 6 4 4 6 4 8 4 6 2 3</code></pre>
+<pre><code>##  [1] 8 5 7 7 5 3 7 6 8 7</code></pre>
 <pre class="r"><code>d.df[&quot;Germination&quot;]        # same thing!  (or is it...??)</code></pre>
 <pre><code>##    Germination
-## 21           6
-## 22           4
-## 23           4
-## 24           6
-## 25           4
-## 26           8
-## 27           4
+## 21           8
+## 22           5
+## 23           7
+## 24           7
+## 25           5
+## 26           3
+## 27           7
 ## 28           6
-## 29           2
-## 30           3</code></pre>
+## 29           8
+## 30           7</code></pre>
 <pre class="r"><code>d.df$AvgHeight</code></pre>
-<pre><code>##  [1] 30.18191 29.69007 29.37562 29.09281 30.41765 29.26896 28.01265 29.77800
-##  [9] 31.55788 29.62046</code></pre>
+<pre><code>##  [1] 30.49835 29.80082 31.61261 30.84133 29.09355 29.53823 29.98440 29.59782
+##  [9] 30.69920 30.41864</code></pre>
 <pre class="r"><code>d.df$AvgHeight[3]  # subset an element of a data frame</code></pre>
-<pre><code>## [1] 29.37562</code></pre>
+<pre><code>## [1] 31.61261</code></pre>
 <pre class="r"><code># Data frame can also be indexed just like a matrix
 d.df[,2]</code></pre>
 <pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
 <pre class="r"><code>d.df[2,]</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 22     22         B     2           4  29.69007</code></pre>
+## 22     22         B     2           5  29.80082</code></pre>
 <pre class="r"><code>d.df[,2:3]</code></pre>
 <pre><code>##    Treatment Block
 ## 21         B     1
@@ -1260,10 +1265,8 @@ mean(c(length(vector1), length(vector2), length(vector3)))</code></pre>
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>NOTE: <code>print()</code> is an <strong>R function</strong> that comes with base R. It takes the name of an object as its <strong>argument</strong> and it responds by printing the contents of that object. We’ll get more into R functions shortly.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you’ve typed the first couple letters (e.g., “bat”), RStudio will suggest “Batmans_butler” and you can just hit “Enter” to complete the object name! The auto-type feature, unlike R, is not case sensitive!<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>RStudio has several helpful keyboard shortcuts to make running lines of code easier. <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">Check this website</a> for a comprehensive set of keyboard shortcuts<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>Functions are essentially machines that take inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>RStudio has several helpful keyboard shortcuts to make running lines of code easier. <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">Check this website</a> for a comprehensive set of keyboard shortcuts<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Functions are essentially machines that take inputs (objects, values) (also known as <strong>arguments</strong>) and produce something in return (objects, plots, tables, files). Functions have a common <strong>syntax</strong>: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 

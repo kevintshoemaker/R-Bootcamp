@@ -1,7 +1,7 @@
 ---
 title: "Welcome to R Bootcamp!"
 author: "A hopefully more-or-less painless introduction to R"
-date: "Spring 2022"
+date: "TWS-WS 2022"
 output:
   html_document:
     theme: journal
@@ -89,7 +89,6 @@ Also, it can be very helpful to print out an R 'cheat sheet' and bring that with
 
 [Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)                
-[More advanced base R cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf)             
 
 Okay, now we're ready to go!
 

@@ -9,17 +9,28 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="R Bootcamp 2018" />
+<meta name="author" content="R Bootcamp 2022" />
 
+<meta name="date" content="2022-01-01" />
 
 <title>Links</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -27,12 +38,16 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -45,32 +60,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -80,10 +70,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -100,40 +86,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 61px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h2 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h3 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h4 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h5 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
-.section h6 {
-  padding-top: 66px;
-  margin-top: -66px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -161,7 +120,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -173,7 +132,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -184,10 +143,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -199,7 +171,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -325,7 +296,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -344,7 +315,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2020</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2021</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -446,18 +417,18 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
 <h1 class="title toc-ignore">Links</h1>
-<h4 class="author">R Bootcamp 2018</h4>
-<h4 class="date">September 2018</h4>
+<h4 class="author">R Bootcamp 2022</h4>
+<h4 class="date">2022</h4>
 
 </div>
 
 
-<p>Please let me know if there are other links you think should be included on this page!</p>
+<p>Please let me know if any of these links are down or if there are other links you think should be included on this page!</p>
 <div id="methods-links" class="section level1">
 <h1>Methods links</h1>
 <div id="download-r" class="section level2">
@@ -472,12 +443,12 @@ div.tocify {
 </div>
 <div id="r-introductory-tutorials-and-courses" class="section level2">
 <h2>R Introductory Tutorials and Courses</h2>
-<p><a href="https://www.datacamp.com/home">Datacamp’s- “Intro to R”</a><br />
+<p><a href="https://swirlstats.com/">Swirl Stats- learn R in R</a> <a href="https://www.datacamp.com/home">Datacamp’s- “Intro to R”</a><br />
 <a href="https://preludeinr.com">Prelude in R</a><br />
 <a href="https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf">R for beginners</a><br />
 <a href="http://r4ds.had.co.nz/index.html">Hadley Wickhams “R for Data Science”</a> <a href="https://ismayc.github.io/moderndiver-book/">Modern Dive</a><br />
 <a href="http://www.datacarpentry.org/semester-biology/">Data carpentry course</a> <a href="https://cran.r-project.org/other-docs.html">Many other resources</a> <a href="http://rbasicsworkshop.weebly.com/books.html">Many R Books (and other useful resources)</a><br />
-<a href="https://www.nceas.ucsb.edu/files/scicomp/Dloads/RProgramming/BestFirstRTutorial.pdf">NCEAS tutorial- oldie but goodie</a></p>
+<a href="https://gsp.humboldt.edu/olm/R/Tutorials/BestFirstRTutorial.pdf">Base R tutorial- oldie but goodie</a></p>
 </div>
 <div id="r-examples-some-people-learn-best-by-just-playing-with-existing-code" class="section level2">
 <h2>R Examples (some people learn best by just playing with existing code!)</h2>
@@ -485,10 +456,9 @@ div.tocify {
 </div>
 <div id="r-reference-cards-print-em-out-and-hang-by-your-office-desk" class="section level2">
 <h2>R reference cards (print ’em out and hang by your office desk!)</h2>
-<p><a href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf">Base R Cheat sheet</a><br />
+<p><a href="https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf">Base R Cheat sheet</a><br />
 <a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">Short Reference Card</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf">More comprehensive reference card</a><br />
-<a href="https://sites.ualberta.ca/~ahamann/teaching/renr690/R_Cheat_Data.pdf">Data management reference card</a><br />
+<a href="https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf">More comprehensive reference card</a> <a href="https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf">More advanced base R cheat sheet</a><br />
 <a href="https://www.rstudio.com/resources/cheatsheets/">RStudio cheatsheets- very useful!</a><br />
 Includes cheatsheets for R markdown, shiny, data wrangling with “dplyr” and much more!</p>
 </div>
@@ -507,14 +477,12 @@ Includes cheatsheets for R markdown, shiny, data wrangling with “dplyr” and 
 <h2>Bayesian Statistics</h2>
 <p><a href="http://twiecki.github.io/blog/2015/11/10/mcmc-sampling/">MCMC for Dummies…</a> (basis of MCMC lecture…)<br />
 <a href="http://www.mrc-bsu.cam.ac.uk/wp-content/uploads/manual14.pdf">BUGS online manual</a><br />
-<a href="http://users.aims.ac.za/~mackay/BUGS/Manuals/Tricks.html">secret BUGS tricks</a><br />
-<a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002803">Approximate Bayesian Computation: overview</a><br />
-<a href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/">Bayesian Methods for Hackers!</a><br />
+<a href="https://people.stat.sc.edu/hansont/stat740/jags_user_manual.pdf">JAGS online manual</a> <a href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/">Bayesian Methods for Hackers!</a><br />
 <a href="https://r-nimble.org/">NIMBLE (alternative implementation of BUGS language for R)</a></p>
 </div>
 <div id="time-series-analysis" class="section level2">
 <h2>Time Series Analysis</h2>
-<p><a href="http://node101.psych.cornell.edu/Darlington/series/series0.htm">A regression approach to time series analysis</a></p>
+<p><a href="http://node101.psych.cornell.edu/Darlington/series/series0.htm">A regression approach to time series analysis</a> <a href="https://otexts.com/fpp2/">Forecasting online textbook</a></p>
 </div>
 <div id="ordination" class="section level2">
 <h2>Ordination</h2>
@@ -523,21 +491,17 @@ Includes cheatsheets for R markdown, shiny, data wrangling with “dplyr” and 
 <div id="tree-based-machine-learning" class="section level2">
 <h2>Tree-based machine learning</h2>
 <p><a href="http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm">Breiman’s guide to Random Forest</a><br />
-<a href="https://cran.r-project.org/web/packages/dismo/vignettes/brt.pdf">Vignette: boosted regression trees for species distribution modeling</a></p>
-</div>
-<div id="structural-equation-modeling-and-bayes-nets" class="section level2">
-<h2>Structural Equation Modeling and Bayes Nets</h2>
-<p><a href="http://blog.efpsa.org/2015/12/14/structural-equation-modeling-what-is-it-what-does-it-have-in-common-with-hippie-music-and-why-does-it-eat-cake-to-get-rid-of-measurement-error/">Random but relevant blog post</a><br />
-<a href="http://www.bnlearn.com/">“bnlearn” package documentation for Bayes nets</a></p>
+<a href="https://rspatial.org/raster/sdm/">Vignette: species distribution modeling</a></p>
 </div>
 <div id="spatial-analysis-in-r" class="section level2">
 <h2>Spatial Analysis in R</h2>
-<p><a href="https://cran.r-project.org/web/packages/raster/vignettes/Raster.pdf">“raster” package vignette</a></p>
+<p><a href="https://cran.r-project.org/web/packages/raster/vignettes/Raster.pdf">“raster” package vignette</a><br />
+<a href="https://rspatial.org/">online textbook: spatial data science with R</a></p>
 </div>
 <div id="spatial-capture-recapture-secr" class="section level2">
 <h2>Spatial Capture Recapture (secr)</h2>
 <p><a href="https://groups.google.com/forum/#!forum/secrgroup">‘secr’ Google Group</a><br />
-<a href="http://www.mikemeredith.net/blog/1309_SECR_in_JAGS_patchy_habitat.htm">BUGS code for secr</a></p>
+<a href="https://mmeredith.net/blog/2013/1309_SECR_in_JAGS_patchy_habitat.htm">BUGS code for secr</a></p>
 <p><a href="https://kevintshoemaker.github.io/StatsChats/">Weekly math/bio “Stats chats”</a></p>
 </div>
 </div>
@@ -553,7 +517,7 @@ Includes cheatsheets for R markdown, shiny, data wrangling with “dplyr” and 
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -571,7 +535,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -580,6 +544,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

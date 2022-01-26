@@ -1,7 +1,7 @@
 ---
 title: "Links"
-author: "R Bootcamp 2018"
-date: "September 2018"
+author: "R Bootcamp 2022"
+date: "2022"
 output: 
   html_document: 
     theme: journal
@@ -13,7 +13,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Please let me know if there are other links you think should be included on this page!
+Please let me know if any of these links are down or if there are other links you think should be included on this page!
 
 # Methods links
 
@@ -26,6 +26,7 @@ Please let me know if there are other links you think should be included on this
  [Rstudio online learning resources](https://www.rstudio.com/online-learning/)      
  
 ## R Introductory Tutorials and Courses
+ [Swirl Stats- learn R in R](https://swirlstats.com/)
  [Datacamp's- "Intro to R"](https://www.datacamp.com/home)   
  [Prelude in R](https://preludeinr.com)      
  [R for beginners](https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf)   
@@ -34,16 +35,16 @@ Please let me know if there are other links you think should be included on this
  [Data carpentry course](http://www.datacarpentry.org/semester-biology/)
  [Many other resources](https://cran.r-project.org/other-docs.html) 
  [Many R Books (and other useful resources)](http://rbasicsworkshop.weebly.com/books.html)    
- [NCEAS tutorial- oldie but goodie](https://www.nceas.ucsb.edu/files/scicomp/Dloads/RProgramming/BestFirstRTutorial.pdf)
+ [Base R tutorial- oldie but goodie](https://gsp.humboldt.edu/olm/R/Tutorials/BestFirstRTutorial.pdf)
 
 ## R Examples (some people learn best by just playing with existing code!)            
  [R by example](http://www.mayin.org/ajayshah/KB/R/)      
 
 ## R reference cards (print 'em out and hang by your office desk!)       
- [Base R Cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf)              
+ [Base R Cheat sheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)              
  [Short Reference Card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
- [More comprehensive reference card](https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf)    
- [Data management reference card](https://sites.ualberta.ca/~ahamann/teaching/renr690/R_Cheat_Data.pdf)      
+ [More comprehensive reference card](https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf) 
+ [More advanced base R cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf)   
  [RStudio cheatsheets- very useful!](https://www.rstudio.com/resources/cheatsheets/)     
      Includes cheatsheets for R markdown, shiny, data wrangling with "dplyr" and much more!     
 
@@ -59,31 +60,28 @@ Please let me know if there are other links you think should be included on this
 ## Bayesian Statistics    
  [MCMC for Dummies...](http://twiecki.github.io/blog/2015/11/10/mcmc-sampling/) (basis of MCMC lecture...)  
  [BUGS online manual](http://www.mrc-bsu.cam.ac.uk/wp-content/uploads/manual14.pdf)  
- [secret BUGS tricks](http://users.aims.ac.za/~mackay/BUGS/Manuals/Tricks.html)  
- [Approximate Bayesian Computation: overview](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002803)   
+ [JAGS online manual](https://people.stat.sc.edu/hansont/stat740/jags_user_manual.pdf)
  [Bayesian Methods for Hackers!](http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/)    
  [NIMBLE (alternative implementation of BUGS language for R)](https://r-nimble.org/)  
  
 ## Time Series Analysis
- [A regression approach to time series analysis](http://node101.psych.cornell.edu/Darlington/series/series0.htm)  
+ [A regression approach to time series analysis](http://node101.psych.cornell.edu/Darlington/series/series0.htm) 
+ [Forecasting online textbook](https://otexts.com/fpp2/)
  
 ## Ordination
  [Practical guide to ordination for Ecologists](http://ordination.okstate.edu/index.html)  
  
 ## Tree-based machine learning
  [Breiman's guide to Random Forest](http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm)  
- [Vignette: boosted regression trees for species distribution modeling](https://cran.r-project.org/web/packages/dismo/vignettes/brt.pdf)  
-
-## Structural Equation Modeling and Bayes Nets
- [Random but relevant blog post](http://blog.efpsa.org/2015/12/14/structural-equation-modeling-what-is-it-what-does-it-have-in-common-with-hippie-music-and-why-does-it-eat-cake-to-get-rid-of-measurement-error/)  
- ["bnlearn" package documentation for Bayes nets](http://www.bnlearn.com/)  
+ [Vignette: species distribution modeling](https://rspatial.org/raster/sdm/)  
  
 ## Spatial Analysis in R
  ["raster" package vignette](https://cran.r-project.org/web/packages/raster/vignettes/Raster.pdf)   
+ [online textbook: spatial data science with R](https://rspatial.org/)
 
 ## Spatial Capture Recapture (secr)   
  ['secr' Google Group](https://groups.google.com/forum/#!forum/secrgroup)    
- [BUGS code for secr](http://www.mikemeredith.net/blog/1309_SECR_in_JAGS_patchy_habitat.htm)
+ [BUGS code for secr](https://mmeredith.net/blog/2013/1309_SECR_in_JAGS_patchy_habitat.htm)
  
 
 [Weekly math/bio "Stats chats"](https://kevintshoemaker.github.io/StatsChats/)

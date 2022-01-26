@@ -1,7 +1,7 @@
 ---
 title: "Module 1.1"
 author: "Getting started: working with objects"
-date: "Fall 2021"
+date: "TWS-WS 2022"
 output: 
   html_document: 
     theme: journal
@@ -44,42 +44,47 @@ Welcome to the 2021 R bootcamp! Let's get started!!
 Here are links to good base R "cheatsheets":
 
 [Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
-[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)                
-[More advanced base R cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf)  (NOTE: this one is quite advanced- only for those interested in really understanding how R works as a programming language- not necessary for those of you interested in doing data science operations)            
-
+[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
 
 ## Load script for module #1.1
 
-1. Click [here](module1_1.R) to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop, which will serve as your **working directory** for this bootcamp. I recommend creating a new folder to store all the scripts, data sets and other materials from these modules! 
+1. Click [here](module1_1.R) to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called "RBootcamp2022"), which will serve as your **working directory** for this bootcamp. 
 
-2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (your working directory). The R project will automatically take the name of your working directory folder. 
+2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (your working directory). Select this folder to be your **project directory**. Every time you open this project (File >> Open Project), this project directory will be the first place that R looks for data files and code, and will be the default location for saving data and code.  
 
-3. Load a blank script in RStudio. To do this, click on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your **script** (a set of written commands that R can recognize and execute), the bottom left panel is your **console** (your direct connection with R- prints errors and stores a record of commands that have already been run), the top right panel is your **Workspace** (container for all the objects -- data, variables, functions-- that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view graphical plots, view files in your working directory, etc. Basically, RStudio provides all the functionality you need to develop, debug and execute R code!
+3. Load a blank script in RStudio. To do this, click on the "blank paper" icon at the far left of the RStudio toolbar (or File >> New File >> R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your **script** (a set of written commands that R can recognize and execute), the bottom left panel is your **console** (your direct connection with R), the top right panel is your **Workspace** (displays all the objects -- data sets, variables, functions-- that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view plots, view files in your working directory, etc. 
 
-Let's get started!!
+Take a couple minutes to familiarize yourself with the RStudio environment.
+
+Let's get started!
 
 ![](rstudio1.jpg)
 
 ## Explore the R console
 
-The R console (what you see if you opened R directly without going through RStudio) is a **command line** interface, and is *your direct connection with the R statistical programming language*. That means you give R a command to run in the console and R executes that command. This is the heart of R- all the rest of RStudio consist of wrappers to help us make effective use of R! In fact, after this short demo you will rarely interact directly with the console (instead, you will use scripts!)!
+The R console is located in the left half or bottom left of the RStudio interface (see figure above).
 
-The R console is located in the left half or bottom left of the RStudio interface (see figure above). 
+The R console (what you see if you opened R directly instead of RStudio) is a **command line** interface, and is *your direct connection with R*: you give R a command at the prompt and R executes that command. 
 
-1. Click on the console just to the right of one of the ">" prompts.  
+You generally shouldn't work in the console, at least for writing important code- use an R script instead (see below).
 
-2. You can use the console like a calculator. For example, type `2+2` at the prompt and hit enter. What does R do? 
-3. Now hit the "up" arrow. The R console remembers all previous commands that it has executed in this **session**, which allows you to re-run commands relatively easily. However, if you accidentally hit the "up" arrow you lose everything you had been typing!
+However, let's take a few minutes to work with the console:
 
-4. Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing `# 2+2` and hitting "Enter". Nothing happens, right?
+1. Click on the console, just to the right of one of the ">" prompts.  
+
+2. You can use the console like a calculator. For example, type `6+11` at the prompt and hit enter.
+
+3. Now hit the "up" arrow. The R console remembers all previous commands that it has executed in this **session**, which allows you to re-run commands relatively easily.
+
+4. Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing `# 2+2` and hitting "Enter". Nothing happens, right? We will come back to this shortly.
 
 ### Let's create our first object
 
-Objects are defined using R's **assignment operator**, which looks like a left arrow (`<-`). Type the following statement directly into the console:
+Objects are defined using R's **assignment operator** (Windows shortcut: Alt + -)(Mac: replace Alt with Option), which looks like a left arrow (`<-`). Type the following statement directly into the console:
 
 ```{r results=F}
 
-Batmans_butler <- 'Alfred Pennyworth'  
+myname <- 'Alfred' 
 
 ```
 
@@ -87,60 +92,58 @@ Then hit "Enter". What does R return?
 
 NOTHING!
 
-BUT.... check the **Environment**, or **Workspace** window (top right of RStudio interface). You should see that you now have a new **object** in your environment, called "Batmans_butler", and this object contains a **text string** ("Alfred Pennyworth"). 
+BUT.... check the **Environment**, or **Workspace** window (top right of RStudio interface- list of all the objects you've defined in this session). You should see that you now have a new **object** in your environment, called "myname", and this object contains a **text string** ("Alfred"). 
       
-Now type `print(Batmans_butler)`[^functions] into the R console and hit "Enter". What happens? [^autofill]
+Now type `myname` into the R console and hit "Enter". What happens?
 
-[^functions]: NOTE: `print()` is an **R function** that comes with base R. It takes the name of an object as its **argument** and it responds by printing the contents of that object. We'll get more into R functions shortly.  
+If you enter the name of an object at the command line, R automatically prints the value of the object!
 
-[^autofill]: RStudio has a useful auto-type feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "bat"), RStudio will suggest "Batmans_butler" and you can just hit "Enter" to complete the object name! The auto-type feature, unlike R, is not case sensitive!
-
-If you enter the name of an object at the command line, R automatically prints the value of the object- you don't need to use the `print()` function... Try it: type `Batmans_butler` into the R console and hit "Enter". R dutifully returns the name of Bruce Wayne's loyal and tireless butler, best friend and surrogate father figure. In fact, when you type the name of an object and hit "Enter", R will automatically print the contents of that object back to the console. 
+NOTE: RStudio has a useful autofill feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" and you can just hit "Enter" to complete the object name! The auto-type feature, unlike R, is not case sensitive! Also note that you can hit the 'tab' key to trigger autofill anytime after you start typing in RStudio. 
 
 ## Graduating to R Scripts
 
-You will quickly realize that although the command-line R console is nice for some things, there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the ".R" extension) is called an **R script**. Again, the top left quadrant of the RStudio interface (at least by default) is where you can view and edit your R scripts. 
+You will quickly realize that although the command-line R console is nice to use for some things (e.g., quick things that don't need to be saved), there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the ".R" extension) is called an **R script**. 
 
 ### New script
 
-If you haven't done it already, create a new R script by clicking on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). 
+If you haven't done it already, create a new R script by clicking on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). The top left quadrant of the RStudio interface (at least by default) should now contain a blank R script. 
 
-In your blank script, define a new object. For example:
-
-```
-
-my_obj <- 2+2
+In your blank script, let's define a new object. For example:
 
 ```
 
-Now highlight the text you just wrote (or place the cursor somewhere within the text) and hit 'Ctrl+Enter' (or 'Command+Enter') to run that line of code!
+my_obj <- 6+11
 
-Click on a new (blank) line in the script and type `2+2`. Now hit "Ctrl+Enter" (or "Command+Enter") to run the line of code. 
+```
+
+Now place the cursor somewhere within the line of text you just wrote and hit 'Ctrl+Enter' (or 'Command+Enter') to run that line of code! You should see a new object ('my_obj') pop up in your environment.[^shortcuts]. 
+
+[^shortcuts]: RStudio has several helpful keyboard shortcuts to make running lines of code easier. [Check this website](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts) for a comprehensive set of keyboard shortcuts
+
+In the next line of your script, enter a pound sign (hashtag) followed by the command `2+2`. Nothing happens, right?  
+
+Now delete the hashtag and try again. Now R recognizes and runs the command. Interesting...
+
+Take a few minutes to get comfortable defining new objects using your new R script. 
 
 Of course, it's always a good idea to save your scripts often -- so feel free to save your new script before you move on.
 
-### Load Existing script
+### Load an Existing script
 
 Remember the file you downloaded at the beginning of this submodule? That file is an R script- Let's load it up now!  
 
 To do this, click on the "folder" icon on the Rstudio toolbar (or File >> Open File) and choose the script you downloaded earlier.
 
-The first few lines (commands) of the script for this module are preceded by pound signs. R doesn't do anything with these commands- they are called **comments**, and they help to keep code clear, organized and understandable to human readers. 
+The first few lines of the script for this module are preceded by pound signs. As you have already seen, R ignores these lines- they are called **comments**, and they help to keep code organized and understandable to human readers. 
 
 _use comments early and often- they are tremendously valuable_.   
 
-Click on the top of the script (first line of comments). To **run** a line of code, press the "Ctrl" key (or the "Command" key) and hit "Enter". R will then run that line through the console. But of course, nothing happens because it's a comment and not meant to be interpreted by your machine[^shortcuts]. 
-
-If you click on a line of code that is not followed by a pound sign, you should see that R interprets the text on that line of code and stores any newly defined objects in memory (see top right quadrant of the Rstudio interface -- 'Workspace' (or Environment) tab -- for a list of objects stored in memory)
-
-Now you know the basics of how to use R scripts. 
-
-[^shortcuts]: RStudio has several helpful keyboard shortcuts to make running lines of code easier. [Check this website](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts) for a comprehensive set of keyboard shortcuts
+Now you know the basics of how to use R scripts! Now, let's keep working through the remainder of the script you just opened. 
 
 
 ## A quick R demo
 
-Before we get into the basics, let's just run through some of what R can do! Don't worry if you don't understand something- we will go over all of this in much greater detail later!
+Before we get into the basics, let's just run through some of what R can do! Don't worry if you don't understand something- we will go over all of this in greater detail later!
 
 To get started quickly, we will first load a data set that is built into R!    
 
@@ -196,7 +199,7 @@ pairs(trees)    # plots all scatterplots together as a scatterplot matrix!
 
 ```
 
-Now we can perform some basic statistics, like a regression analysis:
+Now we can perform some basic statistics, like a linear regression analysis for example:
 
 ```{r}
 
@@ -246,10 +249,10 @@ text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3
 
 ## Workspace management
 
-The workspace (environment) panel window in R can become cluttered as we create variables and assignments in R. As we work through the modules in this bootcamp it will be helpful to clear the workspace every once in a while to maintain our sanity. Earlier we assigned the value "Alfred Pennyworth" to the variable `Batmans_butler`. Let's remove that from the workspace. There are several ways to do this. 
+The workspace (environment) panel window in R can become cluttered as we create variables and assignments in R. As we work through the modules in this workshop it will be helpful to clear the workspace every once in a while to maintain our sanity. Earlier we assigned the value "Alfred" to the variable `myname`. Let's remove that from the workspace. There are several ways to do this. 
 
 1. In the 'environment' panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire workspace.    
-2. Use `rm(Batmans_butler)` to clear just the `Batmans_butler` variable. 
+2. Use `rm(myname)` to clear just the `myname` variable. 
 3. Use this handy one-liner `rm(list=ls())` to clear the entire workspace.
 
 
