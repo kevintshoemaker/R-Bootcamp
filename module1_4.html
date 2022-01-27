@@ -314,7 +314,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2021</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, TWS-WS 2022</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -422,7 +422,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 1.4</h1>
 <h4 class="author">Basic programming in R</h4>
-<h4 class="date">Fall 2021</h4>
+<h4 class="date">TWS-WS 2022</h4>
 
 </div>
 
@@ -438,7 +438,7 @@ div.tocify {
 </div>
 <div id="functions-in-r" class="section level2">
 <h2>Functions in R</h2>
-<p>Everything in R can be boiled down to this one sentence: data are expressed as <em>vectors</em>, and data objects are managed, manipulated, and visualized via <strong>functions</strong>. Functions are absolutely central to R!</p>
+<p>Everything in R can be boiled down to this: data are expressed as <em>vectors</em>, and data objects are managed, manipulated, and visualized via <strong>functions</strong>. Functions are absolutely central!</p>
 <p>Let’s start with a blank workspace:</p>
 <pre class="r"><code>#######
 # Start with blank workspace
@@ -454,32 +454,11 @@ my.function &lt;- function(input1,input2,...){         # function takes various 
     return(output)  # return some output
 }
 </code></pre>
-<div id="first-function-hello-world" class="section level3">
-<h3>First function: “Hello, world!”</h3>
-<p>Let’s try to write our first function, which prints out a message: “Hello, world!”</p>
-<pre class="r"><code>####
-####  Functions
-####
-
-my.function = function(){       # this function has no arguments
-  message &lt;- &quot;Hello, world!&quot;
-  return(message)
-}</code></pre>
-<p>Now we can run the function!</p>
-<pre class="r"><code>my.function()</code></pre>
-<pre><code>## [1] &quot;Hello, world!&quot;</code></pre>
-<p>What happens if you run the function without the parentheses?</p>
-<pre class="r"><code>my.function      # try running without parentheses-   what happens?</code></pre>
-<pre><code>## function(){       # this function has no arguments
-##   message &lt;- &quot;Hello, world!&quot;
-##   return(message)
-## }</code></pre>
-</div>
 <div id="mean-function" class="section level3">
 <h3>‘Mean’ function</h3>
 <p>Let’s write a function to compute the mean of a vector. Okay fine, base R already has the “mean()” function, but let’s do it anyway!</p>
 <pre class="r"><code>## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
-my.mean &lt;- function(x){
+my.mean &lt;- function(x){       # &#39;x&#39; is the function argument- &#39;x&#39; stands in for whatever numeric vector the user wants
     m &lt;- sum(x)/length(x)
     return(m)
 }
@@ -540,7 +519,7 @@ logit.x</code></pre>
 ##  [97]  3.17805383  3.47609869  3.89182030  4.59511985         Inf</code></pre>
 <pre class="r"><code>## Plot x on x-axis, and logit(x) on y axis.
 plot(x, logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;logit(x)&quot;)    # View the output graphically.</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="expit-function" class="section level3">
 <h3>‘Expit’ function</h3>
@@ -562,10 +541,10 @@ expit(2.197225)</code></pre>
 
 ## Plot x on x-axis, and expit(logit(x)) = x on y axis.
 plot(x, expit.logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;expit(logit(x))&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>## Plot &quot;logistic&quot; curve
 plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type=&quot;l&quot;,xlab=&quot;x&quot;,ylab=&quot;expit(x)&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
 </div>
 <div id="wildlife-survival-function" class="section level3">
 <h3>Wildlife survival function</h3>
@@ -584,10 +563,10 @@ d &lt;- sample(0:50, 10, replace = TRUE)   # note use of &quot;sample()&quot; fu
 n &lt;- rep(100, times=10)                 # total number of individuals 
 surv &lt;- survival(n = n, d = d)
 surv</code></pre>
-<pre><code>##  [1] 0.98 0.90 0.67 0.50 0.93 0.92 0.66 0.52 0.53 0.90</code></pre>
+<pre><code>##  [1] 0.57 0.93 0.54 0.94 0.84 0.77 0.86 0.71 0.98 0.94</code></pre>
 <pre class="r"><code>## Plot year-specific survival rate (random- will look different every time!)
 plot(1:10, surv, type = &#39;l&#39;,xlab=&quot;Year&quot;,ylab=&quot;Survival&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 </div>
 <div id="conditional-statements" class="section level2">
@@ -622,24 +601,6 @@ if (x &gt; 0) {
     print(&quot;Not detected&quot;)
 }</code></pre>
 <pre><code>## [1] &quot;Detected&quot;</code></pre>
-<pre class="r"><code>######
-# Make a &quot;safe&quot; version of the &quot;logit&quot; function
-
-logit.safe &lt;- function(x){
-    bad &lt;- ((x&lt;0)|(x&gt;1))
-    if(any(bad)){
-      stop(&quot;logit is only defined for x between 0 and 1!&quot;)
-    }else{
-      log(x/(1-x))
-    }
-    
-}
-x &lt;- seq(from = -1, to = 2, by = 0.1)
-# logit(x)      # this returns impossible numbers (NaNs)
-# logit.safe(x)   # this will throw an informative error!
-
-logit.safe(c(0.15,0.99))</code></pre>
-<pre><code>## [1] -1.734601  4.595120</code></pre>
 </div>
 <div id="ifelse-function" class="section level3">
 <h3>ifelse() function</h3>
@@ -905,7 +866,7 @@ tapply(df.new$var1,df.new$group,sum)</code></pre>
 n.samples &lt;- 100
 x &lt;- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
 hist(x)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <pre class="r"><code>mu &lt;- mean(x)                               # Compute the sample mean.
 s &lt;- sd(x)                                  # Compute the sample standard deviation.
 t &lt;- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
@@ -1018,13 +979,13 @@ layout(1)   # reset graphics
 persp(X,  Y, Z, theta = 135, phi = 30, col = &quot;green3&quot;,    # &quot;persp()&quot; produces a 3D &quot;perspective plot&quot;
       scale = FALSE, ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Now let’s view from an alternative angle!</p>
 <pre class="r"><code>## change the value of theta from 135 to 90 to change the viewing angle
 persp(X, Y, Z, theta = 90, phi = 30, col = &quot;green3&quot;,
       scale = FALSE,  ltheta = -120, shade = 0.75,
       border = NA, box = FALSE)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Now we can use a FOR loop to view this landscape from many angles. Try it!</p>
 <pre class="r"><code>## Use a for-loop to help view many angles.
 for(i in 1:18){
@@ -1109,10 +1070,10 @@ for(i in 1:n.iter){                           # For each of the repeat samples..
 }
 hist(means)                                # Histogram of all the means.
 abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 4.</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <pre class="r"><code>plot(density(means), main = &quot;&quot;)
 abline(v = mean(means), col = 2, lwd = 4)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 <pre class="r"><code>mean(means)                                # Close to true mean of 5</code></pre>
 <pre><code>## [1] 3.99953</code></pre>
 </div>
@@ -1151,7 +1112,7 @@ for(i in 1:(years-1)){                     # Function within a FOR loop!
 }
 plot(1:years, pop.size, type = &#39;l&#39;,
      xlab = &quot;Years&quot;, ylab = &quot;Population Size&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>And finally, we could wrap this all up in a more complex function that simulates across years and produces a plot! That way, we could run an entire population simulation with a single line of code. Let’s try it!</p>
 <pre class="r"><code>## A more complex function that outputs a plot.
 plot.logistic.growth &lt;- function(r, P, K, years){
@@ -1166,13 +1127,13 @@ plot.logistic.growth &lt;- function(r, P, K, years){
 }
 
 plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <pre class="r"><code>par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))                  # Multi-figure (mf) plot with 2 rows and 2 columns.
 plot.logistic.growth(r = 0.1, P = 10, K = 100, years = 20)   # Change the values of r and quickly print plots.
 plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
 plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
 plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
+<p><img src="module1_4_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
 <pre class="r"><code>par(mfrow = c(1, 1))                               # Return to a 1X1 plot.</code></pre>
 </div>
 </div>

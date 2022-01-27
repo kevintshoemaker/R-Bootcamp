@@ -1,7 +1,7 @@
 ---
 title: "Module 1.4"
 author: "Basic programming in R"
-date: "Fall 2021"
+date: "TWS-WS 2022"
 output: 
   html_document: 
     theme: journal
@@ -47,7 +47,7 @@ Let's get started with basic programming in R!
 
 ## Functions in R
 
-Everything in R can be boiled down to this one sentence: data are expressed as *vectors*, and data objects are managed, manipulated, and visualized via **functions**. Functions are absolutely central to R!
+Everything in R can be boiled down to this: data are expressed as *vectors*, and data objects are managed, manipulated, and visualized via **functions**. Functions are absolutely central!
 
 Let's start with a blank workspace: 
 
@@ -75,40 +75,6 @@ my.function <- function(input1,input2,...){         # function takes various arg
 
 ```
 
-### First function: "Hello, world!"
-
-Let's try to write our first function, which prints out a message: "Hello, world!"
-
-```{r}
-
-####
-####  Functions
-####
-
-my.function = function(){       # this function has no arguments
-  message <- "Hello, world!"
-  return(message)
-}
-
-```
-
-
-Now we can run the function!
-
-```{r}
-
-my.function()
-
-```
-
-What happens if you run the function without the parentheses?
-
-
-```{r}
-
-my.function      # try running without parentheses-   what happens?
-
-```
 
 ### 'Mean' function
 
@@ -117,7 +83,7 @@ Let's write a function to compute the mean of a vector. Okay fine, base R alread
 ```{r}
 
 ## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
-my.mean <- function(x){
+my.mean <- function(x){       # 'x' is the function argument- 'x' stands in for whatever numeric vector the user wants
     m <- sum(x)/length(x)
     return(m)
 }
@@ -273,26 +239,6 @@ if (x > 0) {
 } else {
     print("Not detected")
 }
-
-######
-# Make a "safe" version of the "logit" function
-
-logit.safe <- function(x){
-    bad <- ((x<0)|(x>1))
-    if(any(bad)){
-      stop("logit is only defined for x between 0 and 1!")
-    }else{
-      log(x/(1-x))
-    }
-    
-}
-x <- seq(from = -1, to = 2, by = 0.1)
-# logit(x)      # this returns impossible numbers (NaNs)
-# logit.safe(x)   # this will throw an informative error!
-
-logit.safe(c(0.15,0.99))
-
-
 
 ```
 

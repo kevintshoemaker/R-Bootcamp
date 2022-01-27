@@ -95,9 +95,9 @@ par()   # view the default graphical parameters (can be kind of overwhelming!)
 ```
 
 
-We could change the "mfrow" parameter from c(1,1) to c(2,2): this means that we can fit four plots into a single window. 
+We could change the "mfrow" graphical parameter from c(1,1) to c(2,2): this means that we can fit four plots into a single window. 
 
-An even easier solution is to use the convenience function `layout()`. An example using `layout()` is below. 
+An even more powerful solution is to use the function `layout()`. An example using `layout()` is below. 
 
 The default plot type for two quantitative variables is points (classic scatterplot), but you can change it to lines or both points and lines (or others) by using the `type=` option:
 
@@ -107,9 +107,7 @@ The default plot type for two quantitative variables is points (classic scatterp
 # This divides the image into four sections and then fills these with the plot function
 layout(matrix(1:4, nrow=2, ncol=2))
 
-# layout.show(4)   # uncomment to run
-
-  # par(mfrow=c(2,2))  # (alternative way to do this)
+# layout.show(n=4)   # uncomment to run
 
 plot(x=trees$Girth, y=trees$Volume)             # points
 plot(x=trees$Girth, y=trees$Volume, type="l")   # lines
@@ -118,7 +116,7 @@ plot(x=trees$Girth, y=trees$Volume, type="o")   # both with conected lines
 
 ```
 
-Whenever you use `layout()` or `par()`, the graphics window will retain this layout for all future plots. To start over (and return to the default graphical parameters), use `graphics.off()` to reset the plot. For example:
+Whenever you use `layout()` or `par()`, the graphics window will retain this layout for all subsequent plots. To start over (and return to the default graphical parameters), use `graphics.off()` to reset the plot. For example:
 
 ```{r, eval=FALSE}
 
@@ -149,9 +147,11 @@ plot(x=trees$Girth, y=trees$Volume, pch=11)     # star
 
 ```
 
-You might want to remember a couple favorites (for example, I like to use pch=20). Alternatively, you might consider saving a useful guide like this:
+Here is a graphic illustrating the main plot symbols you can reference using 'pch':
 
 ![](points.png)
+
+You might want to remember a couple favorites (for example, I like to use pch=20).
 
 ### Specify Title and Axes
 We can also add titles, axis labels, and other options to make the plots look pretty. For example, we show below how each plot is changed by the addition of one extra command, starting at the top left corner and moving top-to-bottom: 
@@ -190,6 +190,7 @@ If we want we can add colors to the points in the plot as well using the `col=` 
 # This divides the image into four sections but fills the first two sections
 # with the first plot and then fills these next two sections with the final two plots
 layout(matrix(c(1, 1, 2, 3), nrow=2, ncol=2))
+# layout.show(3)
 
 # col: select a color for the plotting characters
 plot(x=trees$Girth, y=trees$Volume, pch=19, 
@@ -234,29 +235,7 @@ plot.colors <- c("violet", "purple", "blue")   # define the colors for represent
 
 ```
 
-At this point, you could "cheat" if you notice that there are exactly 50 observations for each species in the iris dataset, and that all observations are grouped together neatly by species. That is, you could just use the repeat function, `rep()` with the argument `each=50`, to create a new vector [^colorvec] with each color in our `plot.colors` vector repeated 50 times in sequence.
-
-```{r colorvector, results=FALSE}
-
-color.vector <- rep(x=plot.colors, each=50)
-color.vector
-## color vector is now a list of our colors, each repeated 50 times
-
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main="Plot of Iris colored by species")
-
-```
-
-[^colorvec]: NOTE: the length of the color vector must match the length of the x and y vectors (here, Petal.Length and Sepal.Length). If this is not true, `R` will make up stuff (recycle the shorter vectors) to force them to be the same length, so make sure these vectors are the same size.
-
-
-But ... **this is not good programming practice!!**. We want to make our code general (if you get new data you don't want to re-write your code) and fool-proof and the above code is neither general (it applies only to this data set) nor fool-proof (there is no guarantee that it is correct- it's based only on an eyeballing approach!).
-
-### A better method!
-
-What if we want to automate the process? This is always a good idea because it makes your code more general and easier to use the next time you need to make a plot. Our strategy here is to directly match the 'Species' column with the "plot.colors" vector.
-
-Our first step might be to name each element of our plot colors vector to match the species names:
+Then, let's name each element of our plot colors vector to match the species names:
 
 ```{r}
 
@@ -265,14 +244,14 @@ plot.colors
 
 ```
 
-Now, each color is associated with a species. We can now use a logical operation to generate a vector of colors for our plot:
+Now, each color is directly associated with a species. We can now use a logical operation to generate a vector of colors for our plot:
 
 ```{r}
 
 # generate a vector of colors for our plot (one color for each observation)
 
 indices <- match(iris$Species,names(plot.colors))   # the "match()" function goes through each element of the first vector and finds the matching index in the second vector         
-color.vector2 <- plot.colors[indices]
+color.vector <- plot.colors[indices]
 
 
 ```
@@ -281,39 +260,9 @@ Now we can use our new color vector in our plotting!
 
 ```{r}
 
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector2, 
+plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
      main="Iris sepal length vs. petal length", xlab="Petal length", 
      ylab="Sepal length", las=1)
-
-```
-
-To illustrate how general our new method is, let's make a new version of the iris data frame that is neither in order nor has the same number of observations for each species:
-
-```{r}
-
-# make a new version of the iris data frame that is neither in order nor has the same number of observations for each species (to illustrate generality of the new method)
-
-iris2 <- iris[sample(1:nrow(iris),replace = T),]   # use the "sample()" function to create a randomized ("bootstrapped") version of the iris data frame
-
-# now repeat the above steps:
-
-indices <- match(iris2$Species,names(plot.colors))   # the "match()" function returns the indices of the first vector that match the second vector   
-color.vector2 <- plot.colors[indices]
-plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector2, 
-     main="Iris sepal length vs. petal length", xlab="Petal length", 
-     ylab="Sepal length", las=1)
-
-```
-
-Whereas, if we used our first method, the colors would be all over the map, and not representing species anymore (or any other useful information)!
-
-```{r}
-
-## The old method is NOT general:
-
-color.vector <- rep(x=plot.colors, each=50)
-plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector, 
-     main="Plot of Iris colored by species (not!)")
 
 ```
 
@@ -370,7 +319,7 @@ To illustrate some other cool ways to convey information graphically in R, let's
 
 ## Diplaying gradients (continuous data) using color and size
 
-?mtcars
+ # ?mtcars
 
 head(mtcars)
 
@@ -394,29 +343,11 @@ Now what if we want to look at another factor that might influence fuel economy:
 
 ## Plot fuel economy by weight and horsepower
 
-hp_rescale <- with(mtcars,(hp-min(hp))/diff(range(hp)))    # scale from 0 to 1
+hp_rescale <- (mtcars$hp-min(mtcars$hp))/diff(range(mtcars$hp))    # scale from 0 to 1
 
 plot(mpg~wt,  data=mtcars,pch=1,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)",cex=(hp_rescale+0.6)*1.2)   # plot with different sized points
 
 legend("topright",pch=c(1,1),pt.cex=c(0.6,0.6*1.2),legend=paste(range(mtcars$hp),"horsepower"),bty="n")
-
-
- 
-```
-
-Another way to display this would be to use colors!
-
-```{r}
-
-## Plot fuel economy by weight and horsepower again- this time by color
-
-colramp <- terrain.colors(125)
-
-colindex <- round(hp_rescale*99+1)
-
-plot(mpg~wt,  data=mtcars,pch=20,cex=2,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)",col=colramp[colindex])   # plot with different sized points
-
-legend("topright",pch=c(20,20),pt.cex=c(2,2),col=c(colramp[1],colramp[100]),legend=paste(range(mtcars$hp),"horsepower"),bty="n")
 
 
  
@@ -435,20 +366,10 @@ barplot(bar.heights)
 
 ```
 
-Using the `barplot()` options (arguments), we can make this look fancier
-
-```{r}
-
-# Let's add some flair
-barplot(bar.heights, names.arg=c("I. setosa", "I. versicolor", "I. virginica"), 
-        las=1, col=adjustcolor(plot.colors, alpha.f=0.5),
-        main="Sepal length for 3 Irises", ylab="Sepal length (cm)")
-
-```
 
 ## Error bars
 
-Adding error bars to our barplot. These can be added to scatter plots in a similar way. We'll plot error bars representing 2 standard deviations from the expected value. The object that you called your barplot (`b`) is interpreted by R as the x values in the middle of each bar `b` (which are very hard to guess, as you'll see!). 
+Error bars can be added to scatter plots in a similar way. We'll plot error bars representing 2 standard deviations from the mean. The object that you called your barplot (`b`) is interpreted by R as the x values in the middle of each bar `b` (which are very hard to guess!). 
 
 We'll use the `arrows()` function to add arrows to an existing plot. With some modifications, our arrows will have an arrowhead at each end (`code=3`), and the 'arrowhead' will actually be perpendicular to the arrow shaft (`angle=90`)
 
@@ -474,28 +395,6 @@ arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)
 
 ```
 
-## Histograms
-
-We can also use histograms to explore our data. 
-```{r}
-
-layout(matrix(1:2, 1, 2))
-
-## y-axis is in counts by default (total observations in each "bin")
-hist(iris$Sepal.Length, main="Histogram of Sepal Length",
-     xlab = "Sepal Length")
-
-## change y-axis to proportions of the entire dataset using freq=FALSE
-hist(iris$Sepal.Length, freq=FALSE, main="Histogram of Sepal Length", 
-     xlab = "Sepal Length")
-## Add a density estimator
-
-lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
-curve(dnorm(x,mean(iris$Sepal.Length),sd(iris$Sepal.Length)),add=T,col="red",lty=3)   # add a normal distribution
-
-```
-
-
 ## Pairs Plots
 The `pairs()` function allows for quick investigation into relationships between variables. Be careful if your data set is large (e.g., lots of columns), as this can be a slow function.   
 
@@ -515,7 +414,7 @@ Using the `ToothGrowth` dataset built into `R`, plot the tooth length (the `len`
 
 ```{r tooth}
 
-?ToothGrowth
+# ?ToothGrowth
 head(ToothGrowth)
 
 ```
@@ -534,7 +433,6 @@ plot(x=ToothGrowth$dose, y=ToothGrowth$len, pch=19, col=color.vector,
 # First legend
 legend("topleft", pch=19, col=plot.colors, legend=unique(ToothGrowth$supp))
 ```
-
 
 ### Bar Plots Challenge
 
@@ -572,9 +470,9 @@ upr <- wings + offset
 ![](ringswings1.png)
 
 
-## Basic statistics!
+## Statistics in R!
 
-This bootcamp is NOT an intro to statistics! 
+This workshop is NOT an intro to statistics! 
 
 But, R is an environment developed for statistical computing, so let's run some basic statistics in R! 
 
@@ -813,6 +711,27 @@ How do the predictions compare?
 
 
 
+
+## Extra: Histograms
+
+We can also use histograms to explore our data. 
+```{r}
+
+layout(matrix(1:2, 1, 2))
+
+## y-axis is in counts by default (total observations in each "bin")
+hist(iris$Sepal.Length, main="Histogram of Sepal Length",
+     xlab = "Sepal Length")
+
+## change y-axis to proportions of the entire dataset using freq=FALSE
+hist(iris$Sepal.Length, freq=FALSE, main="Histogram of Sepal Length", 
+     xlab = "Sepal Length")
+## Add a density estimator
+
+lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
+curve(dnorm(x,mean(iris$Sepal.Length),sd(iris$Sepal.Length)),add=T,col="red",lty=3)   # add a normal distribution
+
+```
 
 
 
