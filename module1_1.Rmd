@@ -52,7 +52,7 @@ Here are links to good base R "cheatsheets":
 
 2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (your working directory). Select this folder to be your **project directory**. Every time you open this project (File >> Open Project), this project directory will be the first place that R looks for data files and code, and will be the default location for saving data and code.  
 
-3. Load a blank script in RStudio. To do this, click on the "blank paper" icon at the far left of the RStudio toolbar (or File >> New File >> R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your **script** (a set of written commands that R can recognize and execute), the bottom left panel is your **console** (your direct connection with R), the top right panel is your **Workspace** (displays all the objects -- data sets, variables, functions-- that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view plots, view files in your working directory, etc. 
+3. Load a blank script in RStudio. To do this, click on the "blank paper" icon at the far left of the RStudio toolbar (or File >> New File >> R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your **script** (a set of written commands that R can recognize and execute), the bottom left panel is your **console** (your direct connection with R), the top right panel is your **environment** (displays all the objects -- data sets, variables, functions-- that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view plots, view files in your working directory, etc. 
 
 Take a couple minutes to familiarize yourself with the RStudio environment.
 
@@ -92,7 +92,7 @@ Then hit "Enter". What does R return?
 
 NOTHING!
 
-BUT.... check the **Environment**, or **Workspace** window (top right of RStudio interface- list of all the objects you've defined in this session). You should see that you now have a new **object** in your environment, called "myname", and this object contains a **text string** ("Alfred"). 
+BUT.... check the **Environment** window (top right of RStudio interface- list of all the objects you've defined in this session). You should see that you now have a new **object** in your environment, called "myname", and this object contains a **text string** ("Alfred"). 
       
 Now type `myname` into the R console and hit "Enter". What happens?
 
@@ -249,11 +249,11 @@ text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3
 
 ## Workspace management
 
-The workspace (environment) in R can become cluttered as we create variables and assignments in R. As we work through the modules in this workshop it will be helpful to clear the workspace every once in a while. Earlier we assigned the value "Alfred" to the variable `myname`. Let's remove that from the workspace. There are several ways to do this. 
+The workspace (environment) in R can become cluttered as we create variables and assignments in R. As we work through the modules in this workshop it will be helpful to clear the environment every once in a while. Earlier we assigned the value "Alfred" to the variable `myname`. Let's remove that from the environment. There are several ways to do this. 
 
-1. In the 'environment' panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire workspace.    
+1. In the 'environment' panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire environment.    
 2. Use `rm(myname)` to clear just the `myname` variable. 
-3. Use this handy one-liner `rm(list=ls())` to clear the entire workspace.
+3. Use this handy one-liner `rm(list=ls())` to clear the entire environment.
 
 
 ## Back to basics! R Objects

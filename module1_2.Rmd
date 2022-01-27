@@ -1,7 +1,7 @@
 ---
 title: "Module 1.2"
 author: "Getting started: managing data"
-date: "Fall 2021"
+date: "TWS-WS 2022"
 output: 
   html_document: 
     theme: journal
@@ -49,56 +49,50 @@ Let's get started with data management in R!
 
 ## Working directory
 
-To be able to import and export data to/from your R workspace, it makes things a lot easier if you can put all your data files into a single folder and tell R to make that folder your **working directory**. That way, you won't need to wrangle complex directory names!
+The working directory is the first place R will look for any files you would like to read in (e.g., code, data). It is also the first place R will try to write any files you want to save. 
 
-A working directory is the folder that R uses for reading or writing files if no other directory information is specified. Every R session has a working directory, whether you specify one or not. Let's find out what my working directory is right now:
+It makes things a lot easier if you put all your data files into a single folder and tell R to make that folder your **working directory**. That way, you won't need to wrangle complex directory names!
+
+Every R session has a working directory, whether you specify one or not. Let's find out what my working directory is right now:
 
 ```{r}
 
 # Find the directory you're working in 
-getwd()          # note: the results from running this command on my machine will probably differ from yours!  
+getwd()          # note: the results from running this command on my machine will differ from yours!  
 
 ```
 
-What's yours? Usually the default working directory is your "Documents" folder. Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file for your project).
+What's yours? Usually the default working directory is your "Documents" folder. 
 
-#### ASIDE: RStudio Projects
-
-If you're using an **RStudio Project** (.Rproj extension) then the default working directory is the directory where the .Rproj file lives- which is convenient, because:
+Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file for your project). This is convenient, because:
 
 1. That's most likely where the data for that project live anyway       
-2. If you're collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and immediately read/write data to the directory (without having to reset the working directory), even though the directory path of the project is probably different on your two machines. This can save a lot of headaches!    
+2. If you're collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and R will instantly know where to read and write data without either of you having to reset the working directory (even though the directory path is probably different on your two machines). This can save a lot of headaches!    
 
-To start a new RStudio Project, just click on "File->New Project" in RStudio's menu bar.  
+Reminder: to start a new RStudio Project, just click on "File->New Project" in RStudio's menu bar.  
 
 ### Set your working directory
 
-You can easily set a new working directory using the "setwd()" function. To select the directory manually (using standard file navigation) you can use the "choose.dir()" function:
+You can easily set a new working directory using the "setwd()" function. 
 
 ```{r eval=FALSE}
-
-# Setting a new working directory in a PC (same as File->Change dir...)
-# setwd("[filepath with forward slashes]") 
 
 # for example...
 
 # setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
 
-# Open finder to set directory
-setwd(choose.dir())
-
 ```
 
 **NOTE:** when you put file paths in R, they need to use forward slashes ("/"; or double backslashes, "\\\\") -- single backslashes ("\\", as seen in Windows) do not work for specifying file paths in R. 
 
-Alternatively, you can (in RStudio) use the top dropdown menus to set the working directory (Session->Set Working Directory->Choose Directory).  
+Alternatively, you can (in RStudio) use the dropdown menus at the top to set the working directory (Session->Set Working Directory->Choose Directory).  
 
-Once you have set the working directory, you can use the "dir()" function to see what's in the directory. If I ran this, we would see the contents of the directory that I'm using to create this R bootcamp website! 
+Once you have set the working directory, you can use the "list.files()" function to see what's in the directory. If I ran this, we would see the contents of the directory that I'm using to create this website! 
 
 ```{r eval=FALSE}
 
 # Contents of working directory
-dir()
+list.files()
 
 ```
 
@@ -133,16 +127,12 @@ Now let's read them into R!!
 ####
 
 # ?read.table    # some useful functions for reading in data
-# ?read.csv
 
 # read.table to import textfile (default is sep = "" (one of several common delimiters, including any type of whitespace))
 data.txt.df <- read.table("data.txt", header=T, sep="")  
 
 # read.table with csv file
 data.csv.df <- read.table("data.csv", header=T, sep=",")  
-
-# ?names: lists names of an object (columns, name of list elements)
-names(data.csv.df)      
 
 # built-in default for importing from CSV (easiest and most widely used)
 data.df <- read.csv("data.csv")
@@ -156,25 +146,9 @@ rm(data.csv.df)
 ```
 
 
-### You can also import data from the internet directly!
-
-Here's how: 
-
-```{r eval=FALSE}
-
-########
-# Import data from the internet directly
-
-brain.df <- read.table("http://www.oup.com/us/static/companion.websites/9780195089653/Spreadsheets/brainbody.csv", header=T, sep=",")
-head(brain.df)
-dim(brain.df)
-
-```
-
-
 ### Using R's built in data
 
-R has many useful built-in data sets. You can explore these datasets with the following command:
+R has many useful built-in data sets that come pre-loaded. You can explore these datasets with the following command:
 
 ```{r eval=FALSE}
 
@@ -198,19 +172,9 @@ str(mtcars)    # examine the structure of this data object
 
 ```
 
-
-#### Aside: Tips on naming objects (and data frame columns) in R
-1. No spaces within object names (same for column names in data files) -- use dot or underscore instead!          
-2. Try not to name an object with a similar/same as a function (e.g. don't name your data "data.frame"). NOTE: this can be hard- there are lots of functions in base R!           
-3. Can't start object names (or column names in data frame) with a number      
-
 ## Basic data checking
-As you've already seen, data structures include vectors, matrices, arrays, data frames, and lists.
 
-*Elements* of vectors, matrices, etc. can represent numbers (numeric), characters, logicals (TRUE/FALSE), factors etc. 
-
-You can use the "class()" function to see what class of data object you're working with. You can use the "typeof()" function to see what type of data are in your data object. 
-
+To learn more about the 'internals' of any data object in R, we can use the "str()" (structure) function:
 
 ```{r}
 
@@ -218,15 +182,6 @@ You can use the "class()" function to see what class of data object you're worki
 #### Check/explore data object
 #### 
 
-# ?class: tells you what type of data object you have
-class(data.df)
-
-
-```
-
-Okay, we have a data frame. We know that!  What about the internals of the data frame? For this we can use the "str()" function, which tells us some more about what's IN our data object:
-
-```{r}
 
 # ?str: displays the internal structure of the data object
 str(data.df)
@@ -269,7 +224,6 @@ Again, there are many ways to write data to a file. Here are the basics!
 ####
 
 # ?write.table: writes a file to the working directory
-# ?writeLines: writes to a file, one line at a time
    
 write.table(data.df[,c("Country","Product")], file="data_export.csv", sep=",", col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in.
 
@@ -278,9 +232,9 @@ write.table(data.df[,c("Country","Product")], file="data_export.csv", sep=",", c
 
 ### Saving (and loading) data
 
-The data loaded in your **R workspace** are stored in your computer's memory as **binary** representations that are efficient but not particularly human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data *outside* of R.
+The data loaded in your **R environment** are stored in your computer's memory as **binary** representations that are efficient but not particularly human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data *outside* of R.
 
-To do this we can use the "save()" (or "save.image()") and "load()" functions in R:
+To do this we can use the "save()" and "load()" functions in R:
 
 NOTE: all binary R data files should be stored with the extension ".RData":
 
@@ -297,27 +251,27 @@ b <- data.df$Product
 
 save(a,b,file="Module1_2.RData")
 
-rm(a,b)   # remove these objects from the workspace
+rm(a,b)   # remove these objects from the environment
 
 load("Module1_2.RData")   # load these objects back in!
 
 ```
 
-NOTE: If you're using an RStudio Project (.Rproj), then the contents of your workspace are automatically saved when you close the project, and load again when you open the R Project file. This allows you to easily pick up where you left off! 
+NOTE: If you're using an RStudio Project (.Rproj), then the contents of your environment are saved when you close the project (if you choose that option when closing the project), and automatically loads again when you open the R Project file. This allows you to pick up where you left off! 
          
 
-### Clearing the workspace
+### Clearing the environment
 
-Sometimes your workspace can get cluttered with objects. In these cases, it can help to clear the workspace. Let's try this!
+Sometimes your environment can get cluttered with objects. In these cases, it can help to clear the environment. Let's try this!
 
 ```{r}
 
 ##############
-# Clear the workspace (and load it back in!)
+# Clear the environment (and load it back in!)
 
-save.image(file="Module2.RData")    # ?save.image: saves entire workspace (we don't necessarily want to clear everything right now)
+save.image(file="Module2.RData")    # ?save.image: saves entire environment (we don't necessarily want to clear everything right now)
 
-rm(list=ls())   # clear the entire workspace. Confirm that your workspace is now empty!
+rm(list=ls())   # clear the entire environment. Confirm that your environment is now empty!
 
 load(file="Module2.RData")   # load the objects back!
 
@@ -325,11 +279,11 @@ load(file="Module2.RData")   # load the objects back!
 
 ## Working with data in R
 
-Now let's start seeing what we can do with data in R. Even without doing any statistical analyses, R is very a powerful environment for doing data transformations and mathematical operations with data. 
+Now let's start seeing what we can do with data in R. Even without doing any statistical analyses, R is very a powerful environment for doing data transformations and performing mathematical operations. 
 
 ### Boolean operations
 
-Boolean operations refer to TRUE/FALSE tests. That is, we impose a condition on the data that either is true or false. 
+Boolean operations refer to TRUE/FALSE tests. That is, we ask a question about the data that either is true or false. 
 
 First, let's meet the boolean operators. 
 
@@ -337,13 +291,12 @@ NOTE: don't get confused between the equals sign ("="), which is an alternative 
 
 ```{r}
 
-# <- assignment operator: required for functions
+# <- assignment operator
 # =  alternative assignment operator
 
 a <- 3     # assign the value "3" to the object named "a"
 a = 3      # assign the value "3" to the object named "a"
 a == 3     # answer the question: "does the object "a" equal "3"? 
-a == 2
 
 ```
 
@@ -377,10 +330,10 @@ Z <- 6
 Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
 Y < Z
 
-!(Y < Z)  # the exclamation point reverses any boolean object
+!(Y < Z)  # the exclamation point reverses any boolean object (read "NOT")
 
 # Wrong!
-data.df[,2]=74     # sets entire second column equal to 74!
+data.df[,2]=74     # sets entire second column equal to 74! OOPS!!!
 
 data.df <- read.csv("data.csv")  ## correct our mistake in the previous line (revert to the original data)!
 
@@ -394,7 +347,7 @@ data.df[,2]==74    # tests each element of column to see whether it is equal to 
 
 Boolean operations are great for subsetting data - that is, we can select only those rows/observations that meet a certain condition (where [some condition] is TRUE). 
 
-The useful "which()" function returns the indices of a vector that meet a certain specified condition. Here's how it works:
+The "which()" function returns the indices of a vector (i.e., the specific elements) that meet a certain specified condition. Here's how it works:
 
 
 ```{r}
@@ -406,12 +359,10 @@ The useful "which()" function returns the indices of a vector that meet a certai
 ##########
 # The "which()" function -- return indices of a vector that meet a certain condition (condition is TRUE)
 
-which(data.df[,2]==74)       # elements of the data column that are equal to 74
-which(data.df[,2]!=74)       # elements of the data column that are NOT equal to 74
+which(data.df[,2]==74)       # elements of column 2 that are equal to 74
+which(data.df[,2]!=74)       # elements of column 2 that are NOT equal to 74
 which(data.df[,2]<74)        #  and so on...
 which((data.df[,2]<74)|(data.df[,2]==91))   # use the logical OR operator
-
-data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
 #########
 # Alternatively, save the indices as an R object as an intermediate step
@@ -429,7 +380,6 @@ data.df[data.df[,2]<74,2]    # alternative simpler syntax without using "which()
 
 sub.countries<-c("Chile","Colombia","Mexico")    # create vector of character strings
 
-which(data.df[,1]=="Chile") 
 which(data.df$Country=="Chile") 
 
 # This command doesn't work because sub.countries is a vector, not a single character string. 
@@ -445,24 +395,23 @@ When we want all elements of a vector that match one of a group (vector) of poss
 
 # Instead we use %in%
 which(data.df[,1] %in% sub.countries)     # elements of data column that match one or more of the elements in "sub.countries"
-which((data.df[,1] %in% sub.countries) & (data.df[,4]=="N"))   # use AND operator 
-which((data.df$Country %in% sub.countries) & (data.df$Product=="N")) 
+   
+which((data.df$Country %in% sub.countries) & (data.df$Product=="N"))   # use AND operator 
 
 # What if we don't want the row number, but the actual row(s) of data that meet a particular condition?
 
 indices <- which(data.df$Country %in% sub.countries)
-
 data.df[indices,]          # print all data for a subset of observations
 
 
 ```
 
 
-## More practice with data processing!
+## More data processing!
 
-Let's practice some of what we've learned. Here we will use a different data file. Take a couple minutes to make sure you understand this code.  
+Let's switch to a different data file. Download the [Turtle Data](turtle_data.txt) and save to your working directory (R project directory). 
 
-First, make sure you download the [Turtle Data](turtle_data.txt) and save to your working directory (R project directory). 
+Let's use this data set to review the summarizing and subsetting operations we have learned- and learn a few new things along the way:
 
 ### Subsetting data and correcting errors
 
@@ -484,16 +433,9 @@ fem.turtles.df <- turtles.df[which(turtles.df$sex =="female"),]
 mean(fem.turtles.df$weight)
 mean(turtles.df$weight[which(turtles.df$sex =="female")]) 
 
-# Using subset to correct data entry problems
-unique(turtles.df$sex)
-table(turtles.df$sex)   # do you notice the data entry problem here?    
-
-turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the sex variable
-
 # Try using the "subset()" function, which can make subsetting a data frame even easier!
 female.turtles <- subset(turtles.df,sex=="female")              # use the "subset()" function!
-female.turtles <- subset(turtles.df,sex!="male")                # alternative     
-female.turtles <- turtles.df[which(turtles.df$sex!="male"),]    # alternative
+female.turtles <- turtles.df[which(turtles.df$sex=="female"),]    # alternative
 
 subset.turtles.df <- subset(turtles.df, weight >= 10)
 head(subset.turtles.df)
@@ -517,16 +459,18 @@ We can use subsetting operations to manipulate (alter) data- for example, to cor
 ####  Data Manipulation using subsetting
 ####
 
-# Setting the body length for all turtles with weight 5 or heavier to 48
-turtles.df$carapace_length[which(turtles.df$weight >=5)] = 48
+# Using subset to correct data entry problems
+unique(turtles.df$sex)
+table(turtles.df$sex)   # do you notice the data entry problem here?    
 
-# Sets the TRUE indexes from above to 2
+turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the sex variable
+
+ # make a new variable "size.class" based on the "weight" variable
 turtles.df$size.class <- NA
-turtles.df$size.class[turtles.df$weight >= 6] <- 1        # make a new variable "size.class" based on the "weight" variable  
-turtles.df$size.class[turtles.df$weight < 6] <- 2
+turtles.df$size.class[turtles.df$weight >= 6] <- 1         # ths is the "adult" class 
+turtles.df$size.class[turtles.df$weight < 6] <- 2          # this is the "juvenile" class
 
 turtles.df$size.class
-ncol(turtles.df) 
 
 ```
 
@@ -547,9 +491,6 @@ Here's how you do it in R, continuing with the turtle data example:
 ####  Sorting
 ####
 
-# ?sort
-# ?order
-
 # Sort works for ordering along one vector
 sort(turtles.df$carapace_length)  
 
@@ -560,7 +501,7 @@ order(turtles.df$carapace_length)
 turtles.tag <- turtles.df[order(turtles.df$tag_number),]
 
 # Order in reverse
-turtles.tag.rev <- turtles.df[rev(order(turtles.df$tag_number)),] 
+turtles.tag.rev <- turtles.df[order(turtles.df$tag_number,decreasing = TRUE),] 
 
 # Sorting by 2 columns
 turtles.sex.weight <- turtles.df[order(turtles.df$sex,turtles.df$weight),] 
@@ -569,11 +510,11 @@ turtles.sex.weight <- turtles.df[order(turtles.df$sex,turtles.df$weight),]
 
 ### Dealing with missing data
 
-In many real-world datasets, observations are incomplete in some way- they are missing some information. 
+In many real-world datasets, observations are incomplete in some way- they are missing information. 
 
 In R, the code "NA" represents elements of a vector that are missing for whatever reason.
 
-Most statistical functions have ways of dealing with NAs. We will explore this later. 
+Most statistical functions have ways of dealing with NAs.
 
 Let's explore a data set with NAs. 
 
@@ -629,39 +570,9 @@ summary(missing.mean.df$Export)
 ```
 
 
-### Working with headers
+## ASIDE: don't use "attach"!
 
-Sometimes you may want to change the headers (variable names) for your data, perhaps to improve readability. Here's how:
-
-```{r}
-
-####
-####  Manipulate Headers (variable names)
-####
-
-# ?names: used to manipulate the column names of a data frame
-
-# Rename the columns of 'data'
-names(data.df) <- c("CNTRY", "IMP","EXP", "PROD") 
-head(data.df)
-
-# Another way to manipulate the names
-colnames(data.df) <- c("Country", "Imports","Exports", "Products") 
-head(data.df)
-
-# ?rownames
-# Try to do similar manipulations with the row names!
-
-rownames(data.df) <- paste("obs",1:nrow(data.df),sep="")
-
-head(data.df)
-
-```
-
-
-## Pitfalls to avoid
-
-1. Never use the "attach([some data frame])" function in R. This "convenience" function allows you to access all variables in a data frame by referencing the variable name only (instead of using the dollar-sign notation). That is, when you attach a data frame, you can do things like this:
+Never use the "attach([some data frame])" function in R. This "convenience" function allows you to access all variables in a data frame by referencing the variable name only (instead of using the dollar-sign notation). That is, when you attach a data frame, you can do things like this:
 
 ```{r eval=FALSE}
 
@@ -694,7 +605,7 @@ detach(df)   # remember to detach when you're done
 #########
 # BUT...
 
-attach(df)
+attach(data.df)
 
 Import
 
@@ -712,39 +623,6 @@ detach(data.df)   # Remember to detach
 
 BUT this just leads to problems in the end. Our recommendation: just don't use it!!
 
-
-2. When reading in data, R automatically codes character data (any column containing even one character element) as a **factor**. This often leads to problems, since factor data (while sometimes useful) are actually integers and can confuse novice and expert R users alike. This is one of the most common problems that new R users face!
-
-NOTE: newer versions of R read in character data as character data, so this is no longer as big a problem!
-
-My recommendation is that, when reading in data, use the function argument "stringsAsFactors=FALSE" so that R reads these variables in as character strings rather than as factors: 
-
-```{r eval=FALSE}
-
-df <- read.csv("data.csv", header=T, stringsAsFactors=FALSE)   # avoid reading in character data as factors by default.
-
-```
-
-
-3. When subsetting matrices or arrays, R automatically "drops" dimensions. This is best understood by example:
-
-```{r}
-
-##########
-# Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
-
-newmat <- matrix(c(1:6),nrow=3,byrow = T)
-class(newmat)
-
-newmat[1,]
-class(newmat[1,])    # what? why is it no longer a matrix????
-
-newmat[1,,drop=FALSE]
-class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
-
-```
-
-This default behavior in R can lead to enormous problems when programming in R- just remember that the "drop=FALSE" argument can be your friend!!!
 
 ## Challenge Exercises!
 
@@ -786,10 +664,35 @@ What other method could I use to create this without using "which()"?
 [--go to next module--](module1_3.html)
 
 
+
+#### Aside: Tips on naming objects (and data frame columns) in R
+1. No spaces within object names (same for column names in data files) -- use underscore instead!          
+2. Try not to name an object with a similar/same as a function (e.g. don't name your data "data.frame"). NOTE: this can be hard- there are lots of functions in base R!           
+3. Can't start object names (or column names in data frame) with a number   
  
 
 
+#### Aside: "dropping dimensions"
 
+When subsetting matrices or arrays, R automatically "drops" dimensions. This is best understood by example:
+
+```{r}
+
+##########
+# Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
+
+newmat <- matrix(c(1:6),nrow=3,byrow = T)
+class(newmat)
+
+newmat[1,]
+class(newmat[1,])    # what? why is it no longer a matrix????
+
+newmat[1,,drop=FALSE]
+class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
+
+```
+
+This default behavior in R can lead to enormous problems when programming in R- just remember that the "drop=FALSE" argument can be your friend!!!
 
 
 

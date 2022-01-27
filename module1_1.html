@@ -14,8 +14,8 @@
 
 <title>Module 1.1</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -443,7 +443,7 @@ div.tocify {
 <ol style="list-style-type: decimal">
 <li><p>Click <a href="module1_1.R">here</a> to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the “Save As” option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called “RBootcamp2022”), which will serve as your <strong>working directory</strong> for this bootcamp.</p></li>
 <li><p>Start a new <strong>RStudio Project</strong>. To do this, open RStudio and from the File menu select File&gt;&gt;New Project. In the menu that follows, select “Existing Directory”, and then navigate to the folder in which you saved the R script for this module (your working directory). Select this folder to be your <strong>project directory</strong>. Every time you open this project (File &gt;&gt; Open Project), this project directory will be the first place that R looks for data files and code, and will be the default location for saving data and code.</p></li>
-<li><p>Load a blank script in RStudio. To do this, click on the “blank paper” icon at the far left of the RStudio toolbar (or File &gt;&gt; New File &gt;&gt; R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your <strong>script</strong> (a set of written commands that R can recognize and execute), the bottom left panel is your <strong>console</strong> (your direct connection with R), the top right panel is your <strong>Workspace</strong> (displays all the objects – data sets, variables, functions– that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view plots, view files in your working directory, etc.</p></li>
+<li><p>Load a blank script in RStudio. To do this, click on the “blank paper” icon at the far left of the RStudio toolbar (or File &gt;&gt; New File &gt;&gt; R script). Your RStudio interface should now be divided into four quadrants. In the RStudio default configuration, the top left panel is your <strong>script</strong> (a set of written commands that R can recognize and execute), the bottom left panel is your <strong>console</strong> (your direct connection with R), the top right panel is your <strong>environment</strong> (displays all the objects – data sets, variables, functions– that you have defined in your current R session), and the bottom right panel is a set of tabbed interfaces that let you view help files, load packages, view plots, view files in your working directory, etc.</p></li>
 </ol>
 <p>Take a couple minutes to familiarize yourself with the RStudio environment.</p>
 <p>Let’s get started!</p>
@@ -467,7 +467,7 @@ div.tocify {
 <pre class="r"><code>myname &lt;- &#39;Alfred&#39; </code></pre>
 <p>Then hit “Enter”. What does R return?</p>
 <p>NOTHING!</p>
-<p>BUT…. check the <strong>Environment</strong>, or <strong>Workspace</strong> window (top right of RStudio interface- list of all the objects you’ve defined in this session). You should see that you now have a new <strong>object</strong> in your environment, called “myname”, and this object contains a <strong>text string</strong> (“Alfred”).</p>
+<p>BUT…. check the <strong>Environment</strong> window (top right of RStudio interface- list of all the objects you’ve defined in this session). You should see that you now have a new <strong>object</strong> in your environment, called “myname”, and this object contains a <strong>text string</strong> (“Alfred”).</p>
 <p>Now type <code>myname</code> into the R console and hit “Enter”. What happens?</p>
 <p>If you enter the name of an object at the command line, R automatically prints the value of the object!</p>
 <p>NOTE: RStudio has a useful autofill feature, which can save you lots of time and headaches. After you’ve typed the first couple letters (e.g., “my”), RStudio will suggest “myname” and you can just hit “Enter” to complete the object name! The auto-type feature, unlike R, is not case sensitive! Also note that you can hit the ‘tab’ key to trigger autofill anytime after you start typing in RStudio.</p>
@@ -598,12 +598,12 @@ text(10,65,sprintf(&quot;p = %s&quot;,round(summary(model1)$coefficients[,&quot;
 </div>
 <div id="workspace-management" class="section level2">
 <h2>Workspace management</h2>
-<p>The workspace (environment) in R can become cluttered as we create variables and assignments in R. As we work through the modules in this workshop it will be helpful to clear the workspace every once in a while. Earlier we assigned the value “Alfred” to the variable <code>myname</code>. Let’s remove that from the workspace. There are several ways to do this.</p>
+<p>The workspace (environment) in R can become cluttered as we create variables and assignments in R. As we work through the modules in this workshop it will be helpful to clear the environment every once in a while. Earlier we assigned the value “Alfred” to the variable <code>myname</code>. Let’s remove that from the environment. There are several ways to do this.</p>
 <ol style="list-style-type: decimal">
-<li>In the ‘environment’ panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire workspace.<br />
+<li>In the ‘environment’ panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire environment.<br />
 </li>
 <li>Use <code>rm(myname)</code> to clear just the <code>myname</code> variable.</li>
-<li>Use this handy one-liner <code>rm(list=ls())</code> to clear the entire workspace.</li>
+<li>Use this handy one-liner <code>rm(list=ls())</code> to clear the entire environment.</li>
 </ol>
 </div>
 <div id="back-to-basics-r-objects" class="section level2">
@@ -894,22 +894,22 @@ rep(0,times=3)                # repeat 0 three times</code></pre>
 
 z &lt;- rnorm(10)                # 10 realizations from std. normal
 z</code></pre>
-<pre><code>##  [1] -1.1646415 -1.0018524 -0.4166887  0.3762916  1.5229710  0.8670203
-##  [7] -0.9615852 -1.3248221 -0.1428627 -1.2995470</code></pre>
+<pre><code>##  [1]  1.5842377 -1.9739585  1.9332170 -0.6675939  1.4679905 -1.5721204
+##  [7]  0.4938669  0.6293144  1.7213247 -1.2847513</code></pre>
 <pre class="r"><code>y &lt;- rnorm(10,mean=-2,sd=4)           # 10 realizations from N(-2,4^2)
 y</code></pre>
-<pre><code>##  [1]  8.7745903 -3.5360368  1.2071946 -0.6456831 -3.2359154 -2.7673310
-##  [7] -0.9160426 -8.9540820  0.8155751 -5.6625501</code></pre>
+<pre><code>##  [1]  -0.9241116 -10.0720383  -1.5519015   2.3482578   2.0055480  -3.7199467
+##  [7]   3.7363330  -2.8731987  -4.0679452  -1.4994881</code></pre>
 <pre class="r"><code>rbinom(5,size=3,prob=.5)                # 5 realizations from Binom(3,0.5)</code></pre>
-<pre><code>## [1] 0 1 2 2 1</code></pre>
+<pre><code>## [1] 1 2 3 1 1</code></pre>
 <pre class="r"><code>rbinom(5,3,.1)                # 5 realizations from Binom(3,0.1)</code></pre>
-<pre><code>## [1] 1 1 0 0 1</code></pre>
+<pre><code>## [1] 1 0 1 0 2</code></pre>
 <pre class="r"><code>runif(10)                # 10 standard uniform random numbers</code></pre>
-<pre><code>##  [1] 0.78613603 0.17973245 0.82683070 0.01338101 0.60096950 0.83431938
-##  [7] 0.66839399 0.47146922 0.40110613 0.66307921</code></pre>
+<pre><code>##  [1] 0.55608035 0.61793222 0.97079408 0.79179905 0.05590036 0.34063252
+##  [7] 0.46401301 0.70279527 0.49805349 0.01960336</code></pre>
 <pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random variates on [-1,1]</code></pre>
-<pre><code>##  [1]  0.4219521  0.2076946  0.4267920  0.4460656  0.6315999  0.9983255
-##  [7] -0.5050987  0.3636933  0.2413905  0.6965792</code></pre>
+<pre><code>##  [1] -0.4964405 -0.8478536 -0.5315513  0.3657844 -0.4553727 -0.5943069
+##  [7]  0.3748283  0.2093847  0.1336085  0.4872494</code></pre>
 <p>And finally, we can make up a fake data frame using some of the tricks we just learned!</p>
 <pre class="r"><code>############
 # Make up an entire fake data frame!
@@ -923,27 +923,27 @@ my.data &lt;- data.frame(
 )
 head(my.data)</code></pre>
 <pre><code>##   Obs.Id Treatment Block Germination AvgHeight
-## 1      1         A     1           1  9.196712
-## 2      2         A     2           1  9.403593
-## 3      3         A     3           1 10.575880
-## 4      4         A     4           2  8.376719
-## 5      5         A     5           1 10.172626
-## 6      6         A     6           0 10.398289</code></pre>
+## 1      1         A     1           0  9.907695
+## 2      2         A     2           1  8.415369
+## 3      3         A     3           4  9.722224
+## 4      4         A     4           1 12.817606
+## 5      5         A     5           0 10.470249
+## 6      6         A     6           2  9.845489</code></pre>
 <pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
-<pre><code>##      Obs.Id        Treatment             Block        Germination   
-##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   : 0.00  
-##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.: 1.00  
-##  Median : 50.50   Mode  :character   Median :10.50   Median : 3.00  
-##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.71  
-##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 6.00  
-##  Max.   :100.00                      Max.   :20.00   Max.   :12.00  
+<pre><code>##      Obs.Id        Treatment             Block        Germination  
+##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   :0.00  
+##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.:1.00  
+##  Median : 50.50   Mode  :character   Median :10.50   Median :3.00  
+##  Mean   : 50.50                      Mean   :10.50   Mean   :3.38  
+##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.:6.00  
+##  Max.   :100.00                      Max.   :20.00   Max.   :9.00  
 ##    AvgHeight     
-##  Min.   : 8.188  
-##  1st Qu.:24.480  
-##  Median :29.633  
-##  Mean   :26.248  
-##  3rd Qu.:31.756  
-##  Max.   :37.096</code></pre>
+##  Min.   : 8.415  
+##  1st Qu.:24.552  
+##  Median :30.001  
+##  Mean   :26.288  
+##  3rd Qu.:32.002  
+##  Max.   :35.914</code></pre>
 <p>NOTE: the “head()” function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!</p>
 </div>
 </div>
@@ -1004,33 +1004,33 @@ d</code></pre>
 mydf=my.data[21:30,]  # only keep 10 rows
 mydf</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 21     21         B     1           2  30.11275
-## 22     22         B     2           2  29.32447
-## 23     23         B     3           6  30.89018
-## 24     24         B     4           7  30.07338
-## 25     25         B     5           0  29.70535
-## 26     26         B     6           5  29.15887
-## 27     27         B     7           4  31.30083
-## 28     28         B     8           8  30.42173
-## 29     29         B     9           6  29.37911
-## 30     30         B    10           6  30.04384</code></pre>
+## 21     21         B     1           8  30.78483
+## 22     22         B     2           8  30.41573
+## 23     23         B     3           4  30.85338
+## 24     24         B     4           3  30.48852
+## 25     25         B     5           6  30.77097
+## 26     26         B     6           6  29.99519
+## 27     27         B     7           3  28.38058
+## 28     28         B     8           4  27.68916
+## 29     29         B     9           2  27.80630
+## 30     30         B    10           7  29.92747</code></pre>
 <pre class="r"><code>## many ways of accessing a particular column of a data frame
 mydf$Germination           # Subsetting a data frame</code></pre>
-<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
 <pre class="r"><code>mydf[[&quot;Germination&quot;]]      # same thing!</code></pre>
-<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
 <pre class="r"><code>mydf[,4]                   # same thing!</code></pre>
-<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
 <pre class="r"><code>mydf[[4]]                  # same thing!</code></pre>
-<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
 <pre class="r"><code>mydf[,&quot;Germination&quot;]       # same thing!</code></pre>
-<pre><code>##  [1] 2 2 6 7 0 5 4 8 6 6</code></pre>
+<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
 <pre class="r"><code># Data frame can also be indexed just like a matrix
 mydf[,2]</code></pre>
 <pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
 <pre class="r"><code>mydf[2,]</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 22     22         B     2           2  29.32447</code></pre>
+## 22     22         B     2           8  30.41573</code></pre>
 <pre class="r"><code>mydf[,2:3]</code></pre>
 <pre><code>##    Treatment Block
 ## 21         B     1
