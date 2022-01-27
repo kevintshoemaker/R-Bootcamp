@@ -24,9 +24,9 @@ Department of Natural Resources and Environmental Science
 Office: Fleischmann Agriculture 220E					
 Email: [kevinshoemaker@unr.edu](kevinshoemaker@unr.edu)
 
-[Mitchell Gritts](http://mgritts.github.io/cv/)     
+[Mitchell Gritts](https://mitchellgritts.com)     
 Nevada Department of Wildlife          
-Email: mgritts(at)ndow(dot)org 
+Email: mitchell(at)gritts(dot)com
 
 
 ## Contributors
@@ -36,9 +36,9 @@ Department of Natural Resources and Environmental Science
 Office: 240 Fleischmann  
 Email: perryw(at)unr(dot)edu
 
-[Mitchell Gritts](http://mgritts.github.io/cv/)     
+[Mitchell Gritts](https://mitchellgritts.com)     
 Nevada Department of Wildlife          
-Email: mgritts(at)ndow(dot)org      
+Email: mitchell(at)gritts(dot)com
 
 [Christine Albano](http://www.csp-inc.org/about-us/core-science-staff/albano-christine/)     
 Lead Scientist at Conservation Science Partners and doctoral student at DRI    
@@ -88,7 +88,8 @@ Before we dig in and get started with the modules, you should have installed R a
 Also, it can be very helpful to print out an R 'cheat sheet' and bring that with you (we will also have some available at the workshop!). Here are some links:
 
 [Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
-[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)                
+[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)               
+[All RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
 
 Okay, now we're ready to go!
 
