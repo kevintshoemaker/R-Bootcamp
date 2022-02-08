@@ -17,22 +17,16 @@
 
 
 # Find the directory you're working in 
-getwd()          # note: the results from running this command on my machine will probably differ from yours!  
+getwd()          # note: the results from running this command on my machine will differ from yours!  
 
-
-# Setting a new working directory in a PC (same as File->Change dir...)
-# setwd("[filepath with forward slashes]") 
 
 # for example...
 
 # setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
 
-# Open finder to set directory
-setwd(choose.dir())
-
 
 # Contents of working directory
-dir()
+list.files()
 
 
 ####
@@ -40,16 +34,12 @@ dir()
 ####
 
 # ?read.table    # some useful functions for reading in data
-# ?read.csv
 
 # read.table to import textfile (default is sep = "" (one of several common delimiters, including any type of whitespace))
 data.txt.df <- read.table("data.txt", header=T, sep="")  
 
 # read.table with csv file
 data.csv.df <- read.table("data.csv", header=T, sep=",")  
-
-# ?names: lists names of an object (columns, name of list elements)
-names(data.csv.df)      
 
 # built-in default for importing from CSV (easiest and most widely used)
 data.df <- read.csv("data.csv")
@@ -59,14 +49,6 @@ names(data.df)
 rm(data.txt.df)
 rm(data.csv.df)
 
-
-
-########
-# Import data from the internet directly
-
-brain.df <- read.table("http://www.oup.com/us/static/companion.websites/9780195089653/Spreadsheets/brainbody.csv", header=T, sep=",")
-head(brain.df)
-dim(brain.df)
 
 
 # Built-in data files
@@ -85,10 +67,6 @@ str(mtcars)    # examine the structure of this data object
 ####
 #### Check/explore data object
 #### 
-
-# ?class: tells you what type of data object you have
-class(data.df)
-
 
 
 # ?str: displays the internal structure of the data object
@@ -111,7 +89,6 @@ summary(data.df)
 ####
 
 # ?write.table: writes a file to the working directory
-# ?writeLines: writes to a file, one line at a time
    
 write.table(data.df[,c("Country","Product")], file="data_export.csv", sep=",", col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in.
 
@@ -127,28 +104,27 @@ b <- data.df$Product
 
 save(a,b,file="Module1_2.RData")
 
-rm(a,b)   # remove these objects from the workspace
+rm(a,b)   # remove these objects from the environment
 
 load("Module1_2.RData")   # load these objects back in!
 
 
 ##############
-# Clear the workspace (and load it back in!)
+# Clear the environment (and load it back in!)
 
-save.image(file="Module2.RData")    # ?save.image: saves entire workspace (we don't necessarily want to clear everything right now)
+save.image(file="Module2.RData")    # ?save.image: saves entire environment (we don't necessarily want to clear everything right now)
 
-rm(list=ls())   # clear the entire workspace. Confirm that your workspace is now empty!
+rm(list=ls())   # clear the entire environment. Confirm that your environment is now empty!
 
 load(file="Module2.RData")   # load the objects back!
 
 
-# <- assignment operator: required for functions
+# <- assignment operator
 # =  alternative assignment operator
 
 a <- 3     # assign the value "3" to the object named "a"
 a = 3      # assign the value "3" to the object named "a"
 a == 3     # answer the question: "does the object "a" equal "3"? 
-a == 2
 
 
 ####
@@ -178,10 +154,10 @@ Z <- 6
 Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
 Y < Z
 
-!(Y < Z)  # the exclamation point reverses any boolean object
+!(Y < Z)  # the exclamation point reverses any boolean object (read "NOT")
 
 # Wrong!
-data.df[,2]=74     # sets entire second column equal to 74!
+data.df[,2]=74     # sets entire second column equal to 74! OOPS!!!
 
 data.df <- read.csv("data.csv")  ## correct our mistake in the previous line (revert to the original data)!
 
@@ -196,12 +172,10 @@ data.df[,2]==74    # tests each element of column to see whether it is equal to 
 ##########
 # The "which()" function -- return indices of a vector that meet a certain condition (condition is TRUE)
 
-which(data.df[,2]==74)       # elements of the data column that are equal to 74
-which(data.df[,2]!=74)       # elements of the data column that are NOT equal to 74
+which(data.df[,2]==74)       # elements of column 2 that are equal to 74
+which(data.df[,2]!=74)       # elements of column 2 that are NOT equal to 74
 which(data.df[,2]<74)        #  and so on...
 which((data.df[,2]<74)|(data.df[,2]==91))   # use the logical OR operator
-
-data.df[which(data.df[,2]<74),2]    # check to make sure these numbers are under 74- they had better be!
 
 #########
 # Alternatively, save the indices as an R object as an intermediate step
@@ -219,7 +193,6 @@ data.df[data.df[,2]<74,2]    # alternative simpler syntax without using "which()
 
 sub.countries<-c("Chile","Colombia","Mexico")    # create vector of character strings
 
-which(data.df[,1]=="Chile") 
 which(data.df$Country=="Chile") 
 
 # This command doesn't work because sub.countries is a vector, not a single character string. 
@@ -229,13 +202,12 @@ which (data.df[,1]==sub.countries)
 
 # Instead we use %in%
 which(data.df[,1] %in% sub.countries)     # elements of data column that match one or more of the elements in "sub.countries"
-which((data.df[,1] %in% sub.countries) & (data.df[,4]=="N"))   # use AND operator 
-which((data.df$Country %in% sub.countries) & (data.df$Product=="N")) 
+   
+which((data.df$Country %in% sub.countries) & (data.df$Product=="N"))   # use AND operator 
 
 # What if we don't want the row number, but the actual row(s) of data that meet a particular condition?
 
 indices <- which(data.df$Country %in% sub.countries)
-
 data.df[indices,]          # print all data for a subset of observations
 
 
@@ -256,16 +228,9 @@ fem.turtles.df <- turtles.df[which(turtles.df$sex =="female"),]
 mean(fem.turtles.df$weight)
 mean(turtles.df$weight[which(turtles.df$sex =="female")]) 
 
-# Using subset to correct data entry problems
-unique(turtles.df$sex)
-table(turtles.df$sex)   # do you notice the data entry problem here?    
-
-turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the sex variable
-
 # Try using the "subset()" function, which can make subsetting a data frame even easier!
 female.turtles <- subset(turtles.df,sex=="female")              # use the "subset()" function!
-female.turtles <- subset(turtles.df,sex!="male")                # alternative     
-female.turtles <- turtles.df[which(turtles.df$sex!="male"),]    # alternative
+female.turtles <- turtles.df[which(turtles.df$sex=="female"),]    # alternative
 
 subset.turtles.df <- subset(turtles.df, weight >= 10)
 head(subset.turtles.df)
@@ -281,24 +246,23 @@ bad.turtles.df
 ####  Data Manipulation using subsetting
 ####
 
-# Setting the body length for all turtles with weight 5 or heavier to 48
-turtles.df$carapace_length[which(turtles.df$weight >=5)] = 48
+# Using subset to correct data entry problems
+unique(turtles.df$sex)
+table(turtles.df$sex)   # do you notice the data entry problem here?    
 
-# Sets the TRUE indexes from above to 2
+turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the sex variable
+
+ # make a new variable "size.class" based on the "weight" variable
 turtles.df$size.class <- NA
-turtles.df$size.class[turtles.df$weight >= 6] <- 1        # make a new variable "size.class" based on the "weight" variable  
-turtles.df$size.class[turtles.df$weight < 6] <- 2
+turtles.df$size.class[turtles.df$weight >= 6] <- 1         # ths is the "adult" class 
+turtles.df$size.class[turtles.df$weight < 6] <- 2          # this is the "juvenile" class
 
 turtles.df$size.class
-ncol(turtles.df) 
 
 
 ####
 ####  Sorting
 ####
-
-# ?sort
-# ?order
 
 # Sort works for ordering along one vector
 sort(turtles.df$carapace_length)  
@@ -310,7 +274,7 @@ order(turtles.df$carapace_length)
 turtles.tag <- turtles.df[order(turtles.df$tag_number),]
 
 # Order in reverse
-turtles.tag.rev <- turtles.df[rev(order(turtles.df$tag_number)),] 
+turtles.tag.rev <- turtles.df[order(turtles.df$tag_number,decreasing = TRUE),] 
 
 # Sorting by 2 columns
 turtles.sex.weight <- turtles.df[order(turtles.df$sex,turtles.df$weight),] 
@@ -360,28 +324,6 @@ summary(missing.mean.df)
 summary(missing.mean.df$Export)
 
 
-####
-####  Manipulate Headers (variable names)
-####
-
-# ?names: used to manipulate the column names of a data frame
-
-# Rename the columns of 'data'
-names(data.df) <- c("CNTRY", "IMP","EXP", "PROD") 
-head(data.df)
-
-# Another way to manipulate the names
-colnames(data.df) <- c("Country", "Imports","Exports", "Products") 
-head(data.df)
-
-# ?rownames
-# Try to do similar manipulations with the row names!
-
-rownames(data.df) <- paste("obs",1:nrow(data.df),sep="")
-
-head(data.df)
-
-
 ##############
 # COMMON PITFALLS
 ##############
@@ -411,7 +353,7 @@ detach(df)   # remember to detach when you're done
 #########
 # BUT...
 
-attach(df)
+attach(data.df)
 
 Import
 
@@ -426,22 +368,6 @@ detach(data.df)   # Remember to detach
 
  
 
-df <- read.csv("data.csv", header=T, stringsAsFactors=FALSE)   # avoid reading in character data as factors by default.
-
-
-##########
-# Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
-
-newmat <- matrix(c(1:6),nrow=3,byrow = T)
-class(newmat)
-
-newmat[1,]
-class(newmat[1,])    # what? why is it no longer a matrix????
-
-newmat[1,,drop=FALSE]
-class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
-
-
 ############
 ### CHALLENGE EXERCISES
 ############
@@ -455,4 +381,17 @@ class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix!
 # male_turtles <- turtles[,which(turtles$sex=="male")]  # uncomment this to run it...
 
 
+
+
+##########
+# Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
+
+newmat <- matrix(c(1:6),nrow=3,byrow = T)
+class(newmat)
+
+newmat[1,]
+class(newmat[1,])    # what? why is it no longer a matrix????
+
+newmat[1,,drop=FALSE]
+class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
 

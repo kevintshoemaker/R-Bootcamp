@@ -22,24 +22,8 @@
 rm(list=ls())
 
 
-####
-####  Functions
-####
-
-my.function = function(){       # this function has no arguments
-  message <- "Hello, world!"
-  return(message)
-}
-
-
-my.function()
-
-
-my.function      # try running without parentheses-   what happens?
-
-
 ## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
-my.mean <- function(x){
+my.mean <- function(x){       # 'x' is the function argument- 'x' stands in for whatever numeric vector the user wants
     m <- sum(x)/length(x)
     return(m)
 }
@@ -139,26 +123,6 @@ if (x > 0) {
 } else {
     print("Not detected")
 }
-
-######
-# Make a "safe" version of the "logit" function
-
-logit.safe <- function(x){
-    bad <- ((x<0)|(x>1))
-    if(any(bad)){
-      stop("logit is only defined for x between 0 and 1!")
-    }else{
-      log(x/(1-x))
-    }
-    
-}
-x <- seq(from = -1, to = 2, by = 0.1)
-# logit(x)      # this returns impossible numbers (NaNs)
-# logit.safe(x)   # this will throw an informative error!
-
-logit.safe(c(0.15,0.99))
-
-
 
 
 ####

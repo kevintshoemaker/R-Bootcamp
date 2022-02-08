@@ -383,7 +383,7 @@ sub.countries<-c("Chile","Colombia","Mexico")    # create vector of character st
 which(data.df$Country=="Chile") 
 
 # This command doesn't work because sub.countries is a vector, not a single character string. 
-which (data.df[,1]==sub.countries) 
+which(data.df[,1]==sub.countries) 
 
 
 ```

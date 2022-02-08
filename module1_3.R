@@ -42,9 +42,7 @@ par()   # view the default graphical parameters (can be kind of overwhelming!)
 # This divides the image into four sections and then fills these with the plot function
 layout(matrix(1:4, nrow=2, ncol=2))
 
-# layout.show(4)   # uncomment to run
-
-  # par(mfrow=c(2,2))  # (alternative way to do this)
+# layout.show(n=4)   # uncomment to run
 
 plot(x=trees$Girth, y=trees$Volume)             # points
 plot(x=trees$Girth, y=trees$Volume, type="l")   # lines
@@ -98,6 +96,7 @@ plot(x=trees$Girth, y=trees$Volume, pch=19,
 # This divides the image into four sections but fills the first two sections
 # with the first plot and then fills these next two sections with the final two plots
 layout(matrix(c(1, 1, 2, 3), nrow=2, ncol=2))
+# layout.show(3)
 
 # col: select a color for the plotting characters
 plot(x=trees$Girth, y=trees$Volume, pch=19, 
@@ -128,14 +127,6 @@ str(iris)      # details of the data structure
 plot.colors <- c("violet", "purple", "blue")   # define the colors for representing species ID
 
 
-color.vector <- rep(x=plot.colors, each=50)
-color.vector
-## color vector is now a list of our colors, each repeated 50 times
-
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main="Plot of Iris colored by species")
-
-
 names(plot.colors) <- levels(iris$Species)   # the "levels()" function returns all unique labels for any "factor" variable    
 plot.colors
 
@@ -143,33 +134,13 @@ plot.colors
 # generate a vector of colors for our plot (one color for each observation)
 
 indices <- match(iris$Species,names(plot.colors))   # the "match()" function goes through each element of the first vector and finds the matching index in the second vector         
-color.vector2 <- plot.colors[indices]
+color.vector <- plot.colors[indices]
 
 
 
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector2, 
+plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
      main="Iris sepal length vs. petal length", xlab="Petal length", 
      ylab="Sepal length", las=1)
-
-
-# make a new version of the iris data frame that is neither in order nor has the same number of observations for each species (to illustrate generality of the new method)
-
-iris2 <- iris[sample(1:nrow(iris),replace = T),]   # use the "sample()" function to create a randomized ("bootstrapped") version of the iris data frame
-
-# now repeat the above steps:
-
-indices <- match(iris2$Species,names(plot.colors))   # the "match()" function returns the indices of the first vector that match the second vector   
-color.vector2 <- plot.colors[indices]
-plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector2, 
-     main="Iris sepal length vs. petal length", xlab="Petal length", 
-     ylab="Sepal length", las=1)
-
-
-## The old method is NOT general:
-
-color.vector <- rep(x=plot.colors, each=50)
-plot(x=iris2$Petal.Length, y=iris2$Sepal.Length, pch=19, col=color.vector, 
-     main="Plot of Iris colored by species (not!)")
 
 ########
 # experiment with legends
@@ -210,7 +181,7 @@ legend("topleft", pch=19, col=plot.colors,
 
 ## Diplaying gradients (continuous data) using color and size
 
-?mtcars
+ # ?mtcars
 
 head(mtcars)
 
@@ -222,24 +193,11 @@ plot(mpg~wt,  data=mtcars,pch=20,xlab="Vehicle weight (1000 lbs)",ylab="Fuel eco
 
 ## Plot fuel economy by weight and horsepower
 
-hp_rescale <- with(mtcars,(hp-min(hp))/diff(range(hp)))    # scale from 0 to 1
+hp_rescale <- (mtcars$hp-min(mtcars$hp))/diff(range(mtcars$hp))    # scale from 0 to 1
 
 plot(mpg~wt,  data=mtcars,pch=1,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)",cex=(hp_rescale+0.6)*1.2)   # plot with different sized points
 
 legend("topright",pch=c(1,1),pt.cex=c(0.6,0.6*1.2),legend=paste(range(mtcars$hp),"horsepower"),bty="n")
-
-
- 
-
-## Plot fuel economy by weight and horsepower again- this time by color
-
-colramp <- terrain.colors(125)
-
-colindex <- round(hp_rescale*99+1)
-
-plot(mpg~wt,  data=mtcars,pch=20,cex=2,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)",col=colramp[colindex])   # plot with different sized points
-
-legend("topright",pch=c(20,20),pt.cex=c(2,2),col=c(colramp[1],colramp[100]),legend=paste(range(mtcars$hp),"horsepower"),bty="n")
 
 
  
@@ -249,12 +207,6 @@ bar.heights <- tapply(iris$Sepal.Length, iris$Species, mean)   #use "tapply()" f
 
 # The basic 'barplot()' function
 barplot(bar.heights)
-
-
-# Let's add some flair
-barplot(bar.heights, names.arg=c("I. setosa", "I. versicolor", "I. virginica"), 
-        las=1, col=adjustcolor(plot.colors, alpha.f=0.5),
-        main="Sepal length for 3 Irises", ylab="Sepal length (cm)")
 
 
 CI <- 2 * tapply(iris$Sepal.Length, iris$Species, sd)
@@ -275,25 +227,10 @@ arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)
 # ?arrows
 
 
-layout(matrix(1:2, 1, 2))
-
-## y-axis is in counts by default (total observations in each "bin")
-hist(iris$Sepal.Length, main="Histogram of Sepal Length",
-     xlab = "Sepal Length")
-
-## change y-axis to proportions of the entire dataset using freq=FALSE
-hist(iris$Sepal.Length, freq=FALSE, main="Histogram of Sepal Length", 
-     xlab = "Sepal Length")
-## Add a density estimator
-
-lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
-curve(dnorm(x,mean(iris$Sepal.Length),sd(iris$Sepal.Length)),add=T,col="red",lty=3)   # add a normal distribution
-
-
 pairs(iris)
 
 
-?ToothGrowth
+# ?ToothGrowth
 head(ToothGrowth)
 
 
@@ -461,4 +398,19 @@ points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"fit"],col="green",typ="l",lwd=2)  # pl
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"lwr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
 points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"upr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
 
+
+
+layout(matrix(1:2, 1, 2))
+
+## y-axis is in counts by default (total observations in each "bin")
+hist(iris$Sepal.Length, main="Histogram of Sepal Length",
+     xlab = "Sepal Length")
+
+## change y-axis to proportions of the entire dataset using freq=FALSE
+hist(iris$Sepal.Length, freq=FALSE, main="Histogram of Sepal Length", 
+     xlab = "Sepal Length")
+## Add a density estimator
+
+lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
+curve(dnorm(x,mean(iris$Sepal.Length),sd(iris$Sepal.Length)),add=T,col="red",lty=3)   # add a normal distribution
 
