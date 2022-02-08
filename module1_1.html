@@ -14,8 +14,8 @@
 
 <title>Module 1.1</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -399,6 +399,9 @@ div.tocify {
     </li>
     <li>
       <a href="reptiles.csv">Reptile Data</a>
+    </li>
+    <li>
+      <a href="comm_data.txt">Comm Data</a>
     </li>
     <li>
       <a href="data.zip">GIS Data</a>
@@ -894,22 +897,22 @@ rep(0,times=3)                # repeat 0 three times</code></pre>
 
 z &lt;- rnorm(10)                # 10 realizations from std. normal
 z</code></pre>
-<pre><code>##  [1]  1.5842377 -1.9739585  1.9332170 -0.6675939  1.4679905 -1.5721204
-##  [7]  0.4938669  0.6293144  1.7213247 -1.2847513</code></pre>
+<pre><code>##  [1] -2.18238232  1.58477190  0.87442742  0.08409583  0.39103703  0.01975588
+##  [7] -0.69320033 -0.88256525  1.16069137  1.05222157</code></pre>
 <pre class="r"><code>y &lt;- rnorm(10,mean=-2,sd=4)           # 10 realizations from N(-2,4^2)
 y</code></pre>
-<pre><code>##  [1]  -0.9241116 -10.0720383  -1.5519015   2.3482578   2.0055480  -3.7199467
-##  [7]   3.7363330  -2.8731987  -4.0679452  -1.4994881</code></pre>
+<pre><code>##  [1] -5.5835829  0.7472555 -3.0049150 -2.7965675  2.1884676 -3.1150202
+##  [7]  1.1455254 -6.0501601 -1.9069009 -2.6332893</code></pre>
 <pre class="r"><code>rbinom(5,size=3,prob=.5)                # 5 realizations from Binom(3,0.5)</code></pre>
-<pre><code>## [1] 1 2 3 1 1</code></pre>
+<pre><code>## [1] 2 1 3 3 3</code></pre>
 <pre class="r"><code>rbinom(5,3,.1)                # 5 realizations from Binom(3,0.1)</code></pre>
-<pre><code>## [1] 1 0 1 0 2</code></pre>
+<pre><code>## [1] 0 0 1 0 0</code></pre>
 <pre class="r"><code>runif(10)                # 10 standard uniform random numbers</code></pre>
-<pre><code>##  [1] 0.55608035 0.61793222 0.97079408 0.79179905 0.05590036 0.34063252
-##  [7] 0.46401301 0.70279527 0.49805349 0.01960336</code></pre>
+<pre><code>##  [1] 0.94463270 0.41599098 0.40840562 0.38257138 0.84876081 0.09031595
+##  [7] 0.90467016 0.99315477 0.22706784 0.55464761</code></pre>
 <pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random variates on [-1,1]</code></pre>
-<pre><code>##  [1] -0.4964405 -0.8478536 -0.5315513  0.3657844 -0.4553727 -0.5943069
-##  [7]  0.3748283  0.2093847  0.1336085  0.4872494</code></pre>
+<pre><code>##  [1] -0.79211626  0.91668537  0.06890047 -0.46565779  0.61420106 -0.47613091
+##  [7] -0.85920034  0.05603085 -0.32743066  0.29295806</code></pre>
 <p>And finally, we can make up a fake data frame using some of the tricks we just learned!</p>
 <pre class="r"><code>############
 # Make up an entire fake data frame!
@@ -923,27 +926,27 @@ my.data &lt;- data.frame(
 )
 head(my.data)</code></pre>
 <pre><code>##   Obs.Id Treatment Block Germination AvgHeight
-## 1      1         A     1           0  9.907695
-## 2      2         A     2           1  8.415369
-## 3      3         A     3           4  9.722224
-## 4      4         A     4           1 12.817606
-## 5      5         A     5           0 10.470249
-## 6      6         A     6           2  9.845489</code></pre>
+## 1      1         A     1           1  9.415553
+## 2      2         A     2           1  9.087627
+## 3      3         A     3           2  8.908358
+## 4      4         A     4           0 10.099687
+## 5      5         A     5           1 10.000356
+## 6      6         A     6           1 10.181529</code></pre>
 <pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
-<pre><code>##      Obs.Id        Treatment             Block        Germination  
-##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   :0.00  
-##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.:1.00  
-##  Median : 50.50   Mode  :character   Median :10.50   Median :3.00  
-##  Mean   : 50.50                      Mean   :10.50   Mean   :3.38  
-##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.:6.00  
-##  Max.   :100.00                      Max.   :20.00   Max.   :9.00  
+<pre><code>##      Obs.Id        Treatment             Block        Germination   
+##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   : 0.00  
+##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.: 1.00  
+##  Median : 50.50   Mode  :character   Median :10.50   Median : 3.00  
+##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.90  
+##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 6.25  
+##  Max.   :100.00                      Max.   :20.00   Max.   :14.00  
 ##    AvgHeight     
-##  Min.   : 8.415  
-##  1st Qu.:24.552  
-##  Median :30.001  
-##  Mean   :26.288  
-##  3rd Qu.:32.002  
-##  Max.   :35.914</code></pre>
+##  Min.   : 8.296  
+##  1st Qu.:24.679  
+##  Median :29.983  
+##  Mean   :26.282  
+##  3rd Qu.:32.067  
+##  Max.   :36.633</code></pre>
 <p>NOTE: the “head()” function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!</p>
 </div>
 </div>
@@ -1004,33 +1007,33 @@ d</code></pre>
 mydf=my.data[21:30,]  # only keep 10 rows
 mydf</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 21     21         B     1           8  30.78483
-## 22     22         B     2           8  30.41573
-## 23     23         B     3           4  30.85338
-## 24     24         B     4           3  30.48852
-## 25     25         B     5           6  30.77097
-## 26     26         B     6           6  29.99519
-## 27     27         B     7           3  28.38058
-## 28     28         B     8           4  27.68916
-## 29     29         B     9           2  27.80630
-## 30     30         B    10           7  29.92747</code></pre>
+## 21     21         B     1           8  29.96426
+## 22     22         B     2           3  30.00224
+## 23     23         B     3           3  30.29685
+## 24     24         B     4           7  30.92899
+## 25     25         B     5           2  30.20979
+## 26     26         B     6           7  30.04538
+## 27     27         B     7           2  28.01913
+## 28     28         B     8           9  31.85293
+## 29     29         B     9           5  30.30390
+## 30     30         B    10           5  29.48562</code></pre>
 <pre class="r"><code>## many ways of accessing a particular column of a data frame
 mydf$Germination           # Subsetting a data frame</code></pre>
-<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
+<pre><code>##  [1] 8 3 3 7 2 7 2 9 5 5</code></pre>
 <pre class="r"><code>mydf[[&quot;Germination&quot;]]      # same thing!</code></pre>
-<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
+<pre><code>##  [1] 8 3 3 7 2 7 2 9 5 5</code></pre>
 <pre class="r"><code>mydf[,4]                   # same thing!</code></pre>
-<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
+<pre><code>##  [1] 8 3 3 7 2 7 2 9 5 5</code></pre>
 <pre class="r"><code>mydf[[4]]                  # same thing!</code></pre>
-<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
+<pre><code>##  [1] 8 3 3 7 2 7 2 9 5 5</code></pre>
 <pre class="r"><code>mydf[,&quot;Germination&quot;]       # same thing!</code></pre>
-<pre><code>##  [1] 8 8 4 3 6 6 3 4 2 7</code></pre>
+<pre><code>##  [1] 8 3 3 7 2 7 2 9 5 5</code></pre>
 <pre class="r"><code># Data frame can also be indexed just like a matrix
 mydf[,2]</code></pre>
 <pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
 <pre class="r"><code>mydf[2,]</code></pre>
 <pre><code>##    Obs.Id Treatment Block Germination AvgHeight
-## 22     22         B     2           8  30.41573</code></pre>
+## 22     22         B     2           3  30.00224</code></pre>
 <pre class="r"><code>mydf[,2:3]</code></pre>
 <pre><code>##    Treatment Block
 ## 21         B     1

@@ -47,6 +47,8 @@ navbar:
           href: geneData.csv
         - text: "Reptile Data"
           href: reptiles.csv
+        - text: "Comm Data"
+          href: comm_data.txt
         - text: "GIS Data"
           href: data.zip  
     - text: "Links"
