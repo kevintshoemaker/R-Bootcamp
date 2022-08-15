@@ -27,9 +27,13 @@ batting <- as.data.table(batting)
 
 data("diamonds")   # for ggplot demos, following varianceexplained r lesson
 
+# Package ‘unvotes’  # united nations votes- good for ggplot and stats...
+
 library(dplyr)
-
-
+library(unvotes)
+library(tidyverse)
+votes <- un_votes %>%
+  inner_join(un_roll_calls, by = "rcid")
 # gene expression data ---- 
 
 url <- "http://varianceexplained.org/files/Brauer2008_DataSet1.tds"
