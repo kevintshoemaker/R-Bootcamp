@@ -1,7 +1,7 @@
-name: "R bootcamp, TWS-WS 2022"
+name: "R bootcamp, Fall 2022"
 output_dir: "."
 navbar:
-  title: "R bootcamp, TWS-WS 2022"
+  title: "R bootcamp, Fall 2022"
   left:
     - text: "Home"
       href: index.html

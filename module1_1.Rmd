@@ -1,7 +1,7 @@
 ---
 title: "Module 1.1"
-author: "Getting started: working with objects"
-date: "TWS-WS 2022"
+author: "Getting started"
+date: "Fall 2022"
 output: 
   html_document: 
     theme: journal
@@ -15,40 +15,35 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE}
 
-##################################################
-####                                          ####  
-####  R Bootcamp #1, Module 1                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
+#  R Bootcamp #1, Module 1 --------------------------------     
+#      University of Nevada, Reno             
 
-## NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
-   # Thanks to Perry Williams at UNR for allowing us to use these materials!!
+#  Getting started with R: the basics  --------------------
 
-##################################################
-####  Getting started with R: the basics      ####
-##################################################
 
 ```
 
-NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
-    - Thanks to Perry Williams for allowing us to use these materials!!
-    
-Welcome to the 2021 R bootcamp! Let's get started!! 
+Welcome to the 2022 UNR R workshop- let's get started! 
 
 ## Get materials for this module
 
-* I recommend having a printed copy of a good base R "cheatsheet" (or two) as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we do together in this workshop- the key is that you leave this workshop knowing what can be done in R (just about everything!), to feel comfortable doing some basic data operations in R, and most importantly, we hope the workshop gives you confidence to learn and try new things in R!
+* I recommend having a printed copy of some R "cheatsheets" as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we do together in this workshop- the key is that you leave this workshop with comfort working in the R command line, doing some basic data operations in R, and most importantly, learning and trying new things on your own!
 
 Here are links to good base R "cheatsheets":
 
 [Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
+[ggplot cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
+[data tidying](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
+[data transformation](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
+[working with dates and times](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf)
+
+More cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)
+
 
 ## Load script for module #1.1
 
-1. Click [here](module1_1.R) to download the script for this module! I recommend right-clicking (or control-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called "RBootcamp2022"), which will serve as your **working directory** for this bootcamp. 
+1. Click [here](module1_1.R) to download the script for this module! I recommend right-clicking (or command-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called "Rworkshop2022"), which will serve as your **working directory** for this workshop. 
 
 2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (your working directory). Select this folder to be your **project directory**. Every time you open this project (File >> Open Project), this project directory will be the first place that R looks for data files and code, and will be the default location for saving data and code.  
 
@@ -76,7 +71,7 @@ However, let's take a few minutes to work with the console:
 
 3. Now hit the "up" arrow. The R console remembers all previous commands that it has executed in this **session**, which allows you to re-run commands relatively easily.
 
-4. Any command that is preceded by a pound sign (#) is ignored by the R console. Try typing `# 2+2` and hitting "Enter". Nothing happens, right? We will come back to this shortly.
+4. Any command that is preceded by a hashtag (#) is ignored by the R console. Try typing `# 2+2` and hitting "Enter". Nothing happens, right? We will come back to this shortly.
 
 ### Let's create our first object
 
@@ -104,7 +99,7 @@ NOTE: RStudio has a useful autofill feature, which can save you lots of time and
 
 You will quickly realize that although the command-line R console is nice to use for some things (e.g., quick things that don't need to be saved), there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the ".R" extension) is called an **R script**. 
 
-### New script
+### Make a new script
 
 If you haven't done it already, create a new R script by clicking on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). The top left quadrant of the RStudio interface (at least by default) should now contain a blank R script. 
 
@@ -120,7 +115,7 @@ Now place the cursor somewhere within the line of text you just wrote and hit 'C
 
 [^shortcuts]: RStudio has several helpful keyboard shortcuts to make running lines of code easier. [Check this website](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts) for a comprehensive set of keyboard shortcuts
 
-In the next line of your script, enter a pound sign (hashtag) followed by the command `2+2`. Nothing happens, right?  
+In the next line of your script, enter a hashtag followed by the command `2+2`. Nothing happens, right?  
 
 Now delete the hashtag and try again. Now R recognizes and runs the command. Interesting...
 
@@ -130,88 +125,212 @@ Of course, it's always a good idea to save your scripts often -- so feel free to
 
 ### Load an Existing script
 
-Remember the file you downloaded at the beginning of this submodule? That file is an R script- Let's load it up now!  
+Remember the file you downloaded at the beginning of this submodule? That file is an R script ("module1_1.R"); Let's load it up now!  
 
 To do this, click on the "folder" icon on the Rstudio toolbar (or File >> Open File) and choose the script you downloaded earlier.
 
-The first few lines of the script for this module are preceded by pound signs. As you have already seen, R ignores these lines (anything preceded by a pound sign is ignored)- they are called **comments**, and they help to keep code organized and understandable. 
+The first few lines of the script for this module are preceded by hashtags. As you have already seen, R ignores these lines (anything preceded by a hashtag is ignored)- they are called **comments**, and they help to keep code organized and understandable. 
 
 _use comments early and often- they are tremendously valuable_.   
 
 Now you know the basics of how to use R scripts! Now, let's keep working through the remainder of the script you just opened. 
 
 
-## A quick R demo
+## A demo of R in action
 
 Before we get into the basics, let's just run through some of what R can do! Don't worry if you don't understand something- we will go over all of this in greater detail later!
 
-To get started quickly, we will first load a data set that is built into R!    
+To get started, let's first load some R packages that help with data wrangling and exploration    
 
 ```{r}
 
-###############
-# R DEMO: 
-###############
+# R DEMO ----------------------  
+#     don't worry if you don't understand this just yet- this is just a 
+#     taste of where we are going!
 
-#  don't worry if you don't understand this just yet- this is just a taste of where we are going!
 
-#########
-# load a built-in dataset
+# Load packages ------------------
 
-data(trees)
+library(data.table)
+library(ggplot2)
+library(tidyverse)
 
 ```
 
 
-Next, we can examine the data object in r. Again, we will get into this in much more detail later!
+Next we can load in some data. To give you a sense of what R can do, let's load in some relatively complex datasets. These datasets happen to be about baseball, but stand in for any complex datasets you might encounter in your work.  
 
 ```{r}
 
-#########
-# explore the data object
+# Read in data (from the web) -----------------------
 
-summary(trees)    # summary statistics for all variables in data frame
-str(trees)        # summary of the data structure
+salaries <- read_csv("http://dgrtwo.github.io/pages/lahman/Salaries.csv")
+
+master <- read_csv("http://dgrtwo.github.io/pages/lahman/Master.csv")
+
+batting <- read_csv("http://dgrtwo.github.io/pages/lahman/Batting.csv")
+
+```
+
+Next, we can examine these data objects in r. Again, we will get into this in more detail later!
+
+```{r}
+
+# explore the data --------------------
+
+salaries
+summary(salaries)    # summary statistics for all variables in data frame
+
+master
+summary(master)
+
+batting
+summary(batting)
+
 
 ```
 
 
-Now let's visualize the data and start to get a sense for what patterns we can detect.
+Before we can do much with these data, we need to "wrangle" the data into a format that can be visualized and analyzed effectively.
+
+Let's merge these datasets into a master dataset...
 
 ```{r}
 
-#########
-# visualize the data
+# Do some wrangling! -----------------------
 
-   # histograms:
-layout(matrix(1:3,nrow=1,byrow = T))    # set up a multi-panel graphics device (three plots side by side)
-hist(trees$Height)                       # visualize the distribution of height data
-hist(trees$Girth)                        # visualize the distribution of girth data
-hist(trees$Volume)                       # visualize the distribution of volume data
+ # merge the batting and salaries data frames
+merged.batting = left_join(batting, salaries, by=c("playerID", "yearID", "teamID", "lgID"))
 
-   # bivariate scatterplots:
+merged.all = inner_join(merged.batting, master, by="playerID")
 
-layout(matrix(1:2,nrow=1,byrow = T))      # set graphics device with 2 plots side by side
-plot(trees$Volume~trees$Girth)            # scatterplot of volume against girth
-plot(trees$Volume~trees$Height)           # scatterplot of volume against height
+merged.all = merged.all %>%    # remove all rows with no at-bats... 
+  filter( AB > 0 )
 
-pairs(trees)    # plots all scatterplots together as a scatterplot matrix!
+# range(merged.all$AB)
+
+merged.all = merged.all %>% 
+  mutate(name=paste(nameFirst, nameLast))
 
 ```
 
-Now we can perform some basic statistics, like a linear regression analysis for example:
+
+Now let's summarize the data by player and start to get a sense for what patterns we can detect.
 
 ```{r}
 
+# summarize by player ---------------------
 
-##########
-# perform linear regression analysis
+summarized.batters = merged.all %>% 
+  group_by(playerID) %>% 
+  summarise(name=first(name),
+            Total.HR=sum(HR),
+            Total.R=sum(R),
+            Total.H=sum(H),
+            AB=sum(AB),
+            BattingAverage=sum(H) / sum(AB) ) %>% 
+  arrange(desc(Total.HR))
 
-model1 <- lm(Volume~Girth,data=trees)        # regress Volume on Girth
 
-summary(model1)    # examine the results
+# visualize the data -----------------------------
+
+  # visualize correlation between hits and runs
+ggplot(summarized.batters, aes(Total.H, Total.R)) + geom_point()
+
+  # visualize histogram of batting average
+ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()
+
+  # remove "outliers" and try again
+summarized.batters = summarized.batters %>% 
+  filter(AB>100)
+
+ggplot(summarized.batters, aes(BattingAverage)) + 
+	geom_histogram(aes(y = ..density..), fill = "red") + 
+	stat_function(
+		fun = dnorm, 
+		args = with(summarized.batters, c(mean = mean(BattingAverage), 
+		                                  sd = sd(BattingAverage)))
+		)   + 
+	 scale_x_continuous("Batting Average") + 
+	 labs(title = "Histogram with Normal Curve")  
 
 ```
+
+This time, let's look for some time trends by summarizing by year.
+
+```{r}
+
+# Summmarize by time (and league) ------------------------
+
+summarized.year = merged.all %>% 
+  filter(yearID>1920) %>%
+  group_by(yearID,lgID) %>% 
+  summarise(Total.HR=sum(HR),
+            Total.R=sum(R),
+            Total.H=sum(H),
+            AB=sum(AB),
+            BattingAverage=sum(H) / sum(AB) ) %>% 
+  arrange(yearID, lgID)
+
+
+summarized.year
+
+# visualize the data -----------------------------
+
+  # visualize trend in home runs
+ggplot(summarized.year, aes(yearID, Total.HR, col=lgID)) + 
+  geom_line()
+
+  # visualize trend in batting average
+ggplot(summarized.year, aes(yearID, BattingAverage, col=lgID)) + 
+  geom_line()
+
+
+```
+
+Finally let's do some more complex visualizations and run some statistics...
+
+```{r}
+
+# Summarize by time and team
+
+summarized.teams.year = merged.all %>%
+  filter(yearID>1920) %>%
+  group_by(yearID,teamID) %>% 
+  summarise(League = first(lgID),
+            Total.HR=sum(HR),
+            Total.R=sum(R),
+            Total.H=sum(H),
+            AB=sum(AB),
+            BattingAverage=sum(H) / sum(AB) ) %>% 
+  arrange(desc(Total.HR))
+
+
+summarized.teams.year
+
+# visualize the data -----------------------------
+
+  # visualize correlation between hits and runs
+ggplot(summarized.teams.year, aes(yearID, Total.HR, col=teamID)) + 
+  geom_line(show.legend = FALSE) +
+  facet_wrap('League')
+
+
+```
+
+Let's run a statistical analysis to see if the increasing home run trend is "real".
+
+```{r}
+
+ggplot(summarized.teams.year,aes(yearID,Total.HR))+
+  geom_point() +
+  geom_smooth(method="lm")
+
+model1 <- lm(Total.HR~yearID,summarized.teams.year)
+summary(model1)
+
+```
+
 
 Then we can perform some diagnostic tests to make sure the data meet the assumptions of the analysis:
 
@@ -225,27 +344,7 @@ plot(model1)  # run diagnostic plots for our regression
 
 ```
 
-
-And finally, let's visualize the results:
-
-```{r}
-
-#########
-# visualize the results!
-
-xvals <- seq(5,30,0.5)            # set the range of "Girth" values over which you want to make predictions about "Volume"
-pred <- predict(model1,newdata=data.frame(Girth=xvals),interval = "confidence",level = 0.99)   # use the linear model to make predictions about "Volume"
-
-plot(trees$Volume~trees$Girth,xlab="Girth (inches)",ylab="Volume (cubic feet)",main="Black Cherry",
-     xlim=range(xvals),ylim=c(0,100))         # Make a pretty scatterplot
-
-abline(model1,lwd=2,col="brown")              # Add the regression line
-lines(xvals,pred[,"upr"],col="brown",lty=2)       # Add the upper bound of the confidence interval
-lines(xvals,pred[,"lwr"],col="brown",lty=2)       #      ... and the lower bound
-text(10,80,sprintf("Volume = %s + %s*Girth",round(coefficients(model1)[1],1),round(coefficients(model1)[2],1)))       # Add the regression coefficients
-text(10,65,sprintf("p = %s",round(summary(model1)$coefficients[,"Pr(>|t|)"][2],3)))     # Add the p-value
-
-```
+With just minor changes to the above code, we could look at many additional questions!
 
 ## Workspace management
 
@@ -303,42 +402,6 @@ help(round)  # a function for getting help with functions!!
 
 We will revisit functions in more detail (and build our own functions) in the "Programming" submodule.
 
-#### Basic mathematical operations
-
-Some very basic functions in R have 'shorthands' that make R behave like a fancy calculator. Here are some basic mathematical operations you can do in R:
-
-```{r results=F}
-
-########
-# basic mathematical operations
-
-2+3              # addition 
-'+'(2,3)                 # see, this is really a function in disguise!
-          
-6-10             # subtraction
-          
-2.5*33           # multiplication
-      
-4/5              # division
-      
-2^3              # exponentiation
-        
-sqrt(9)          # square root 
-      
-8^(1/3)          # cube root      
-       
-exp(3)           # antilog     
-
-log(20.08554)    # natural logarithm (but it's possible to change the base)
-
-log10(147.9108)  # common logarithm 
-
-log(147.9108, base=10) 
-
-factorial(5)     # factorial
-
-```
-
 
 ### Data objects and variables
 
@@ -358,43 +421,30 @@ Scalars are the simplest data objects. A scalar is just a single value. Scalars 
 
 ```{r results=F}
 
-##################
-####  Create R Objects 
-##################
 
-#############
-### scalars
-#############
+#  Create R Objects ------------------------
+
+
+
+# scalars   --------------------------------
+
 
 scalar1 <- 'this is a scalar'
 scalar2 <- 104
-scalar3 <- 5 + 6.5    # evaluates to the single value 11.5
-scalar4 <- '4'
 
 ```
 
-Scalars can store information of any type: numeric, character, logical, or factor. In the example above, `scalar1` is a character, `scalar2` and `scalar3` are both numeric. What is the data type for `scalar4`? 
+Scalars can store information of any type [^typeof]. In the example above, `scalar1` is a character, `scalar2` is numeric. 
 
-If you're uncertain about the type of any R object the R function [^functions] `typeof()` will come in handy.
+[^typeof]:If you're uncertain about the type of any R object the R function `typeof()` will come in handy.
 
-[^functions]: Functions are essentially machines that take inputs (objects, values) (also known as **arguments**) and produce something in return (objects, plots, tables, files). Functions have a common **syntax**: the name of the function is followed by parentheses- within which the arguments are entered. We will learn how to write our own R functions in a later module!
 
-```{r results=F}
-
-typeof(scalar4)    # returns: character
-
-## what is this type?
-scalar5 <- TRUE
-typeof(scalar5)    # returns: logical
-
-```
-
-What happens when we try and add `scalar2` and `scalar4`? Think about the types of each scalar. Run the code below to find out.
+What happens when we try and add `scalar1` and `scalar2`? Think about the types of each scalar. Run the code below to find out.
 
 ```{r eval=F}
 
 ## what happens when we run this line of code? Think about the types.
-scalar2 + scalar4
+scalar1 + scalar2
 
 ```
 
@@ -402,74 +452,50 @@ This operation is not possible, and R gives you an error. Remember that `scalar4
 
 #### Vectors
 
-Vectors combine multiple scalars in a single object. 
+Vectors combine multiple scalars in a single data object. 
 
-First let's create some vectors. In the code below we use a function called `c()`. You can think of it as the 'combine' function. It takes several objects, and combines them together into a vector. We can even use `c()` to combine scalar (or vector) objects, like below.
+First let's create some vectors. In the code below we use a function called `c()`. You can think of it as the 'combine' function. It takes several objects, and combines them together into a single vector. We can even use `c()` to combine scalar (or vector) objects, like below.
 
 ```{r}
 
-#############
-### VECTORS
-#############
+# VECTORS  -------------------------------
+
 
 vector1 <- c(1.1, 2.1, 3.1, 4)   # the "c()" function combines smaller data objects into a larger object
 vector2 <- c('a', 'b', 'c')
-vector3 <- c(TRUE, 'a', 1)
 
 ```
 
-There are many different ways to create a vector. You'll learn more about that later. Check out the vectors you just created. Each vector is composed of one or more scalar **elements**. 
-
-What happened with `vector2` and `vector4`? Looking at the script, these vectors appear to contain a mix of numeric and character elements, but the resulting vector is all characters! This is because *all elements of a vector must be the same type*. Therefore, R will attempt to convert (coerce) all vector elements to a single type. 
-
-In the following code, we create a vector `myvec` from three existing data objects: `a` (1 element), `b` (1 element), and `c` (2 element vector):
-
-```{r}
-
-a <- 1
-b <- 2
-c <- c(3,4)
-
-myvec <- c(a, b, c)   # create a vector from existing data objects
-myvec
-
-```
+There are many different ways to create a vector. You'll learn more about that later. Check out the vectors you just created. Each vector is composed of one or more scalar **elements** of the same type. 
 
 Now let's do some stuff with vectors!
 
 ```{r results=F}
-
+myvec <- 1:3     # make a vector: 1,2,3
 length(myvec)    # the "length()" function returns the number of elements in a vector
 
 d1 <- myvec           # copy the vector "myvec"
 d2 <- myvec+3         # add 3 to all elements of the vector "myvec"
 d3 <- d1+d2           # elementwise addition
-d4 <- d1+c(1,2)       # what does this do?
 
 ## inspect the objects by calling them in the console (or script window)
 d1    # returns: 1 2 3
 d2    # returns: 4 5 6
 d3    # returns: 5 7 9
-d4    # returns: 2 4 4
 
 ```
-
-
-*NOTE: the last command we ran, "d1+c(1,2)", produced a **warning message**. Remember to take warning messages seriously- a warning message means "the command ran but the results might not make sense"! In this case, the warning was that we tried to add two vectors of different length. R's default is to repeat (recycle) the shorter vector until it matches the length of the longer vector.*
 
 NOTE: strictly speaking, there are no true scalars in R- scalars are just vectors with 1 element!   
 
 #### Matrices
 
-**Matrix** data objects have two **dimensions**: rows and columns. You can think of matrices as a bunch of vectors grouped together, either by row or by column! All of the elements in a matrix must be of the same length and the same **type** (if different types are provided R will attempt to coerce the elements into a common type). 
+**Matrix** data objects have two **dimensions**: rows and columns. All of the elements in a matrix must be of the same **type**. 
 
-Let's make our first matrix. One simple way to make a matrix is just by joining two vectors using the function `cbind()` (bind vectors or matrices together by column) or `rbind()` (bind vectors or matrices together by row)
+Let's make our first matrix. One simple way to make a matrix is just by joining two or more vectors using the function `cbind()` (bind vectors or matrices together by column) or `rbind()` (bind vectors or matrices together by row)
 
 ```{r}
 
-#############
-### MATRICES
-#############
+# MATRICES -----------------
 
 mymat <- cbind(d1,d2)        # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
 mymat
@@ -487,9 +513,6 @@ mymat
 mymat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way (stack rows together)
 mymat
 
-mymat <- rbind(c(1,4),c(2,5),c(3,6))        # create matrix another way (stacking three vectors on top of one another)
-mymat
-
 ```
 
 We can do math with matrices too:
@@ -499,73 +522,49 @@ We can do math with matrices too:
 # math with matrices
 
 mymat + 2
-mymat/sum(mymat)
 
 ```
 
 
 #### Lists
 
-**List objects** are far more general than matrices. **List** objects are just a bunch of potentially unrelated data objects (**list elements**) grouped together into a single object! The elements of a list don't need to be the same length or the same **type**. The elements of a list can be vectors, matrices, functions, or other lists - they could be literally any R object.  
+**Lists** are far more general than matrices. **List** objects are just a bunch of potentially unrelated R data objects (**list elements**) grouped together into a single object! The elements of a list don't need to be the same length or the same **type**. The elements of a list can be vectors, matrices, functions, or other lists.  
 
 Let's make our first list:
 
 ```{r}
 
-#############
-### LISTS
-#############
+# LISTS --------------------------------
 
 mylist <- list()        # create empty list
 mylist[[1]] <- c(1,2,3)     # note the double brackets- this is one way to reference list elements. 
-mylist[[2]] <- c(4,5)
-mylist[[3]] <- "Alfred"
+mylist[[2]] <- c("foo","bar")
+mylist[[3]] <- matrix(1:6,nrow=2)
 mylist
 
 ```
 
 
-##### Data frames (a special kind of list)
+##### Data frames (a very special kind of list)
 
-**Data frame** objects are a special type of **list** in which list element is a *vector* object. Importantly, in a data frame, *each of the component vectors must have the same number of vector elements*. Each vector object in a data frame is also known as a *column*. The *row* of a data frame refers to the *i*th element of each of the vectors. 
+**Data frame** objects are a special type of **list** in which list element is a *vector* object of the same length. Each list element in a data frame is also known as a *column*. The *row* of a data frame refers to the *i*th element of each of the vectors. 
 
-Data frames superficially resemble matrices, since both types of objects have two **dimensions**: rows and columns. However, data frames are really much more general than matrices; in data frames, unlike matrices, the columns of a data frame can represent different **types** (i.e., character, logical, numeric, factor), and can thereby code for very different types of information!  
+Data frames superficially resemble matrices, since both types of objects have rows and columns. However, data frames are really much more general than matrices; in data frames, unlike matrices, the columns of a data frame can represent different **types** (i.e., character, logical, numeric, factor), and can thereby represent very different types of information!  
 
 _Data frames are the basic data storage structure in R_. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on that observation unit. 
 
-Let's make our first data frame. We will use the data frame constructor function "data.frame()". 
+Let's make our first data frame. We will use the data frame constructor function "tibble()". 
 
 ```{r}
 
-#############
-### DATA FRAMES
-#############
-mydf <- data.frame(col1=c(1,2,3),colW2=c(4,5,6))        # create a ‘data frame’ with two columns. Each column is a vector of length 3
+# DATA FRAMES ---------------------------
+
+mydf <- tibble(col1=c(1,2,3),col2=c("A","A","B"))        # create a ‘tibble' data frame with two columns. Each column is a vector of length 3
 mydf
 
 ```
 
 Now we have a data frame with three observation units and two measurements (variables).
-
-We can use the "names()" function to see the names of column of a data frame- or to change these names!
-
-```{r}
-
-names(mydf)          # view or change column names
-names(mydf)=c("meas_1","meas_2")        # provide new names for columns
-mydf
-
-```
-
-And we can view or change the row names of a data frame (or matrix) using the "rownames()" function:
-
-```{r}
-
-rownames(mydf) <- c("obs1","obs2","obs3")
-mydf
-
-```
-
 
 ## Making up data!
 
@@ -573,24 +572,17 @@ In this section, we will make a bunch of fake data objects. In the next submodul
 
 ### Generating sequences of numbers
 
-One task that comes up a lot is generating sequences of numbers. We certainly don't want to do this entirely by hand! Here are some shortcuts:
+One task that comes up a lot is generating sequences of numbers:
 
 ```{r}
 
-#############
-### MAKING UP DATA!
-#############
+# MAKING UP DATA!  ----------------------------------
 
-#######
-# Generating vector sequences
+# Generating vector sequences  ----------------
 
 1:10                        # sequential vector from 1 to 10
-10:1                        # reverse the order
 
-seq(from=1,to=10,by=1)      # equivalent to 1:10
-seq(10,1,-1)                # equivalent to 10:1
-seq(1,10,length=10)         # equivalent to 1:10
-seq(0,1,length=5)          # sequence of length 10 between 0 and 1 
+seq(0,1,length=5)          # sequence of length 5 between 0 and 1 
 
 
 ```
@@ -600,8 +592,7 @@ Another task is to group regular recurring sequences together:
 
 ```{r}
 
-##############
-# Repeating vector sequences
+# Repeating vector sequences -----------
 
 rep(0,times=3)                # repeat 0 three times
 rep(1:3,times=2)              # repeat 1:3 two times
@@ -614,8 +605,7 @@ And finally, we can fill up a vector with random numbers using one of R's built 
 
 ```{r}
 
-###########
-# Random numbers
+# Random numbers ---------------
 
 z <- rnorm(10)                # 10 realizations from std. normal
 z
@@ -635,55 +625,17 @@ And finally, we can make up a fake data frame using some of the tricks we just l
 
 ```{r}
 
-############
 # Make up an entire fake data frame!
 
-my.data <- data.frame(
+my.data <- tibble(
   Obs.Id = 1:100,
   Treatment = rep(c("A","B","C","D","E"),each=20),
   Block = rep(1:20,times=5),
   Germination = rpois(100,lambda=rep(c(1,5,4,7,1),each=20)),   # random poisson variable
   AvgHeight = rnorm(100,mean=rep(c(10,30,31,25,35,7),each=20))
 )
-head(my.data)
-
+my.data
 summary(my.data)    # Use the "summary()" function to summarize each column in the data frame.
-
-```
-
-NOTE: the "head()" function displays only the first few rows of a data frame, making it easier to look at. Displaying all 100 rows is a little distracting, and never mind if you had thousands of observations!
-
-## Accessing, indexing and subsetting data
-
-In any data analysis project, we will need to manage, manipulate and process your data objects. To do this, we need to be able to access elements and subsets of our data objects.
-
-To access a particular element of a vector, we just enclose the element(s) we want in brackets:
-
-```{r}
-
-############
-### Accessing, indexing and subsetting data
-############
-
-# X[i]         access the ith element of vector X
-
-myvec <- 2:10
-myvec
-myvec[3]
-myvec[c(1,5)]
-myvec[-3]
-
-```
-
-It is even more intuitive to access elements of a **named vector**:
-
-```{r}
-
-myvec <- 1:4
-names(myvec) <- c("fred","sally","mimi","terrence")
-myvec
-myvec["terrence"]
-myvec[c("sally","fred")]
 
 ```
 

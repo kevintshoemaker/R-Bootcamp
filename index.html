@@ -12,10 +12,10 @@
 <meta name="author" content="A hopefully more-or-less painless introduction to R" />
 
 
-<title>Welcome to R Bootcamp!</title>
+<title>Welcome to R ‘bootcamp’!</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -64,6 +64,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -84,6 +85,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -309,12 +313,12 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, TWS-WS 2022</a>
+      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2022</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -322,7 +326,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Bootcamp #1: getting started
      
     <span class="caret"></span>
@@ -343,7 +347,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Bootcamp #2: Beyond the basics
      
     <span class="caret"></span>
@@ -367,7 +371,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Data sets
      
     <span class="caret"></span>
@@ -423,31 +427,35 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Welcome to R Bootcamp!</h1>
-<h4 class="author">A hopefully more-or-less painless introduction to R</h4>
-<h4 class="date">TWS-WS 2022</h4>
+<h1 class="title toc-ignore">Welcome to R ‘bootcamp’!</h1>
+<h4 class="author">A hopefully more-or-less painless introduction to
+R</h4>
+<h4 class="date">UNR, Fall 2022</h4>
 
 </div>
 
 
 <ul>
-<li><strong>When?</strong> Tuesday Feb 8, 2022</li>
-<li><strong>Where?</strong> Peppermill Resort –Reno, NV<br />
+<li><strong>When?</strong> Saturday Sep 10 and 17, 2022</li>
+<li><strong>Where?</strong> UNR (DMSC 105)<br />
 </li>
-<li><strong>What to prepare?</strong> You will need your laptop computer, with R and RStudio installed prior to starting the workshop (see <a href="Links.html">links</a>).</li>
+<li><strong>What to prepare?</strong> Everyone should bring their own
+laptop computer, with R and RStudio installed prior to starting the
+workshop (see <a href="Links.html">links</a>).</li>
 </ul>
 <div id="facilitators" class="section level2">
 <h2>Facilitators</h2>
-<p><a href="https://www.unr.edu/nres/people/shoemaker-kevin">Kevin Shoemaker</a><br />
+<p><a href="https://www.unr.edu/nres/people/shoemaker-kevin">Kevin
+Shoemaker</a><br />
 Department of Natural Resources and Environmental Science<br />
 Office: Fleischmann Agriculture 220E<br />
 Email: <a href="kevinshoemaker@unr.edu">kevinshoemaker@unr.edu</a></p>
-<p><a href="https://mitchellgritts.com">Mitchell Gritts</a><br />
-Nevada Department of Wildlife<br />
-Email: mitchell(at)gritts(dot)com</p>
 </div>
 <div id="contributors" class="section level2">
 <h2>Contributors</h2>
+<p><a href="https://mitchellgritts.com">Mitchell Gritts</a><br />
+Nevada Department of Wildlife<br />
+Email: mitchell(at)gritts(dot)com</p>
 <p><a href="http://www.perrywilliams.us/">Perry Williams</a><br />
 Department of Natural Resources and Environmental Science<br />
 Office: 240 Fleischmann<br />
@@ -455,8 +463,11 @@ Email: perryw(at)unr(dot)edu</p>
 <p><a href="https://mitchellgritts.com">Mitchell Gritts</a><br />
 Nevada Department of Wildlife<br />
 Email: mitchell(at)gritts(dot)com</p>
-<p><a href="http://www.csp-inc.org/about-us/core-science-staff/albano-christine/">Christine Albano</a><br />
-Lead Scientist at Conservation Science Partners and doctoral student at DRI<br />
+<p><a
+href="http://www.csp-inc.org/about-us/core-science-staff/albano-christine/">Christine
+Albano</a><br />
+Lead Scientist at Conservation Science Partners and doctoral student at
+DRI<br />
 Email: christine(at)csp-inc(dot)org</p>
 <p><a href="http://jessilbrown.org/Welcome.html">Jessi Brown</a><br />
 Department of Biology<br />
@@ -470,8 +481,11 @@ Email: jgreenberg(at)unr(dot)edu</p>
 Department of Geography<br />
 Office: Mackay Science Room 223<br />
 Email: knussear(at)unr(dot)edu</p>
-<p><a href="http://newinghamlab.weebly.com/lab-members.html">Stephanie Freund</a><br />
-Office: Knudtsen Resource Center 119 Department of Natural Resources and Environmental Science / USDA Agricultural Research Service Email: smfreu(at)gmail(dot)com</p>
+<p><a href="http://newinghamlab.weebly.com/lab-members.html">Stephanie
+Freund</a><br />
+Office: Knudtsen Resource Center 119 Department of Natural Resources and
+Environmental Science / USDA Agricultural Research Service Email:
+smfreu(at)gmail(dot)com</p>
 <p><a href="http://pauljhurtado.com/">Paul Hurtado</a><br />
 Department of Mathematics and Statistics<br />
 Office: Davidson Math and Science Center 220<br />
@@ -479,19 +493,53 @@ Email: <a href="phurtado@unr.edu">phurtado@unr.edu</a></p>
 </div>
 <div id="about" class="section level2">
 <h2>About</h2>
-<p>The statistical programming software ‘R’ is one of the fundamental tools for modern data exploration and analysis, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of high-quality figures) will make upcoming classes, research, and graduate school less intimidating.</p>
-<p>This ‘bootcamp’ consists of a series of short(ish) submodules, each of which covers a particular skill (e.g., reading in data, writing functions). Each submodule will consist of a set of lectures and demos (worked examples), followed by hands-on activities. The main goal of this workshop will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshop is primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the latter portion, which will delve into more advanced topics. The first modules will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, and basic statistical operations. The second set of modules will focus on some more advanced programming operations (loops, functions, debugging etc.), R packages (loading, getting help), more advanced graphical visualizations and spatial analyses, and working with large data sets. We will not get through all modules in our allotted time, but participants are encouraged to work through the remaining material on their own.</p>
-<p>All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load in RStudio. That way you won’t need to constantly copy and paste from the web!</p>
+<p>The statistical programming software ‘R’ is one of the fundamental
+tools for modern data exploration and analysis, and a basic ability to
+use R (for data processing, statistical analysis, simulation modeling
+and production of high-quality figures) will make upcoming classes,
+research, and graduate school less intimidating and more productive (and
+fun!).</p>
+<p>This workshop consists of a series of short(ish) submodules, each of
+which covers a particular skill (e.g., reading in data, writing
+functions). Each submodule will consist of a set of lectures and demos
+(worked examples), followed by hands-on activities. The main goal of
+this workshop will be to ensure participants have enough proficiency and
+confidence with data operations and programming in R to engage in
+productive, self-directed learning and problem-solving. The workshop is
+primarily intended for students with little prior experience with R, but
+may be useful for others as a refresher- especially the latter portion,
+which will delve into more advanced topics. The first modules will focus
+on R syntax, data management (loading data, writing to file), data
+summaries and visualizations, and basic statistical operations. The
+second set of modules will focus on some more advanced programming
+operations (loops, functions, debugging etc.), R packages (loading,
+getting help), more advanced graphical visualizations and spatial
+analyses, and working with large data sets. We will not get through all
+submodules in our allotted time, but participants are encouraged to work
+through the remaining material on their own.</p>
+<p>All code will be available as scripts that you can download from this
+website (at the top of each module page on this website) and load in
+RStudio. That way you won’t need to constantly copy and paste from the
+website!</p>
 </div>
 <div id="before-we-get-started" class="section level2">
 <h2>Before we get started…</h2>
-<p>Before we dig in and get started with the modules, you should have installed R and RStudio. Here are some links to help you get started:</p>
-<p><a href="https://cran.r-project.org/">Download and install R</a><br />
-<a href="https://www.rstudio.com/products/rstudio/download/">Download and install RStudio</a> (use free version!)</p>
-<p>Also, it can be very helpful to print out an R ‘cheat sheet’ and bring that with you (we will also have some available at the workshop!). Here are some links:</p>
-<p><a href="https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf">Base R Cheat sheet</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R reference card</a><br />
-<a href="https://www.rstudio.com/resources/cheatsheets/">All RStudio cheat sheets</a></p>
+<p>Before we dig in and get started with the modules, you should have
+installed R and RStudio. Here are some links to help you get
+started:</p>
+<p><a href="https://cran.r-project.org/">Download and install
+R</a><br />
+<a href="https://www.rstudio.com/products/rstudio/download/">Download
+and install RStudio</a> (use free version!)</p>
+<p>Also, it can be very helpful to print out an R ‘cheat sheet’ and
+bring that with you (we will also have some available at the workshop!).
+Here are some links:</p>
+<p><a href="https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf">Base R
+Cheat sheet</a><br />
+<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R
+reference card</a><br />
+<a href="https://www.rstudio.com/resources/cheatsheets/">All RStudio
+cheat sheets</a></p>
 <p>Okay, now we’re ready to go!</p>
 <p><a href="module1_1.html">–go to first module–</a></p>
 </div>
