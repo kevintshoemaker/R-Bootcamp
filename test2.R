@@ -27,6 +27,8 @@ batting <- as.data.table(batting)
 
 data("diamonds")   # for ggplot demos, following varianceexplained r lesson
 
+ggplot2::mpg    # good dataset for visualization.
+
 # Package ‘unvotes’  # united nations votes- good for ggplot and stats...
 
 library(dplyr)

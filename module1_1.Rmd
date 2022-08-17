@@ -29,16 +29,19 @@ Welcome to the 2022 UNR R workshop- let's get started!
 
 * I recommend having a printed copy of some R "cheatsheets" as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we do together in this workshop- the key is that you leave this workshop with comfort working in the R command line, doing some basic data operations in R, and most importantly, learning and trying new things on your own!
 
-Here are links to good base R "cheatsheets":
+Here are links to good R "cheatsheets":
 
+### Base R
 [Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
+
+### Helpful packages
 [ggplot cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
 [data tidying](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
 [data transformation](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
 [working with dates and times](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf)
 
-More cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)
+Additional cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)
 
 
 ## Load script for module #1.1
@@ -63,7 +66,7 @@ The R console (what you see if you opened R directly instead of RStudio) is a **
 
 You generally shouldn't work in the console, at least for writing important code- use an R script instead (see below).
 
-However, let's take a few minutes to work with the console:
+However, let's take a few minutes to work in the console:
 
 1. Click on the console, just to the right of one of the ">" prompts.  
 
@@ -79,7 +82,7 @@ Objects are defined using R's **assignment operator** (Windows shortcut: Alt + -
 
 ```{r results=F}
 
-myname <- 'Alfred' 
+myname <- 'Barney'  # or use your real name.
 
 ```
 
@@ -87,13 +90,13 @@ Then hit "Enter". What does R return?
 
 NOTHING!
 
-BUT.... check the **Environment** window (top right of RStudio interface- list of all the objects you've defined in this session). You should see that you now have a new **object** in your environment, called "myname", and this object contains a **text string** ("Alfred"). 
+BUT.... check the **Environment** window (top right of RStudio interface- list of all the objects you've defined in this session). You should see that you now have a new **object** in your environment, called "myname", and this object contains a **text string**. 
       
 Now type `myname` into the R console and hit "Enter". What happens?
 
 If you enter the name of an object at the command line, R automatically prints the value of the object!
 
-NOTE: RStudio has a useful autofill feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" and you can just hit "Enter" to complete the object name! The auto-type feature, unlike R, is not case sensitive! Also note that you can hit the 'tab' key to trigger autofill anytime after you start typing in RStudio. 
+NOTE: RStudio has a useful auto-fill feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" and you can just hit "Enter" to complete the object name! The auto-type feature, unlike R, is not case sensitive! Also note that you can hit the 'tab' key to trigger autofill anytime after you start typing in RStudio. 
 
 ## Graduating to R Scripts
 
@@ -129,7 +132,7 @@ Remember the file you downloaded at the beginning of this submodule? That file i
 
 To do this, click on the "folder" icon on the Rstudio toolbar (or File >> Open File) and choose the script you downloaded earlier.
 
-The first few lines of the script for this module are preceded by hashtags. As you have already seen, R ignores these lines (anything preceded by a hashtag is ignored)- they are called **comments**, and they help to keep code organized and understandable. 
+The first couple lines of the script for this module are preceded by hashtags. As you have already seen, R ignores these lines (anything preceded by a hashtag is ignored)- they are called **comments**, and they help to keep code organized and understandable. 
 
 _use comments early and often- they are tremendously valuable_.   
 
@@ -142,6 +145,8 @@ Before we get into the basics, let's just run through some of what R can do! Don
 
 To get started, let's first load some R packages that help with data wrangling and exploration    
 
+Packages in the CRAN repository can be installed using the function "install.packages()":
+
 ```{r}
 
 # R DEMO ----------------------  
@@ -149,18 +154,30 @@ To get started, let's first load some R packages that help with data wrangling a
 #     taste of where we are going!
 
 
-# Load packages ------------------
+# Install packages ------------
+#   NOTE you only have to do this once. If you have not already installed the packages, you can uncomment and run the following lines:
 
-library(data.table)
-library(ggplot2)
-library(tidyverse)
+# install.packages(c("ggplot2","tidyverse"))
 
 ```
 
+Alternatively, you can use the "packages" tab in Rstudio (lower right) and use the "install" button. 
 
-Next we can load in some data. To give you a sense of what R can do, let's load in some relatively complex datasets. These datasets happen to be about baseball, but stand in for any complex datasets you might encounter in your work.  
+Once packages are installed, you can load them into your workspace (so they are useable in your R session) using the "library()" function:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+
+# Load packages ------------------
+
+library(ggplot2)
+library(tidyverse)
+library(Lahman)    # for getting baseball data
+
+```
+
+Next we can load in some data. To give you a sense of what R can do, let's load in some relatively complex datasets. These datasets happen to be about baseball, but they can stand in for any complex datasets you might encounter in your work!  
+
+```{r message=FALSE, warning=FALSE}
 
 # Read in data (from the web) -----------------------
 
@@ -170,9 +187,13 @@ master <- read_csv("http://dgrtwo.github.io/pages/lahman/Master.csv")
 
 batting <- read_csv("http://dgrtwo.github.io/pages/lahman/Batting.csv")
 
+# Read in data from package (could read in all of these from the Lahman package!)
+
+fielding <- tibble(Lahman::Fielding)
+
 ```
 
-Next, we can examine these data objects in r. Again, we will get into this in more detail later!
+Let's examine these data objects in r. Again, we will get into this in more detail later!
 
 ```{r}
 
@@ -187,13 +208,15 @@ summary(master)
 batting
 summary(batting)
 
+fielding
+summary(fielding)
 
 ```
 
 
-Before we can do much with these data, we need to "wrangle" the data into a format that can be visualized and analyzed effectively.
+Before we can do much with these data, we need to "wrangle" these data into a format that can be visualized and analyzed effectively.
 
-Let's merge these datasets into a master dataset...
+Let's begin by merging these datasets into a single master dataset...
 
 ```{r}
 
@@ -202,14 +225,22 @@ Let's merge these datasets into a master dataset...
  # merge the batting and salaries data frames
 merged.batting = left_join(batting, salaries, by=c("playerID", "yearID", "teamID", "lgID"))
 
-merged.all = inner_join(merged.batting, master, by="playerID")
+ # merge the "master" dataset (player biographical info)
+merged.bio = inner_join(merged.batting, master, by="playerID")
 
+ # summarize fielding data by year and player- prepare to merge with other data
+fielding.temp = fielding %>% 
+  group_by(playerID,yearID,teamID,lgID) %>%     # 
+  summarize(position = first(modeest::mfv(POS)),
+            games = sum(G))
+
+merged.all = inner_join(merged.bio,fielding.temp,by=c("playerID", "yearID", "teamID", "lgID"))
 merged.all = merged.all %>%    # remove all rows with no at-bats... 
   filter( AB > 0 )
 
 # range(merged.all$AB)
 
-merged.all = merged.all %>% 
+merged.all = merged.all %>%     # make a new column with the full name
   mutate(name=paste(nameFirst, nameLast))
 
 ```
@@ -217,13 +248,16 @@ merged.all = merged.all %>%
 
 Now let's summarize the data by player and start to get a sense for what patterns we can detect.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 
 # summarize by player ---------------------
 
 summarized.batters = merged.all %>% 
   group_by(playerID) %>% 
   summarise(name=first(name),
+            League=first(modeest::mfv(lgID)),
+            Position=first(modeest::mfv(position)),
+            First.yr=min(yearID),
             Total.HR=sum(HR),
             Total.R=sum(R),
             Total.H=sum(H),
@@ -242,15 +276,34 @@ ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()
 
   # remove "outliers" and try again
 summarized.batters = summarized.batters %>% 
-  filter(AB>100)
+  filter(AB>100&First.yr>1920)
+
+ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()
+
+ggplot(summarized.batters, aes(BattingAverage,col=League)) + geom_density()
+
+# Why does NL density plot indicate a sizeable number of players with very low batting average?
+
+# make a new variable to indicate whether each player is a pitcher or postition player
+
+summarized.batters = summarized.batters %>% 
+  mutate(Pitcher=ifelse(Position=="P","Pitcher","Position Player"))
 
 ggplot(summarized.batters, aes(BattingAverage)) + 
-	geom_histogram(aes(y = ..density..), fill = "red") + 
+	geom_histogram(aes(y = ..density..,group=Pitcher)) + 
+  geom_density(aes(col=Pitcher),lwd=1.5) +
 	stat_function(
 		fun = dnorm, 
-		args = with(summarized.batters, c(mean = mean(BattingAverage), 
-		                                  sd = sd(BattingAverage)))
+		args = with(summarized.batters, c(mean = mean(BattingAverage[Position!="P"]), 
+		                                  sd = sd(BattingAverage[Position!="P"]))),
+		col="lightblue",lwd=1.1
 		)   + 
+   stat_function(
+		fun = dnorm, 
+		args = with(summarized.batters, c(mean = mean(BattingAverage[Position=="P"]), 
+		                                  sd = sd(BattingAverage[Position=="P"]))),
+		col="pink",lwd=1.1
+		)   +
 	 scale_x_continuous("Batting Average") + 
 	 labs(title = "Histogram with Normal Curve")  
 
@@ -258,7 +311,7 @@ ggplot(summarized.batters, aes(BattingAverage)) +
 
 This time, let's look for some time trends by summarizing by year.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 
 # Summmarize by time (and league) ------------------------
 
@@ -310,9 +363,10 @@ summarized.teams.year
 
 # visualize the data -----------------------------
 
-  # visualize correlation between hits and runs
-ggplot(summarized.teams.year, aes(yearID, Total.HR, col=teamID)) + 
-  geom_line(show.legend = FALSE) +
+  # visualize correlation between home runs and year
+ggplot(summarized.teams.year, aes(yearID, Total.HR)) + 
+  geom_point(show.legend = FALSE) +
+  geom_smooth() +
   facet_wrap('League')
 
 
@@ -326,11 +380,10 @@ ggplot(summarized.teams.year,aes(yearID,Total.HR))+
   geom_point() +
   geom_smooth(method="lm")
 
-model1 <- lm(Total.HR~yearID,summarized.teams.year)
+model1 <- lm(Total.HR~yearID,summarized.teams.year)  # linear regression analysis
 summary(model1)
 
 ```
-
 
 Then we can perform some diagnostic tests to make sure the data meet the assumptions of the analysis:
 
@@ -346,38 +399,35 @@ plot(model1)  # run diagnostic plots for our regression
 
 With just minor changes to the above code, we could look at many additional questions!
 
-## Workspace management
-
-The workspace (environment) in R can become cluttered as we create variables and assignments in R. As we work through the modules in this workshop it will be helpful to clear the environment every once in a while. Earlier we assigned the value "Alfred" to the variable `myname`. Let's remove that from the environment. There are several ways to do this. 
-
-1. In the 'environment' panel in RStudio (upper right quadrant) there is a little broom. If you click that it will clear the entire environment.    
-2. Use `rm(myname)` to clear just the `myname` variable. 
-3. Use this handy one-liner `rm(list=ls())` to clear the entire environment.
-
 
 ## Back to basics! R Objects
+
+Okay, now that we've seen the kinds of powerful things R can do with data processing, visualization and analysis, let's step back and learn a little bit about R as a data-oriented programming language. 
+
+How does R represent and store data?
 
 R has many different kinds of objects that you can define and store in memory. 
 
 Objects that enable storage of information (data objects) include: *vectors*, *matrices*, *lists*, and *data frames*.
 
-Objects that transform data and perform statistics/visualizations etc. on data objects are called *functions*.
-
+Objects that transform data and perform operations (e.g., statistics/visualizations) on data objects are called *functions*.
 
 ### Functions
 
-Functions are routines that take inputs (usually data objects) (also called **arguments**) and produce something in return (summaries, plots, tables, statistics, files). In R, the name of the function is followed by parentheses, and any arguments are entered inside the parentheses. The basic syntax looks like the code snippet below.
+Functions are routines that take inputs (usually data objects) (also called **arguments**) and produce something useful in return (transformed data objects, summaries, plots, tables, statistics, files). 
+
+In R, the name of the function is followed by parentheses, and any arguments (inputs) are entered inside the parentheses. The basic syntax looks like the code snippet below.
 
 ![](funcmach.png)
 
 ```
 ## function syntax
-functionName([enter arguments here])
+functionName([argument 1, argument2, ...])
 ```
 
 If you don't type the parenthesis, the function is not run- instead, the function definition is shown. 
 
-Here are some examples:
+Here are some examples of how functions are used. Note the parentheses!
 
 ```{r results=F}
 
@@ -392,7 +442,15 @@ c(1, 2, 3, 10)   # combine four numbers into a single data object (a vector!)
 floor(67.8)  # removes the decimal component of a number
 round(67.8)  # rounds a number
 
-round     # oops, we forgot to add parenthesis!
+near(0.01,0,tol=0.2)  # returns TRUE if argument 1 is near to argument 2 within a certain tolerance level
+
+near    # oops, forgot the parentheses!
+
+```
+
+It's easy to get some help if you forget how a function works:
+
+```{r}
 
 help(round)  # a function for getting help with functions!!
 ?round         # shortcut for the 'help' function
@@ -414,10 +472,11 @@ The basic data types in R are:
 + "logical" (TRUE/FALSE)    
 + "factor" (categorical) 
 
+Data of each of these types can be represented as scalars, vectors, matrices, lists, and data frames
 
 #### Scalars
 
-Scalars are the simplest data objects. A scalar is just a single value. Scalars can be a single value of any data type.
+Scalars are the simplest data objects. A scalar is just a single value of any data type.
 
 ```{r results=F}
 
@@ -436,25 +495,13 @@ scalar2 <- 104
 
 Scalars can store information of any type [^typeof]. In the example above, `scalar1` is a character, `scalar2` is numeric. 
 
-[^typeof]:If you're uncertain about the type of any R object the R function `typeof()` will come in handy.
-
-
-What happens when we try and add `scalar1` and `scalar2`? Think about the types of each scalar. Run the code below to find out.
-
-```{r eval=F}
-
-## what happens when we run this line of code? Think about the types.
-scalar1 + scalar2
-
-```
-
-This operation is not possible, and R gives you an error. Remember that `scalar4` is a character, and it doesn't make sense to perform mathematical operations on character strings. 
+[^typeof]:If you're uncertain about the type of any R object the R function use the `typeof()` function.
 
 #### Vectors
 
-Vectors combine multiple scalars in a single data object. 
+Vectors can combine multiple scalars in a single data object. In fact, a scalar in R is really just a vector of length 1.
 
-First let's create some vectors. In the code below we use a function called `c()`. You can think of it as the 'combine' function. It takes several objects, and combines them together into a single vector. We can even use `c()` to combine scalar (or vector) objects, like below.
+First let's create some vectors. In the code below we use a function called `c()`. You can think of it as the 'combine' function- it takes several smaller data objects and combines them together into a single object. 
 
 ```{r}
 
@@ -471,17 +518,15 @@ There are many different ways to create a vector. You'll learn more about that l
 Now let's do some stuff with vectors!
 
 ```{r results=F}
-myvec <- 1:3     # make a vector: 1,2,3
-length(myvec)    # the "length()" function returns the number of elements in a vector
 
-d1 <- myvec           # copy the vector "myvec"
-d2 <- myvec+3         # add 3 to all elements of the vector "myvec"
+d1 <- 1:3             # make a vector: 1,2,3
+d2 <- d1+3         # add 3 to all elements of the vector "myvec"
 d3 <- d1+d2           # elementwise addition
 
-## inspect the objects by calling them in the console (or script window)
-d1    # returns: 1 2 3
-d2    # returns: 4 5 6
-d3    # returns: 5 7 9
+length(d1)            # number of elements in a vector
+sum(d3)               # sum of all elements in a vector
+
+d2[2]                 # extract the second element in the vector
 
 ```
 
@@ -510,25 +555,33 @@ And there are other ways to make a matrix in R. For instance, we can use the fun
 mymat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
 mymat
 
-mymat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2,byrow=T)        # create matrix another way (stack rows together)
-mymat
-
 ```
 
-We can do math with matrices too:
+We can do stuff with matrices:
 
 ```{r}
 
 # math with matrices
 
 mymat + 2
+sum(mymat)
+
+# extract matrix elements
+
+mymat[3,2]    # extract the element in the 3rd row, 2nd column
+
+mymat[,1]     # extract first column
+
+# X[a,b]       access row a, column b element of matrix/data frame X
+# X[,b]        access all rows of column b of matrix/data frame X
+# X[a,]        access row a of matrix/data frame X
 
 ```
 
 
 #### Lists
 
-**Lists** are far more general than matrices. **List** objects are just a bunch of potentially unrelated R data objects (**list elements**) grouped together into a single object! The elements of a list don't need to be the same length or the same **type**. The elements of a list can be vectors, matrices, functions, or other lists.  
+**Lists** are more general than matrices. **List** objects are just a bunch of R data objects (**list elements**) grouped together into a single object! The elements of a list don't need to be the same length or the same **type**. The elements of a list can be vectors, matrices, other lists, or even functions.  
 
 Let's make our first list:
 
@@ -542,16 +595,20 @@ mylist[[2]] <- c("foo","bar")
 mylist[[3]] <- matrix(1:6,nrow=2)
 mylist
 
+# do stuff with lists
+
+mylist[[2]]    # extract the second list element
+
+mylist[[3]][1,2]   # extract the first row, second column from the third list element!   
+
 ```
+##### Data frames (a special kind of list)
 
+**Data frame** objects are the basic data storage object in R. Data frames are a special type of **list** in which list element is a *vector* object of the same length. Each list element in a data frame is also known as a *column*. 
 
-##### Data frames (a very special kind of list)
+Data frames superficially resemble matrices, since both have rows and columns. However, unlike matrices, the columns of a data frame can represent different data **types** (i.e., character, logical, numeric, factor), and can thereby represent very different types of information!  
 
-**Data frame** objects are a special type of **list** in which list element is a *vector* object of the same length. Each list element in a data frame is also known as a *column*. The *row* of a data frame refers to the *i*th element of each of the vectors. 
-
-Data frames superficially resemble matrices, since both types of objects have rows and columns. However, data frames are really much more general than matrices; in data frames, unlike matrices, the columns of a data frame can represent different **types** (i.e., character, logical, numeric, factor), and can thereby represent very different types of information!  
-
-_Data frames are the basic data storage structure in R_. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on that observation unit. 
+_Data frames are the basic data storage structure in R_. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on each observation unit. 
 
 Let's make our first data frame. We will use the data frame constructor function "tibble()". 
 
@@ -559,8 +616,11 @@ Let's make our first data frame. We will use the data frame constructor function
 
 # DATA FRAMES ---------------------------
 
-mydf <- tibble(col1=c(1,2,3),col2=c("A","A","B"))        # create a ‘tibble' data frame with two columns. Each column is a vector of length 3
-mydf
+df1 <- tibble(col1=c(1,2,3),col2=c("A","A","B"))        # create a ‘tibble' data frame with two columns. Each column is a vector of length 3
+df1
+
+df1[1,2]     # extract the first element in the second column
+df1$col2     # extract the second column by name (alternatively, df1[["col2"]])
 
 ```
 
@@ -607,16 +667,16 @@ And finally, we can fill up a vector with random numbers using one of R's built 
 
 # Random numbers ---------------
 
-z <- rnorm(10)                # 10 realizations from std. normal
+z <- rnorm(10)                # 10 samples from std. normal
 z
-y <- rnorm(10,mean=-2,sd=4)           # 10 realizations from N(-2,4^2)
+y <- rnorm(10,mean=-2,sd=4)           # 10 samples from Normal(-2,4^2)
 y
 
-rbinom(5,size=3,prob=.5)                # 5 realizations from Binom(3,0.5)
-rbinom(5,3,.1)                # 5 realizations from Binom(3,0.1)
+rbinom(5,size=3,prob=.5)                # 5 samples from Binom(3,0.5)
+rbinom(5,3,.1)                # 5 samples from Binom(3,0.1)
 
-runif(10)                # 10 standard uniform random numbers
-runif(10,min=-1,max=1)        # 10 uniform random variates on [-1,1]
+runif(10)                     # 10 standard uniform random numbers
+runif(10,min=-1,max=1)        # 10 uniform random numbers from [-1,1]
 
 ```
 
@@ -637,50 +697,12 @@ my.data <- tibble(
 my.data
 summary(my.data)    # Use the "summary()" function to summarize each column in the data frame.
 
-```
-
-For matrices, we need to specify rows AND columns!
-
-```{r}
-
-# X[a,b]       access row a, column b element of matrix/data frame X
-# X[,b]        access all rows of column b of matrix/data frame X
-# X[a,]        access row a of matrix/data frame X
-
-d <- matrix(1:6,nrow=3,ncol=2)
-d
-d[,2]                # 2nd column of d
-d[2,]                # 2nd row of d
-d[2:3,]        # 2nd and 3rd rows of d in a matrix
-
-```
-
-Subsetting works much the same for lists and data frames. However, now we can reference data frame columns (variables) and other list elements using the dollar sign or double-bracket operator:
-
-```{r}
-
-# $            access component of an object (data frame or list)
-# Z_list[[i]]  access the ith element of list Z
-
-mydf=my.data[21:30,]  # only keep 10 rows
+mydf=my.data[21:30,]  # extract rows 21 to 30 and store as a new data frame
 mydf
 
-## many ways of accessing a particular column of a data frame
-mydf$Germination           # Subsetting a data frame
-mydf[["Germination"]]      # same thing!
-mydf[,4]                   # same thing!
-mydf[[4]]                  # same thing!
-mydf[,"Germination"]       # same thing!
-
-# Data frame can also be indexed just like a matrix
-mydf[,2]
-mydf[2,]
-mydf[,2:3]
-mydf[2,2:3]
-
+mydf$Treatment    # access a column of the data frame by name
 
 ```
-
 
 Here are some useful R functions for exploring data objects:
 
@@ -700,11 +722,9 @@ str(my.data)      # look at the "internals" of an object (useful for making sens
 ```
 
 
-
-
 ## Challenge exercises!
 
-1. Create a 3 by 2 matrix equivalent to mymat by binding rows (HINT: use the "rbind()" function), using the following as rows:
+1. Create a 3 row by 2 column matrix named 'mymat'. Use the "rbind()" function to bind the following three rows together using these three vectors as rows:
 
 ```
 c(1,4) 
@@ -718,60 +738,76 @@ c(3,6)
 ### CHALLENGE EXERCISES
 ############
 
-### Challenge 1: Create a 3 by 2 matrix equivalent to mymat by binding rows 
-
-# (HINT: use the "rbind()" function), using the following as rows:
+### Challenge 1: Create a 3 row by 2 column matrix equivalent to mymat. Use the "rbind()" function to bind the three rows together using the following three vectors as rows:
 
 c(1,4) 
 c(2,5) 
 c(3,6)
 
-### Challenge 2: Is mymat[-c(1,2),] a matrix or a vector? HINT: you can use the "class()" function to help out.
+### Challenge 2: Create a new matrix called 'mymat2' that includes all the data from columns 3 to 5 of data frame mydf. HINT: use the "as.matrix()" function to coerce a data frame into a matrix.
 
-### Challenge 3: Create a new matrix 'mymat2' that represents only columns 3 to 5 of data frame mydf.
+### Challenge 3: Create a list named 'mylist' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c("a","a","b")).
 
-### Challenge 4: Create a 3 by 1 (3 rows, 1 column) matrix called 'mymat3' with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command '1:3')? HINT: use the "dim()" function, which returns the dimensionality of an object.
+### Challenge 4: Extract the first and third observation from the 2nd column of the data frame in 'mylist' (the list created in challenge 6 above).
 
-### Challenge 5: Take your matrix 'mymat2' and convert (coerce) it to a vector containing all elements in the matrix. HINT: use the 'c()' function to combine the first column and the second column into a single vector object.
-
-### Challenge 6: Create a list named 'mylist' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c("a","a","b")).
-
-### Challenge 7: Extract the first and third observation from the 2nd row of the data frame in 'd.list' (the list created in challenge 6 above).
-
-### Challenge 8: (extra challenging!) Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
+### Challenge 5: (extra challenging!) Create a data frame named 'df_spatial' that contains 25 spatial locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
 ###     HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq()' functions instead.
 
 ```
 
 
-2. Is mymat[-c(1,2),] a matrix or a vector? HINT: you can use the "class()" function to help out.
+2. Create a new matrix called 'mymat2' that includes all the data from columns 3 to 5 of data frame mydf. HINT: use the "as.matrix()" function to coerce a data frame into a matrix. 
 
 
-3. Create a new matrix 'mymat2' that represents only columns 3 to 5 of data frame mydf.
+3. Create a list named 'mylist' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c("a","a","b")).
 
 
-4. Create a 3 by 1 (3 rows, 1 column) matrix called 'mymat3' with elements c(1,2,3). How is this matrix different from a vector (e.g., created by running the command '1:3')? HINT: use the "dim()" function, which returns the dimensionality of an object.
+4. Extract the first and third observation from the 2nd column of the data frame in 'mylist' (the list created in challenge 6 above). 
 
 
-5. Take your matrix 'mymat2' and convert (coerce) it to a vector containing all elements in the matrix. HINT: use the 'c()' function to combine the first column and the second column into a single vector object.
-
-
-6. Create a list named 'mylist' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c("a","a","b")).
-
-
-7. Extract the first and third observation from the 2nd row of the data frame in 'd.list' (the list created in challenge 6 above). 
-
-
-8. (extra challenging!) Create a data frame named 'df_spatial' that contains 25 locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
+5. (extra challenging!) Create a data frame named 'df_spatial' that contains 25 spatial locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
 HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq()' functions instead.
 
 ```{r echo=FALSE, results=FALSE}
 
+# Module 1_1 challenge problems: answers  -------------
+
+
+### Challenge 1: Create a 3 row by 2 column matrix named "mymat". Use the "rbind()" function to bind the following three rows together using these three vectors as rows:
+
+mymat <- rbind(
+c(1,4),
+c(2,5),
+c(3,6)
+)
+
+### Challenge 2: Create a new matrix called 'mymat2' that includes all the data from columns 3 to 5 of data frame mydf. HINT: use the "as.matrix()" function to coerce a data frame into a matrix.
+
+mymat2 <- as.matrix(mydf[,3:5])
+
+### Challenge 3: Create a list named 'mylist' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c("a","a","b")).
+
+mylist <- list()
+mylist[[1]] <- 1:3
+mylist[[2]] <- matrix(1:6,nrow=3,ncol=2)
+mylist[[3]] <- data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c("a","a","b"))
+
+### Challenge 4: Extract the first and third observation from the 2nd column of the data frame in 'mylist' (the list created in challenge 6 above).
+
+mylist[[3]][[2]][c(1,3)]
+
+
+### Challenge 5: (extra challenging!) Create a data frame named 'df_spatial' that contains 25 spatial locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
+
+# challenge 5
+
 x <- rep(seq(-1,1,length=5),each=5)
 y <- rep(seq(-1,1,length=5),times=5)
 df_spatial <- data.frame(long=x,lat=y)
+plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
+abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
 
 ```
 

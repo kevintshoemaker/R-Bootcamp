@@ -1,11 +1,11 @@
-name: "R bootcamp, Fall 2022"
+name: "UNR R workshop, Fall 2022"
 output_dir: "."
 navbar:
-  title: "R bootcamp, Fall 2022"
+  title: "UNR R workshop, Fall 2022"
   left:
     - text: "Home"
       href: index.html
-    - text: "Bootcamp #1: getting started"
+    - text: "Workshop #1: getting started"
       menu:
         - text: "Submodule 1.1: working with objects"
           href: module1_1.html
@@ -15,7 +15,7 @@ navbar:
           href: module1_3.html
         - text: "Submodule 1.4: Programming in R"
           href: module1_4.html
-    - text: "Bootcamp #2: Beyond the basics"
+    - text: "Workshop #2: Beyond the basics"
       menu:
         - text: "Submodule 2.1: R packages"
           href: module2_1.html

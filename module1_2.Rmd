@@ -1,7 +1,7 @@
 ---
 title: "Module 1.2"
 author: "Getting started: managing data"
-date: "TWS-WS 2022"
+date: "Fall 2022"
 output: 
   html_document: 
     theme: journal
@@ -10,46 +10,42 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-```
-
-```{r echo=FALSE}
-
-##################################################
-####                                          ####  
-####  R Bootcamp #1, Module 2                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
-
-## NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
-   # Thanks to Perry Williams for allowing us to use these materials!!
-
-#########################
-####  Managing data  ####
-#########################
-
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+library(tidyverse)
+library(ggplot2)
+library(zoo)
 
 ```
 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 
-NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. 
-    - Thanks to Perry Williams for allowing us to use these materials!!
+#  UNR R workshop #1, Module 2 -------------------
+
+#  Managing data  --------------------
+
+library(tidyverse)
+library(ggplot2)
+
+```
 
 
 ## Load script for module #1.2
 
-1. Click [here](module1_2.R) to download the script! Save the script to your working directory (project directory you set up in the previous submodule).   
+1. Click [here](module1_2.R) to download the script! Save the script to the project directory you set up in the previous submodule.   
 
-2. Load your script in RStudio. To do this, open RStudio (load the RStudio project you created in the previous submodule) and click on the folder icon in the toolbar at the top and load your script.    
+2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top to load your script.    
 
 Let's get started with data management in R!
 
 
 ## Working directory
 
-The working directory is the first place R will look for any files you would like to read in (e.g., code, data). It is also the first place R will try to write any files you want to save. 
+The working directory is the first place R looks for any files you would like to read in (e.g., code, data). It is also the first place R will try to write any files you want to save. 
 
 It makes things a lot easier if you put all your data files into a single folder and tell R to make that folder your **working directory**. That way, you won't need to wrangle complex directory names!
 
@@ -64,7 +60,7 @@ getwd()          # note: the results from running this command on my machine wil
 
 What's yours? Usually the default working directory is your "Documents" folder. 
 
-Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file for your project). This is convenient, because:
+Since you should already be working in an RStudio Project, your working directory will be set as your project directory (directory that contains the .Rproj file for your project). This is convenient, because:
 
 1. That's most likely where the data for that project live anyway       
 2. If you're collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and R will instantly know where to read and write data without either of you having to reset the working directory (even though the directory path is probably different on your two machines). This can save a lot of headaches!    
@@ -73,13 +69,13 @@ Reminder: to start a new RStudio Project, just click on "File->New Project" in R
 
 ### Set your working directory
 
-You can easily set a new working directory using the "setwd()" function. 
+You can set a new working directory using the "setwd()" function. 
 
 ```{r eval=FALSE}
 
 # for example...
 
-# setwd("E:/GIT/R-Bootcamp")   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R
+# setwd("E:/GIT/R-Bootcamp")   # note that the use of backslashes for file paths, as used by Windows, are not supported by R
 
 ```
 
@@ -92,7 +88,7 @@ Once you have set the working directory, you can use the "list.files()" function
 ```{r eval=FALSE}
 
 # Contents of working directory
-list.files()
+# list.files()    # uncomment this to run it...
 
 ```
 
@@ -100,11 +96,11 @@ What's in your working directory?
 
 ## Importing data into R!
 
-There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And people are always inventing new ways to read and write to/from R. But here are the basics.   
+There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And people are always inventing new ways to read and write data to/from R. But here are the basics.   
 
-- read.table      
+- read.table or read_table      
      - reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)       
-- read.csv        
+- read.csv or read_csv        
      - fields are separated by a comma (this is still probably the most common way to read in data)        
 
 Before we can read data in, we need to put some data files in our working directory! 
@@ -120,31 +116,26 @@ Once you have saved these files to your working directory, open one or two of th
 
 Now let's read them into R!!
 
-```{r results=FALSE}
+```{r message=FALSE, warning=FALSE, results=FALSE}
 
 ####
 ####  Import data files into R
 ####
 
-# ?read.table    # some useful functions for reading in data
+# ?read_table    # some useful functions for reading in data
 
-# read.table to import textfile (default is sep = "" (one of several common delimiters, including any type of whitespace))
-data.txt.df <- read.table("data.txt", header=T, sep="")  
+# read_table to import textfile with columns separated by whitespace
+data.txt.df <- read_table("data.txt")  
 
-# read.table with csv file
-data.csv.df <- read.table("data.csv", header=T, sep=",")  
-
-# built-in default for importing from CSV (easiest and most widely used)
-data.df <- read.csv("data.csv")
+# read_csv to import textfile with columns separated by commas
+data.df <- read_csv("data.csv")
 names(data.df) 
 
 # Remove redundant objects from memory
 rm(data.txt.df)
-rm(data.csv.df)
 
 
 ```
-
 
 ### Using R's built in data
 
@@ -164,11 +155,18 @@ Let's read in one of these datasets!
 ```{r results=FALSE}
 
 # read built-in data on car road tests performed by Motor Trend
-data(mtcars)         
-
-str(mtcars)    # examine the structure of this data object
+data(mtcars)   
+head(mtcars)    # inspect the first few lines
 
 # ?mtcars        # learn more about this built-in data set
+
+```
+Many packages come with built-in datasets as well. For, instance, ggplot2 comes with the "diamonds" package:
+
+```{r}
+
+ggplot2::diamonds   # note the use of the package name followed by two colons- this is a way to make sure you are using a function (or data set) from a particular package... (sometimes several packages have functions with the same name...)
+
 
 ```
 
@@ -182,22 +180,11 @@ To learn more about the 'internals' of any data object in R, we can use the "str
 #### Check/explore data object
 #### 
 
-
 # ?str: displays the internal structure of the data object
+str(mtcars)
 str(data.df)
 
-```
-
-As we've already seen, we can use the "head()" function to see the first few rows of our data (or the "tail()" function to see the last few rows):
-
-```{r}
-
-# ?head: displays first n elements of object (default=6)
-head(data.df)
-head(data.df,2)
-
-# ?tail: displays last n elements of object (default=6)
-tail(data.df)
+names(diamonds)
 
 ```
 
@@ -211,11 +198,11 @@ summary(data.df)
 
 ## Exporting and saving data in R
 
-Reading in data is one thing, but you will probably also want to write data to your hard disk. There are countless reasons for this- you might want to use an external program to plot your data, you might want to archive some simulation results.
+Reading in data is one thing, but you will probably also want to write data to your hard drive as well. There are countless reasons for this- you might want to use an external program to plot your data, you might want to archive some simulation results.
 
 Again, there are many ways to write data to a file. Here are the basics!
 
-### Exporting data
+### Exporting data as table
 
 ```{r}
 
@@ -223,16 +210,16 @@ Again, there are many ways to write data to a file. Here are the basics!
 #### Exporting data (save to hard drive as data file)
 ####
 
-# ?write.table: writes a file to the working directory
+# ?write_csv: writes a CSV file to the working directory
    
-write.table(data.df[,c("Country","Product")], file="data_export.csv", sep=",", col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in.
+write_csv(data.df[,c("Country","Product")], file="data_export.csv")   # export a subset of the data we just read in.
 
 ```
 
 
 ### Saving (and loading) data
 
-The data loaded in your **R environment** are stored in your computer's memory as **binary** representations that are efficient but not particularly human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data *outside* of R.
+The data loaded in your **R environment** are stored in your computer's memory as **binary** representations that are efficient but not human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data *outside* of R.
 
 To do this we can use the "save()" and "load()" functions in R:
 
@@ -257,25 +244,21 @@ load("Module1_2.RData")   # load these objects back in!
 
 ```
 
-NOTE: If you're using an RStudio Project (.Rproj), then the contents of your environment are saved when you close the project (if you choose that option when closing the project), and automatically loads again when you open the R Project file. This allows you to pick up where you left off! 
-         
-
 ### Clearing the environment
 
-Sometimes your environment can get cluttered with objects. In these cases, it can help to clear the environment. Let's try this!
+Sometimes your environment can get cluttered with objects. In these cases, it can help to clear the environment. You can just use the 'broom' icon in your environment window in RStudio to clear your environment, or use this command:
 
 ```{r}
 
 ##############
-# Clear the environment (and load it back in!)
-
-save.image(file="Module2.RData")    # ?save.image: saves entire environment (we don't necessarily want to clear everything right now)
+# Clear the environment
 
 rm(list=ls())   # clear the entire environment. Confirm that your environment is now empty!
 
-load(file="Module2.RData")   # load the objects back!
+data.df <- read_csv("data.csv")  # read the data back in!
 
 ```
+
 
 ## Working with data in R
 
@@ -283,11 +266,11 @@ Now let's start seeing what we can do with data in R. Even without doing any sta
 
 ### Boolean operations
 
-Boolean operations refer to TRUE/FALSE tests. That is, we ask a question about the data that either is true or false. 
+Boolean operations refer to TRUE/FALSE tests. That is, we can ask a question about the data to a Boolean operator and the operator will return a TRUE or a FALSE (logical) result. 
 
 First, let's meet the boolean operators. 
 
-NOTE: don't get confused between the equals sign ("="), which is an alternative *assignment operator* (same as "<-"), and the double equals sign ("=="), which is a boolean operator:
+NOTE: don't get confused between the equals sign ("="), which is an *assignment operator* (same as "<-"), and the double equals sign ("=="), which is a Boolean operator:
 
 ```{r}
 
@@ -295,7 +278,7 @@ NOTE: don't get confused between the equals sign ("="), which is an alternative 
 # =  alternative assignment operator
 
 a <- 3     # assign the value "3" to the object named "a"
-a = 3      # assign the value "3" to the object named "a"
+a = 3      # assign the value "3" to the object named "a" (alternative)
 a == 3     # answer the question: "does the object "a" equal "3"? 
 
 ```
@@ -316,7 +299,7 @@ a == 3     # answer the question: "does the object "a" equal "3"?
 # >=   greater than or equal to
 # ==   equal to
 # !=   not equal to
-# %in% matches any one of a specified group of possibilities
+# %in% matches one of a specified group of possibilities
 
 #####
 # Combining multiple conditions
@@ -333,12 +316,14 @@ Y < Z
 !(Y < Z)  # the exclamation point reverses any boolean object (read "NOT")
 
 # Wrong!
-data.df[,2]=74     # sets entire second column equal to 74! OOPS!!!
+data.df[,2]=74     # sets entire second column equal to 74! OOPS WE GOOFED UP!!!
 
 data.df <- read.csv("data.csv")  ## correct our mistake in the previous line (revert to the original data)!
 
 # Right
 data.df[,2]==74    # tests each element of column to see whether it is equal to 74
+
+data.df[,2]<74|data.df[,2]==91   # use the logical OR operator
 
 ```
 
@@ -347,164 +332,172 @@ data.df[,2]==74    # tests each element of column to see whether it is equal to 
 
 Boolean operations are great for subsetting data - that is, we can select only those rows/observations that meet a certain condition (where [some condition] is TRUE). 
 
-The "which()" function returns the indices of a vector (i.e., the specific elements) that meet a certain specified condition. Here's how it works:
-
 
 ```{r}
 
-####
-####  Subsetting data
-####
+#  Subsetting data ---------------------------
 
-##########
-# The "which()" function -- return indices of a vector that meet a certain condition (condition is TRUE)
+data.df[data.df[,"Import"]<74,]    # select those rows of data for which second column is less than 74
 
-which(data.df[,2]==74)       # elements of column 2 that are equal to 74
-which(data.df[,2]!=74)       # elements of column 2 that are NOT equal to 74
-which(data.df[,2]<74)        #  and so on...
-which((data.df[,2]<74)|(data.df[,2]==91))   # use the logical OR operator
+#  or alternatively, using tidyverse syntax:
 
-#########
-# Alternatively, save the indices as an R object as an intermediate step
-
-indices <- which(data.df[,2]<74)
-data.df[indices,2]               # same as above!
-
-
-#########
-# Alternatively, you can omit the "which()" function entirely- 
-#     R will know that you're trying to omit "FALSE" elements and keep "TRUE" elements
-
-data.df[data.df[,2]<74,2]    # alternative simpler syntax without using "which()"... 
-
+data.df %>% 
+  filter(Import<74)
 
 sub.countries<-c("Chile","Colombia","Mexico")    # create vector of character strings
 
-which(data.df$Country=="Chile") 
-
-# This command doesn't work because sub.countries is a vector, not a single character string. 
-which(data.df[,1]==sub.countries) 
-
+data.df %>% 
+  filter(Country %in% sub.countries)   # subset just those rows that match the list of countries
 
 ```
-
-
-When we want all elements of a vector that match one of a group (vector) of possibilities, we use the "%in%" operator:  
-
-```{r}
-
-# Instead we use %in%
-which(data.df[,1] %in% sub.countries)     # elements of data column that match one or more of the elements in "sub.countries"
-   
-which((data.df$Country %in% sub.countries) & (data.df$Product=="N"))   # use AND operator 
-
-# What if we don't want the row number, but the actual row(s) of data that meet a particular condition?
-
-indices <- which(data.df$Country %in% sub.countries)
-data.df[indices,]          # print all data for a subset of observations
-
-
-```
-
 
 ## More data processing!
 
-Let's switch to a different data file. Download the [Turtle Data](turtle_data.txt) and save to your working directory (R project directory). 
+Let's switch to a different data file. Download the [Turtle Data](turtle_data.txt) and save to your project directory. 
 
 Let's use this data set to review the summarizing and subsetting operations we have learned- and learn a few new things along the way:
 
-### Subsetting data and correcting errors
+### Subsetting data
 
 ```{r}
 
-####
-####  Practice subsetting a data frame
-#### 
+#  Practice subsetting a data frame ------------------------
 
-turtles.df <- read.table(file="turtle_data.txt", header=T, stringsAsFactors = FALSE)
-names(turtles.df)
-head(turtles.df)
+turtles.df <- read_table(file="turtle_data.txt")
+turtles.df
 
-# Subset for females
-fem.turtles.df <- turtles.df[which(turtles.df$sex =="female"),]    
+# Subset for only females
 
-# Can subset just one factor based on another
+fem.turtles.df = turtles.df %>%
+  filter(sex=="female")
+  
 # Here we want to know the mean weight of all females 
 mean(fem.turtles.df$weight)
-mean(turtles.df$weight[which(turtles.df$sex =="female")]) 
 
-# Try using the "subset()" function, which can make subsetting a data frame even easier!
-female.turtles <- subset(turtles.df,sex=="female")              # use the "subset()" function!
-female.turtles <- turtles.df[which(turtles.df$sex=="female"),]    # alternative
+# or we can summarize the mean weight for males and females at the same time using the following tidyverse syntax ...
 
-subset.turtles.df <- subset(turtles.df, weight >= 10)
-head(subset.turtles.df)
+turtles.df %>% 
+  group_by(sex) %>% 
+  summarize(meanwt = mean(weight))
 
-# Subsetting to certain individuals
-bad.tags <- c(13,105)
-good.turtles.df <- turtles.df[!(turtles.df$tag_number %in% bad.tags),]
-bad.turtles.df <- turtles.df[turtles.df$tag_number %in% bad.tags,]
-bad.turtles.df
+# OOPS, looks like we just caught an error!
 
 ```
 
-
-### Data manipulation using subsetting
-
-We can use subsetting operations to manipulate (alter) data- for example, to correct some data elements:
+Let's fix the error we just noticed in the way sex was represented in the turtle dataset.
 
 ```{r}
 
-####
-####  Data Manipulation using subsetting
-####
+unique(turtles.df$sex)  # note the two ways of representing females...
 
-# Using subset to correct data entry problems
-unique(turtles.df$sex)
-table(turtles.df$sex)   # do you notice the data entry problem here?    
+turtles.df$sex[turtles.df$sex=="fem"] <- "female"  # correct the error
 
-turtles.df[which(turtles.df$sex=="fem"),2]<-"female"            # recode the sex variable
+# or alternatively using more tidyverse-y syntax
+turtles.df = turtles.df %>% 
+  mutate(sex = replace(sex,sex=="fem","female"))
+
+turtles.df %>%          # summarize weight by sex
+  group_by(sex) %>% 
+  summarize(meanwt = mean(weight))
+
+```
+
+### Fixing data using subsetting
+
+Like we saw in the previous example (correcting the 'sex' variable) we can use subsetting operations to correct or alter data:
+
+```{r}
+
+#  Data Manipulation using subsetting -------------------
+
+subset.turtles.df <- turtles.df %>% 
+  filter(weight >= 10)
+
+subset.turtles.df
+
+# list of tags we do not trust the data for
+bad.tags <- c(13,105)
+
+turtles.df = turtles.df %>% 
+  mutate(
+    sex = replace(sex,tag_number%in%bad.tags,NA),
+    carapace_length = replace(carapace_length,tag_number%in%bad.tags,NA),
+    head_width = replace(head_width,tag_number%in%bad.tags,NA),
+    weight = replace(weight,tag_number%in%bad.tags,NA)
+  )
+
+# or use the following non-tidyverse syntax... which seems simpler to me!
+
+turtles.df[turtles.df$tag_number%in%bad.tags,c("sex","carapace_length","head_width","weight")]  <- NA
+
+turtles.df
 
  # make a new variable "size.class" based on the "weight" variable
-turtles.df$size.class <- NA
-turtles.df$size.class[turtles.df$weight >= 6] <- 1         # ths is the "adult" class 
-turtles.df$size.class[turtles.df$weight < 6] <- 2          # this is the "juvenile" class
+
+turtles.df = turtles.df %>% 
+  mutate(size.class = case_when(
+    weight < 3 ~ "juvenile",
+    weight > 6 ~ "adult",
+    is.na(weight) ~ NA_character_,
+    TRUE  ~ "subadult"
+  ))
 
 turtles.df$size.class
+
+```
+
+### Selecting and renaming columns
+
+Sometimes we only want to work with a small subset of columns from a larger dataset. Or we have column names that are not informative or don't make sense to us. 
+
+```{r}
+
+# select only the x y and z columns from the diamonds dataset
+
+diamonds2 <- diamonds %>% 
+  select(x,y,z)
+ 
+# in base R (non tidyverse) you can do this:
+diamonds2 <- diamonds[,c("x","y","z")]
+
+# to change the column names, use the "names()" function
+
+names(diamonds2)  # extract the column names
+names(diamonds2)  <- c("length", "width","depth")
 
 ```
 
 
 ### Sorting/ordering data
 
-**Sorting** is another common data operation, which helps to visualize and organize data. In R, sorting is typically accomplished using either the "order()" or the "sort()" functions:
+**sorting** is another common data operation, which helps to visualize and organize data. In R, sorting is typically accomplished using the "order()" function:
 
-**sort**: sorts a vector literally -- i.e., "10,3,22" becomes "3,10,22" (increasing, by default)       
-**order**: returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted (increasing, by default) -- i.e., "10,3,22" becomes "2,1,3".           
+*order()** returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted (increasing, by default) -- i.e., "10,3,22" becomes "2,1,3".    
 
-Here's how you do it in R, continuing with the turtle data example:
-
+In the 'tidyverse' we can use the "arrange" verb to do this!
 
 ```{r}
 
-####
-####  Sorting
-####
+#  Sorting  ----------------
 
-# Sort works for ordering along one vector
-sort(turtles.df$carapace_length)  
-
-# Order returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
+# The 'order' function returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
 order(turtles.df$carapace_length)
 
-# To sort a data frame by one vector, use "order()"
-turtles.tag <- turtles.df[order(turtles.df$tag_number),]
+# To sort a data frame by one vector, you can use "order()"
+turtles.df[order(turtles.df$tag_number),]
 
-# Order in reverse
-turtles.tag.rev <- turtles.df[order(turtles.df$tag_number,decreasing = TRUE),] 
+# or we can use the "arrange" verb:
+turtles.df %>% 
+  arrange(carapace_length)
+
+# or if we want in descending order...
+
+turtles.df %>% 
+  arrange(desc(carapace_length))
 
 # Sorting by 2 columns
-turtles.sex.weight <- turtles.df[order(turtles.df$sex,turtles.df$weight),] 
+turtles.df %>% 
+  arrange(sex,weight)
 
 ```
 
@@ -512,11 +505,11 @@ turtles.sex.weight <- turtles.df[order(turtles.df$sex,turtles.df$weight),]
 
 In many real-world datasets, observations are incomplete in some way- they are missing information. 
 
-In R, the code "NA" represents elements of a vector that are missing for whatever reason.
+In R, the code "NA" (not available) stands in for elements of a vector that are missing for whatever reason.
 
 Most statistical functions have ways of dealing with NAs.
 
-Let's explore a data set with NAs. 
+Let's explore a data set with missing data. 
 
 Download this [Data with missing values](data_missing.txt) and save to your working directory. 
 
@@ -524,121 +517,42 @@ Now let's explore this data set in more detail:
 
 ```{r}
 
-####
-####  Missing Data
-####
+#  Missing Data   ----------------------
 
-# Try reading in a data file with missing values, w/o specifying how the text is delimited
-# Will not read because of missing data, it does not know where the columns are!
-# missing.df <- read.table(file="data_missing.txt")
+# NOTE: you need to specify that this is a tab-delimited file. It is especially important to specify the delimiter for data files with missing data. If you specify the header and what the text is delimited by correctly, it will read missing data as NA. Otherwise it will fail to read data in properly.
 
-# If you specify the header and what the text is delimited by, it will read them as NA
-missing.df <- read.table(file="data_missing.txt", sep="\t", header=T)
+missing.df <- read_delim(file="data_missing.txt",delim="\t")   # try replacing with "read_table"- it does not work right!
 
-# Missing data is read as an NA
+# Missing data are read as an NA
 missing.df
 
 # Omits (removes) rows with missing data
-missing.NArm.df <- na.omit(missing.df)
+na.omit(missing.df)
 
-# ?is.na
+# ?is.na   (Boolean test!)
 is.na(missing.df)
 
-# Get index of NAs
-which(is.na(missing.df))
+complete.cases(missing.df)   # Boolean: for each row, tests if there are no NA values
 
-# Replace all missing values in the data frame with a 0
-missing.df[is.na(missing.df)] <- 0
+# Replace all missing values in the data frame with a an interpolation function from the 'zoo' package (here we interpolate using the mean value)
 
-# Create another data frame with missing values
-missing.mean.df<- read.table(file="data_missing.txt", sep="\t", header=T)
-
-# Replace only the missing values of just one column with the mean for that column
-missing.mean.df$Export[is.na(missing.mean.df$Export)] <- mean(missing.mean.df$Export,na.rm=T)
-missing.mean.df
-
-# Return only those rows with missing data
-missing.df<- read.table(file="data_missing.txt", sep="\t", header=T)
-missing.df <- missing.df[!complete.cases(missing.df),]
+missing.df %>% 
+  mutate(Export = na.fill(Export,mean(Export,na.rm=T)),
+         Import = na.fill(Import,mean(Import,na.rm=T)))
 
 # Can summarize your data and tell you how many NA's per col
-summary(missing.mean.df)
-
-# Summarize one individual col
-summary(missing.mean.df$Export)
+summary(missing.df)
 
 ```
-
-
-## ASIDE: don't use "attach"!
-
-Never use the "attach([some data frame])" function in R. This "convenience" function allows you to access all variables in a data frame by referencing the variable name only (instead of using the dollar-sign notation). That is, when you attach a data frame, you can do things like this:
-
-```{r eval=FALSE}
-
-##############
-# COMMON PITFALLS
-##############
-
-
-#############
-# The attach() function
-
-# Note: some people like to use attach
-# We DO NOT recommend using attach
-
-df <- data.frame(    # build a data frame
-  a=1:10,
-  b=rnorm(10)
-)
-
-df$a       # pull out columns of the data frame
-df$b
-
-attach(df)   # "attach" the data frame  # attach make objects within dataframes accessible with fewer letters
-
-a          # now we can reference the columns without referencing the data frame
-b
-
-detach(df)   # remember to detach when you're done
-
-#########
-# BUT...
-
-attach(data.df)
-
-Import
-
-Import<-rep(1,10) # What if we forget the names in our data frames and use that name for something else
-Import
-
-rm(Import) # But if we remove that object...
-
-Import  # There is still the original object behind it. That's troubling!
-
-detach(data.df)   # Remember to detach
-
- 
-```
-
-BUT this just leads to problems in the end. Our recommendation: just don't use it!!
 
 
 ## Challenge Exercises!
 
-1: Create a new data frame by saving the file ["comm_data.txt"](comm_data.txt) to your working directory. For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: "Class","Downstream", "Upstream".
+1: Save the ["comm_data.txt"](comm_data.txt) file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
 
-2: Read in the file "turtle_data.txt', and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory. 
+2: Read in the file ["turtle_data.txt"](turtle_data.txt). Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the "na.omit()" function to remove rows with NAs] [hint 2: use the write_csv function to write to your working directory] 
   
-3: I am trying to create a data frame with only male turtles using the "which()" function.  Would the following command work?
-
-```
-male_turtles <- turtles[,which(turtles$sex=="male")]
-```
-
-Why or why not? 
-
-What other method could I use to create this without using "which()"?
+3: Read in the file ["turtle_data.txt"](turtle_data.txt). Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles. 
 
 
 ```{r}
@@ -647,14 +561,36 @@ What other method could I use to create this without using "which()"?
 ### CHALLENGE EXERCISES
 ############
 
-# 1: Create a new data frame by saving the file ["comm_data.txt"](comm_data.txt) to your working directory. For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: "Class","Downstream", "Upstream".
+# 1: Save the "comm_data.txt" file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
 # 
-# 2: Read in the file "turtle_data.txt', and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory. 
+# 2: Read in the file "turtle_data.txt". Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the "na.omit()" function to remove rows with NAs] [hint 2: use the write_csv function to write to your working directory] 
 #   
-# 3: I am trying to create a data frame with only male turtles using the "which()" function.  Would the following command work? Why or why not? What other method could I use to create this without using "which()"?
+# 3: Read in the file "turtle_data.txt". Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.
 
-# male_turtles <- turtles[,which(turtles$sex=="male")]  # uncomment this to run it...
 
+
+```
+
+
+```{r eval=FALSE, echo=FALSE}
+
+# Module 1_2 challenge problems: answers  -------------
+
+
+# 1: Save the "comm_data.txt" file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
+
+comdat <- read_table("comm_data.txt")
+comdat <- comdat %>% 
+  select(Hab_class,C_DWN,C_UPS)
+names(comdat) <- c("Class","Downstream", "Upstream")
+
+# 2: Read in the file "turtle_data.txt". Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the "na.omit()" function to remove rows with NAs] [hint 2: use the write_csv function to write to your working directory] 
+
+turt1 <- read_table("turtle_data.txt")
+turt1 <- na.omit(turt1)
+write_csv(turt1,"turt_test1.csv")
+
+# 3: Read in the file "turtle_data.txt". Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.
 
 
 ```

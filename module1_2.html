@@ -14,8 +14,8 @@
 
 <title>Module 1.2</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -64,6 +64,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -84,6 +85,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -309,12 +313,12 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, TWS-WS 2022</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2022</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -322,8 +326,8 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #1: getting started
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #1: getting started
      
     <span class="caret"></span>
   </a>
@@ -343,8 +347,8 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #2: Beyond the basics
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #2: Beyond the basics
      
     <span class="caret"></span>
   </a>
@@ -367,7 +371,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Data sets
      
     <span class="caret"></span>
@@ -425,148 +429,201 @@ div.tocify {
 
 <h1 class="title toc-ignore">Module 1.2</h1>
 <h4 class="author">Getting started: managing data</h4>
-<h4 class="date">TWS-WS 2022</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University. - Thanks to Perry Williams for allowing us to use these materials!!</p>
 <div id="load-script-for-module-1.2" class="section level2">
 <h2>Load script for module #1.2</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module1_2.R">here</a> to download the script! Save the script to your working directory (project directory you set up in the previous submodule).</p></li>
-<li><p>Load your script in RStudio. To do this, open RStudio (load the RStudio project you created in the previous submodule) and click on the folder icon in the toolbar at the top and load your script.</p></li>
+<li><p>Click <a href="module1_2.R">here</a> to download the script! Save
+the script to the project directory you set up in the previous
+submodule.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click
+on the folder icon in the toolbar at the top to load your
+script.</p></li>
 </ol>
 <p>Let’s get started with data management in R!</p>
 </div>
 <div id="working-directory" class="section level2">
 <h2>Working directory</h2>
-<p>The working directory is the first place R will look for any files you would like to read in (e.g., code, data). It is also the first place R will try to write any files you want to save.</p>
-<p>It makes things a lot easier if you put all your data files into a single folder and tell R to make that folder your <strong>working directory</strong>. That way, you won’t need to wrangle complex directory names!</p>
-<p>Every R session has a working directory, whether you specify one or not. Let’s find out what my working directory is right now:</p>
+<p>The working directory is the first place R looks for any files you
+would like to read in (e.g., code, data). It is also the first place R
+will try to write any files you want to save.</p>
+<p>It makes things a lot easier if you put all your data files into a
+single folder and tell R to make that folder your <strong>working
+directory</strong>. That way, you won’t need to wrangle complex
+directory names!</p>
+<p>Every R session has a working directory, whether you specify one or
+not. Let’s find out what my working directory is right now:</p>
 <pre class="r"><code># Find the directory you&#39;re working in 
 getwd()          # note: the results from running this command on my machine will differ from yours!  </code></pre>
 <pre><code>## [1] &quot;C:/Users/Kevin/Documents/GitHub/R-Bootcamp&quot;</code></pre>
-<p>What’s yours? Usually the default working directory is your “Documents” folder.</p>
-<p>Since you should already be working in an RStudio Project, your working directory will automatically be set as your project directory (directory that contains the .Rproj file for your project). This is convenient, because:</p>
+<p>What’s yours? Usually the default working directory is your
+“Documents” folder.</p>
+<p>Since you should already be working in an RStudio Project, your
+working directory will be set as your project directory (directory that
+contains the .Rproj file for your project). This is convenient,
+because:</p>
 <ol style="list-style-type: decimal">
 <li>That’s most likely where the data for that project live anyway<br />
 </li>
-<li>If you’re collaborating with someone else on the project (e.g., in a shared Dropbox folder), you can both open the project and R will instantly know where to read and write data without either of you having to reset the working directory (even though the directory path is probably different on your two machines). This can save a lot of headaches!</li>
+<li>If you’re collaborating with someone else on the project (e.g., in a
+shared Dropbox folder), you can both open the project and R will
+instantly know where to read and write data without either of you having
+to reset the working directory (even though the directory path is
+probably different on your two machines). This can save a lot of
+headaches!</li>
 </ol>
-<p>Reminder: to start a new RStudio Project, just click on “File-&gt;New Project” in RStudio’s menu bar.</p>
+<p>Reminder: to start a new RStudio Project, just click on “File-&gt;New
+Project” in RStudio’s menu bar.</p>
 <div id="set-your-working-directory" class="section level3">
 <h3>Set your working directory</h3>
-<p>You can easily set a new working directory using the “setwd()” function.</p>
+<p>You can set a new working directory using the “setwd()” function.</p>
 <pre class="r"><code># for example...
 
-# setwd(&quot;E:/GIT/R-Bootcamp&quot;)   # note the use of forward slash- backslashes for file paths, as used by Windows, are not supported by R</code></pre>
-<p><strong>NOTE:</strong> when you put file paths in R, they need to use forward slashes (“/”; or double backslashes, “\\”) – single backslashes (“\”, as seen in Windows) do not work for specifying file paths in R.</p>
-<p>Alternatively, you can (in RStudio) use the dropdown menus at the top to set the working directory (Session-&gt;Set Working Directory-&gt;Choose Directory).</p>
-<p>Once you have set the working directory, you can use the “list.files()” function to see what’s in the directory. If I ran this, we would see the contents of the directory that I’m using to create this website!</p>
+# setwd(&quot;E:/GIT/R-Bootcamp&quot;)   # note that the use of backslashes for file paths, as used by Windows, are not supported by R</code></pre>
+<p><strong>NOTE:</strong> when you put file paths in R, they need to use
+forward slashes (“/”; or double backslashes, “\\”) – single backslashes
+(“\”, as seen in Windows) do not work for specifying file paths in
+R.</p>
+<p>Alternatively, you can (in RStudio) use the dropdown menus at the top
+to set the working directory (Session-&gt;Set Working
+Directory-&gt;Choose Directory).</p>
+<p>Once you have set the working directory, you can use the
+“list.files()” function to see what’s in the directory. If I ran this,
+we would see the contents of the directory that I’m using to create this
+website!</p>
 <pre class="r"><code># Contents of working directory
-list.files()</code></pre>
+# list.files()    # uncomment this to run it...</code></pre>
 <p>What’s in your working directory?</p>
 </div>
 </div>
 <div id="importing-data-into-r" class="section level2">
 <h2>Importing data into R!</h2>
-<p>There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And people are always inventing new ways to read and write to/from R. But here are the basics.</p>
+<p>There are many ways data can be imported into R. Many types of files
+can be imported (e.g., text files, csv, shapefiles). And people are
+always inventing new ways to read and write data to/from R. But here are
+the basics.</p>
 <ul>
-<li>read.table
+<li>read.table or read_table
 <ul>
-<li>reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)<br />
+<li>reads a data file in any major text format (comma-delimited, space
+delimited etc.), you can specify which format (very general)<br />
 </li>
 </ul></li>
-<li>read.csv
+<li>read.csv or read_csv
 <ul>
-<li>fields are separated by a comma (this is still probably the most common way to read in data)</li>
+<li>fields are separated by a comma (this is still probably the most
+common way to read in data)</li>
 </ul></li>
 </ul>
-<p>Before we can read data in, we need to put some data files in our working directory!</p>
+<p>Before we can read data in, we need to put some data files in our
+working directory!</p>
 <ol style="list-style-type: decimal">
-<li><p>Download the following data files and store them in your working directory (i.e., the folder where your scripts are already!)</p>
+<li><p>Download the following data files and store them in your working
+directory (i.e., the folder where your scripts are already!)</p>
 <ul>
 <li><a href="data.txt">Whitespace delimited data file</a><br />
 </li>
 <li><a href="data.csv">Comma delimited data file</a></li>
 </ul></li>
-<li><p>Make sure the data files are stored in your working directory (project directory)!</p></li>
+<li><p>Make sure the data files are stored in your working directory
+(project directory)!</p></li>
 </ol>
-<p>Once you have saved these files to your working directory, open one or two of them up (e.g., in Excel or a text editor) to see what’s inside.</p>
+<p>Once you have saved these files to your working directory, open one
+or two of them up (e.g., in Excel or a text editor) to see what’s
+inside.</p>
 <p>Now let’s read them into R!!</p>
 <pre class="r"><code>####
 ####  Import data files into R
 ####
 
-# ?read.table    # some useful functions for reading in data
+# ?read_table    # some useful functions for reading in data
 
-# read.table to import textfile (default is sep = &quot;&quot; (one of several common delimiters, including any type of whitespace))
-data.txt.df &lt;- read.table(&quot;data.txt&quot;, header=T, sep=&quot;&quot;)  
+# read_table to import textfile with columns separated by whitespace
+data.txt.df &lt;- read_table(&quot;data.txt&quot;)  
 
-# read.table with csv file
-data.csv.df &lt;- read.table(&quot;data.csv&quot;, header=T, sep=&quot;,&quot;)  
-
-# built-in default for importing from CSV (easiest and most widely used)
-data.df &lt;- read.csv(&quot;data.csv&quot;)
+# read_csv to import textfile with columns separated by commas
+data.df &lt;- read_csv(&quot;data.csv&quot;)
 names(data.df) 
 
 # Remove redundant objects from memory
-rm(data.txt.df)
-rm(data.csv.df)</code></pre>
+rm(data.txt.df)</code></pre>
 <div id="using-rs-built-in-data" class="section level3">
 <h3>Using R’s built in data</h3>
-<p>R has many useful built-in data sets that come pre-loaded. You can explore these datasets with the following command:</p>
+<p>R has many useful built-in data sets that come pre-loaded. You can
+explore these datasets with the following command:</p>
 <pre class="r"><code># Built-in data files
 data()   </code></pre>
 <p>Let’s read in one of these datasets!</p>
 <pre class="r"><code># read built-in data on car road tests performed by Motor Trend
-data(mtcars)         
-
-str(mtcars)    # examine the structure of this data object
+data(mtcars)   
+head(mtcars)    # inspect the first few lines
 
 # ?mtcars        # learn more about this built-in data set</code></pre>
+<p>Many packages come with built-in datasets as well. For, instance,
+ggplot2 comes with the “diamonds” package:</p>
+<pre class="r"><code>ggplot2::diamonds   # note the use of the package name followed by two colons- this is a way to make sure you are using a function (or data set) from a particular package... (sometimes several packages have functions with the same name...)</code></pre>
+<pre><code>## # A tibble: 53,940 × 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+##  3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+##  4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+##  5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+##  6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
+##  7  0.24 Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
+##  8  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+##  9  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+## 10  0.23 Very Good H     VS1      59.4    61   338  4     4.05  2.39
+## # … with 53,930 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 </div>
 </div>
 <div id="basic-data-checking" class="section level2">
 <h2>Basic data checking</h2>
-<p>To learn more about the ‘internals’ of any data object in R, we can use the “str()” (structure) function:</p>
+<p>To learn more about the ‘internals’ of any data object in R, we can
+use the “str()” (structure) function:</p>
 <pre class="r"><code>####
 #### Check/explore data object
 #### 
 
-
 # ?str: displays the internal structure of the data object
-str(data.df)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    20 obs. of  4 variables:
-##  $ Country: chr  &quot;Bolivia&quot; &quot;Brazil&quot; &quot;Chile&quot; &quot;Colombia&quot; ...
-##  $ Import : int  46 74 89 77 84 89 68 70 60 55 ...
-##  $ Export : int  0 0 16 16 21 15 14 6 13 9 ...
-##  $ Product: chr  &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;A&quot; ...</code></pre>
-<p>As we’ve already seen, we can use the “head()” function to see the first few rows of our data (or the “tail()” function to see the last few rows):</p>
-<pre class="r"><code># ?head: displays first n elements of object (default=6)
-head(data.df)</code></pre>
-<pre><code>##     Country Import Export Product
-## 1   Bolivia     46      0       N
-## 2    Brazil     74      0       N
-## 3     Chile     89     16       N
-## 4  Colombia     77     16       A
-## 5 CostaRica     84     21       A
-## 6      Cuba     89     15       A</code></pre>
-<pre class="r"><code>head(data.df,2)</code></pre>
-<pre><code>##   Country Import Export Product
-## 1 Bolivia     46      0       N
-## 2  Brazil     74      0       N</code></pre>
-<pre class="r"><code># ?tail: displays last n elements of object (default=6)
-tail(data.df)</code></pre>
-<pre><code>##           Country Import Export Product
-## 15      Nicaragua     68      0       A
-## 16         Panama     84     19       N
-## 17       Paraguay     74      3       A
-## 18           Peru     73      0       N
-## 19 TrinidadTobago     84     15       A
-## 20      Venezuela     91      7       N</code></pre>
-<p>And we can use the “summary()” function to get a brief summary of what’s in our data frame:</p>
+str(mtcars)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<pre class="r"><code>str(data.df)</code></pre>
+<pre><code>## spec_tbl_df [20 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ Country: chr [1:20] &quot;Bolivia&quot; &quot;Brazil&quot; &quot;Chile&quot; &quot;Colombia&quot; ...
+##  $ Import : num [1:20] 46 74 89 77 84 89 68 70 60 55 ...
+##  $ Export : num [1:20] 0 0 16 16 21 15 14 6 13 9 ...
+##  $ Product: chr [1:20] &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;A&quot; ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   Country = col_character(),
+##   ..   Import = col_double(),
+##   ..   Export = col_double(),
+##   ..   Product = col_character()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre class="r"><code>names(diamonds)</code></pre>
+<pre><code>##  [1] &quot;carat&quot;   &quot;cut&quot;     &quot;color&quot;   &quot;clarity&quot; &quot;depth&quot;   &quot;table&quot;   &quot;price&quot;  
+##  [8] &quot;x&quot;       &quot;y&quot;       &quot;z&quot;</code></pre>
+<p>And we can use the “summary()” function to get a brief summary of
+what’s in our data frame:</p>
 <pre class="r"><code>summary(data.df)</code></pre>
 <pre><code>##    Country              Import         Export        Product         
 ##  Length:20          Min.   :35.0   Min.   : 0.00   Length:20         
@@ -578,23 +635,34 @@ tail(data.df)</code></pre>
 </div>
 <div id="exporting-and-saving-data-in-r" class="section level2">
 <h2>Exporting and saving data in R</h2>
-<p>Reading in data is one thing, but you will probably also want to write data to your hard disk. There are countless reasons for this- you might want to use an external program to plot your data, you might want to archive some simulation results.</p>
-<p>Again, there are many ways to write data to a file. Here are the basics!</p>
-<div id="exporting-data" class="section level3">
-<h3>Exporting data</h3>
+<p>Reading in data is one thing, but you will probably also want to
+write data to your hard drive as well. There are countless reasons for
+this- you might want to use an external program to plot your data, you
+might want to archive some simulation results.</p>
+<p>Again, there are many ways to write data to a file. Here are the
+basics!</p>
+<div id="exporting-data-as-table" class="section level3">
+<h3>Exporting data as table</h3>
 <pre class="r"><code>####
 #### Exporting data (save to hard drive as data file)
 ####
 
-# ?write.table: writes a file to the working directory
+# ?write_csv: writes a CSV file to the working directory
    
-write.table(data.df[,c(&quot;Country&quot;,&quot;Product&quot;)], file=&quot;data_export.csv&quot;, sep=&quot;,&quot;, col.names=TRUE, row.names=FALSE)   # export a subset of the data we just read in.</code></pre>
+write_csv(data.df[,c(&quot;Country&quot;,&quot;Product&quot;)], file=&quot;data_export.csv&quot;)   # export a subset of the data we just read in.</code></pre>
 </div>
 <div id="saving-and-loading-data" class="section level3">
 <h3>Saving (and loading) data</h3>
-<p>The data loaded in your <strong>R environment</strong> are stored in your computer’s memory as <strong>binary</strong> representations that are efficient but not particularly human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn’t a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data <em>outside</em> of R.</p>
+<p>The data loaded in your <strong>R environment</strong> are stored in
+your computer’s memory as <strong>binary</strong> representations that
+are efficient but not human-readable (this is how computers store and
+manage data). But sometimes the lack of human readability isn’t a
+problem. For example: what if all we want to do is save the data so that
+we can load it back into an R session at a later date? In this case we
+never need to look at the data <em>outside</em> of R.</p>
 <p>To do this we can use the “save()” and “load()” functions in R:</p>
-<p>NOTE: all binary R data files should be stored with the extension “.RData”:</p>
+<p>NOTE: all binary R data files should be stored with the extension
+“.RData”:</p>
 <pre class="r"><code>####
 ####  Saving and loading
 ####
@@ -609,34 +677,40 @@ save(a,b,file=&quot;Module1_2.RData&quot;)
 rm(a,b)   # remove these objects from the environment
 
 load(&quot;Module1_2.RData&quot;)   # load these objects back in!</code></pre>
-<p>NOTE: If you’re using an RStudio Project (.Rproj), then the contents of your environment are saved when you close the project (if you choose that option when closing the project), and automatically loads again when you open the R Project file. This allows you to pick up where you left off!</p>
 </div>
 <div id="clearing-the-environment" class="section level3">
 <h3>Clearing the environment</h3>
-<p>Sometimes your environment can get cluttered with objects. In these cases, it can help to clear the environment. Let’s try this!</p>
+<p>Sometimes your environment can get cluttered with objects. In these
+cases, it can help to clear the environment. You can just use the
+‘broom’ icon in your environment window in RStudio to clear your
+environment, or use this command:</p>
 <pre class="r"><code>##############
-# Clear the environment (and load it back in!)
-
-save.image(file=&quot;Module2.RData&quot;)    # ?save.image: saves entire environment (we don&#39;t necessarily want to clear everything right now)
+# Clear the environment
 
 rm(list=ls())   # clear the entire environment. Confirm that your environment is now empty!
 
-load(file=&quot;Module2.RData&quot;)   # load the objects back!</code></pre>
+data.df &lt;- read_csv(&quot;data.csv&quot;)  # read the data back in!</code></pre>
 </div>
 </div>
 <div id="working-with-data-in-r" class="section level2">
 <h2>Working with data in R</h2>
-<p>Now let’s start seeing what we can do with data in R. Even without doing any statistical analyses, R is very a powerful environment for doing data transformations and performing mathematical operations.</p>
+<p>Now let’s start seeing what we can do with data in R. Even without
+doing any statistical analyses, R is very a powerful environment for
+doing data transformations and performing mathematical operations.</p>
 <div id="boolean-operations" class="section level3">
 <h3>Boolean operations</h3>
-<p>Boolean operations refer to TRUE/FALSE tests. That is, we ask a question about the data that either is true or false.</p>
+<p>Boolean operations refer to TRUE/FALSE tests. That is, we can ask a
+question about the data to a Boolean operator and the operator will
+return a TRUE or a FALSE (logical) result.</p>
 <p>First, let’s meet the boolean operators.</p>
-<p>NOTE: don’t get confused between the equals sign (“=”), which is an alternative <em>assignment operator</em> (same as “&lt;-”), and the double equals sign (“==”), which is a boolean operator:</p>
+<p>NOTE: don’t get confused between the equals sign (“=”), which is an
+<em>assignment operator</em> (same as “&lt;-”), and the double equals
+sign (“==”), which is a Boolean operator:</p>
 <pre class="r"><code># &lt;- assignment operator
 # =  alternative assignment operator
 
 a &lt;- 3     # assign the value &quot;3&quot; to the object named &quot;a&quot;
-a = 3      # assign the value &quot;3&quot; to the object named &quot;a&quot;
+a = 3      # assign the value &quot;3&quot; to the object named &quot;a&quot; (alternative)
 a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quot;3&quot;? </code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>####
@@ -652,7 +726,7 @@ a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quo
 # &gt;=   greater than or equal to
 # ==   equal to
 # !=   not equal to
-# %in% matches any one of a specified group of possibilities
+# %in% matches one of a specified group of possibilities
 
 #####
 # Combining multiple conditions
@@ -669,216 +743,366 @@ Y &lt; Z
 !(Y &lt; Z)  # the exclamation point reverses any boolean object (read &quot;NOT&quot;)
 
 # Wrong!
-data.df[,2]=74     # sets entire second column equal to 74! OOPS!!!
+data.df[,2]=74     # sets entire second column equal to 74! OOPS WE GOOFED UP!!!
 
 data.df &lt;- read.csv(&quot;data.csv&quot;)  ## correct our mistake in the previous line (revert to the original data)!
 
 # Right
-data.df[,2]==74    # tests each element of column to see whether it is equal to 74</code></pre>
+data.df[,2]==74    # tests each element of column to see whether it is equal to 74
+
+data.df[,2]&lt;74|data.df[,2]==91   # use the logical OR operator</code></pre>
 </div>
 <div id="data-subsetting-using-boolean-logic" class="section level3">
 <h3>Data subsetting using boolean logic</h3>
-<p>Boolean operations are great for subsetting data - that is, we can select only those rows/observations that meet a certain condition (where [some condition] is TRUE).</p>
-<p>The “which()” function returns the indices of a vector (i.e., the specific elements) that meet a certain specified condition. Here’s how it works:</p>
-<pre class="r"><code>####
-####  Subsetting data
-####
+<p>Boolean operations are great for subsetting data - that is, we can
+select only those rows/observations that meet a certain condition (where
+[some condition] is TRUE).</p>
+<pre class="r"><code>#  Subsetting data ---------------------------
 
-##########
-# The &quot;which()&quot; function -- return indices of a vector that meet a certain condition (condition is TRUE)
+data.df[data.df[,&quot;Import&quot;]&lt;74,]    # select those rows of data for which second column is less than 74</code></pre>
+<pre><code>## # A tibble: 9 × 4
+##   Country      Import Export Product
+##   &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+## 1 Bolivia          46      0 N      
+## 2 DominicanRep     68     14 A      
+## 3 Ecuador          70      6 A      
+## 4 ElSalvador       60     13 A      
+## 5 Guatemala        55      9 A      
+## 6 Haiti            35      3 A      
+## 7 Honduras         51      7 A      
+## 8 Nicaragua        68      0 A      
+## 9 Peru             73      0 N</code></pre>
+<pre class="r"><code>#  or alternatively, using tidyverse syntax:
 
-which(data.df[,2]==74)       # elements of column 2 that are equal to 74</code></pre>
-<pre><code>## [1]  2 17</code></pre>
-<pre class="r"><code>which(data.df[,2]!=74)       # elements of column 2 that are NOT equal to 74</code></pre>
-<pre><code>##  [1]  1  3  4  5  6  7  8  9 10 11 12 13 14 15 16 18 19 20</code></pre>
-<pre class="r"><code>which(data.df[,2]&lt;74)        #  and so on...</code></pre>
-<pre><code>## [1]  1  7  8  9 10 11 12 15 18</code></pre>
-<pre class="r"><code>which((data.df[,2]&lt;74)|(data.df[,2]==91))   # use the logical OR operator</code></pre>
-<pre><code>##  [1]  1  7  8  9 10 11 12 15 18 20</code></pre>
-<pre class="r"><code>#########
-# Alternatively, save the indices as an R object as an intermediate step
-
-indices &lt;- which(data.df[,2]&lt;74)
-data.df[indices,2]               # same as above!</code></pre>
-<pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
-<pre class="r"><code>#########
-# Alternatively, you can omit the &quot;which()&quot; function entirely- 
-#     R will know that you&#39;re trying to omit &quot;FALSE&quot; elements and keep &quot;TRUE&quot; elements
-
-data.df[data.df[,2]&lt;74,2]    # alternative simpler syntax without using &quot;which()&quot;... </code></pre>
-<pre><code>## [1] 46 68 70 60 55 35 51 68 73</code></pre>
+data.df %&gt;% 
+  filter(Import&lt;74)</code></pre>
+<pre><code>## # A tibble: 9 × 4
+##   Country      Import Export Product
+##   &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+## 1 Bolivia          46      0 N      
+## 2 DominicanRep     68     14 A      
+## 3 Ecuador          70      6 A      
+## 4 ElSalvador       60     13 A      
+## 5 Guatemala        55      9 A      
+## 6 Haiti            35      3 A      
+## 7 Honduras         51      7 A      
+## 8 Nicaragua        68      0 A      
+## 9 Peru             73      0 N</code></pre>
 <pre class="r"><code>sub.countries&lt;-c(&quot;Chile&quot;,&quot;Colombia&quot;,&quot;Mexico&quot;)    # create vector of character strings
 
-which(data.df$Country==&quot;Chile&quot;) </code></pre>
-<pre><code>## [1] 3</code></pre>
-<pre class="r"><code># This command doesn&#39;t work because sub.countries is a vector, not a single character string. 
-which(data.df[,1]==sub.countries) </code></pre>
-<pre><code>## Warning in data.df[, 1] == sub.countries: longer object length is not a multiple
-## of shorter object length</code></pre>
-<pre><code>## integer(0)</code></pre>
-<p>When we want all elements of a vector that match one of a group (vector) of possibilities, we use the “%in%” operator:</p>
-<pre class="r"><code># Instead we use %in%
-which(data.df[,1] %in% sub.countries)     # elements of data column that match one or more of the elements in &quot;sub.countries&quot;</code></pre>
-<pre><code>## [1]  3  4 14</code></pre>
-<pre class="r"><code>which((data.df$Country %in% sub.countries) &amp; (data.df$Product==&quot;N&quot;))   # use AND operator </code></pre>
-<pre><code>## [1]  3 14</code></pre>
-<pre class="r"><code># What if we don&#39;t want the row number, but the actual row(s) of data that meet a particular condition?
-
-indices &lt;- which(data.df$Country %in% sub.countries)
-data.df[indices,]          # print all data for a subset of observations</code></pre>
-<pre><code>##     Country Import Export Product
-## 3     Chile     89     16       N
-## 4  Colombia     77     16       A
-## 14   Mexico     83      4       N</code></pre>
+data.df %&gt;% 
+  filter(Country %in% sub.countries)   # subset just those rows that match the list of countries</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   Country  Import Export Product
+##   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+## 1 Chile        89     16 N      
+## 2 Colombia     77     16 A      
+## 3 Mexico       83      4 N</code></pre>
 </div>
 </div>
 <div id="more-data-processing" class="section level2">
 <h2>More data processing!</h2>
-<p>Let’s switch to a different data file. Download the <a href="turtle_data.txt">Turtle Data</a> and save to your working directory (R project directory).</p>
-<p>Let’s use this data set to review the summarizing and subsetting operations we have learned- and learn a few new things along the way:</p>
-<div id="subsetting-data-and-correcting-errors" class="section level3">
-<h3>Subsetting data and correcting errors</h3>
-<pre class="r"><code>####
-####  Practice subsetting a data frame
-#### 
+<p>Let’s switch to a different data file. Download the <a
+href="turtle_data.txt">Turtle Data</a> and save to your project
+directory.</p>
+<p>Let’s use this data set to review the summarizing and subsetting
+operations we have learned- and learn a few new things along the
+way:</p>
+<div id="subsetting-data" class="section level3">
+<h3>Subsetting data</h3>
+<pre class="r"><code>#  Practice subsetting a data frame ------------------------
 
-turtles.df &lt;- read.table(file=&quot;turtle_data.txt&quot;, header=T, stringsAsFactors = FALSE)
-names(turtles.df)</code></pre>
-<pre><code>## [1] &quot;tag_number&quot;      &quot;sex&quot;             &quot;carapace_length&quot; &quot;head_width&quot;     
-## [5] &quot;weight&quot;</code></pre>
-<pre class="r"><code>head(turtles.df)</code></pre>
-<pre><code>##   tag_number    sex carapace_length head_width weight
-## 1         10   male            41.0       7.15   7.60
-## 2         11 female            46.4       8.18  11.00
-## 3          2   &lt;NA&gt;            24.3       4.42   1.65
-## 4         15   &lt;NA&gt;            28.7       4.89   2.18
-## 5         16   &lt;NA&gt;            32.0       5.37   3.00
-## 6          3 female            42.8       7.32   8.60</code></pre>
-<pre class="r"><code># Subset for females
-fem.turtles.df &lt;- turtles.df[which(turtles.df$sex ==&quot;female&quot;),]    
+turtles.df &lt;- read_table(file=&quot;turtle_data.txt&quot;)
+turtles.df</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1         10 male              41         7.15   7.6 
+##  2         11 female            46.4       8.18  11   
+##  3          2 &lt;NA&gt;              24.3       4.42   1.65
+##  4         15 &lt;NA&gt;              28.7       4.89   2.18
+##  5         16 &lt;NA&gt;              32         5.37   3   
+##  6          3 female            42.8       7.32   8.6 
+##  7          4 male              40         6.6    6.5 
+##  8          5 female            45         8.05  10.9 
+##  9         12 female            44         7.55   8.9 
+## 10         13 &lt;NA&gt;              28         4.85   1.97
+## # … with 11 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre class="r"><code># Subset for only females
 
-# Can subset just one factor based on another
+fem.turtles.df = turtles.df %&gt;%
+  filter(sex==&quot;female&quot;)
+  
 # Here we want to know the mean weight of all females 
 mean(fem.turtles.df$weight)</code></pre>
 <pre><code>## [1] 10.02857</code></pre>
-<pre class="r"><code>mean(turtles.df$weight[which(turtles.df$sex ==&quot;female&quot;)]) </code></pre>
-<pre><code>## [1] 10.02857</code></pre>
-<pre class="r"><code># Try using the &quot;subset()&quot; function, which can make subsetting a data frame even easier!
-female.turtles &lt;- subset(turtles.df,sex==&quot;female&quot;)              # use the &quot;subset()&quot; function!
-female.turtles &lt;- turtles.df[which(turtles.df$sex==&quot;female&quot;),]    # alternative
+<pre class="r"><code># or we can summarize the mean weight for males and females at the same time using the following tidyverse syntax ...
 
-subset.turtles.df &lt;- subset(turtles.df, weight &gt;= 10)
-head(subset.turtles.df)</code></pre>
-<pre><code>##    tag_number    sex carapace_length head_width weight
-## 2          11 female            46.4       8.18   11.0
-## 8           5 female            45.0       8.05   10.9
-## 16         22 female            48.1       8.55   12.8
-## 19          7 female            48.0       8.67   13.5</code></pre>
-<pre class="r"><code># Subsetting to certain individuals
-bad.tags &lt;- c(13,105)
-good.turtles.df &lt;- turtles.df[!(turtles.df$tag_number %in% bad.tags),]
-bad.turtles.df &lt;- turtles.df[turtles.df$tag_number %in% bad.tags,]
-bad.turtles.df</code></pre>
-<pre><code>##    tag_number  sex carapace_length head_width weight
-## 10         13 &lt;NA&gt;              28       4.85   1.97
-## 17        105 male              44       7.10   9.00</code></pre>
-</div>
-<div id="data-manipulation-using-subsetting" class="section level3">
-<h3>Data manipulation using subsetting</h3>
-<p>We can use subsetting operations to manipulate (alter) data- for example, to correct some data elements:</p>
-<pre class="r"><code>####
-####  Data Manipulation using subsetting
-####
-
-# Using subset to correct data entry problems
-unique(turtles.df$sex)</code></pre>
+turtles.df %&gt;% 
+  group_by(sex) %&gt;% 
+  summarize(meanwt = mean(weight))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   sex    meanwt
+##   &lt;chr&gt;   &lt;dbl&gt;
+## 1 fem      6.2 
+## 2 female  10.0 
+## 3 male     7.29
+## 4 &lt;NA&gt;     2.35</code></pre>
+<pre class="r"><code># OOPS, looks like we just caught an error!</code></pre>
+<p>Let’s fix the error we just noticed in the way sex was represented in
+the turtle dataset.</p>
+<pre class="r"><code>unique(turtles.df$sex)  # note the two ways of representing females...</code></pre>
 <pre><code>## [1] &quot;male&quot;   &quot;female&quot; NA       &quot;fem&quot;</code></pre>
-<pre class="r"><code>table(turtles.df$sex)   # do you notice the data entry problem here?    </code></pre>
-<pre><code>## 
-##    fem female   male 
-##      1      7      7</code></pre>
-<pre class="r"><code>turtles.df[which(turtles.df$sex==&quot;fem&quot;),2]&lt;-&quot;female&quot;            # recode the sex variable
+<pre class="r"><code>turtles.df$sex[turtles.df$sex==&quot;fem&quot;] &lt;- &quot;female&quot;  # correct the error
 
- # make a new variable &quot;size.class&quot; based on the &quot;weight&quot; variable
-turtles.df$size.class &lt;- NA
-turtles.df$size.class[turtles.df$weight &gt;= 6] &lt;- 1         # ths is the &quot;adult&quot; class 
-turtles.df$size.class[turtles.df$weight &lt; 6] &lt;- 2          # this is the &quot;juvenile&quot; class
+# or alternatively using more tidyverse-y syntax
+turtles.df = turtles.df %&gt;% 
+  mutate(sex = replace(sex,sex==&quot;fem&quot;,&quot;female&quot;))
+
+turtles.df %&gt;%          # summarize weight by sex
+  group_by(sex) %&gt;% 
+  summarize(meanwt = mean(weight))</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   sex    meanwt
+##   &lt;chr&gt;   &lt;dbl&gt;
+## 1 female   9.55
+## 2 male     7.29
+## 3 &lt;NA&gt;     2.35</code></pre>
+</div>
+<div id="fixing-data-using-subsetting" class="section level3">
+<h3>Fixing data using subsetting</h3>
+<p>Like we saw in the previous example (correcting the ‘sex’ variable)
+we can use subsetting operations to correct or alter data:</p>
+<pre class="r"><code>#  Data Manipulation using subsetting -------------------
+
+subset.turtles.df &lt;- turtles.df %&gt;% 
+  filter(weight &gt;= 10)
+
+subset.turtles.df</code></pre>
+<pre><code>## # A tibble: 4 × 5
+##   tag_number sex    carapace_length head_width weight
+##        &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+## 1         11 female            46.4       8.18   11  
+## 2          5 female            45         8.05   10.9
+## 3         22 female            48.1       8.55   12.8
+## 4          7 female            48         8.67   13.5</code></pre>
+<pre class="r"><code># list of tags we do not trust the data for
+bad.tags &lt;- c(13,105)
+
+turtles.df = turtles.df %&gt;% 
+  mutate(
+    sex = replace(sex,tag_number%in%bad.tags,NA),
+    carapace_length = replace(carapace_length,tag_number%in%bad.tags,NA),
+    head_width = replace(head_width,tag_number%in%bad.tags,NA),
+    weight = replace(weight,tag_number%in%bad.tags,NA)
+  )
+
+# or use the following non-tidyverse syntax... which seems simpler to me!
+
+turtles.df[turtles.df$tag_number%in%bad.tags,c(&quot;sex&quot;,&quot;carapace_length&quot;,&quot;head_width&quot;,&quot;weight&quot;)]  &lt;- NA
+
+turtles.df</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1         10 male              41         7.15   7.6 
+##  2         11 female            46.4       8.18  11   
+##  3          2 &lt;NA&gt;              24.3       4.42   1.65
+##  4         15 &lt;NA&gt;              28.7       4.89   2.18
+##  5         16 &lt;NA&gt;              32         5.37   3   
+##  6          3 female            42.8       7.32   8.6 
+##  7          4 male              40         6.6    6.5 
+##  8          5 female            45         8.05  10.9 
+##  9         12 female            44         7.55   8.9 
+## 10         13 &lt;NA&gt;              NA        NA     NA   
+## # … with 11 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre class="r"><code> # make a new variable &quot;size.class&quot; based on the &quot;weight&quot; variable
+
+turtles.df = turtles.df %&gt;% 
+  mutate(size.class = case_when(
+    weight &lt; 3 ~ &quot;juvenile&quot;,
+    weight &gt; 6 ~ &quot;adult&quot;,
+    is.na(weight) ~ NA_character_,
+    TRUE  ~ &quot;subadult&quot;
+  ))
 
 turtles.df$size.class</code></pre>
-<pre><code>##  [1] 1 1 2 2 2 1 1 1 1 2 1 2 2 2 1 1 1 1 1 2 1</code></pre>
+<pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;juvenile&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;   
+##  [7] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    NA         &quot;adult&quot;    &quot;juvenile&quot;
+## [13] &quot;subadult&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    NA         &quot;adult&quot;   
+## [19] &quot;adult&quot;    &quot;juvenile&quot; &quot;adult&quot;</code></pre>
+</div>
+<div id="selecting-and-renaming-columns" class="section level3">
+<h3>Selecting and renaming columns</h3>
+<p>Sometimes we only want to work with a small subset of columns from a
+larger dataset. Or we have column names that are not informative or
+don’t make sense to us.</p>
+<pre class="r"><code># select only the x y and z columns from the diamonds dataset
+
+diamonds2 &lt;- diamonds %&gt;% 
+  select(x,y,z)
+ 
+# in base R (non tidyverse) you can do this:
+diamonds2 &lt;- diamonds[,c(&quot;x&quot;,&quot;y&quot;,&quot;z&quot;)]
+
+# to change the column names, use the &quot;names()&quot; function
+
+names(diamonds2)  # extract the column names</code></pre>
+<pre><code>## [1] &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
+<pre class="r"><code>names(diamonds2)  &lt;- c(&quot;length&quot;, &quot;width&quot;,&quot;depth&quot;)</code></pre>
 </div>
 <div id="sortingordering-data" class="section level3">
 <h3>Sorting/ordering data</h3>
-<p><strong>Sorting</strong> is another common data operation, which helps to visualize and organize data. In R, sorting is typically accomplished using either the “order()” or the “sort()” functions:</p>
-<p><strong>sort</strong>: sorts a vector literally – i.e., “10,3,22” becomes “3,10,22” (increasing, by default)<br />
-<strong>order</strong>: returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted (increasing, by default) – i.e., “10,3,22” becomes “2,1,3”.</p>
-<p>Here’s how you do it in R, continuing with the turtle data example:</p>
-<pre class="r"><code>####
-####  Sorting
-####
+<p><strong>sorting</strong> is another common data operation, which
+helps to visualize and organize data. In R, sorting is typically
+accomplished using the “order()” function:</p>
+<p>*order()** returns the indices of the original (unsorted) vector in
+the order that they would appear if properly sorted (increasing, by
+default) – i.e., “10,3,22” becomes “2,1,3”.</p>
+<p>In the ‘tidyverse’ we can use the “arrange” verb to do this!</p>
+<pre class="r"><code>#  Sorting  ----------------
 
-# Sort works for ordering along one vector
-sort(turtles.df$carapace_length)  </code></pre>
-<pre><code>##  [1] 24.3 28.0 28.7 29.2 32.0 32.0 35.0 35.1 40.0 40.0 41.0 42.3 42.8 43.0 44.0
-## [16] 44.0 44.0 45.0 46.4 48.0 48.1</code></pre>
-<pre class="r"><code># Order returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
+# The &#39;order&#39; function returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
 order(turtles.df$carapace_length)</code></pre>
-<pre><code>##  [1]  3 10  4 20  5 12 13 14  7 11  1 15  6 18  9 17 21  8  2 19 16</code></pre>
-<pre class="r"><code># To sort a data frame by one vector, use &quot;order()&quot;
-turtles.tag &lt;- turtles.df[order(turtles.df$tag_number),]
+<pre><code>##  [1]  3  4 20  5 12 13 14  7 11  1 15  6 18  9 21  8  2 19 16 10 17</code></pre>
+<pre class="r"><code># To sort a data frame by one vector, you can use &quot;order()&quot;
+turtles.df[order(turtles.df$tag_number),]</code></pre>
+<pre><code>## # A tibble: 21 × 6
+##    tag_number sex    carapace_length head_width weight size.class
+##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
+##  1          1 &lt;NA&gt;              29.2       5.1    2.38 juvenile  
+##  2          2 &lt;NA&gt;              24.3       4.42   1.65 juvenile  
+##  3          3 female            42.8       7.32   8.6  adult     
+##  4          4 male              40         6.6    6.5  adult     
+##  5          5 female            45         8.05  10.9  adult     
+##  6          6 female            40         6.53   6.2  adult     
+##  7          7 female            48         8.67  13.5  adult     
+##  8          8 &lt;NA&gt;              32         5.35   2.9  juvenile  
+##  9          9 male              35         5.74   3.9  subadult  
+## 10         10 male              41         7.15   7.6  adult     
+## # … with 11 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre class="r"><code># or we can use the &quot;arrange&quot; verb:
+turtles.df %&gt;% 
+  arrange(carapace_length)</code></pre>
+<pre><code>## # A tibble: 21 × 6
+##    tag_number sex    carapace_length head_width weight size.class
+##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
+##  1          2 &lt;NA&gt;              24.3       4.42   1.65 juvenile  
+##  2         15 &lt;NA&gt;              28.7       4.89   2.18 juvenile  
+##  3          1 &lt;NA&gt;              29.2       5.1    2.38 juvenile  
+##  4         16 &lt;NA&gt;              32         5.37   3    subadult  
+##  5          8 &lt;NA&gt;              32         5.35   2.9  juvenile  
+##  6          9 male              35         5.74   3.9  subadult  
+##  7         17 female            35.1       6.04   4.5  subadult  
+##  8          4 male              40         6.6    6.5  adult     
+##  9          6 female            40         6.53   6.2  adult     
+## 10         10 male              41         7.15   7.6  adult     
+## # … with 11 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre class="r"><code># or if we want in descending order...
 
-# Order in reverse
-turtles.tag.rev &lt;- turtles.df[order(turtles.df$tag_number,decreasing = TRUE),] 
-
-# Sorting by 2 columns
-turtles.sex.weight &lt;- turtles.df[order(turtles.df$sex,turtles.df$weight),] </code></pre>
+turtles.df %&gt;% 
+  arrange(desc(carapace_length))</code></pre>
+<pre><code>## # A tibble: 21 × 6
+##    tag_number sex    carapace_length head_width weight size.class
+##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
+##  1         22 female            48.1       8.55   12.8 adult     
+##  2          7 female            48         8.67   13.5 adult     
+##  3         11 female            46.4       8.18   11   adult     
+##  4          5 female            45         8.05   10.9 adult     
+##  5         12 female            44         7.55    8.9 adult     
+##  6        104 male              44         7.35    9   adult     
+##  7         14 male              43         6.6     7.2 adult     
+##  8          3 female            42.8       7.32    8.6 adult     
+##  9         19 male              42.3       6.77    7.8 adult     
+## 10         10 male              41         7.15    7.6 adult     
+## # … with 11 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre class="r"><code># Sorting by 2 columns
+turtles.df %&gt;% 
+  arrange(sex,weight)</code></pre>
+<pre><code>## # A tibble: 21 × 6
+##    tag_number sex    carapace_length head_width weight size.class
+##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
+##  1         17 female            35.1       6.04    4.5 subadult  
+##  2          6 female            40         6.53    6.2 adult     
+##  3          3 female            42.8       7.32    8.6 adult     
+##  4         12 female            44         7.55    8.9 adult     
+##  5          5 female            45         8.05   10.9 adult     
+##  6         11 female            46.4       8.18   11   adult     
+##  7         22 female            48.1       8.55   12.8 adult     
+##  8          7 female            48         8.67   13.5 adult     
+##  9          9 male              35         5.74    3.9 subadult  
+## 10          4 male              40         6.6     6.5 adult     
+## # … with 11 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 </div>
 <div id="dealing-with-missing-data" class="section level3">
 <h3>Dealing with missing data</h3>
-<p>In many real-world datasets, observations are incomplete in some way- they are missing information.</p>
-<p>In R, the code “NA” represents elements of a vector that are missing for whatever reason.</p>
+<p>In many real-world datasets, observations are incomplete in some way-
+they are missing information.</p>
+<p>In R, the code “NA” (not available) stands in for elements of a
+vector that are missing for whatever reason.</p>
 <p>Most statistical functions have ways of dealing with NAs.</p>
-<p>Let’s explore a data set with NAs.</p>
-<p>Download this <a href="data_missing.txt">Data with missing values</a> and save to your working directory.</p>
+<p>Let’s explore a data set with missing data.</p>
+<p>Download this <a href="data_missing.txt">Data with missing values</a>
+and save to your working directory.</p>
 <p>Now let’s explore this data set in more detail:</p>
-<pre class="r"><code>####
-####  Missing Data
-####
+<pre class="r"><code>#  Missing Data   ----------------------
 
-# Try reading in a data file with missing values, w/o specifying how the text is delimited
-# Will not read because of missing data, it does not know where the columns are!
-# missing.df &lt;- read.table(file=&quot;data_missing.txt&quot;)
+# NOTE: you need to specify that this is a tab-delimited file. It is especially important to specify the delimiter for data files with missing data. If you specify the header and what the text is delimited by correctly, it will read missing data as NA. Otherwise it will fail to read data in properly.
 
-# If you specify the header and what the text is delimited by, it will read them as NA
-missing.df &lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)
+missing.df &lt;- read_delim(file=&quot;data_missing.txt&quot;,delim=&quot;\t&quot;)   # try replacing with &quot;read_table&quot;- it does not work right!
 
-# Missing data is read as an NA
+# Missing data are read as an NA
 missing.df</code></pre>
-<pre><code>##           Country Import Export Product
-## 1         Bolivia     46      0       N
-## 2          Brazil     74      0       N
-## 3           Chile     89     16       N
-## 4        Colombia     77     16       A
-## 5       CostaRica     84     21       A
-## 6            Cuba     89     15       A
-## 7    DominicanRep     NA     14       A
-## 8         Ecuador     70      6       A
-## 9      ElSalvador     60     13       A
-## 10      Guatemala     55      9       A
-## 11          Haiti     35      3       A
-## 12       Honduras     51     NA       A
-## 13        Jamaica     87     23       A
-## 14         Mexico     83      4       N
-## 15      Nicaragua     68      0       A
-## 16         Panama     NA     19       N
-## 17       Paraguay     74      3       A
-## 18           Peru     73     NA       N
-## 19 TrinidadTobago     84     15       A
-## 20      Venezuela     NA      7       N</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    Country        Import Export Product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 DominicanRep       NA     14 A      
+##  8 Ecuador            70      6 A      
+##  9 ElSalvador         60     13 A      
+## 10 Guatemala          55      9 A      
+## 11 Haiti              35      3 A      
+## 12 Honduras           51     NA A      
+## 13 Jamaica            87     23 A      
+## 14 Mexico             83      4 N      
+## 15 Nicaragua          68      0 A      
+## 16 Panama             NA     19 N      
+## 17 Paraguay           74      3 A      
+## 18 Peru               73     NA N      
+## 19 TrinidadTobago     84     15 A      
+## 20 Venezuela          NA      7 N</code></pre>
 <pre class="r"><code># Omits (removes) rows with missing data
-missing.NArm.df &lt;- na.omit(missing.df)
-
-# ?is.na
+na.omit(missing.df)</code></pre>
+<pre><code>## # A tibble: 15 × 4
+##    Country        Import Export Product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia            46      0 N      
+##  2 Brazil             74      0 N      
+##  3 Chile              89     16 N      
+##  4 Colombia           77     16 A      
+##  5 CostaRica          84     21 A      
+##  6 Cuba               89     15 A      
+##  7 Ecuador            70      6 A      
+##  8 ElSalvador         60     13 A      
+##  9 Guatemala          55      9 A      
+## 10 Haiti              35      3 A      
+## 11 Jamaica            87     23 A      
+## 12 Mexico             83      4 N      
+## 13 Nicaragua          68      0 A      
+## 14 Paraguay           74      3 A      
+## 15 TrinidadTobago     84     15 A</code></pre>
+<pre class="r"><code># ?is.na   (Boolean test!)
 is.na(missing.df)</code></pre>
 <pre><code>##       Country Import Export Product
 ##  [1,]   FALSE  FALSE  FALSE   FALSE
@@ -901,138 +1125,97 @@ is.na(missing.df)</code></pre>
 ## [18,]   FALSE  FALSE   TRUE   FALSE
 ## [19,]   FALSE  FALSE  FALSE   FALSE
 ## [20,]   FALSE   TRUE  FALSE   FALSE</code></pre>
-<pre class="r"><code># Get index of NAs
-which(is.na(missing.df))</code></pre>
-<pre><code>## [1] 27 36 40 52 58</code></pre>
-<pre class="r"><code># Replace all missing values in the data frame with a 0
-missing.df[is.na(missing.df)] &lt;- 0
+<pre class="r"><code>complete.cases(missing.df)   # Boolean: for each row, tests if there are no NA values</code></pre>
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE
+## [13]  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE</code></pre>
+<pre class="r"><code># Replace all missing values in the data frame with a an interpolation function from the &#39;zoo&#39; package (here we interpolate using the mean value)
 
-# Create another data frame with missing values
-missing.mean.df&lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)
-
-# Replace only the missing values of just one column with the mean for that column
-missing.mean.df$Export[is.na(missing.mean.df$Export)] &lt;- mean(missing.mean.df$Export,na.rm=T)
-missing.mean.df</code></pre>
-<pre><code>##           Country Import   Export Product
-## 1         Bolivia     46  0.00000       N
-## 2          Brazil     74  0.00000       N
-## 3           Chile     89 16.00000       N
-## 4        Colombia     77 16.00000       A
-## 5       CostaRica     84 21.00000       A
-## 6            Cuba     89 15.00000       A
-## 7    DominicanRep     NA 14.00000       A
-## 8         Ecuador     70  6.00000       A
-## 9      ElSalvador     60 13.00000       A
-## 10      Guatemala     55  9.00000       A
-## 11          Haiti     35  3.00000       A
-## 12       Honduras     51 10.22222       A
-## 13        Jamaica     87 23.00000       A
-## 14         Mexico     83  4.00000       N
-## 15      Nicaragua     68  0.00000       A
-## 16         Panama     NA 19.00000       N
-## 17       Paraguay     74  3.00000       A
-## 18           Peru     73 10.22222       N
-## 19 TrinidadTobago     84 15.00000       A
-## 20      Venezuela     NA  7.00000       N</code></pre>
-<pre class="r"><code># Return only those rows with missing data
-missing.df&lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)
-missing.df &lt;- missing.df[!complete.cases(missing.df),]
-
-# Can summarize your data and tell you how many NA&#39;s per col
-summary(missing.mean.df)</code></pre>
+missing.df %&gt;% 
+  mutate(Export = na.fill(Export,mean(Export,na.rm=T)),
+         Import = na.fill(Import,mean(Import,na.rm=T)))</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    Country        Import Export Product
+##    &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
+##  1 Bolivia          46      0   N      
+##  2 Brazil           74      0   N      
+##  3 Chile            89     16   N      
+##  4 Colombia         77     16   A      
+##  5 CostaRica        84     21   A      
+##  6 Cuba             89     15   A      
+##  7 DominicanRep     70.5   14   A      
+##  8 Ecuador          70      6   A      
+##  9 ElSalvador       60     13   A      
+## 10 Guatemala        55      9   A      
+## 11 Haiti            35      3   A      
+## 12 Honduras         51     10.2 A      
+## 13 Jamaica          87     23   A      
+## 14 Mexico           83      4   N      
+## 15 Nicaragua        68      0   A      
+## 16 Panama           70.5   19   N      
+## 17 Paraguay         74      3   A      
+## 18 Peru             73     10.2 N      
+## 19 TrinidadTobago   84     15   A      
+## 20 Venezuela        70.5    7   N</code></pre>
+<pre class="r"><code># Can summarize your data and tell you how many NA&#39;s per col
+summary(missing.df)</code></pre>
 <pre><code>##    Country              Import          Export        Product         
 ##  Length:20          Min.   :35.00   Min.   : 0.00   Length:20         
-##  Class :character   1st Qu.:60.00   1st Qu.: 3.75   Class :character  
-##  Mode  :character   Median :74.00   Median :10.22   Mode  :character  
+##  Class :character   1st Qu.:60.00   1st Qu.: 3.25   Class :character  
+##  Mode  :character   Median :74.00   Median :11.00   Mode  :character  
 ##                     Mean   :70.53   Mean   :10.22                     
-##                     3rd Qu.:84.00   3rd Qu.:15.25                     
+##                     3rd Qu.:84.00   3rd Qu.:15.75                     
 ##                     Max.   :89.00   Max.   :23.00                     
-##                     NA&#39;s   :3</code></pre>
-<pre class="r"><code># Summarize one individual col
-summary(missing.mean.df$Export)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    0.00    3.75   10.22   10.22   15.25   23.00</code></pre>
+##                     NA&#39;s   :3       NA&#39;s   :2</code></pre>
 </div>
-</div>
-<div id="aside-dont-use-attach" class="section level2">
-<h2>ASIDE: don’t use “attach”!</h2>
-<p>Never use the “attach([some data frame])” function in R. This “convenience” function allows you to access all variables in a data frame by referencing the variable name only (instead of using the dollar-sign notation). That is, when you attach a data frame, you can do things like this:</p>
-<pre class="r"><code>##############
-# COMMON PITFALLS
-##############
-
-
-#############
-# The attach() function
-
-# Note: some people like to use attach
-# We DO NOT recommend using attach
-
-df &lt;- data.frame(    # build a data frame
-  a=1:10,
-  b=rnorm(10)
-)
-
-df$a       # pull out columns of the data frame
-df$b
-
-attach(df)   # &quot;attach&quot; the data frame  # attach make objects within dataframes accessible with fewer letters
-
-a          # now we can reference the columns without referencing the data frame
-b
-
-detach(df)   # remember to detach when you&#39;re done
-
-#########
-# BUT...
-
-attach(data.df)
-
-Import
-
-Import&lt;-rep(1,10) # What if we forget the names in our data frames and use that name for something else
-Import
-
-rm(Import) # But if we remove that object...
-
-Import  # There is still the original object behind it. That&#39;s troubling!
-
-detach(data.df)   # Remember to detach</code></pre>
-<p>BUT this just leads to problems in the end. Our recommendation: just don’t use it!!</p>
 </div>
 <div id="challenge-exercises" class="section level2">
 <h2>Challenge Exercises!</h2>
-<p>1: Create a new data frame by saving the file <a href="comm_data.txt">“comm_data.txt”</a> to your working directory. For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: “Class”,“Downstream”, “Upstream”.</p>
-<p>2: Read in the file "turtle_data.txt’, and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory.</p>
-<p>3: I am trying to create a data frame with only male turtles using the “which()” function. Would the following command work?</p>
-<pre><code>male_turtles &lt;- turtles[,which(turtles$sex==&quot;male&quot;)]</code></pre>
-<p>Why or why not?</p>
-<p>What other method could I use to create this without using “which()”?</p>
+<p>1: Save the <a href="comm_data.txt">“comm_data.txt”</a> file to your
+working directory. Read this file in as a data frame. Select only only
+the following columns: Hab_class, C_DWN, C_UPS (discard the remaining
+columns). Finally, rename these columns as: “Class”,“Downstream”, and
+“Upstream” respectively. [hint 1: use read_table to read in the file as
+a data frame] [hint 2: use the “select” verb to select the columns you
+want] [hint 3: use the names() function to rename the columns]</p>
+<p>2: Read in the file <a href="turtle_data.txt">“turtle_data.txt”</a>.
+Create a new version of this data frame with all missing data removed
+(discard all rows with one or more missing data). Save this new data
+frame to your project directory as a comma delimited text file. [hint 1:
+use the “na.omit()” function to remove rows with NAs] [hint 2: use the
+write_csv function to write to your working directory]</p>
+<p>3: Read in the file <a href="turtle_data.txt">“turtle_data.txt”</a>.
+Create a new data frame with only male turtles. Use this subsetted data
+set to compute the mean and standard deviation for carapace length of
+male turtles.</p>
 <pre class="r"><code>############
 ### CHALLENGE EXERCISES
 ############
 
-# 1: Create a new data frame by saving the file [&quot;comm_data.txt&quot;](comm_data.txt) to your working directory. For the new data frame, include only the following columns: Hab_class, C_DWN, C_UPS, and rename the columns as: &quot;Class&quot;,&quot;Downstream&quot;, &quot;Upstream&quot;.
+# 1: Save the &quot;comm_data.txt&quot; file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: &quot;Class&quot;,&quot;Downstream&quot;, and &quot;Upstream&quot; respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the &quot;select&quot; verb to select the columns you want] [hint 3: use the names() function to rename the columns]
 # 
-# 2: Read in the file &quot;turtle_data.txt&#39;, and explore the data. Create a new version of this data frame with all missing data removed. Save this new data frame as a comma delimited text file in your working directory. 
+# 2: Read in the file &quot;turtle_data.txt&quot;. Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the &quot;na.omit()&quot; function to remove rows with NAs] [hint 2: use the write_csv function to write to your working directory] 
 #   
-# 3: I am trying to create a data frame with only male turtles using the &quot;which()&quot; function.  Would the following command work? Why or why not? What other method could I use to create this without using &quot;which()&quot;?
-
-# male_turtles &lt;- turtles[,which(turtles$sex==&quot;male&quot;)]  # uncomment this to run it...</code></pre>
+# 3: Read in the file &quot;turtle_data.txt&quot;. Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.</code></pre>
 <p><a href="module1_3.html">–go to next module–</a></p>
-<div id="aside-tips-on-naming-objects-and-data-frame-columns-in-r" class="section level4">
+<div id="aside-tips-on-naming-objects-and-data-frame-columns-in-r"
+class="section level4">
 <h4>Aside: Tips on naming objects (and data frame columns) in R</h4>
 <ol style="list-style-type: decimal">
-<li>No spaces within object names (same for column names in data files) – use underscore instead!<br />
+<li>No spaces within object names (same for column names in data files)
+– use underscore instead!<br />
 </li>
-<li>Try not to name an object with a similar/same as a function (e.g. don’t name your data “data.frame”). NOTE: this can be hard- there are lots of functions in base R!<br />
+<li>Try not to name an object with a similar/same as a function
+(e.g. don’t name your data “data.frame”). NOTE: this can be hard- there
+are lots of functions in base R!<br />
 </li>
-<li>Can’t start object names (or column names in data frame) with a number</li>
+<li>Can’t start object names (or column names in data frame) with a
+number</li>
 </ol>
 </div>
 <div id="aside-dropping-dimensions" class="section level4">
 <h4>Aside: “dropping dimensions”</h4>
-<p>When subsetting matrices or arrays, R automatically “drops” dimensions. This is best understood by example:</p>
+<p>When subsetting matrices or arrays, R automatically “drops”
+dimensions. This is best understood by example:</p>
 <pre class="r"><code>##########
 # Demo- using the &quot;drop=TRUE&quot; argument when subsetting higher-dimensional objects
 
@@ -1048,7 +1231,9 @@ class(newmat)</code></pre>
 ## [1,]    1    2</code></pre>
 <pre class="r"><code>class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! </code></pre>
 <pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
-<p>This default behavior in R can lead to enormous problems when programming in R- just remember that the “drop=FALSE” argument can be your friend!!!</p>
+<p>This default behavior in R can lead to enormous problems when
+programming in R- just remember that the “drop=FALSE” argument can be
+your friend!!!</p>
 </div>
 </div>
 
