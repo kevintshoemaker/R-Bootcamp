@@ -632,6 +632,7 @@ function:</p>
 <pre class="r"><code># Load packages ------------------
 
 library(ggplot2)
+library(cowplot)
 library(tidyverse)
 library(Lahman)    # for getting baseball data</code></pre>
 <p>Next we can load in some data. To give you a sense of what R can do,
@@ -1090,8 +1091,7 @@ summary(model1)</code></pre>
 ## F-statistic:  1318 on 1 and 2024 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Then we can perform some diagnostic tests to make sure the data meet
 the assumptions of the analysis:</p>
-<pre class="r"><code>######
-# test key assumptions visually
+<pre class="r"><code># test key assumptions visually
 
 layout(matrix(1:4,nrow=2,byrow=T))  # set up graphics window
 plot(model1)  # run diagnostic plots for our regression</code></pre>
@@ -1129,9 +1129,7 @@ functionName([argument 1, argument2, ...])</code></pre>
 the function definition is shown.</p>
 <p>Here are some examples of how functions are used. Note the
 parentheses!</p>
-<pre class="r"><code>#############
-### functions
-#############
+<pre class="r"><code># functions -------------------------
 
 sum(1, 2, 3, 10)    # returns: 15
 
@@ -1439,8 +1437,7 @@ mydf</code></pre>
 <pre class="r"><code>mydf$Treatment    # access a column of the data frame by name</code></pre>
 <pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
 <p>Here are some useful R functions for exploring data objects:</p>
-<pre class="r"><code>###############
-# Other data exploration tricks in R
+<pre class="r"><code># Other data exploration tricks in R 
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array
@@ -1461,9 +1458,8 @@ vectors as rows:</li>
 <pre><code>c(1,4) 
 c(2,5) 
 c(3,6)</code></pre>
-<pre class="r"><code>############
-### CHALLENGE EXERCISES
-############
+<pre class="r"><code># CHALLENGE EXERCISES -------------------------
+
 
 ### Challenge 1: Create a 3 row by 2 column matrix equivalent to mymat. Use the &quot;rbind()&quot; function to bind the three rows together using the following three vectors as rows:
 

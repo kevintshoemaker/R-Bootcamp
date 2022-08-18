@@ -23,6 +23,7 @@ myname <- 'Barney'  # or use your real name.
 # Load packages ------------------
 
 library(ggplot2)
+library(cowplot)
 library(tidyverse)
 library(Lahman)    # for getting baseball data
 
@@ -198,16 +199,13 @@ model1 <- lm(Total.HR~yearID,summarized.teams.year)  # linear regression analysi
 summary(model1)
 
 
-######
 # test key assumptions visually
 
 layout(matrix(1:4,nrow=2,byrow=T))  # set up graphics window
 plot(model1)  # run diagnostic plots for our regression
 
 
-#############
-### functions
-#############
+# functions -------------------------
 
 sum(1, 2, 3, 10)    # returns: 15
 
@@ -355,8 +353,7 @@ mydf
 mydf$Treatment    # access a column of the data frame by name
 
 
-###############
-# Other data exploration tricks in R
+# Other data exploration tricks in R 
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array
@@ -367,9 +364,8 @@ ncol(my.data)     # get number of columns/variables in a data frame
 str(my.data)      # look at the "internals" of an object (useful for making sense of complex objects!)
 
 
-############
-### CHALLENGE EXERCISES
-############
+# CHALLENGE EXERCISES -------------------------
+
 
 ### Challenge 1: Create a 3 row by 2 column matrix equivalent to mymat. Use the "rbind()" function to bind the three rows together using the following three vectors as rows:
 

@@ -170,6 +170,7 @@ Once packages are installed, you can load them into your workspace (so they are 
 # Load packages ------------------
 
 library(ggplot2)
+library(cowplot)
 library(tidyverse)
 library(Lahman)    # for getting baseball data
 
@@ -389,7 +390,6 @@ Then we can perform some diagnostic tests to make sure the data meet the assumpt
 
 ```{r}
 
-######
 # test key assumptions visually
 
 layout(matrix(1:4,nrow=2,byrow=T))  # set up graphics window
@@ -431,9 +431,7 @@ Here are some examples of how functions are used. Note the parentheses!
 
 ```{r results=F}
 
-#############
-### functions
-#############
+# functions -------------------------
 
 sum(1, 2, 3, 10)    # returns: 15
 
@@ -708,8 +706,7 @@ Here are some useful R functions for exploring data objects:
 
 ```{r eval=FALSE}
 
-###############
-# Other data exploration tricks in R
+# Other data exploration tricks in R 
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array
@@ -734,9 +731,8 @@ c(3,6)
 
 ```{r}
 
-############
-### CHALLENGE EXERCISES
-############
+# CHALLENGE EXERCISES -------------------------
+
 
 ### Challenge 1: Create a 3 row by 2 column matrix equivalent to mymat. Use the "rbind()" function to bind the three rows together using the following three vectors as rows:
 
