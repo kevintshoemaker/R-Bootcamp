@@ -1,4 +1,4 @@
-tag_number  sex	carapace_length	head_width	weight
+tag_number	sex	carapace_length	head_width	weight
 10	male	41	7.15	7.6
 11	female	46.4	8.18	11
 2	NA	24.3	4.42	1.65

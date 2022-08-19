@@ -502,7 +502,7 @@ Now let's do some stuff with vectors!
 ```{r results=F}
 
 d1 <- 1:3             # make a vector: 1,2,3
-d2 <- d1+3         # add 3 to all elements of the vector "myvec"
+d2 <- d1+3            # add 3 to all elements of the vector "myvec"
 d3 <- d1+d2           # elementwise addition
 
 length(d1)            # number of elements in a vector
@@ -580,7 +580,7 @@ mylist[[3]][1,2]   # extract the first row, second column from the matrix that i
 
 ```
 
-##### Data frames (a special kind of list)
+##### Data frames and tibbles (a special kind of list)
 
 **Data frame** objects are the basic data storage object in R. Data frames are a special type of **list** in which each list element is a *vector* of equal length. Each list element in a data frame is also known as a *column*. 
 
@@ -604,7 +604,7 @@ df1$col2     # extract the second column by name (alternatively, df1[["col2"]])
 
 Now we have a data frame with three observation units and two measurements (variables).
 
-Note that a "tibble" is the same thing as a data frame, just with a few tweaks to make it work better in the tidyverse. We will primarily work with tibble data frames in this workshop.
+A **tibble** is the same thing as a data frame, just with a few tweaks to make it work better in the tidyverse. We will primarily work with tibble data frames in this workshop. For our purposes right now, tibbles and data frames are the same thing.
 
 ## Making up data!
 
@@ -742,7 +742,7 @@ c(3,6)
 4. Extract the first and third observation from the 2nd column of the data frame in 'mylist' (the list created in challenge 6 above). 
 
 
-5. (extra challenging!) Create a data frame named 'df_spatial' that contains 25 spatial locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
+5. (extra challenging!) Create a data frame (or tibble) named 'df_spatial' that contains 25 spatial locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
 HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq()' functions instead.
 

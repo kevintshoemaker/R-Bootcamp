@@ -33,8 +33,7 @@ library(tidyverse)
 
 ```
 
-
-Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. 
+Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of results. 
 
 The data visualization package *ggplot2* makes it very easy and straightforward to create a lot of different types of plots, from simple to complex.  In this module, we'll introduce ggplot syntax and briefly survey some of the package's plotting capabilities.
 
@@ -66,7 +65,7 @@ summary(trees)  # Summary stats for each column
 
 ## ggplot basics
 
-A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying the data frame you want to use to create your visualizations. We then often define the "x" argument (defining coordinates on an x axis) and (if applicable) a "y" argument (defining coordinates on a y axis). In ggplot these are known as aesthetic mappings! That is because it is a way of conveying information in the dataset graphically! Other ways of conveying information include point size, color, and symbol- all of these are also referred to as aesthetic mappings.
+A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying the data frame you want to use to create your visualizations. We then often define the "x" argument (defining coordinates on an x axis) and (if applicable) a "y" argument (defining coordinates on a y axis). In ggplot these are known as aesthetic mappings! That is because it is a way of conveying information in the dataset graphically! Other ways of conveying information graphically include point size, color, and symbol- all of which are also referred to as aesthetic mappings (syntax: `mapping=aes()`).
 
 You can then add geometric objects to your plot, often using functions beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and how these data should be displayed (which data should be used to represent the bar height, or the x coordinate, or the point size, etc.). **`aes()`** can also be used within the initial call to **`ggplot()`**.
 
@@ -87,6 +86,10 @@ And some more fancy and informative scatterplots
     # try representing tree height using the color aesthetic
 ggplot(trees, aes(x=Girth,y=Volume)) +
   geom_point(aes(col=Height))
+
+    # try representing tree height using the size aesthetic
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point(aes(size=Height))
 
    # try adding a regression line
 ggplot(trees, aes(x=Girth,y=Volume)) +
@@ -301,11 +304,11 @@ print(p)
 ```
 
 
-## A more complex worked example
+## Practice demo (with some new stuff)
 
-As a more complex demo, let's use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
+, let's use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
 
-First we will need to load a few more packages. Make sure to install any packages you don't already have! 
+First we will need to load a few more packages. Make sure to install any packages in this list you don't already have! 
 
 ```{r}
 
@@ -315,7 +318,6 @@ library(ggthemes)
 library(carData)
 library(DAAG)
 library(RColorBrewer)
-library(leaflet)
 
 ```
 
@@ -331,9 +333,9 @@ soil <- carData::Soils    # load example data
 head(soil)    # plot out the first few lines...
 
 ```
-Staring simply, let's say we're interested in how pH, a continuous variable, varies with the contour position, a categorical factor:  
+Staring simply, let's say we're interested in how pH, a continuous variable, varies with contour position, a categorical factor. See if you can reproduce one or both of the following plots:  
 
-```{r}
+```{r echo=FALSE}
 
 # basic boxplot and violin plot
 
@@ -348,9 +350,9 @@ plot_grid(plot1,plot2,labels = "AUTO")
 
 ```
 
-Next let's try a simple scatterplot of two continuous variables, Calcium content and pH.
+Next let's try a simple scatterplot of two continuous variables, Calcium content and pH. Try to reproduce the following plot:
 
-```{r}
+```{r echo=FALSE}
 
 # basic scatterplot
 
@@ -359,10 +361,9 @@ ggplot(soil) +
 
 ```
 
+Now let's say you wanted to examine if/how the relationship between pH and Ca varies with depth. You could go back to your scatterplot and use color to identify points from the different sampling depths. Reproduce this plot if you can!
 
-Now let's say you wanted to examine how the relationship between pH and Ca varies with depth. You could go back to your scatterplot and use color to identify points from the different sampling depths. ggplot will select default colors that display well against the default gray background.
-
-```{r}
+```{r echo=FALSE}
 
 ########
 # Color the points by depth
@@ -372,9 +373,9 @@ ggplot(soil) +
 
 ```
 
-We can play with how those points look if we want them to show up more boldly. Take note that arguments that affect all of the points equally, and don't relate to how *variables* are displayed, fall outside of the **`aes`** function.
+Try playing around with applying a few graphical attributes to all the points (specified outside the `aes()` argument). Try specifying `shape=21`, `color="black"` , `size=3` and `stroke=1`:
 
-```{r}
+```{r echo=FALSE}
 
 ##########
 # make additional alterations (outside the "aes" function)
@@ -384,7 +385,7 @@ ggplot(soil) +
 
 ```
 
-Cool! Let's use the same grammar to plot relationships between pH and several soil nutrients on the same graph. Notice that the y axis label defaults to the first set of points (Ca), and we'd need to modify it. The depths in the legend also have no units! You'll see how to change things like axis labels and legend titles in a moment.
+Now for something new: let's plot relationships between pH and several soil nutrients on the same graph. Notice that the y axis label defaults to the first set of points (Ca), and we'd need to modify it. Also there is no legend! You'd have to change things like axis labels and legend titles 'manually' to complete this figure.
 
 ```{r}
 
@@ -398,15 +399,49 @@ ggplot(soil, aes(x=pH)) +
 
 ```
 
-Here's another way to plot multiple series, after reshaping with tidyr. This lets us plot our different nutrients as factor levels without typing each one with its specifications on its own line, and generates a legend that identifies the series (and also gives the default ggplot colors).
+There's a better way to do it. But first we need to 'reshape' our soils data with the tidyverse function `pivot_longer(). 
+
+### ASIDE: tidy data and reshaping functions
+
+All of the tidyverse set of packages are designed to work with *Tidy* formatted data.
+
+This means:
+
+  - Each variable must have its own column.
+  - Each observation must have its own row.
+  - Each value must have its own cell.
+ 
+This is what it looks like:
+  
+![](tidy-1.png)
+
+The *tidyr* package has several functions to help you get your data into this format.
+
+Use "pivot_longer()" to get all of the values and variables from multiple columns into a single column. 
+
+![](tidy-9.png)
+
+Use "pivot_wider()" to distribute two variables in a single column into separate columns, with their data values('value')
+
+![](tidy-8.png)
+
+For a nice intro to 'pivot_wider' and 'pivot_longer', see [this link](https://tidyr.tidyverse.org/articles/pivot.html)
+
+### Back to the example...
+
+Let's reshape the soil dataset into the long format- which in this case treats each separate nutrient measurement as a different observation (row).
 
 ```{r}
 
-#########
-# Use 'tidyverse' tricks to simplify the syntax for ggplot to color by nutrient
+# Use 'tidyverse' to reshape the data  ---------------
 
 soil.nut <- pivot_longer(soil, cols=c("Ca","Mg","Na"), names_to="nutrient",values_to = "value" )
+soil.nut
+```
 
+This lets us plot our different nutrients as factor levels without typing each one with its specifications on its own line, and generates a legend that identifies the series (and also gives the default ggplot colors).
+
+```{r}
 ggplot(soil.nut) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
 
@@ -428,7 +463,7 @@ ggplot(soil.nut2) +
 
 The problem here is that K occurs at natural concentrations that differ from the other nutrients by an order of magnitude, so it's difficult to examine them all on the same scale. One approach we can take is to plot them separately. While we're at it, let's also make sure that we specify the response units on the y-axis. 
 
-#### Facets, scales, and themes
+### Facets and scales, and themes
 
 The next plot introduces: 
 
@@ -436,10 +471,9 @@ The next plot introduces:
 
 * **scales**, which allow you to adjust how to represent the data with axes and colors
 
-* **themes**, which allow you to adjust the entire plot aesthetic (using **`theme_X()`**) as well as individual elements of legends, text, and more (using **`theme()`**).
+We also play around with some more ggplot *themes*.
 
-
-```{r fig.height=6, fig.width=14}
+```{r fig.height=4, fig.width=8}
 
 ##########
 # plot with facets, scales, and themes!
@@ -448,81 +482,22 @@ ggplot(soil.nut2) +
   geom_point(aes(x=pH, y=value, fill=nutrient), 
              shape=21, color="black", size=4, stroke=1.5) +
   facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
+  labs(y="mg / 100 g soil") +
   theme_bw() +
   theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face="bold"))
     
 ```
 
-
 In this plot, we've kept the different colors for each nutrient, but suppressed the legend that is auto-generated by ggplot, because this information is now redundant with the headers of the three facets. In the **`facet_wrap`** function, we used **`scales`** to specify that the y-axis should be bounded to fit the data within each facet. There are some cases where you would probably want the axes to be the same -- e.g. if you were comparing raw values across groups, rather than the distributions or trends of the data.
 
-We also changed the theme! ggplot has [8 built-in themes](http://r4ds.had.co.nz/images/visualization-themes.png) to choose from. There are also lots of other themes built into extension packages such as ggthemes. Here are a few examples of different themes applied to the plot we just made.
-
-```{r fig.height=6, fig.width=14, echo=FALSE}
-
-########
-# Try different themes! 
-
-    ## igray:
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_igray() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-```
-**`theme_igray`**
-
-```{r fig.height=6, fig.width=14, echo=FALSE}
-
-   ## economist:
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_economist() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-```
-**`theme_economist`**
-
-```{r fig.height=6, fig.width=14, echo=FALSE}
-
-    ## gdocs:
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_gdocs() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-```
-**`theme_gdocs`**
-
-
-Check out the options and play around with different themes until you find some that appeal to you and lend themselves to the type of data visualization and color scales you plan to use. 
+We also changed the theme. ggplot has [8 built-in themes](http://r4ds.had.co.nz/images/visualization-themes.png) to choose from. There are also lots of other themes built into extension packages such as ggthemes. 
 
 You can also fine-tune pretty much any of the details (gridlines or no? plot borders? line weight of the borders and gridlines? axis label angles?) to your heart's content using the arguments in the **`theme()`** function.
 
-Speaking of color...
-
-#### Specifying colors
+### ASIDE: Specifying colors
 
 Sometimes sticking to the default colors in ggplot isn't the best choice. You might have factors representing ordered ranks, like in an experiment with different levels of light exposure, and want to represent these levels on a monochromatic scale. Or you might want to make a map displaying regions of positive or negative change in forest cover, using a diverging color scale. Or you don't even like the default ggplot colors, and have your own preferred color schemes. It's also important to remember that red-green colorblindness is fairly common, so if you are presenting data that must be distinguished by colors in a single plotting area, you should probably avoid this combination or combine it with changes in value (light to dark) in order for your plot to be accessible.
 
@@ -548,8 +523,8 @@ I'm going to pick the YlOrBr (Yellow-Orange-Brown) palette, because those seem l
 
 ggplot(soil) +
   geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
-  theme_bw() +
-  ylab("Ca (mg/100g soil)") +
+  theme_classic() +
+  labs(y="Ca (mg/100g soil)") +
   scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
 
 ```
@@ -576,8 +551,9 @@ What if depth were a continuous variable, rather than a set of four discrete cat
 #### Trendlines
 
 Next, we might want to add a trendline to each set of points. Try it for the plot we made of different nutrient concentrations as a function of pH. Arguments in the **`geom_smooth()`** function allow us to change the confidence level, the smoothing method, and other details.
+Try to reproduce the following figure using geom_smooth with `method="lm"`. 
 
-```{r fig.height=6, fig.width=14}
+```{r fig.height=4, fig.width=8, echo=FALSE}
 
 ##########
 # add trendlines
@@ -588,7 +564,7 @@ ggplot(soil.nut2) +
   geom_smooth(aes(x=pH, y=value), method="lm", color="black") +
   facet_wrap(~nutrient, scales="free_y") +
   ylab("mg / 100 g soil") +
-  theme_bw() +
+  theme_classic() +
   theme(legend.position="none",
         axis.text = element_text(size=14),
         axis.title = element_text(size=16),
@@ -597,13 +573,13 @@ ggplot(soil.nut2) +
     
 ```
 
-#### Density curves and error bars
+### Density curves and error bars
 
-Using **`geom_smooth`** to plot trendlines is a useful way to get more information from your scatterplots. To get an idea for how other kinds of statistical elements can be drawn onto ggplot plots, we'll look at examples using histograms and boxplots.
+Using **`geom_smooth`** to plot trendlines is a useful way to get more information from your scatterplots. To get an idea for how other kinds of statistical elements can be drawn onto plots, we'll look at examples using histograms and boxplots.
 
 First, a simple histogram of 3 soil nutrients.
 
-```{r fig.height=6, fig.width=14}
+```{r fig.height=4, fig.width=8}
 
 ###########
 # Adding density/smooth curves to plots
@@ -614,15 +590,15 @@ ggplot(soil.nut) +
   geom_histogram(aes(x=value), color="black", fill="white", bins=15) +
   facet_wrap(~nutrient, scales="free") +
   xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
+  theme_classic() +
+  theme(axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face="bold"))
 ```
 
 Here is how to add a density curve to the histogram with another **`geom`**:
 
-```{r fig.height=6, fig.width=14}
+```{r fig.height=4, fig.width=8}
 
 ########
 # Then add density curves
@@ -632,17 +608,17 @@ ggplot(soil.nut) +
   geom_density(aes(x=value,color=nutrient), size=1.5) +
   facet_wrap(~nutrient, scales="free") +
   xlab("mg / 100g soil") +
-  theme_dark() +
+  theme_classic() +
   theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face="bold"))
 
 ```
 
 And here's how we can compare our distributions to a normal distribution, using a **`stat`** function:
 
-```{r fig.height=6, fig.width=14}
+```{r fig.height=4, fig.width=8}
 
 ###########
 # And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
@@ -653,14 +629,13 @@ ggplot(soil.nut) +
                 args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
   facet_wrap(~nutrient, scales="free") +
   xlab("mg / 100g soil") +
-  theme_dark() +
+  theme_classic() +
   theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face="bold"))
 
 ```
-
 Let's go back to our basic boxplot, the default plot for visualizing continuous data against categories.
 
 First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of ~~principle~~ personal preference, but if capless whiskers look "off" to you, then you can work around it using **`stat_boxplot`**. **`stat`** functions are another group of functions for creating layers based on statistical properties of the data. Another example is **`stat_summary`**, which we use in the example below to add means to the boxplot. 
@@ -681,9 +656,11 @@ ggplot(soil, aes(x=Contour, y=pH)) +
 
 ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:
 
+START HERE!!!
+
 ##### ggplot extensions
 
-Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](http://www.ggplot2-exts.org/gallery/). 
+Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](https://exts.ggplot2.tidyverse.org/gallery/). 
 
 ##### Technique-specific plotting libraries
 

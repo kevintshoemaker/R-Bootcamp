@@ -99,7 +99,7 @@ What's in your working directory?
 
 There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And people are always inventing new ways to read and write data to/from R. But here are the basics.   
 
-- read.table or read_table      
+- read.table or read_delim      
      - reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)       
 - read.csv or read_csv        
      - fields are separated by a comma (this is still probably the most common way to read in data)        
@@ -121,10 +121,10 @@ Now let's read them into R!!
 
 #  Import data files into R----------------------
 
-# ?read_table    # some useful functions for reading in data
+# ?read_delim    # some useful functions for reading in data
 
-# read_table to import textfile with columns separated by whitespace
-data.txt.df <- read_table("data.txt")  
+# read_delim to import textfile (if no delim specified, it will try to guess!)
+data.txt.df <- read_delim("data.txt")  
 
 # read_csv to import textfile with columns separated by commas
 data.df <- read_csv("data.csv")
@@ -161,7 +161,7 @@ Many packages come with built-in datasets as well. For, instance, ggplot2 comes 
 
 ```{r}
 
-ggplot2::diamonds   # note the use of the package name followed by two colons- this is a way to make sure you are using a function (or data set) from a particular package... (sometimes several packages have functions with the same name...)
+ggplot2::diamonds   # note the use of the package name followed by two colons- this is a way to make sure you are using a function (or data set or other object) from a particular package... (sometimes several packages have functions with the same name...)
 
 
 ```
@@ -213,24 +213,28 @@ write_csv(data.df[,c("Country","Product")], file="data_export.csv")   # export a
 
 The data loaded in your **R environment** are stored in your computer's memory as **binary** representations that are efficient but not human-readable (this is how computers store and manage data). But sometimes the lack of human readability isn't a problem. For example: what if all we want to do is save the data so that we can load it back into an R session at a later date? In this case we never need to look at the data *outside* of R.
 
-To do this we can use the "save()" and "load()" functions in R:
+To save data we can use the "saveRDS()" and "save()" functions.
+To load data we can use the "readRDS()" and "load()" functions:
 
-NOTE: all binary R data files should be stored with the extension ".RData":
+NOTE: binary R data files should be stored with the extensions ".RData":
 
 ```{r}
 
 #  Saving and loading--------------------
 
-# ?save: saves particular objects to hard disk
+# saveRDS: save a single object from the environment to hard disk
+# save: saves one or more objects from the environment to hard disk. Must be read back in with the same name.
 
 a <- 1
 b <- data.df$Product
 
-save(a,b,file="Module1_2.RData")
+saveRDS(b, "Myobject1.rds")
+save(a,b,file="Myworkspace.RData")
 
 rm(a,b)   # remove these objects from the environment
 
-load("Module1_2.RData")   # load these objects back in!
+new_b <- readRDS("Myobject1.rds")
+load("Module1_2.RData")   # load these objects back in with the same names!
 
 ```
 
@@ -312,6 +316,9 @@ data.df[,2]<74|data.df[,2]==91   # use the logical OR operator
 
 ```
 
+This image from Wickham and Grolemund's excellent [R for Data Science](https://r4ds.had.co.nz/index.html) book can help conceptualize the combination operators:
+
+![](transform-logical.png)
 
 ### Data subsetting using boolean logic
 
@@ -336,6 +343,52 @@ data.df %>%
 
 ```
 
+### Aside: the pipe operator (%>%)
+
+The 'tidyverse' set of packages takes advantage of the pipe operator `%>%`, which provides a clean and intuitive way to structure code and perform sequential operations in R.
+
+Key advantages include:
+
+* code is more readable and intuitive --  reads left to right, rather than inside out as is the case for nested function
+
+* perform multiple operations without creating a bunch of intermediate (temporary) datasets
+
+This operator comes from the *magrittr* package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m ('m' is for Magritte). When reading code out loud, use 'then' for the pipe. For example the command here:
+
+```
+
+x %>% log() %>% round(digits=2)
+
+```
+
+can be interpreted as follows:
+
+> Take "x", THEN take its natural logarithm, THEN round the resulting value to 2 decimal places 
+
+The structure is simple. Start with the object you want to manipulate, and apply actions (e.g., functions) to that object in the order in which you want to apply them. 
+
+Here is a quick example.
+
+```{r piping1}
+
+#  ASIDE: using the pipe operator %>% (ctrl-shift-m) in R ---------------------
+
+# start with a simple example
+x <- 3
+
+# calculate the log of x
+log(x) # form f(x) is equivalent to
+
+x %>% log() # form x %>% f
+
+# example of multiple steps in pipe
+round(log(x), digits=2) # form g(f(x)) is equivalent to
+
+x %>% log() %>% round(digits=2) 
+
+```
+
+
 ## More data processing!
 
 Let's switch to a different data file. Download the [Turtle Data](turtle_data.txt) and save to your project directory. 
@@ -347,9 +400,16 @@ Let's use this data set to review the summarizing and subsetting operations we h
 ```{r}
 
 #  Practice subsetting a data frame ------------------------
-
-turtles.df <- read_table(file="turtle_data.txt")
+turtles.df <- read_delim(file="turtle_data.txt",delim="\t")   # tab-delimited file
 turtles.df
+
+# Subset for turtles that weigh greater than or equal to 10g
+
+subset.turtles.df <- turtles.df %>% 
+  filter(weight >= 10)
+
+subset.turtles.df
+
 
 # Subset for only females
 
@@ -381,7 +441,7 @@ turtles.df$sex[turtles.df$sex=="fem"] <- "female"  # correct the error
 turtles.df = turtles.df %>% 
   mutate(sex = replace(sex,sex=="fem","female"))
 
-turtles.df %>%          # summarize weight by sex
+turtles.df %>%          # summarize weight by sex (check that it's fixed)
   group_by(sex) %>% 
   summarize(meanwt = mean(weight))
 
@@ -395,11 +455,6 @@ Like we saw in the previous example (correcting the 'sex' variable) we can use s
 
 #  Data Manipulation using subsetting -------------------
 
-subset.turtles.df <- turtles.df %>% 
-  filter(weight >= 10)
-
-subset.turtles.df
-
 # list of tags we do not trust the data for
 bad.tags <- c(13,105)
 
@@ -411,7 +466,13 @@ turtles.df = turtles.df %>%
     weight = replace(weight,tag_number%in%bad.tags,NA)
   )
 
-# or use the following non-tidyverse syntax... which seems simpler to me!
+# or... use some more tidyverse helper functions and tricks!
+
+turtles.df = turtles.df %>% 
+  mutate(across(c("sex","carapace_length","head_width","weight"),
+                ~replace(.x,tag_number%in%bad.tags,NA)))
+
+# or use the following non-tidyverse syntax... which still seems easier to me!
 
 turtles.df[turtles.df$tag_number%in%bad.tags,c("sex","carapace_length","head_width","weight")]  <- NA
 
@@ -511,6 +572,9 @@ missing.df <- read_delim(file="data_missing.txt",delim="\t")   # try replacing w
 # Missing data are read as an NA
 missing.df
 
+# Can summarize your data and tell you how many NA's per col
+summary(missing.df)
+
 # Omits (removes) rows with missing data
 na.omit(missing.df)
 
@@ -519,14 +583,15 @@ is.na(missing.df)
 
 complete.cases(missing.df)   # Boolean: for each row, tests if there are no NA values
 
-# Replace all missing values in the data frame with a an interpolation function from the 'zoo' package (here we interpolate using the mean value)
+# Replace all missing values in the data frame with a an interpolation function from tidyverse: replace_na
 
 missing.df %>% 
-  mutate(Export = na.fill(Export,mean(Export,na.rm=T)),
-         Import = na.fill(Import,mean(Import,na.rm=T)))
+  mutate(Export = replace_na(Export,mean(Export,na.rm=T)),
+         Import = replace_na(Import,mean(Import,na.rm=T)))
 
-# Can summarize your data and tell you how many NA's per col
-summary(missing.df)
+# or using tidyverse trickery (less code repetition)
+missing.df %>% 
+  mutate(across(where(is.numeric),~replace_na(.,mean(.,na.rm=T))))
 
 ```
 

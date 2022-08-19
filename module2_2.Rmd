@@ -89,52 +89,6 @@ library(tidyverse)
 ```
 
 # Using the pipe operator `%>%` in R
-The 'tidyverse' set of packages takes advantage of the pipe operator `%>%`, which provides a clean and intuitive way to structure code and perform sequential operations in R.
-
-Key advantages include:
-
-* code is more readable and intuitive --  reads left to right, rather than inside out as is the case for nested function
-
-* perform multiple operations without creating a bunch of intermediate (temporary) datasets
-
-This operator comes from the *magrittr* package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl-shift-m ('m' is for Magritte). When reading code out loud, use 'then' for the pipe. For example the command here:
-
-
-```
-
-x %>% log() %>% round(digits=2)
-
-```
-
-can be interpreted as follows:
-
-> Take "x", THEN take its natural logarithm, THEN round the resulting value to 2 significant figures 
-
-
-The structure is simple. Start with the object you want to manipulate, and apply actions (e.g., functions) to that object in the order in which you want to apply them. 
-
-Here is a quick example.
-
-```{r piping1}
-
-####
-####  Using the pipe operator %>% (ctrl-shift-m)
-####
-
-# start with a simple example
-x <- 3
-
-# calculate the log of x
-log(x) # form f(x) is equivalent to
-
-x %>% log() # form x %>% f
-
-# example of multiple steps in pipe
-round(log(x), digits=2) # form g(f(x)) is equivalent to
-
-x %>% log() %>% round(digits=2) # form x %>% f %>%  g
-
-```
 
 # Importing data into *R* using *readr*
 
@@ -166,18 +120,7 @@ tail(clim_data)
 
 #  Making data tidy using *tidyr*
 
-All of the tidyverse set of packages are designed to work with *Tidy* formatted data.
 
-This means:
-
-  - Each variable must have its own column.
-  - Each observation must have its own row.
-  - Each value must have its own cell.
- 
- This is what it looks like:
-  
-  
-  ![](tidy-1.png)
 
 The *tidyr* package has several functions to help you get your data into this format.
 
