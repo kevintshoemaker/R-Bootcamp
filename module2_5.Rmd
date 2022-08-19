@@ -1,6 +1,6 @@
 ---
 title: "Module 2.5"
-author: "Introduction to Spatial Data (Mitch Gritts)"
+author: "Introduction to Spatial Data"
 date: "Fall 2021"
 output:
   html_document:

@@ -11,20 +11,20 @@ navbar:
           href: module1_1.html
         - text: "Submodule 1.2: managing data"
           href: module1_2.html
-        - text: "Submodule 1.3: plotting and basic stats"
+        - text: "Submodule 1.3: plotting in ggplot2"
           href: module1_3.html
-        - text: "Submodule 1.4: Programming in R"
+        - text: "Submodule 1.4: basic statistics in R"
           href: module1_4.html
-    - text: "Workshop #2: Beyond the basics"
+    - text: "Workshop #2: beyond the basics"
       menu:
+        - text: "Submodule 2.1: Programming in R"
+          href: module2_0.html
         - text: "Submodule 2.1: R packages"
           href: module2_1.html
         - text: "Submodule 2.2: Using the 'tidyverse'"
           href: module2_2.html
         - text: "Submodule 2.3: Plotting with 'ggplot'"
           href: module2_3.html
-        - text: "Submodule 2.4: Parallel computing in R"
-          href: module2_4.html
         - text: "Submodule 2.5: Spatial analysis"
           href: module2_5.html
     - text: "Data sets"

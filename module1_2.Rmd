@@ -30,7 +30,6 @@ library(zoo)
 
 library(tidyverse)
 library(ggplot2)
-library(cowplot)
 library(zoo)
 
 ```
@@ -120,9 +119,7 @@ Now let's read them into R!!
 
 ```{r message=FALSE, warning=FALSE, results=FALSE}
 
-####
-####  Import data files into R
-####
+#  Import data files into R----------------------
 
 # ?read_table    # some useful functions for reading in data
 
@@ -136,7 +133,6 @@ names(data.df)
 # Remove redundant objects from memory
 rm(data.txt.df)
 
-
 ```
 
 ### Using R's built in data
@@ -148,9 +144,7 @@ R has many useful built-in data sets that come pre-loaded. You can explore these
 # Built-in data files
 data()   
 
-
 ```
-
 
 Let's read in one of these datasets!
 
@@ -178,9 +172,7 @@ To learn more about the 'internals' of any data object in R, we can use the "str
 
 ```{r}
 
-####
-#### Check/explore data object
-#### 
+# Check/explore data object--------------------
 
 # ?str: displays the internal structure of the data object
 str(mtcars)
@@ -208,9 +200,7 @@ Again, there are many ways to write data to a file. Here are the basics!
 
 ```{r}
 
-####
-#### Exporting data (save to hard drive as data file)
-####
+# Exporting data (save to hard drive as data file)---------------------------
 
 # ?write_csv: writes a CSV file to the working directory
    
@@ -229,9 +219,7 @@ NOTE: all binary R data files should be stored with the extension ".RData":
 
 ```{r}
 
-####
-####  Saving and loading
-####
+#  Saving and loading--------------------
 
 # ?save: saves particular objects to hard disk
 
@@ -252,8 +240,7 @@ Sometimes your environment can get cluttered with objects. In these cases, it ca
 
 ```{r}
 
-##############
-# Clear the environment
+# Clear the environment ------------------------
 
 rm(list=ls())   # clear the entire environment. Confirm that your environment is now empty!
 
@@ -288,11 +275,8 @@ a == 3     # answer the question: "does the object "a" equal "3"?
 
 ```{r eval=FALSE}
 
-####
-####  Boolean operations
-####
+####  Boolean operations---------------------------
 
-#####
 # Basic operators
 
 # <    less than
@@ -303,7 +287,6 @@ a == 3     # answer the question: "does the object "a" equal "3"?
 # !=   not equal to
 # %in% matches one of a specified group of possibilities
 
-#####
 # Combining multiple conditions
 
 # &    must meet both conditions (AND operator)
@@ -600,37 +583,6 @@ write_csv(turt1,"turt_test1.csv")
 
 
 [--go to next module--](module1_3.html)
-
-
-
-#### Aside: Tips on naming objects (and data frame columns) in R
-1. No spaces within object names (same for column names in data files) -- use underscore instead!          
-2. Try not to name an object with a similar/same as a function (e.g. don't name your data "data.frame"). NOTE: this can be hard- there are lots of functions in base R!           
-3. Can't start object names (or column names in data frame) with a number   
- 
-
-
-#### Aside: "dropping dimensions"
-
-When subsetting matrices or arrays, R automatically "drops" dimensions. This is best understood by example:
-
-```{r}
-
-##########
-# Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
-
-newmat <- matrix(c(1:6),nrow=3,byrow = T)
-class(newmat)
-
-newmat[1,]
-class(newmat[1,])    # what? why is it no longer a matrix????
-
-newmat[1,,drop=FALSE]
-class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
-
-```
-
-This default behavior in R can lead to enormous problems when programming in R- just remember that the "drop=FALSE" argument can be your friend!!!
 
 
 

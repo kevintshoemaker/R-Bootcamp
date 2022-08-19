@@ -15,29 +15,13 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE}
 
-##################################################
-####                                          ####  
-####  R Bootcamp #2, Module 3                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
+#  R Bootcamp #2, Module 3 ------------------------------                
+#     University of Nevada, Reno             
+#     Data Visualization with 'ggplot2'
 
-
-#############################################
-####  Data Visualization with 'ggplot2'  ####
-####                                     ####
-####  Author: Stephanie Freund           ####
-#############################################
 
 ```
 
-
-Thanks to Stephanie Freund, who pulled this module together!
-
-Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. On Day 1, you learned how to create several types of plots in base R. Base R is great for plotting, and you can make them quite beautiful looking as well. But it can be quite difficult to make nice looking figures in base R.
-
-When you start creating a lot of plots for which you might want to quickly and easily adjust graphical elements, or want to create more complex plots that display a lot of information in one place, the data visualization package *ggplot2* is extremely useful. In this module, we'll introduce ggplot syntax and briefly survey some of the package's plotting capabilities.
 
 ### Load script for module #2.3
 
@@ -55,7 +39,7 @@ All graphics produced in ggplot2 are built using elements of this grammatical fr
 
 A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying the data you want to visualize. You can then add geometric objects, beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and how these data should be displayed (which data should be used to represent the bar height, or the x coordinate, or the point size, etc.). **`aes()`** can also be used within the initial call to **`ggplot()`**.
 
-To demonstrate, we'll use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
+
 
 First, install and load ggplot2 and the other packages we'll be using for this module.
 
@@ -76,34 +60,7 @@ library(leaflet)
 
 ```
 
-Now load the dataset.
 
-```{r}
-
-##############
-# Load the example data!
-
-data(Soils,package = "carData")    # load example data
-
-#See what variables it contains...
-soil <- data.frame(Soils)
-head(soil)
-
-```
-
-We'll start with a basic boxplot. Let's say we're interested in how pH, a continuous variable, varies with the contour position, a categorical factor.  
-
-```{r}
-
-########
-# basic boxplot...
-
-ggplot(soil) +
-  geom_boxplot(aes(x=Contour, y=pH))
-
-```
-
-You can see that the default plot includes a gray background with white gridlines. This makes all of the elements on this plot easy to see, but as you start adjusting colors and identifying your personal preferences, you'll probably want to customize this -- ggplot has a ton of options for doing so. 
 
 Let's try a scatterplot of two continuous variables, Calcium content and pH.
 

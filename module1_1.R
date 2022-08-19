@@ -6,7 +6,7 @@
 
 
 
-myname <- 'Barney'  # or use your real name.
+myname <- "Daenerys"  # or use your real name.
 
 
 # R DEMO ----------------------  
@@ -23,7 +23,6 @@ myname <- 'Barney'  # or use your real name.
 # Load packages ------------------
 
 library(ggplot2)
-library(cowplot)
 library(tidyverse)
 library(Lahman)    # for getting baseball data
 
@@ -36,7 +35,7 @@ master <- read_csv("http://dgrtwo.github.io/pages/lahman/Master.csv")
 
 batting <- read_csv("http://dgrtwo.github.io/pages/lahman/Batting.csv")
 
-# Read in data from package (could read in all of these from the Lahman package!)
+# Read in data from package (you can read in all of these from the Lahman package!)
 
 fielding <- tibble(Lahman::Fielding)
 
@@ -224,9 +223,7 @@ help(round)  # a function for getting help with functions!!
 
 
 
-
 #  Create R Objects ------------------------
-
 
 
 # scalars   --------------------------------
@@ -237,7 +234,6 @@ scalar2 <- 104
 
 
 # VECTORS  -------------------------------
-
 
 vector1 <- c(1.1, 2.1, 3.1, 4)   # the "c()" function combines smaller data objects into a larger object
 vector2 <- c('a', 'b', 'c')
@@ -259,8 +255,7 @@ mymat <- cbind(d1,d2)        # create a matrix by binding vectors, with vector d
 mymat
 class(mymat)   # confirm that the new object "mymat" is a matrix using the 'class()' function
 
-
-mymat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
+mymat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (matrix constructor)
 mymat
 
 
@@ -273,7 +268,7 @@ sum(mymat)
 
 mymat[3,2]    # extract the element in the 3rd row, 2nd column
 
-mymat[,1]     # extract first column
+mymat[,1]     # extract the entire first column
 
 # X[a,b]       access row a, column b element of matrix/data frame X
 # X[,b]        access all rows of column b of matrix/data frame X
@@ -292,12 +287,12 @@ mylist
 
 mylist[[2]]    # extract the second list element
 
-mylist[[3]][1,2]   # extract the first row, second column from the third list element!   
+mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list !   
 
 
 # DATA FRAMES ---------------------------
 
-df1 <- tibble(col1=c(1,2,3),col2=c("A","A","B"))        # create a ‘tibble' data frame with two columns. Each column is a vector of length 3
+df1 <- data.frame(col1=c(1,2,3),col2=c("A","A","B"))        # create a data frame with two columns. Each column is a vector of length 3
 df1
 
 df1[1,2]     # extract the first element in the second column
@@ -313,22 +308,20 @@ df1$col2     # extract the second column by name (alternatively, df1[["col2"]])
 seq(0,1,length=5)          # sequence of length 5 between 0 and 1 
 
 
-
 # Repeating vector sequences -----------
 
 rep(0,times=3)                # repeat 0 three times
-rep(1:3,times=2)              # repeat 1:3 two times
+rep(1:3,times=2)              # repeat the vector 1:3 twice
 rep(1:3,each=2)               # repeat each element of 1:3 two times
 
 
 # Random numbers ---------------
 
-z <- rnorm(10)                # 10 samples from std. normal
-z
-y <- rnorm(10,mean=-2,sd=4)           # 10 samples from Normal(-2,4^2)
-y
+rnorm(10)                     # 10 samples from std. normal
 
-rbinom(5,size=3,prob=.5)                # 5 samples from Binom(3,0.5)
+rnorm(10,mean=-2,sd=4)        # 10 samples from Normal(-2,4^2)
+
+rbinom(5,size=3,prob=.5)      # 5 samples from Binom(3,0.5)
 rbinom(5,3,.1)                # 5 samples from Binom(3,0.1)
 
 runif(10)                     # 10 standard uniform random numbers

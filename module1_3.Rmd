@@ -1,6 +1,6 @@
 ---
 title: "Module 1.3"
-author: 'Getting started: basic plotting and statistics in R'
+author: 'Basic plotting R (ggplot)'
 date: "Fall 2022"
 output:
   html_document:
@@ -28,15 +28,23 @@ knitr::opts_chunk$set(
 #  Data visualization and statistics ----------------------
 
 library(ggplot2)
+library(cowplot)
 library(tidyverse)
 
 ```
 
+
+Visualization often plays a major role in the research process, from quality assurance, to data exploration, to the presentation of analytical results. 
+
+The data visualization package *ggplot2* makes it very easy and straightforward to create a lot of different types of plots, from simple to complex.  In this module, we'll introduce ggplot syntax and briefly survey some of the package's plotting capabilities.
+
+A good ggplot cheat sheet can be found here: [ggplot cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
+
 ## Load script for module #1.3: Plotting
 
-1. Click [here](module1_3.R) to download the script! Save the script to your working directory (R Project folder).
+1. Click [here](module1_3.R) to download the script, and save the script to your working directory (R Project folder).
 
-2. Load your script in your RStudio Project. To do this, open your RStudio Project and click on the folder icon in the toolbar at the top and load your script. 
+2. Load the script into your RStudio Project. To do this, open your RStudio Project and click on the folder icon in the toolbar at the top and load your script. 
 
 Let's get started with plotting in R!
 
@@ -58,11 +66,11 @@ summary(trees)  # Summary stats for each column
 
 ## ggplot basics
 
-To get started with "ggplot()" we first give it a data set! 
+A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying the data frame you want to use to create your visualizations. We then often define the "x" argument (defining coordinates on an x axis) and (if applicable) a "y" argument (defining coordinates on a y axis). In ggplot these are known as aesthetic mappings! That is because it is a way of conveying information in the dataset graphically! Other ways of conveying information include point size, color, and symbol- all of these are also referred to as aesthetic mappings.
 
-We then usually define the "x" argument (defining coordinates on an x axis) and a "y" argument (defining coordinates on a y axis). In ggplot these are known as aesthetic mappings! That is because it is a way of conveying information in the dataset graphically!
+You can then add geometric objects to your plot, often using functions beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and how these data should be displayed (which data should be used to represent the bar height, or the x coordinate, or the point size, etc.). **`aes()`** can also be used within the initial call to **`ggplot()`**.
 
-Here is an example of a **scatterplot** in ggplot:  
+Here is an example of a simple **scatterplot** in ggplot:  
 
 ```{r}
 
@@ -76,7 +84,7 @@ And some more fancy and informative scatterplots
 
 ```{r}
 
-    # try representing tree height using color
+    # try representing tree height using the color aesthetic
 ggplot(trees, aes(x=Girth,y=Volume)) +
   geom_point(aes(col=Height))
 
@@ -90,335 +98,173 @@ ggplot(trees, aes(x=Girth,y=Volume)) +
 ### Change Plot Type
 Because we're exploring different ways of plotting, it is useful to include multiple plots in the same image. 
 
-We can do this using the `faceting` functions in ggplot. 
-
-///START HERE
+We can do this using the `plot_grid()` function in the cowplot package (commonly used extensions to ggplot). Here we explore different ways of graphically representing the relationship between tree girth and volume.  
 
 ```{r eval=FALSE}
 
-?par
+# Explore different "geoms" or plot types ----------------
 
-par()   # view the default graphical parameters (can be kind of overwhelming!)
+plot1 <- ggplot(trees,aes(Girth,Volume)) +    # plot the relationship as a line
+  geom_line()
+plot2 <- ggplot(trees,aes(Girth,Volume)) +    # plot a smoothed "spline" fit of the relationship
+  geom_smooth()
+plot3 <- ggplot(trees,aes(Girth,Volume)) +    # plot scatterplot
+  geom_point() 
+plot4 <- ggplot(trees,aes(Girth,Volume)) +    # plot scatterplot with smoothed regression line
+  geom_point() + 
+  geom_smooth()
+plot_grid(plot1,plot2,plot3,plot4,labels="auto")
 
 ```
 
+### Change symbols, colors and point sizes
 
-We could change the "mfrow" graphical parameter from c(1,1) to c(2,2): this means that we can fit four plots into a single window. 
+Point shape is specified using the `shape=` option. 
 
-An even more powerful solution is to use the function `layout()`. An example using `layout()` is below. 
+Color is specified using the `color=` option. 
 
-The default plot type for two quantitative variables is points (classic scatterplot), but you can change it to lines or both points and lines (or others) by using the `type=` option:
+Size is specified using the `size=` option.
+
+If you want convey information in your data via the color, symbol, or point size, you include it as an aesthetic mapping- and link it to one of the columns in your data.
+
+If you just want to color all the points the same way, or use the same symbol for everything, specify this outside of the aesthetic mapping. 
+
+To illustrate this, let's use the built in `iris` dataset, which gives the sepal length/width and petal length/width (in cm), for 50 flowers from each of 3 iris species.
 
 ```{r}
 
-# Use "layout" to define a 2 row x 2 column matrix with elements 1, 2, 3, and 4.
-# This divides the image into four sections and then fills these with the plot function
-layout(matrix(1:4, nrow=2, ncol=2))
+# Explore different aesthetic mappings ---------------------
 
-# layout.show(n=4)   # uncomment to run
-
-plot(x=trees$Girth, y=trees$Volume)             # points
-plot(x=trees$Girth, y=trees$Volume, type="l")   # lines
-plot(x=trees$Girth, y=trees$Volume, type="b")   # both
-plot(x=trees$Girth, y=trees$Volume, type="o")   # both with conected lines
-
-```
-
-Whenever you use `layout()` or `par()`, the graphics window will retain this layout for all subsequent plots. To start over (and return to the default graphical parameters), use `graphics.off()` to reset the plot. For example:
-
-```{r, eval=FALSE}
-
-plot(x=trees$Girth, y=trees$Volume)             ## The plot is still in 4 parts
-
-graphics.off()                                  ## now the plot is reset!
-
-# layout(1)   # (alternative way to reset back to a single plot)
-
-plot(x=trees$Girth, y=trees$Volume)             ## The plot is still in 4 parts
-
+plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # shape represents species
+  geom_point(aes(shape=Species))
+plot2 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +       # shape is same for everything!
+  geom_point(shape=2)
+plot3 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) 
+plot4 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color is same across the board
+  geom_point(col="purple")  
+plot5 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # size represents species
+  geom_point(aes(size=Species)) 
+plot6 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # size is same across the board
+  geom_point(size=2) 
+plot_grid(plot1,plot2,plot3,plot4,plot5,plot6,ncol=2)
 
 ```
 
-### Change Plot Symbol
-We can also change the type of points used when plotting using the `pch=` option. For example, we plot three different shape options below:
-
-```{r}
-
-# Use layout to define a 3 row x 1 column matrix with elements 1, 2, and 3.
-# This divides the image into three sections and then fills these with the plot function
-layout(matrix(1:3, nrow=3, ncol=1))
-
-# pch: 'plotting character' changes the type of point that is used (default is an open circle)!
-plot(x=trees$Girth, y=trees$Volume, pch=19)     # filled point
-plot(x=trees$Girth, y=trees$Volume, pch=2)      # open triangle
-plot(x=trees$Girth, y=trees$Volume, pch=11)     # star
-
-```
-
-Here is a graphic illustrating the main plot symbols you can reference using 'pch':
+Here is a graphic illustrating the main plot symbols you can reference using `shape=`:
 
 ![](points.png)
+Colors are a bit more intuitive, but here's a [link to a chart of R colors](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf))
 
-You might want to remember a couple favorites (for example, I like to use pch=20).
+### Themes
 
-### Specify Title and Axes
-We can also add titles, axis labels, and other options to make the plots look pretty. For example, we show below how each plot is changed by the addition of one extra command, starting at the top left corner and moving top-to-bottom: 
-
-```{r}
-
-layout(matrix(1:4, 2, 2))
-# main: adds a title
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees")
-
-# xlab: adds an x axis label
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees", 
-     xlab="Tree Girth (in)")
-
-# ylab: adds a y axis label
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees", 
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)")
-
-# las: rotates axis labels; las=1 makes them all parallel to reading direction
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees", 
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)", 
-     las=1)
-
-```
-
-### Add Colors
-If we want we can add colors to the points in the plot as well using the `col=` option. We will also use the `layout()` function to make a more interesting plot
+You can see that the default plot includes a gray background with white gridlines. This makes all of the elements on this plot easy to see, but as you start adjusting colors and identifying your personal preferences, you'll probably want to customize this -- ggplot has a ton of options for doing so. Here's a few examples of ggplot **themes**:
 
 ```{r}
 
-# Use layout to define a 2 row x 2 column matrix with elements 1, 1, 2, and 3.
-# This divides the image into four sections but fills the first two sections
-# with the first plot and then fills these next two sections with the final two plots
-layout(matrix(c(1, 1, 2, 3), nrow=2, ncol=2))
-# layout.show(3)
+# explore themes -----------------------------
 
-# col: select a color for the plotting characters
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees",
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)",
-     las=1, col="blue")
+plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_bw()
+plot2 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_classic()
+plot3 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_minimal()
+plot4 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_minimal_grid(font_size = 11)
 
-# We can use the c() function to make a vector and have several colors, plotting characters, etc. per plot.
-# We start with alternating colors for each point
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees",
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)", 
-     las=1, col=c("black", "blue"))
+plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 
-# And we can also alternate the plotting symbol at each point.
-plot(x=trees$Girth, y=trees$Volume, pch=c(1,19), 
-     main="Girth vs. Volume for Black Cherry Trees", 
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)", 
-     las=1, col="blue")
+# note: many other themes are available in ggplot, cowplot and other related packages
 
 ```
 
-## Plotting By Group
-In our previous plot, we alternated colors between points - wouldn't it be awesome to use color to distinguish between groups in the data? To do this, we look at the `iris` dataset. This dataset describes the sepal length, sepal width, petal length, petal width, and species for 150 different irises representing 3 different species (*I. setosa*, *I. versicolor*, *I. virginica*)  . First we look at the data:
+### Changing title and axis labels
+
+We can also add titles, axis labels, and other options to make the plots look prettier.  
 
 ```{r}
 
-?iris
-head(iris)     # display first few rows of data
-dim(iris)      # dimensionality of the data
-str(iris)      # details of the data structure
+# add additional plot elements: title, axis limis, axis labels ------------------
+
+plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x="Sepal Length (cm)")
+
+plot2 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x="Sepal Length (cm)",y="Petal Length (cm)",color="Iris sp.")
+
+plot3 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x="Sepal Length (cm)",y="Petal Length (cm)",color="Iris sp.",
+       title="Fisher's Iris Data",subtitle = "practice with ggplot")
+
+plot4 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  coord_cartesian(xlim=c(0,10),ylim=c(0,10)) +
+  labs(x="Sepal Length (cm)",y="Petal Length (cm)",color="Iris sp.",
+       title="Fisher's Iris Data",subtitle = "practice with ggplot")
+
+plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 
 ```
 
-We will use the `col=` option of our `plot()` function. 
-
-First we will define a new object with the three colors that we want to use. You can use any colors you like (Google "R color chart", or just click [here](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf))
+## Bar Plots and box-whisker plots
 
 ```{r}
 
-plot.colors <- c("violet", "purple", "blue")   # define the colors for representing species ID
+# bar plots and box-whisker plots -----------------------
+
+plot1 <- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot
+  geom_boxplot() 
+  
+plot2 <- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot +
+  geom_violin() 
+
+# bar plot
+bar.heights <- iris %>% 
+  group_by(Species) %>% 
+  summarize(meanSL = mean(Sepal.Length))
+
+plot3 <- ggplot(bar.heights, aes(Species,meanSL)) +
+  geom_col()
+
+
+plot4 <- ggplot(bar.heights, aes(Species,meanSL)) +
+  geom_col(aes(fill=Species)) +
+  theme_classic() +
+  scale_fill_manual(values=c("gray","red","brown"))
+  
+plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 
 ```
 
-Then, let's name each element of our plot colors vector to match the species names:
+But what if we want to have some error bars? 
 
 ```{r}
 
-names(plot.colors) <- levels(iris$Species)   # the "levels()" function returns all unique labels for any "factor" variable    
-plot.colors
+# Bar plot with error bars ------------------------
+
+bar.heights <- iris %>% 
+  group_by(Species) %>% 
+  summarize(meanSL = mean(Sepal.Length),
+            n = n(),
+            sdSL = sd(Sepal.Length),
+            se = sdSL/sqrt(n))
+  
+ggplot(bar.heights,aes(x=Species,y=meanSL)) + 
+  geom_col(fill=gray(0.7),color="black") +
+  geom_errorbar(aes(ymin=meanSL-2*sdSL,ymax=meanSL+2*sdSL),width=.2) +
+  labs(y="Sepal Length")
 
 ```
 
-Now, each color is directly associated with a species. We can now use a logical operation to generate a vector of colors for our plot:
-
-```{r}
-
-# generate a vector of colors for our plot (one color for each observation)
-
-indices <- match(iris$Species,names(plot.colors))   # the "match()" function goes through each element of the first vector and finds the matching index in the second vector         
-color.vector <- plot.colors[indices]
-
-
-```
-
-Now we can use our new color vector in our plotting!
-
-```{r}
-
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main="Iris sepal length vs. petal length", xlab="Petal length", 
-     ylab="Sepal length", las=1)
-
-```
-
-
-## Add a Legend
-
-We use the `legend()` function to add a legend to an existing plot. You can customize the legend if you wish. Here I pass a character vector to the `legend=` argument so that I can include the first letter of the genus in the second plot and use the `bty='n'` argument to remove the box around the legend. We can also Italicize the labels in the legend using `text.font=3`, as in the third plot.
-
-```{r}
-########
-# experiment with legends
-
-# ?legend
-
-layout(matrix(1:3, nrow=1, ncol=3))
-
-# Plot
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main="Iris sepal length vs. petal length", xlab="Petal length", 
-     ylab="Sepal length", las=1)
-
-# First legend
-legend("topleft", pch=19, col=plot.colors, legend=unique(iris$Species))
-
-# Second plot
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector,
-     main="Iris sepal length vs. petal length", 
-     xlab="Petal length", ylab="Sepal length", las=1)
-
-# Second legend
-# The bty="n" argument suppresses the border around the legend. (A personal preference)
-legend("topleft", pch=19, col=plot.colors, 
-       legend=c("I. setosa", "I. versicolor", "I. virginica"), bty="n")
-
-
-# Plot Three
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main="Iris sepal length vs. petal length", 
-     xlab="Petal length", ylab="Sepal length", las=1)
-
-#Legend tree with Italics
-legend("topleft", pch=19, col=plot.colors, 
-       legend=c("I. setosa", "I. versicolor", "I. virginica"), 
-       bty="n", text.font=3)
-
-```
-
-
-## Diplaying gradients (continuous data) using color and size
-
-To illustrate some other cool ways to convey information graphically in R, let's turn to the "mtcars" dataset (which comes with base R):
-
-```{r eval=FALSE}
-
-## Diplaying gradients (continuous data) using color and size
-
- # ?mtcars
-
-head(mtcars)
-
-```
-
-First, let's plot fuel economy (mpg) as a function of vehicle weight:
-
-```{r}
-
-## Plot fuel economy by weight
-
-plot(mpg~wt,  data=mtcars,pch=20,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)")      # note the tilde, which can be read "as a function of" -- i.e., "plot mpg as a function of wt"   
- 
-```
-
-
-Now what if we want to look at another factor that might influence fuel economy: gross horsepower. We might imagine that cars with greater horsepower within a weight class will tend to have lower fuel economy. One way to do this is to use the size of the dots to indicate horsepower...
-
-
-```{r}
-
-## Plot fuel economy by weight and horsepower
-
-hp_rescale <- (mtcars$hp-min(mtcars$hp))/diff(range(mtcars$hp))    # scale from 0 to 1
-
-plot(mpg~wt,  data=mtcars,pch=1,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)",cex=(hp_rescale+0.6)*1.2)   # plot with different sized points
-
-legend("topright",pch=c(1,1),pt.cex=c(0.6,0.6*1.2),legend=paste(range(mtcars$hp),"horsepower"),bty="n")
-
-
- 
-```
-
-
-## Bar Plots
-
-```{r}
-
-## calculate the mean Sepal Length of for each species
-bar.heights <- tapply(iris$Sepal.Length, iris$Species, mean)   #use "tapply()" function, which summarizes a numeric variable by levels of a categorical variable)
-
-# The basic 'barplot()' function
-barplot(bar.heights)
-
-```
-
-
-## Error bars
-
-Error bars can be added to scatter plots in a similar way. We'll plot error bars representing 2 standard deviations from the mean. The object that you called your barplot (`b`) is interpreted by R as the x values in the middle of each bar `b` (which are very hard to guess!). 
-
-We'll use the `arrows()` function to add arrows to an existing plot. With some modifications, our arrows will have an arrowhead at each end (`code=3`), and the 'arrowhead' will actually be perpendicular to the arrow shaft (`angle=90`)
-
-
-```{r}
-
-CI <- 2 * tapply(iris$Sepal.Length, iris$Species, sd)
-lwr <- bar.heights - CI
-upr <- bar.heights + CI
-
-# I used the ylim= argument to pass a 2-element numeric vector specifying the y extent of the barplot (y axis lower and upper bounds). I added some extra room on the top to account for error bars.
-# Importantly, assign the barplot to an object. I called it 'b' but you can call it whatever you like. (otherwise, it's hard to know what the "X" values of the error bars are!)
-
-b <- barplot(bar.heights, 
-             names.arg=c("I. setosa", "I. versicolor", "I. virginica"), 
-             las=1, ylim=c(0,8), col=adjustcolor(plot.colors, alpha.f=0.5),
-             main="Sepal length for 3 Irises", ylab="Sepal length (cm)")
-
-# Specify where each arrow starts (x0= and y0=) and ends (x1= and y1=)
-arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)
-
-# ?arrows
-
-```
-
-## Pairs Plots
-The `pairs()` function allows for quick investigation into relationships between variables. Be careful if your data set is large (e.g., lots of columns), as this can be a slow function.   
-
-```{r}
-
-pairs(iris)
-
-```
-
-## Challenge Yourself by recreating the following plots:
-
-Feel free to work in groups!    
-
-### Using colors
-
-Using the `ToothGrowth` dataset built into `R`, plot the tooth length (the `len` variable) as a function of the vitamin C dosage (the `dose` variable). Use a different color for each method of administering the vitamin C (the `supp` variable). Try and re-create the plot below:
+And for a slightly more complex example, let's consider the built in `ToothGrowth` data set, which looks at tooth growth in guinea pigs under three different vitamin C doses and two different delivery methods (orange juice or ascorbic acid).  
 
 ```{r tooth}
 
@@ -427,19 +273,459 @@ head(ToothGrowth)
 
 ```
 
+```{r}
+
+# toothgrowth plot -------------------
+
+
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
+
+sumTC <- ToothGrowth %>% 
+  group_by(supp,dose) %>% 
+  summarize(mean = mean(len),
+            sd = sd(len))
+
+
+p<- ggplot(sumTC, aes(x=dose, y=mean, fill=supp)) + 
+  geom_col(color="black", 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.2,
+                 position=position_dodge(0.9)) +
+  labs(title="Tooth growth", x="Dose (mg)", y = "Length") +
+   theme_classic() +
+   scale_fill_manual(values=c('#999999','#E69F00'))
+
+print(p)
+
+
+```
+
+
+## A more complex worked example
+
+As a more complex demo, let's use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
+
+First we will need to load a few more packages. Make sure to install any packages you don't already have! 
+
+```{r}
+
+# More complex example -----------------------------
+
+library(ggthemes)
+library(carData)
+library(DAAG)
+library(RColorBrewer)
+library(leaflet)
+
+```
+
+Now load the dataset.
+
+```{r}
+
+# Load the example data -----------------------
+
+soil <- carData::Soils    # load example data
+
+#See what variables it contains...
+head(soil)    # plot out the first few lines...
+
+```
+Staring simply, let's say we're interested in how pH, a continuous variable, varies with the contour position, a categorical factor:  
+
+```{r}
+
+# basic boxplot and violin plot
+
+plot1 <- ggplot(soil) +
+  geom_boxplot(aes(x=Contour, y=pH))
+
+plot2 <- ggplot(soil) + 
+  geom_violin(aes(x=Contour, y=pH))
+
+plot_grid(plot1,plot2,labels = "AUTO")
+
+
+```
+
+Next let's try a simple scatterplot of two continuous variables, Calcium content and pH.
+
+```{r}
+
+# basic scatterplot
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca))
+
+```
+
+
+Now let's say you wanted to examine how the relationship between pH and Ca varies with depth. You could go back to your scatterplot and use color to identify points from the different sampling depths. ggplot will select default colors that display well against the default gray background.
+
+```{r}
+
+########
+# Color the points by depth
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, color=Depth))
+
+```
+
+We can play with how those points look if we want them to show up more boldly. Take note that arguments that affect all of the points equally, and don't relate to how *variables* are displayed, fall outside of the **`aes`** function.
+
+```{r}
+
+##########
+# make additional alterations (outside the "aes" function)
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5)
+
+```
+
+Cool! Let's use the same grammar to plot relationships between pH and several soil nutrients on the same graph. Notice that the y axis label defaults to the first set of points (Ca), and we'd need to modify it. The depths in the legend also have no units! You'll see how to change things like axis labels and legend titles in a moment.
+
+```{r}
+
+######
+# Plot several relationships on same graphics window
+
+ggplot(soil, aes(x=pH)) +
+  geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Mg), shape=21, fill="blue", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Na), shape=21, fill="gray30", color="black", size=4, stroke=1.5)
+
+```
+
+Here's another way to plot multiple series, after reshaping with tidyr. This lets us plot our different nutrients as factor levels without typing each one with its specifications on its own line, and generates a legend that identifies the series (and also gives the default ggplot colors).
+
+```{r}
+
+#########
+# Use 'tidyverse' tricks to simplify the syntax for ggplot to color by nutrient
+
+soil.nut <- pivot_longer(soil, cols=c("Ca","Mg","Na"), names_to="nutrient",values_to = "value" )
+
+ggplot(soil.nut) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+
+```
+
+What if instead of Na, we had K as our third nutrient of interest?
+
+```{r}
+
+######
+# or if we wanted to plot different nutrients...
+
+soil.nut2 <- pivot_longer(soil, cols=c("Ca","Mg","K"), names_to="nutrient",values_to = "value" )
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+
+```
+
+The problem here is that K occurs at natural concentrations that differ from the other nutrients by an order of magnitude, so it's difficult to examine them all on the same scale. One approach we can take is to plot them separately. While we're at it, let's also make sure that we specify the response units on the y-axis. 
+
+#### Facets, scales, and themes
+
+The next plot introduces: 
+
+* **facets**, which allow you to display data on separate panels using some grouping variable 
+
+* **scales**, which allow you to adjust how to represent the data with axes and colors
+
+* **themes**, which allow you to adjust the entire plot aesthetic (using **`theme_X()`**) as well as individual elements of legends, text, and more (using **`theme()`**).
+
+
+```{r fig.height=6, fig.width=14}
+
+##########
+# plot with facets, scales, and themes!
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+    
+```
+
+
+In this plot, we've kept the different colors for each nutrient, but suppressed the legend that is auto-generated by ggplot, because this information is now redundant with the headers of the three facets. In the **`facet_wrap`** function, we used **`scales`** to specify that the y-axis should be bounded to fit the data within each facet. There are some cases where you would probably want the axes to be the same -- e.g. if you were comparing raw values across groups, rather than the distributions or trends of the data.
+
+We also changed the theme! ggplot has [8 built-in themes](http://r4ds.had.co.nz/images/visualization-themes.png) to choose from. There are also lots of other themes built into extension packages such as ggthemes. Here are a few examples of different themes applied to the plot we just made.
+
+```{r fig.height=6, fig.width=14, echo=FALSE}
+
+########
+# Try different themes! 
+
+    ## igray:
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_igray() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+```
+**`theme_igray`**
+
+```{r fig.height=6, fig.width=14, echo=FALSE}
+
+   ## economist:
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_economist() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+```
+**`theme_economist`**
+
+```{r fig.height=6, fig.width=14, echo=FALSE}
+
+    ## gdocs:
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_gdocs() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+```
+**`theme_gdocs`**
+
+
+Check out the options and play around with different themes until you find some that appeal to you and lend themselves to the type of data visualization and color scales you plan to use. 
+
+You can also fine-tune pretty much any of the details (gridlines or no? plot borders? line weight of the borders and gridlines? axis label angles?) to your heart's content using the arguments in the **`theme()`** function.
+
+Speaking of color...
+
+#### Specifying colors
+
+Sometimes sticking to the default colors in ggplot isn't the best choice. You might have factors representing ordered ranks, like in an experiment with different levels of light exposure, and want to represent these levels on a monochromatic scale. Or you might want to make a map displaying regions of positive or negative change in forest cover, using a diverging color scale. Or you don't even like the default ggplot colors, and have your own preferred color schemes. It's also important to remember that red-green colorblindness is fairly common, so if you are presenting data that must be distinguished by colors in a single plotting area, you should probably avoid this combination or combine it with changes in value (light to dark) in order for your plot to be accessible.
+
+Going back to our earlier example showing Ca content by pH at different depths, let's say we want a color scheme where deeper depths are represented by darker values of the same color. We can do this by using another scale function.
+
+One method is to use **`scale_fill_brewer`**, and select an already composed color palette from RColorBrewer (a package you'll need to install). You can check out all of the options available in RColorBrewer by entering **`display.brewer.all()`**, which shows the sequential palettes, then categorical palettes, than diverging palettes.
+
+```{r fig.height=8, fig.width=6}
+
+############
+# Playing with colors in ggplot!
+
+display.brewer.all()
+
+```
+
+I'm going to pick the YlOrBr (Yellow-Orange-Brown) palette, because those seem like good soil-y colors. Notice that because **`fill`** is mapped to the values of the data, inside this function is where I can change the title of the legend (and the labels for the different values, if I wanted to do that).
+
+```{r}
+
+#########
+# Choose a new color palette from the RColorBrewer package
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
+
+```
+
+Another method is to use **`scale_fill_manual`**, with which you define your own palette.
+To pick out your colors, you can use the [names of colors]('http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) already recognized by R, or use [hex codes](https://htmlcolorcodes.com/) for any color you want.
+
+
+```{r}
+
+#########
+# Choose your own palette!
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
+
+```
+
+What if depth were a continuous variable, rather than a set of four discrete categories? We could use **`scale_fill_gradient`**, supply the hues we want (one for monochromatic, two for diverging) and R would map the soil depth values to color values along the gradient.
+
+#### Trendlines
+
+Next, we might want to add a trendline to each set of points. Try it for the plot we made of different nutrient concentrations as a function of pH. Arguments in the **`geom_smooth()`** function allow us to change the confidence level, the smoothing method, and other details.
+
+```{r fig.height=6, fig.width=14}
+
+##########
+# add trendlines
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  geom_smooth(aes(x=pH, y=value), method="lm", color="black") +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+    
+```
+
+#### Density curves and error bars
+
+Using **`geom_smooth`** to plot trendlines is a useful way to get more information from your scatterplots. To get an idea for how other kinds of statistical elements can be drawn onto ggplot plots, we'll look at examples using histograms and boxplots.
+
+First, a simple histogram of 3 soil nutrients.
+
+```{r fig.height=6, fig.width=14}
+
+###########
+# Adding density/smooth curves to plots
+
+   ## first produce some histograms
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value), color="black", fill="white", bins=15) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+```
+
+Here is how to add a density curve to the histogram with another **`geom`**:
+
+```{r fig.height=6, fig.width=14}
+
+########
+# Then add density curves
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  geom_density(aes(x=value,color=nutrient), size=1.5) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+```
+
+And here's how we can compare our distributions to a normal distribution, using a **`stat`** function:
+
+```{r fig.height=6, fig.width=14}
+
+###########
+# And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  stat_function(fun = dnorm, color = "blue", size = 1.5,
+                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+```
+
+Let's go back to our basic boxplot, the default plot for visualizing continuous data against categories.
+
+First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of ~~principle~~ personal preference, but if capless whiskers look "off" to you, then you can work around it using **`stat_boxplot`**. **`stat`** functions are another group of functions for creating layers based on statistical properties of the data. Another example is **`stat_summary`**, which we use in the example below to add means to the boxplot. 
+
+```{r}
+
+#######
+# add error bars and other stat summaries (e.g., mean) to boxplot
+
+ggplot(soil, aes(x=Contour, y=pH)) +
+  stat_boxplot(geom="errorbar", width=0.2) +  
+  geom_boxplot() +
+  stat_summary(fun.y=mean, geom="point", size=5, color="black")
+  
+```
+
+### Beyond ggplot
+
+ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:
+
+##### ggplot extensions
+
+Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](http://www.ggplot2-exts.org/gallery/). 
+
+##### Technique-specific plotting libraries
+
+Several analytical packages come with their own plotting functions that produce some very nice visualizations. There are dozens out there, but a few of them are [visreg](https://cran.r-project.org/web/packages/visreg/visreg.pdf) for regression plots, [corrplot](https://cran.r-project.org/web/packages/corrplot/index.html) (and its ggplot counterpart, [ggcorrplot](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2)) for graphical presentation of correlation matrices, and [rpart.plot](https://cran.r-project.org/web/packages/rpart.plot/index.html) as a companion to the decision tree package rpart.
+
+##### Interactive plots: leaflet and plotly
+
+Increasingly, scientific journals are providing platforms for interactive graphics on their websites to accompany published articles. Interactive plots are also popular for personal, lab, and organizational websites, and they can provide another option for your own data exploration. Two of the most popular in R are [plotly](https://plot.ly/r/), which offers a huge variety of 2D and 3D plots, and [leaflet](https://rstudio.github.io/leaflet/), which is specifically for mapping.
+
+Here's a quick and simple example of leaflet in action using the "possumsites" dataframe that accompanies the "possum" dataset in the DAAG package. The dataset contains body measurements of several possums in Australia. Where did they catch these possums?
+
+```{r eval=FALSE}
+
+##########
+# use leaflet for interactive mapping!
+
+leaflet(possumsites) %>%
+  addTiles() %>% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
+
+```
+
+Happy plotting!
+
+
+
+
+
+
+## Challenge Yourself by recreating the following plots:
+
+Feel free to work in groups!    
+
+### Using colors
+
+
+
+
+
 ```{r, echo=FALSE}
 
-plot.colors <- c("red", "blue")
-# subset the colors in plot.colors based on the variable iris$Species
-# iris$Species is a factor variable that has 3 levels
-color.vector <- plot.colors[ToothGrowth$supp]
-
-plot(x=ToothGrowth$dose, y=ToothGrowth$len, pch=19, col=color.vector, 
-     main="Tooth Growth vs. Vitamin C Dose", xlab="Viatmin C Dose (mg)", 
-     ylab="Tooth Growth (mm)", las=1)
-
-# First legend
-legend("topleft", pch=19, col=plot.colors, legend=unique(ToothGrowth$supp))
 ```
 
 ### Bar Plots Challenge
@@ -455,7 +741,6 @@ asympUCL <- c(0.24, 0.33, 0.18, 0.09)
 ```
 
 ![](plantsurv1.png)
-
 
 ### Scatterplot Challenge Error Bars
 The randomly generated data below are measurements of the number of the number of angels who get their wings as a function of the number of bells that have been rung. There is some uncertainty in measuring wing acquisition (represented as the offset from the sampled mean). How would you add error bars to a scatter plot? See if you can re-create the plot below: 
@@ -477,12 +762,9 @@ upr <- wings + offset
 
 ![](ringswings1.png)
 
-
 ## Statistics in R!
 
-This workshop is NOT an intro to statistics! 
-
-But, R is an environment developed for statistical computing, so let's run some basic statistics in R! 
+R is a programming environment developed specifically for working with data and running statistical analyses! Let's run some basic statistics in R! 
 
 ### Load data
 
@@ -716,30 +998,6 @@ How do the predictions compare?
 [--go to next module--](module2_1.html)
 
 
-
-
-
-
-## Extra: Histograms
-
-We can also use histograms to explore our data. 
-```{r}
-
-layout(matrix(1:2, 1, 2))
-
-## y-axis is in counts by default (total observations in each "bin")
-hist(iris$Sepal.Length, main="Histogram of Sepal Length",
-     xlab = "Sepal Length")
-
-## change y-axis to proportions of the entire dataset using freq=FALSE
-hist(iris$Sepal.Length, freq=FALSE, main="Histogram of Sepal Length", 
-     xlab = "Sepal Length")
-## Add a density estimator
-
-lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
-curve(dnorm(x,mean(iris$Sepal.Length),sd(iris$Sepal.Length)),add=T,col="red",lty=3)   # add a normal distribution
-
-```
 
 
 

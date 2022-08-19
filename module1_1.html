@@ -462,7 +462,7 @@ reference card</a></p>
 href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf">ggplot
 cheat sheet</a> <a
 href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf">data
-tidying</a> <a
+‘tidying’</a> <a
 href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf">data
 transformation</a> <a
 href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf">working
@@ -515,9 +515,6 @@ RStudio interface (see figure above).</p>
 RStudio) is a <strong>command line</strong> interface, and is <em>your
 direct connection with R</em>: you give R a command at the prompt and R
 executes that command.</p>
-<p>You generally shouldn’t work in the console, at least for writing
-important code- use an R script instead (see below).</p>
-<p>However, let’s take a few minutes to work in the console:</p>
 <ol style="list-style-type: decimal">
 <li><p>Click on the console, just to the right of one of the “&gt;”
 prompts.</p></li>
@@ -526,9 +523,9 @@ prompts.</p></li>
 <li><p>Now hit the “up” arrow. The R console remembers all previous
 commands that it has executed in this <strong>session</strong>, which
 allows you to re-run commands relatively easily.</p></li>
-<li><p>Any command that is preceded by a hashtag (#) is ignored by the R
-console. Try typing <code># 2+2</code> and hitting “Enter”. Nothing
-happens, right? We will come back to this shortly.</p></li>
+<li><p>Try typing <code># 2+2</code> and hitting “Enter”. Nothing
+happens, right? We will come back to the special hashtag character
+shortly.</p></li>
 </ol>
 <div id="lets-create-our-first-object" class="section level3">
 <h3>Let’s create our first object</h3>
@@ -536,13 +533,13 @@ happens, right? We will come back to this shortly.</p></li>
 (Windows shortcut: Alt + -)(Mac: replace Alt with Option), which looks
 like a left arrow (<code>&lt;-</code>). Type the following statement
 directly into the console:</p>
-<pre class="r"><code>myname &lt;- &#39;Barney&#39;  # or use your real name.</code></pre>
+<pre class="r"><code>myname &lt;- &quot;Daenerys&quot;  # or use your real name.</code></pre>
 <p>Then hit “Enter”. What does R return?</p>
 <p>NOTHING!</p>
 <p>BUT…. check the <strong>Environment</strong> window (top right of
 RStudio interface- list of all the objects you’ve defined in this
 session). You should see that you now have a new <strong>object</strong>
-in your environment, called “myname”, and this object contains a
+in your environment, called “myname”, and this object contains a single
 <strong>text string</strong>.</p>
 <p>Now type <code>myname</code> into the R console and hit “Enter”. What
 happens?</p>
@@ -550,10 +547,10 @@ happens?</p>
 automatically prints the value of the object!</p>
 <p>NOTE: RStudio has a useful auto-fill feature, which can save you lots
 of time and headaches. After you’ve typed the first couple letters
-(e.g., “my”), RStudio will suggest “myname” and you can just hit “Enter”
-to complete the object name! The auto-type feature, unlike R, is not
-case sensitive! Also note that you can hit the ‘tab’ key to trigger
-autofill anytime after you start typing in RStudio.</p>
+(e.g., “my”), RStudio will suggest “myname” (or use the “tab” key to
+trigger RStudio to give you autofill options) and you can just scroll to
+the right object/function and hit “Enter”! The auto-type feature, unlike
+R, is not case sensitive!</p>
 </div>
 </div>
 <div id="graduating-to-r-scripts" class="section level2">
@@ -579,10 +576,6 @@ my_obj &lt;- 6+11
 and hit ‘Ctrl+Enter’ (or ‘Command+Enter’) to run that line of code! You
 should see a new object (‘my_obj’) pop up in your environment.<a
 href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
-<p>In the next line of your script, enter a hashtag followed by the
-command <code>2+2</code>. Nothing happens, right?</p>
-<p>Now delete the hashtag and try again. Now R recognizes and runs the
-command. Interesting…</p>
 <p>Take a few minutes to get comfortable running commands and defining
 new objects using your new R script.</p>
 <p>Of course, it’s always a good idea to save your scripts often – so
@@ -591,7 +584,8 @@ feel free to save your new script before you move on.</p>
 <div id="load-an-existing-script" class="section level3">
 <h3>Load an Existing script</h3>
 <p>Remember the file you downloaded at the beginning of this submodule?
-That file is an R script (“module1_1.R”); Let’s load it up now!</p>
+That file is an R script (<a href="module1_1.R">“module1_1.R”</a>);
+Let’s load it up now!</p>
 <p>To do this, click on the “folder” icon on the Rstudio toolbar (or
 File &gt;&gt; Open File) and choose the script you downloaded
 earlier.</p>
@@ -632,7 +626,6 @@ function:</p>
 <pre class="r"><code># Load packages ------------------
 
 library(ggplot2)
-library(cowplot)
 library(tidyverse)
 library(Lahman)    # for getting baseball data</code></pre>
 <p>Next we can load in some data. To give you a sense of what R can do,
@@ -647,7 +640,7 @@ master &lt;- read_csv(&quot;http://dgrtwo.github.io/pages/lahman/Master.csv&quot
 
 batting &lt;- read_csv(&quot;http://dgrtwo.github.io/pages/lahman/Batting.csv&quot;)
 
-# Read in data from package (could read in all of these from the Lahman package!)
+# Read in data from package (you can read in all of these from the Lahman package!)
 
 fielding &lt;- tibble(Lahman::Fielding)</code></pre>
 <p>Let’s examine these data objects in r. Again, we will get into this
@@ -1100,11 +1093,9 @@ plot(model1)  # run diagnostic plots for our regression</code></pre>
 additional questions!</p>
 </div>
 <div id="back-to-basics-r-objects" class="section level2">
-<h2>Back to basics! R Objects</h2>
-<p>Okay, now that we’ve seen the kinds of powerful things R can do with
-data processing, visualization and analysis, let’s step back and learn a
-little bit about R as a data-oriented programming language.</p>
-<p>How does R represent and store data?</p>
+<h2>Back to basics: R Objects</h2>
+<p>Okay, let’s step back and learn a little bit about R as a
+data-oriented programming language.</p>
 <p>R has many different kinds of objects that you can define and store
 in memory.</p>
 <p>Objects that enable storage of information (data objects) include:
@@ -1126,7 +1117,7 @@ looks like the code snippet below.</p>
 <pre><code>## function syntax
 functionName([argument 1, argument2, ...])</code></pre>
 <p>If you don’t type the parenthesis, the function is not run- instead,
-the function definition is shown.</p>
+the function definition is shown instead.</p>
 <p>Here are some examples of how functions are used. Note the
 parentheses!</p>
 <pre class="r"><code># functions -------------------------
@@ -1171,7 +1162,6 @@ value of any data type.</p>
 <pre class="r"><code>#  Create R Objects ------------------------
 
 
-
 # scalars   --------------------------------
 
 
@@ -1191,7 +1181,6 @@ called <code>c()</code>. You can think of it as the ‘combine’ function-
 it takes several smaller data objects and combines them together into a
 single object.</p>
 <pre class="r"><code># VECTORS  -------------------------------
-
 
 vector1 &lt;- c(1.1, 2.1, 3.1, 4)   # the &quot;c()&quot; function combines smaller data objects into a larger object
 vector2 &lt;- c(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)</code></pre>
@@ -1230,10 +1219,7 @@ mymat</code></pre>
 ## [3,]  3  6</code></pre>
 <pre class="r"><code>class(mymat)   # confirm that the new object &quot;mymat&quot; is a matrix using the &#39;class()&#39; function</code></pre>
 <pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
-<p>And there are other ways to make a matrix in R. For instance, we can
-use the function “matrix()” (this is a function for matrix
-construction!):</p>
-<pre class="r"><code>mymat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
+<pre class="r"><code>mymat &lt;- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (matrix constructor)
 mymat</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    4
@@ -1253,7 +1239,7 @@ mymat + 2</code></pre>
 
 mymat[3,2]    # extract the element in the 3rd row, 2nd column</code></pre>
 <pre><code>## [1] 6</code></pre>
-<pre class="r"><code>mymat[,1]     # extract first column</code></pre>
+<pre class="r"><code>mymat[,1]     # extract the entire first column</code></pre>
 <pre><code>## [1] 1 2 3</code></pre>
 <pre class="r"><code># X[a,b]       access row a, column b element of matrix/data frame X
 # X[,b]        access all rows of column b of matrix/data frame X
@@ -1262,11 +1248,11 @@ mymat[3,2]    # extract the element in the 3rd row, 2nd column</code></pre>
 <div id="lists" class="section level4">
 <h4>Lists</h4>
 <p><strong>Lists</strong> are more general than matrices.
-<strong>List</strong> objects are just a bunch of R data objects
-(<strong>list elements</strong>) grouped together into a single object!
-The elements of a list don’t need to be the same length or the same
-<strong>type</strong>. The elements of a list can be vectors, matrices,
-other lists, or even functions.</p>
+<strong>List</strong> objects are just a bunch of arbitrary R data
+objects (called <strong>list elements</strong>) grouped together into a
+single object! The elements of a list don’t need to be the same length
+or the same <strong>type</strong>. The elements of a list can be
+vectors, matrices, other lists, or even functions.</p>
 <p>Let’s make our first list:</p>
 <pre class="r"><code># LISTS --------------------------------
 
@@ -1289,52 +1275,49 @@ mylist</code></pre>
 
 mylist[[2]]    # extract the second list element</code></pre>
 <pre><code>## [1] &quot;foo&quot; &quot;bar&quot;</code></pre>
-<pre class="r"><code>mylist[[3]][1,2]   # extract the first row, second column from the third list element!   </code></pre>
+<pre class="r"><code>mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list !   </code></pre>
 <pre><code>## [1] 3</code></pre>
 <div id="data-frames-a-special-kind-of-list" class="section level5">
 <h5>Data frames (a special kind of list)</h5>
 <p><strong>Data frame</strong> objects are the basic data storage object
 in R. Data frames are a special type of <strong>list</strong> in which
-list element is a <em>vector</em> object of the same length. Each list
+each list element is a <em>vector</em> of equal length. Each list
 element in a data frame is also known as a <em>column</em>.</p>
 <p>Data frames superficially resemble matrices, since both have rows and
 columns. However, unlike matrices, the columns of a data frame can
 represent different data <strong>types</strong> (i.e., character,
-logical, numeric, factor), and can thereby represent very different
-types of information!</p>
-<p><em>Data frames are the basic data storage structure in R</em>. You
-can think of a data frame like a spreadsheet. Each row of the the data
-frame represents a different observation, and each column represents a
-different measurement taken on each observation unit.</p>
-<p>Let’s make our first data frame. We will use the data frame
-constructor function “tibble()”.</p>
+logical, numeric, factor), and can thereby represent different types of
+information!</p>
+<p><em>Data frames are the fundamental data storage structure in R</em>.
+You can think of a data frame like a spreadsheet. Each row of the the
+data frame represents a different observation, and each column
+represents a different measurement taken on each observation unit.</p>
+<p>Let’s make our first data frame.</p>
 <pre class="r"><code># DATA FRAMES ---------------------------
 
-df1 &lt;- tibble(col1=c(1,2,3),col2=c(&quot;A&quot;,&quot;A&quot;,&quot;B&quot;))        # create a ‘tibble&#39; data frame with two columns. Each column is a vector of length 3
+df1 &lt;- data.frame(col1=c(1,2,3),col2=c(&quot;A&quot;,&quot;A&quot;,&quot;B&quot;))        # create a data frame with two columns. Each column is a vector of length 3
 df1</code></pre>
-<pre><code>## # A tibble: 3 × 2
-##    col1 col2 
-##   &lt;dbl&gt; &lt;chr&gt;
-## 1     1 A    
-## 2     2 A    
-## 3     3 B</code></pre>
+<pre><code>##   col1 col2
+## 1    1    A
+## 2    2    A
+## 3    3    B</code></pre>
 <pre class="r"><code>df1[1,2]     # extract the first element in the second column</code></pre>
-<pre><code>## # A tibble: 1 × 1
-##   col2 
-##   &lt;chr&gt;
-## 1 A</code></pre>
+<pre><code>## [1] &quot;A&quot;</code></pre>
 <pre class="r"><code>df1$col2     # extract the second column by name (alternatively, df1[[&quot;col2&quot;]])</code></pre>
 <pre><code>## [1] &quot;A&quot; &quot;A&quot; &quot;B&quot;</code></pre>
 <p>Now we have a data frame with three observation units and two
 measurements (variables).</p>
+<p>Note that a “tibble” is the same thing as a data frame, just with a
+few tweaks to make it work better in the tidyverse. We will primarily
+work with tibble data frames in this workshop.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="making-up-data" class="section level2">
 <h2>Making up data!</h2>
-<p>In this section, we will make a bunch of fake data objects. In the
-next submodule we’ll practice working with real data!</p>
+<p>In this section, we will make up some fake data objects. In the next
+submodule we’ll practice working with real data!</p>
 <div id="generating-sequences-of-numbers" class="section level3">
 <h3>Generating sequences of numbers</h3>
 <p>One task that comes up a lot is generating sequences of numbers:</p>
@@ -1351,7 +1334,7 @@ next submodule we’ll practice working with real data!</p>
 
 rep(0,times=3)                # repeat 0 three times</code></pre>
 <pre><code>## [1] 0 0 0</code></pre>
-<pre class="r"><code>rep(1:3,times=2)              # repeat 1:3 two times</code></pre>
+<pre class="r"><code>rep(1:3,times=2)              # repeat the vector 1:3 twice</code></pre>
 <pre><code>## [1] 1 2 3 1 2 3</code></pre>
 <pre class="r"><code>rep(1:3,each=2)               # repeat each element of 1:3 two times</code></pre>
 <pre><code>## [1] 1 1 2 2 3 3</code></pre>
@@ -1359,15 +1342,13 @@ rep(0,times=3)                # repeat 0 three times</code></pre>
 R’s built in <strong>random number generators</strong>:</p>
 <pre class="r"><code># Random numbers ---------------
 
-z &lt;- rnorm(10)                # 10 samples from std. normal
-z</code></pre>
+rnorm(10)                     # 10 samples from std. normal</code></pre>
 <pre><code>##  [1]  1.6603479  0.8944701  0.1321728 -1.2993650  0.5006127  0.5980192
 ##  [7]  0.1134621  1.8719101 -0.3307061 -0.9835096</code></pre>
-<pre class="r"><code>y &lt;- rnorm(10,mean=-2,sd=4)           # 10 samples from Normal(-2,4^2)
-y</code></pre>
+<pre class="r"><code>rnorm(10,mean=-2,sd=4)        # 10 samples from Normal(-2,4^2)</code></pre>
 <pre><code>##  [1] -2.889591 -2.321176  2.220551  2.141924 -1.612882 -5.504331  1.907792
 ##  [8] -5.419351 -1.622560 -3.429506</code></pre>
-<pre class="r"><code>rbinom(5,size=3,prob=.5)                # 5 samples from Binom(3,0.5)</code></pre>
+<pre class="r"><code>rbinom(5,size=3,prob=.5)      # 5 samples from Binom(3,0.5)</code></pre>
 <pre><code>## [1] 1 1 1 3 1</code></pre>
 <pre class="r"><code>rbinom(5,3,.1)                # 5 samples from Binom(3,0.1)</code></pre>
 <pre><code>## [1] 0 1 0 1 0</code></pre>
@@ -1377,8 +1358,8 @@ y</code></pre>
 <pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random numbers from [-1,1]</code></pre>
 <pre><code>##  [1] -0.76709783 -0.85628316  0.88077532  0.96181180 -0.32780927  0.07864404
 ##  [7]  0.23972995 -0.08209653 -0.12029378  0.26073800</code></pre>
-<p>And finally, we can make up a fake data frame using some of the
-tricks we just learned!</p>
+<p>And finally, we can make up a fake data frame (or tibble) using some
+of the tricks we just learned!</p>
 <pre class="r"><code># Make up an entire fake data frame!
 
 my.data &lt;- tibble(
@@ -1496,7 +1477,7 @@ describe a 5 by 5 regular grid with extent long: [-1,1] and lat:
 </ol>
 <p>HINT: you don’t need to type each location in by hand! Use the
 ‘rep()’ and ‘seq()’ functions instead.</p>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>To make sure you got it right, use the following commands in R:</p>
 <p>Don’t worry if you don’t understand the code- we’ll talk about
 plotting soon enough!</p>
@@ -1505,7 +1486,7 @@ plotting soon enough!</p>
 
 plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>It should look something like this (above)!</p>
 <p><a href="module1_2.html">–go to next module–</a></p>
 </div>
@@ -1515,7 +1496,8 @@ abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
 <li id="fn1"><p>RStudio has several helpful keyboard shortcuts to make
 running lines of code easier. <a
 href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">Check
-this website</a> for a comprehensive set of keyboard shortcuts<a
+this website</a> for a comprehensive set of keyboard shortcuts- or
+access the shortcuts using help&gt;&gt;keyboard shortcuts.<a
 href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>If you’re uncertain about the type of any R object the R
 function use the <code>typeof()</code> function.<a href="#fnref2"

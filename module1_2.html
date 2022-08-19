@@ -536,9 +536,7 @@ directory (i.e., the folder where your scripts are already!)</p>
 or two of them up (e.g., in Excel or a text editor) to see what’s
 inside.</p>
 <p>Now let’s read them into R!!</p>
-<pre class="r"><code>####
-####  Import data files into R
-####
+<pre class="r"><code>#  Import data files into R----------------------
 
 # ?read_table    # some useful functions for reading in data
 
@@ -587,9 +585,7 @@ ggplot2 comes with the “diamonds” package:</p>
 <h2>Basic data checking</h2>
 <p>To learn more about the ‘internals’ of any data object in R, we can
 use the “str()” (structure) function:</p>
-<pre class="r"><code>####
-#### Check/explore data object
-#### 
+<pre class="r"><code># Check/explore data object--------------------
 
 # ?str: displays the internal structure of the data object
 str(mtcars)</code></pre>
@@ -643,9 +639,7 @@ might want to archive some simulation results.</p>
 basics!</p>
 <div id="exporting-data-as-table" class="section level3">
 <h3>Exporting data as table</h3>
-<pre class="r"><code>####
-#### Exporting data (save to hard drive as data file)
-####
+<pre class="r"><code># Exporting data (save to hard drive as data file)---------------------------
 
 # ?write_csv: writes a CSV file to the working directory
    
@@ -663,9 +657,7 @@ never need to look at the data <em>outside</em> of R.</p>
 <p>To do this we can use the “save()” and “load()” functions in R:</p>
 <p>NOTE: all binary R data files should be stored with the extension
 “.RData”:</p>
-<pre class="r"><code>####
-####  Saving and loading
-####
+<pre class="r"><code>#  Saving and loading--------------------
 
 # ?save: saves particular objects to hard disk
 
@@ -684,8 +676,7 @@ load(&quot;Module1_2.RData&quot;)   # load these objects back in!</code></pre>
 cases, it can help to clear the environment. You can just use the
 ‘broom’ icon in your environment window in RStudio to clear your
 environment, or use this command:</p>
-<pre class="r"><code>##############
-# Clear the environment
+<pre class="r"><code># Clear the environment ------------------------
 
 rm(list=ls())   # clear the entire environment. Confirm that your environment is now empty!
 
@@ -713,11 +704,8 @@ a &lt;- 3     # assign the value &quot;3&quot; to the object named &quot;a&quot;
 a = 3      # assign the value &quot;3&quot; to the object named &quot;a&quot; (alternative)
 a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quot;3&quot;? </code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>####
-####  Boolean operations
-####
+<pre class="r"><code>####  Boolean operations---------------------------
 
-#####
 # Basic operators
 
 # &lt;    less than
@@ -728,7 +716,6 @@ a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quo
 # !=   not equal to
 # %in% matches one of a specified group of possibilities
 
-#####
 # Combining multiple conditions
 
 # &amp;    must meet both conditions (AND operator)
@@ -1197,44 +1184,6 @@ male turtles.</p>
 #   
 # 3: Read in the file &quot;turtle_data.txt&quot;. Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.</code></pre>
 <p><a href="module1_3.html">–go to next module–</a></p>
-<div id="aside-tips-on-naming-objects-and-data-frame-columns-in-r"
-class="section level4">
-<h4>Aside: Tips on naming objects (and data frame columns) in R</h4>
-<ol style="list-style-type: decimal">
-<li>No spaces within object names (same for column names in data files)
-– use underscore instead!<br />
-</li>
-<li>Try not to name an object with a similar/same as a function
-(e.g. don’t name your data “data.frame”). NOTE: this can be hard- there
-are lots of functions in base R!<br />
-</li>
-<li>Can’t start object names (or column names in data frame) with a
-number</li>
-</ol>
-</div>
-<div id="aside-dropping-dimensions" class="section level4">
-<h4>Aside: “dropping dimensions”</h4>
-<p>When subsetting matrices or arrays, R automatically “drops”
-dimensions. This is best understood by example:</p>
-<pre class="r"><code>##########
-# Demo- using the &quot;drop=TRUE&quot; argument when subsetting higher-dimensional objects
-
-newmat &lt;- matrix(c(1:6),nrow=3,byrow = T)
-class(newmat)</code></pre>
-<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
-<pre class="r"><code>newmat[1,]</code></pre>
-<pre><code>## [1] 1 2</code></pre>
-<pre class="r"><code>class(newmat[1,])    # what? why is it no longer a matrix????</code></pre>
-<pre><code>## [1] &quot;integer&quot;</code></pre>
-<pre class="r"><code>newmat[1,,drop=FALSE]</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    1    2</code></pre>
-<pre class="r"><code>class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! </code></pre>
-<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
-<p>This default behavior in R can lead to enormous problems when
-programming in R- just remember that the “drop=FALSE” argument can be
-your friend!!!</p>
-</div>
 </div>
 
 

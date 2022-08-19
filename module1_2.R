@@ -5,6 +5,7 @@
 
 library(tidyverse)
 library(ggplot2)
+library(zoo)
 
 
 # Find the directory you're working in 
@@ -20,9 +21,7 @@ getwd()          # note: the results from running this command on my machine wil
 # list.files()    # uncomment this to run it...
 
 
-####
-####  Import data files into R
-####
+#  Import data files into R----------------------
 
 # ?read_table    # some useful functions for reading in data
 
@@ -37,10 +36,8 @@ names(data.df)
 rm(data.txt.df)
 
 
-
 # Built-in data files
 data()   
-
 
 
 # read built-in data on car road tests performed by Motor Trend
@@ -54,9 +51,7 @@ ggplot2::diamonds   # note the use of the package name followed by two colons- t
 
 
 
-####
-#### Check/explore data object
-#### 
+# Check/explore data object--------------------
 
 # ?str: displays the internal structure of the data object
 str(mtcars)
@@ -68,18 +63,14 @@ names(diamonds)
 summary(data.df)
 
 
-####
-#### Exporting data (save to hard drive as data file)
-####
+# Exporting data (save to hard drive as data file)---------------------------
 
 # ?write_csv: writes a CSV file to the working directory
    
 write_csv(data.df[,c("Country","Product")], file="data_export.csv")   # export a subset of the data we just read in.
 
 
-####
-####  Saving and loading
-####
+#  Saving and loading--------------------
 
 # ?save: saves particular objects to hard disk
 
@@ -93,8 +84,7 @@ rm(a,b)   # remove these objects from the environment
 load("Module1_2.RData")   # load these objects back in!
 
 
-##############
-# Clear the environment
+# Clear the environment ------------------------
 
 rm(list=ls())   # clear the entire environment. Confirm that your environment is now empty!
 
@@ -109,11 +99,8 @@ a = 3      # assign the value "3" to the object named "a" (alternative)
 a == 3     # answer the question: "does the object "a" equal "3"? 
 
 
-####
-####  Boolean operations
-####
+####  Boolean operations---------------------------
 
-#####
 # Basic operators
 
 # <    less than
@@ -124,7 +111,6 @@ a == 3     # answer the question: "does the object "a" equal "3"?
 # !=   not equal to
 # %in% matches one of a specified group of possibilities
 
-#####
 # Combining multiple conditions
 
 # &    must meet both conditions (AND operator)
@@ -310,17 +296,4 @@ summary(missing.df)
 # 3: Read in the file "turtle_data.txt". Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.
 
 
-
-
-##########
-# Demo- using the "drop=TRUE" argument when subsetting higher-dimensional objects
-
-newmat <- matrix(c(1:6),nrow=3,byrow = T)
-class(newmat)
-
-newmat[1,]
-class(newmat[1,])    # what? why is it no longer a matrix????
-
-newmat[1,,drop=FALSE]
-class(newmat[1,,drop=FALSE])    # ahhh, now we retain a 2-D matrix! 
 

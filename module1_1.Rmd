@@ -37,7 +37,7 @@ Here are links to good R "cheatsheets":
 
 ### Helpful packages
 [ggplot cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
-[data tidying](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
+[data 'tidying'](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
 [data transformation](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
 [working with dates and times](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf)
 
@@ -64,17 +64,13 @@ The R console is located in the left half or bottom left of the RStudio interfac
 
 The R console (what you see if you opened R directly instead of RStudio) is a **command line** interface, and is *your direct connection with R*: you give R a command at the prompt and R executes that command. 
 
-You generally shouldn't work in the console, at least for writing important code- use an R script instead (see below).
-
-However, let's take a few minutes to work in the console:
-
 1. Click on the console, just to the right of one of the ">" prompts.  
 
 2. You can use the console like a calculator. For example, type `6+11` at the prompt and hit enter.
 
 3. Now hit the "up" arrow. The R console remembers all previous commands that it has executed in this **session**, which allows you to re-run commands relatively easily.
 
-4. Any command that is preceded by a hashtag (#) is ignored by the R console. Try typing `# 2+2` and hitting "Enter". Nothing happens, right? We will come back to this shortly.
+4. Try typing `# 2+2` and hitting "Enter". Nothing happens, right? We will come back to the special hashtag character shortly.
 
 ### Let's create our first object
 
@@ -82,7 +78,7 @@ Objects are defined using R's **assignment operator** (Windows shortcut: Alt + -
 
 ```{r results=F}
 
-myname <- 'Barney'  # or use your real name.
+myname <- "Daenerys"  # or use your real name.
 
 ```
 
@@ -90,13 +86,13 @@ Then hit "Enter". What does R return?
 
 NOTHING!
 
-BUT.... check the **Environment** window (top right of RStudio interface- list of all the objects you've defined in this session). You should see that you now have a new **object** in your environment, called "myname", and this object contains a **text string**. 
+BUT.... check the **Environment** window (top right of RStudio interface- list of all the objects you've defined in this session). You should see that you now have a new **object** in your environment, called "myname", and this object contains a single **text string**. 
       
 Now type `myname` into the R console and hit "Enter". What happens?
 
 If you enter the name of an object at the command line, R automatically prints the value of the object!
 
-NOTE: RStudio has a useful auto-fill feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" and you can just hit "Enter" to complete the object name! The auto-type feature, unlike R, is not case sensitive! Also note that you can hit the 'tab' key to trigger autofill anytime after you start typing in RStudio. 
+NOTE: RStudio has a useful auto-fill feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" (or use the "tab" key to trigger RStudio to give you autofill options) and you can just scroll to the right object/function and hit "Enter"! The auto-type feature, unlike R, is not case sensitive!  
 
 ## Graduating to R Scripts
 
@@ -116,11 +112,7 @@ my_obj <- 6+11
 
 Now place the cursor somewhere within the line of text you just wrote and hit 'Ctrl+Enter' (or 'Command+Enter') to run that line of code! You should see a new object ('my_obj') pop up in your environment.[^shortcuts]. 
 
-[^shortcuts]: RStudio has several helpful keyboard shortcuts to make running lines of code easier. [Check this website](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts) for a comprehensive set of keyboard shortcuts
-
-In the next line of your script, enter a hashtag followed by the command `2+2`. Nothing happens, right?  
-
-Now delete the hashtag and try again. Now R recognizes and runs the command. Interesting...
+[^shortcuts]: RStudio has several helpful keyboard shortcuts to make running lines of code easier. [Check this website](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts) for a comprehensive set of keyboard shortcuts- or access the shortcuts using help>>keyboard shortcuts.
 
 Take a few minutes to get comfortable running commands and defining new objects using your new R script. 
 
@@ -128,7 +120,7 @@ Of course, it's always a good idea to save your scripts often -- so feel free to
 
 ### Load an Existing script
 
-Remember the file you downloaded at the beginning of this submodule? That file is an R script ("module1_1.R"); Let's load it up now!  
+Remember the file you downloaded at the beginning of this submodule? That file is an R script (["module1_1.R"](module1_1.R)); Let's load it up now!  
 
 To do this, click on the "folder" icon on the Rstudio toolbar (or File >> Open File) and choose the script you downloaded earlier.
 
@@ -137,7 +129,6 @@ The first couple lines of the script for this module are preceded by hashtags. A
 _use comments early and often- they are tremendously valuable_.   
 
 Now you know the basics of how to use R scripts! Now, let's keep working through the remainder of the script you just opened. 
-
 
 ## A demo of R in action
 
@@ -170,7 +161,6 @@ Once packages are installed, you can load them into your workspace (so they are 
 # Load packages ------------------
 
 library(ggplot2)
-library(cowplot)
 library(tidyverse)
 library(Lahman)    # for getting baseball data
 
@@ -188,7 +178,7 @@ master <- read_csv("http://dgrtwo.github.io/pages/lahman/Master.csv")
 
 batting <- read_csv("http://dgrtwo.github.io/pages/lahman/Batting.csv")
 
-# Read in data from package (could read in all of these from the Lahman package!)
+# Read in data from package (you can read in all of these from the Lahman package!)
 
 fielding <- tibble(Lahman::Fielding)
 
@@ -400,11 +390,9 @@ plot(model1)  # run diagnostic plots for our regression
 With just minor changes to the above code, we could look at many additional questions!
 
 
-## Back to basics! R Objects
+## Back to basics: R Objects
 
-Okay, now that we've seen the kinds of powerful things R can do with data processing, visualization and analysis, let's step back and learn a little bit about R as a data-oriented programming language. 
-
-How does R represent and store data?
+Okay, let's step back and learn a little bit about R as a data-oriented programming language. 
 
 R has many different kinds of objects that you can define and store in memory. 
 
@@ -418,14 +406,14 @@ Functions are routines that take inputs (usually data objects) (also called **ar
 
 In R, the name of the function is followed by parentheses, and any arguments (inputs) are entered inside the parentheses. The basic syntax looks like the code snippet below.
 
-![](funcmach.png)
+![](funcmach.png){width=25%,height=25%}
 
 ```
 ## function syntax
 functionName([argument 1, argument2, ...])
 ```
 
-If you don't type the parenthesis, the function is not run- instead, the function definition is shown. 
+If you don't type the parenthesis, the function is not run- instead, the function definition is shown instead. 
 
 Here are some examples of how functions are used. Note the parentheses!
 
@@ -453,11 +441,9 @@ It's easy to get some help if you forget how a function works:
 help(round)  # a function for getting help with functions!!
 ?round         # shortcut for the 'help' function
 
-
 ```
 
 We will revisit functions in more detail (and build our own functions) in the "Programming" submodule.
-
 
 ### Data objects and variables
 
@@ -482,7 +468,6 @@ Scalars are the simplest data objects. A scalar is just a single value of any da
 #  Create R Objects ------------------------
 
 
-
 # scalars   --------------------------------
 
 
@@ -504,7 +489,6 @@ First let's create some vectors. In the code below we use a function called `c()
 ```{r}
 
 # VECTORS  -------------------------------
-
 
 vector1 <- c(1.1, 2.1, 3.1, 4)   # the "c()" function combines smaller data objects into a larger object
 vector2 <- c('a', 'b', 'c')
@@ -544,16 +528,11 @@ mymat <- cbind(d1,d2)        # create a matrix by binding vectors, with vector d
 mymat
 class(mymat)   # confirm that the new object "mymat" is a matrix using the 'class()' function
 
-```
-
-And there are other ways to make a matrix in R. For instance, we can use the function "matrix()" (this is a function for matrix construction!):
-
-```{r}
-
-mymat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (stack columns together)
+mymat <- matrix(c(1,2,3,4,5,6),nrow=3,ncol=2)        # create matrix another way (matrix constructor)
 mymat
 
 ```
+
 
 We can do stuff with matrices:
 
@@ -568,7 +547,7 @@ sum(mymat)
 
 mymat[3,2]    # extract the element in the 3rd row, 2nd column
 
-mymat[,1]     # extract first column
+mymat[,1]     # extract the entire first column
 
 # X[a,b]       access row a, column b element of matrix/data frame X
 # X[,b]        access all rows of column b of matrix/data frame X
@@ -579,7 +558,7 @@ mymat[,1]     # extract first column
 
 #### Lists
 
-**Lists** are more general than matrices. **List** objects are just a bunch of R data objects (**list elements**) grouped together into a single object! The elements of a list don't need to be the same length or the same **type**. The elements of a list can be vectors, matrices, other lists, or even functions.  
+**Lists** are more general than matrices. **List** objects are just a bunch of arbitrary R data objects (called **list elements**) grouped together into a single object! The elements of a list don't need to be the same length or the same **type**. The elements of a list can be vectors, matrices, other lists, or even functions.  
 
 Let's make our first list:
 
@@ -597,24 +576,25 @@ mylist
 
 mylist[[2]]    # extract the second list element
 
-mylist[[3]][1,2]   # extract the first row, second column from the third list element!   
+mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list !   
 
 ```
+
 ##### Data frames (a special kind of list)
 
-**Data frame** objects are the basic data storage object in R. Data frames are a special type of **list** in which list element is a *vector* object of the same length. Each list element in a data frame is also known as a *column*. 
+**Data frame** objects are the basic data storage object in R. Data frames are a special type of **list** in which each list element is a *vector* of equal length. Each list element in a data frame is also known as a *column*. 
 
-Data frames superficially resemble matrices, since both have rows and columns. However, unlike matrices, the columns of a data frame can represent different data **types** (i.e., character, logical, numeric, factor), and can thereby represent very different types of information!  
+Data frames superficially resemble matrices, since both have rows and columns. However, unlike matrices, the columns of a data frame can represent different data **types** (i.e., character, logical, numeric, factor), and can thereby represent different types of information!  
 
-_Data frames are the basic data storage structure in R_. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on each observation unit. 
+_Data frames are the fundamental data storage structure in R_. You can think of a data frame like a spreadsheet. Each row of the the data frame represents a different observation, and each column represents a different measurement taken on each observation unit. 
 
-Let's make our first data frame. We will use the data frame constructor function "tibble()". 
+Let's make our first data frame. 
 
 ```{r}
 
 # DATA FRAMES ---------------------------
 
-df1 <- tibble(col1=c(1,2,3),col2=c("A","A","B"))        # create a ‘tibble' data frame with two columns. Each column is a vector of length 3
+df1 <- data.frame(col1=c(1,2,3),col2=c("A","A","B"))        # create a data frame with two columns. Each column is a vector of length 3
 df1
 
 df1[1,2]     # extract the first element in the second column
@@ -624,9 +604,11 @@ df1$col2     # extract the second column by name (alternatively, df1[["col2"]])
 
 Now we have a data frame with three observation units and two measurements (variables).
 
+Note that a "tibble" is the same thing as a data frame, just with a few tweaks to make it work better in the tidyverse. We will primarily work with tibble data frames in this workshop.
+
 ## Making up data!
 
-In this section, we will make a bunch of fake data objects. In the next submodule we'll practice working with real data! 
+In this section, we will make up some fake data objects. In the next submodule we'll practice working with real data! 
 
 ### Generating sequences of numbers
 
@@ -642,7 +624,6 @@ One task that comes up a lot is generating sequences of numbers:
 
 seq(0,1,length=5)          # sequence of length 5 between 0 and 1 
 
-
 ```
 
 
@@ -653,7 +634,7 @@ Another task is to group regular recurring sequences together:
 # Repeating vector sequences -----------
 
 rep(0,times=3)                # repeat 0 three times
-rep(1:3,times=2)              # repeat 1:3 two times
+rep(1:3,times=2)              # repeat the vector 1:3 twice
 rep(1:3,each=2)               # repeat each element of 1:3 two times
 
 ```
@@ -665,12 +646,11 @@ And finally, we can fill up a vector with random numbers using one of R's built 
 
 # Random numbers ---------------
 
-z <- rnorm(10)                # 10 samples from std. normal
-z
-y <- rnorm(10,mean=-2,sd=4)           # 10 samples from Normal(-2,4^2)
-y
+rnorm(10)                     # 10 samples from std. normal
 
-rbinom(5,size=3,prob=.5)                # 5 samples from Binom(3,0.5)
+rnorm(10,mean=-2,sd=4)        # 10 samples from Normal(-2,4^2)
+
+rbinom(5,size=3,prob=.5)      # 5 samples from Binom(3,0.5)
 rbinom(5,3,.1)                # 5 samples from Binom(3,0.1)
 
 runif(10)                     # 10 standard uniform random numbers
@@ -679,7 +659,7 @@ runif(10,min=-1,max=1)        # 10 uniform random numbers from [-1,1]
 ```
 
 
-And finally, we can make up a fake data frame using some of the tricks we just learned!
+And finally, we can make up a fake data frame (or tibble) using some of the tricks we just learned!
 
 ```{r}
 
