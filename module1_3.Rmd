@@ -1,7 +1,7 @@
 ---
 title: "Module 1.3"
 author: 'Getting started: basic plotting and statistics in R'
-date: "TWS-WS 2022"
+date: "Fall 2022"
 output:
   html_document:
     theme: journal
@@ -12,32 +12,25 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
 ```
 
 ```{r echo=FALSE}
 
-##################################################
-####                                          ####  
-####  R Bootcamp #1, Module 3                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
+#  R Bootcamp #1, Module 3  -----------------------------         
+#      University of Nevada, Reno   
 
-## NOTE: this module borrows heavily from an R short-course developed by a team at Colorado State University. 
-   # Thanks to Perry Williams for allowing us to use these materials!!
-   # Thanks to John Tipton at CSU for developing much of this module (plotting in R)!
+#  Data visualization and statistics ----------------------
 
-############################################
-####  Data visualization and statistics ####
-############################################
+library(ggplot2)
+library(tidyverse)
 
 ```
-
-NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University.    
-   - Thanks to Perry Williams for allowing us to use these materials!!      
-   - Thanks to John Tipton at CSU for developing much of this module (plotting in R)!    
 
 ## Load script for module #1.3: Plotting
 
@@ -54,37 +47,52 @@ We'll start with the 'trees' dataset, which is built into R. It describes the gi
 # ?trees      # description of built in dataset  (uncomment to run)
 
 dim(trees)   # Show the dimension of the trees dataframe                                              
-
 str(trees)   # Show the structure of the trees dataframe
 
 head(trees)   # Show the first few observations of the trees dataframe
 
-```
-
-```{r, eval=FALSE}
-
-# Access the columns 
-trees$Girth     
-trees$Volume
+summary(trees)  # Summary stats for each column
 
 ```
 
-## Basic plots
-R's basic "plot()" function takes an "x" argument (defining coordinates on an x axis) and a "y" argument (defining coordinates on a y axis).
 
-Here is an example of a **scatterplot** in R:  
+## ggplot basics
+
+To get started with "ggplot()" we first give it a data set! 
+
+We then usually define the "x" argument (defining coordinates on an x axis) and a "y" argument (defining coordinates on a y axis). In ggplot these are known as aesthetic mappings! That is because it is a way of conveying information in the dataset graphically!
+
+Here is an example of a **scatterplot** in ggplot:  
 
 ```{r}
 
-plot(x=trees$Girth, y=trees$Volume)    # use R's built-in "trees" dataset: ?trees
+# scatterplot
+
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point()
 
 ```
+And some more fancy and informative scatterplots
 
+```{r}
+
+    # try representing tree height using color
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point(aes(col=Height))
+
+   # try adding a regression line
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point() +
+  geom_smooth(method="lm")
+
+```
 
 ### Change Plot Type
 Because we're exploring different ways of plotting, it is useful to include multiple plots in the same image. 
 
-We can do this using the `par()` function (graphical parameters), which has arguments that control just about every aspect of a plot in R. 
+We can do this using the `faceting` functions in ggplot. 
+
+///START HERE
 
 ```{r eval=FALSE}
 
