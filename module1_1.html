@@ -1275,18 +1275,81 @@ vectors as rows:</li>
 <pre><code>c(1,4) 
 c(2,5) 
 c(3,6)</code></pre>
+<p>Your final matrix should look like this:</p>
+<pre><code>##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Create a new matrix called ‘mymat2’ that includes all the data from
+columns 3 to 5 of data frame mydf. HINT: use the “as.matrix()” function
+to coerce a data frame into a matrix.</li>
+</ol>
+<p>Your result should look like this:</p>
+<pre><code>##       Block Germination AvgHeight
+##  [1,]     1           7  30.11009
+##  [2,]     2           8  29.32077
+##  [3,]     3           7  28.62151
+##  [4,]     4           9  30.43346
+##  [5,]     5           4  32.35144
+##  [6,]     6           2  28.30959
+##  [7,]     7           4  29.41184
+##  [8,]     8           2  30.26950
+##  [9,]     9           3  29.10932
+## [10,]    10           5  30.41413</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Create a list named ‘mylist’ that is composed of a vector: 1:3, a
+matrix: matrix(1:6,nrow=3,ncol=2), and a data frame:
+data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c(“a”,“a”,“b”)).</li>
+</ol>
+<p>Your result should look like this:</p>
+<pre><code>## [[1]]
+## [1] 1 2 3
+## 
+## [[2]]
+##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6
+## 
+## [[3]]
+##   x     y z
+## 1 1  TRUE a
+## 2 2 FALSE a
+## 3 3  TRUE b</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Extract the first and third observation from the 2nd column of the
+data frame in ‘mylist’ (the list created in challenge 6 above).</li>
+</ol>
+<p>Your result should look like this:</p>
+<ol start="5" style="list-style-type: decimal">
+<li>(extra challenging!) Create a data frame (or tibble) named
+‘df_spatial’ that contains 25 spatial locations, with ‘long’ and ‘lat’
+as the column names (25 rows/observations, 2 columns/variables). These
+locations should describe a 5 by 5 regular grid with extent long: [-1,1]
+and lat: [-1,1].</li>
+</ol>
+<p>HINT: you don’t need to type each location in by hand! Use the
+‘rep()’ and ‘seq()’ functions instead.</p>
+<p>To make sure you got it right, use the following commands in R:</p>
+<p>Don’t worry if you don’t understand the code- we’ll talk about
+plotting soon enough!</p>
+<pre class="r"><code># Code for visualizing the results from challenge problem 5
+
+plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
+abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>It should look something like this (above)!</p>
 <pre class="r"><code># CHALLENGE EXERCISES -------------------------
 
 
 ### Challenge 1: Create a 3 row by 2 column matrix equivalent to mymat. Use the &quot;rbind()&quot; function to bind the three rows together using the following three vectors as rows:
 
-c(1,4) </code></pre>
-<pre><code>## [1] 1 4</code></pre>
-<pre class="r"><code>c(2,5) </code></pre>
-<pre><code>## [1] 2 5</code></pre>
-<pre class="r"><code>c(3,6)</code></pre>
-<pre><code>## [1] 3 6</code></pre>
-<pre class="r"><code>### Challenge 2: Create a new matrix called &#39;mymat2&#39; that includes all the data from columns 3 to 5 of data frame mydf. HINT: use the &quot;as.matrix()&quot; function to coerce a data frame into a matrix.
+c(1,4) 
+c(2,5) 
+c(3,6)
+
+### Challenge 2: Create a new matrix called &#39;mymat2&#39; that includes all the data from columns 3 to 5 of data frame mydf. HINT: use the &quot;as.matrix()&quot; function to coerce a data frame into a matrix.
 
 ### Challenge 3: Create a list named &#39;mylist&#39; that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c(&quot;a&quot;,&quot;a&quot;,&quot;b&quot;)).
 
@@ -1294,35 +1357,12 @@ c(1,4) </code></pre>
 
 ### Challenge 5: (extra challenging!) Create a data frame named &#39;df_spatial&#39; that contains 25 spatial locations, with &#39;long&#39; and &#39;lat&#39; as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
-###     HINT: you don&#39;t need to type each location in by hand! Use the &#39;rep()&#39; and &#39;seq()&#39; functions instead.</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li><p>Create a new matrix called ‘mymat2’ that includes all the data
-from columns 3 to 5 of data frame mydf. HINT: use the “as.matrix()”
-function to coerce a data frame into a matrix.</p></li>
-<li><p>Create a list named ‘mylist’ that is composed of a vector: 1:3, a
-matrix: matrix(1:6,nrow=3,ncol=2), and a data frame:
-data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c(“a”,“a”,“b”)).</p></li>
-<li><p>Extract the first and third observation from the 2nd column of
-the data frame in ‘mylist’ (the list created in challenge 6
-above).</p></li>
-<li><p>(extra challenging!) Create a data frame (or tibble) named
-‘df_spatial’ that contains 25 spatial locations, with ‘long’ and ‘lat’
-as the column names (25 rows/observations, 2 columns/variables). These
-locations should describe a 5 by 5 regular grid with extent long: [-1,1]
-and lat: [-1,1].</p></li>
-</ol>
-<p>HINT: you don’t need to type each location in by hand! Use the
-‘rep()’ and ‘seq()’ functions instead.</p>
-<p>To make sure you got it right, use the following commands in R:</p>
-<p>Don’t worry if you don’t understand the code- we’ll talk about
-plotting soon enough!</p>
-<pre class="r"><code>########
-# Code for visualizing the results from challenge problem 8
+###     HINT: you don&#39;t need to type each location in by hand! Use the &#39;rep()&#39; and &#39;seq()&#39; functions instead.
+
+# You can use this code for plotting:
 
 plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-<p>It should look something like this (above)!</p>
 <p><a href="module1_2.html">–go to next submodule–</a></p>
 </div>
 <div class="footnotes footnotes-end-of-document">

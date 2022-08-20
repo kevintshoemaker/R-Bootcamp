@@ -1,238 +1,217 @@
 
-##################################################
-####                                          ####  
-####  R Bootcamp #2, Module 2                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
+#  R Bootcamp #1, submodule 2.2 ---------------------------
+#    University of Nevada, Reno         
+#    PROGRAMMING: FUNCTIONS AND MORE         
 
 
-#########################################
-####  Data Wrangling with Tidyverse  ####
-####                                 ####
-####  Author: Christine Albano       ####
-#########################################
+# Start with blank workspace -------------------
 
+rm(list=ls())
 
 
-# install.packages("tidyverse")
-library(tidyverse)
+## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
+my.mean <- function(x){       # 'x' is the function argument- 'x' stands in for whatever numeric vector the user wants
+    m <- sum(x)/length(x)
+    return(m)
+}
 
+foo <- c(2, 4, 6, 8)
+my.mean(foo)
 
-####
-####  Using the pipe operator %>% (ctrl-shift-m)
-####
 
-# start with a simple example
-x <- 3
 
-# calculate the log of x
-log(x) # form f(x) is equivalent to
+## A function to square the arguments.
+square <- function(x){
+    x^2
+}
 
-x %>% log() # form x %>% f
+## Square a single value (scalar).
+square(2)
 
-# example of multiple steps in pipe
-round(log(x), digits=2) # form g(f(x)) is equivalent to
+## Square all elements of a vector.
+square(1:10)
 
-x %>% log() %>% round(digits=2) # form x %>% f %>%  g
 
 
-####
-####  Import data as a Tibble dataframe and take a quick glance
-####
+## Often, we need to write functions that are not included in the base R package e.g., the logit function.
+## Calculate the log-odds (logit).
+logit <- function(x){
+    log(x/(1-x))
+}
 
-# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
-clim_data <- read_csv("MTMetStations.csv")
+## Calculate logit of 0.9.
+logit(.9)
 
-# display tibble - note nice formatting and variable info, entire dataset is not displayed as is case in read.csv
-clim_data
+## Sequence between 0 and 1.
+x <- seq(from = 0, to = 1, by = 0.01)
 
- # display the last few lines of the data frame
-tail(clim_data)
+## Caclulate the logit of a vector.
+logit.x <- logit(x)
+logit.x
 
+## Plot x on x-axis, and logit(x) on y axis.
+plot(x, logit.x, type = 'l',xlab="x",ylab="logit(x)")    # View the output graphically.
 
-####
-####  Use Tidyr verbs to make data 'tidy'
-####
 
-# look at clim_data -- is it in tidy format? What do we need to do to get it there?
-head(clim_data)
 
-# gather column names into a new column called 'climvar_station', and all of the numeric precip and temp values into a column called 'value'. By including -Date, we indicate that we don't want to gather this column.
-clim_vars_longer <- clim_data %>% pivot_longer( 
-                           cols = !Date,
-                           names_to = "climvar_station",
-                           values_to = "value"
-                    )
 
-clim_vars_longer
+#  if...else statements -----------------------
 
-# separate the climvar_station column into two separate columns that identify the climate variable and the station
-clim_vars_separate <- clim_vars_longer %>% separate(
-                           col = climvar_station, 
-                           into = c("Station","climvar")
-                      )
+# Draw a sample from a Binomial distribution with p = 0.7 (here, p represents detection probability).
+p <- 0.7            # probability of detection
+x <- rbinom(n = 1, size = 1, prob = p)      # single 'coin flip' with prob success equal to p
 
-clim_vars_separate
+if (x > 0) {
+    print("detected")
+} else {
+    print("not detected")
+}
 
-# pivot_wider distributes the clim_var column into separate columns, with the data values from the 'value' column
-tidy_clim_data <- clim_vars_separate %>% pivot_wider( 
-                        names_from = climvar, 
-                        values_from = value
-                  )
 
-tidy_clim_data
+#  ifelse()  --------------------------------
 
-  
-# repeat above as single pipe series without creation of intermediate datasets
-  
-tidy_clim_data <- clim_data %>% 
-  pivot_longer(cols = !Date,
-               names_to = "climvar_station",
-               values_to = "value") %>% 
-  separate(col = climvar_station, 
-           into = c("Station","climvar")) %>% 
-  pivot_wider(names_from = climvar, 
-              values_from = value)
-  
-tidy_clim_data
+## Note if...else only works for running one logical (T/F) test at a time. If we have a spreadsheet with lots of data, we need something else.
+n.samples <- 100
+set.seed(2017)     # the 'seed' allows random number generators to give the same result every time!
 
+## 100 samples from a binomial distribution with detection probability p = 0.7.
+y <- rbinom(n = n.samples, size = 1, prob = p)
+y
 
+## incorrect usage
+# if (y == 1) {
+#     print("Detected")
+# } else {
+#     print("Not detected")
+# }   # PRINTS A WARNING MESSAGE!
 
-####
-####  Use dplyr verbs to wrangle data
-####
+## Use ifelse instead.
+detection.history <- ifelse(y == 1, print("Detected"), print("Not detected"))
+detection.history
 
-# example of simple data selection and summary using group_by, summarize, and mutate verbs
+## Going the other direction.
+ifelse(detection.history == "Detected", 1, 0)
 
-# take tidy_clim_data, then
-# group data by station, then 
-# calculate summaries and put in columns with names mean.precip.in, mean.TMax.F, and mean.Tmin.F, then 
-# transform to metric and put in new columns mean.precip.in, mean.TMax.F, and mean.Tmin.F
+xt  <-  cbind(rbinom(10, 1, .5), rbinom(10, 1, .6))
+xt
+ifelse(xt[, 1] > 0 & xt[, 2] > 0, print("Detected twice"),
+       print("Not detected twice"))
 
-station_mean1 <- tidy_clim_data %>%
-  group_by(Station) %>% 
-  summarize(
-    mean.precip.in = mean(PrcpIN, na.rm=TRUE),
-    mean.TMax.F = mean(TMaxF, na.rm=TRUE),
-    mean.TMin.F = mean(TMinF, na.rm=TRUE)) %>%
-  mutate(
-    mean.precip.mm = mean.precip.in * 25.4,
-    mean.TMax.C = (mean.TMax.F - 32) * 5 / 9,
-    mean.TMin.C = (mean.TMin.F - 32) * 5 / 9
-  )
-  
-station_mean1
-  
-# using variants
 
-# take tidy_clim_data, then
-# group data by station, then 
-# calculate summary (mean of all non-NA values) for numeric data only, then 
-# transform temp data (.) from F to C, then
-# transform precip data (.) from in to mm
 
+#  for loops  --------------------------
 
-station_mean2 <- tidy_clim_data %>%
-  group_by(Station) %>% 
-  summarize_if(is.numeric, mean, na.rm=TRUE) %>%
-  mutate_at(vars(TMaxF, TMinF), funs(C=(.-32)*5/9)) %>% 
-  mutate_at(vars(PrcpIN), funs(Prcp.mm=.*25.4))
 
-station_mean2
-  
+for(i in 1:10){
+  print(i)
+}
 
-#### 
-####  Using lubridate to format and create date data types
-####
+for(j in c(1,2,3,4,5,6,7,8,9,10)){       # alternative
+  print(j)
+}
 
-library(lubridate)
+n.iter <- 10                   # another alternative!
+count <- 0
+for(i in 1:n.iter){
+  count <- count+1            # assign a new value of count equal to the old value of count plus 1
+  print(count)
+}
 
-date_string <- ("2017-01-31")
 
-# convert date string into date format by identifing the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date
 
-date_dtformat <- ymd(date_string)
+  # closer look at iteration vector:
+1:n.iter
 
-# note the different formats of the date_string and date_dtformat objects in the environment window.
 
-# a variety of other formats/orders can also be accommodated. Note how each of these are reformatted to "2017-01-31" A timezone can be specified using tz=
+## Using the iteration variable "i" within the for loop:
+n.iter <- 5
+count <- 0
+for(i in 1:n.iter){
+  count <- count+i            # assign a new value of count equal to the old value of count + i
+  print(count)
+}
 
-mdy("January 31st, 2017")
-dmy("31-Jan-2017")
-ymd(20170131)
-ymd(20170131, tz = "UTC")
+## A for-loop for dependent sequence (here, the Fibonacci sequence)
+n.iter <- 10
+x <- rep(0, n.iter)           # set up vector of all zeros
+x[1] <- 1                     # assign x_1  <-  1
+x[2] <- 1                     # assign x_2 = 0
+for(i in 3:n.iter){
+  x[i] <- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
+}
+x
 
-# can also make a date from components. this is useful if you have columns for year, month, day in a dataframe
-year<-2017
-month<-1
-day<-31
-make_date(year, month, day)
 
 
-# times can be included as well. Note that unless otherwise specified, R assumes UTC time
+### apply (another way to iterate) ------------------
 
-ymd_hms("2017-01-31 20:11:59")
-mdy_hm("01/31/2017 08:01")
+W <- matrix(rnorm(4, 10, 3), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Normal random number generator with mu=10 and sd=3
+W
 
-# we can also have R tell us the current time or date
+## For each row, calculate the mean.
+apply(W, 1, mean)
 
-now()
-now(tz = "UTC")
-today()
+## For each column, calculate the mean.
+apply(W, 2, mean)
 
+## For each row, identify the column that has the largest value.
+apply(W, 1, which.max)
 
-####
-####  Parsing dates with lubridate
-####
+## Apply your own custom function to each row in a matrix.
+MyFunc <- function(x){
+    2+sum(x/5)-3/2*mean(x)^2
+}
+apply(W, 1, MyFunc)
 
-datetime <- ymd_hms("2016-07-08 12:34:56")
+# lapply: apply a function across a list or vector --------------
 
-# year
-year(datetime)
+# apply the "exp()" function to each element in the vector 1:5 
 
-# month as numeric
-month(datetime)
+lapply(1:5,function(x) exp(x)) 
 
-# month as name
-month(datetime, label = TRUE)
 
-# day of month
-mday(datetime)
+# compute the square root of volume for the first five trees in the 'trees' dataset
 
-# day of year (julian day)
-yday(datetime)
+lapply(1:5, function(t) sqrt(trees$Volume[t]))
 
-# day of week
-wday(datetime)
-wday(datetime, label = TRUE, abbr = FALSE)
 
+# sapply: same thing as 'lapply' but simplifies the returned object (i.e., into a vector if the function returns a scalar...)
 
-#### 
-####  Using lubridate with dataframes and dplyr verbs
-####
+mylist <- list()
+mylist[[1]] <- seq(1,5,length=10)
+mylist[[2]] <- c(1,.5,-.4)
+mylist[[3]] <- matrix(rnorm(12,10,3),nrow=3)
+sapply(mylist,function(x) sum(x)) 
 
-# going back to our tidy_clim_data dataset we see that the date column is formatted as character, not date
-head(tidy_clim_data)
 
-# change format of date column
-tidy_clim_data <- tidy_clim_data %>% 
-  mutate(Date = mdy(Date))
-tidy_clim_data
-# parse date into year, month, day, and day of year columns
-tidy_clim_data <- tidy_clim_data %>% mutate(
-  Year = year(Date),
-  Month = month(Date),
-  Day = mday(Date),
-  Yday = yday(Date))
 
-tidy_clim_data
+x=c(5,4,7,3,10,2,5,4,7,6)
 
-# calculate total annual precipitation by station and year
-annual_sum_precip_by_station <- tidy_clim_data %>%
-  group_by(Station, Year) %>%
-  summarise(PrecipSum = sum(PrcpIN))
 
-annual_sum_precip_by_station 
+filled.contour(volcano, color.palette = terrain.colors, asp = 1)
+title(main = "volcano data: filled contour map")
+
+
+
+# CHALLENGE EXERCISES   -------------------------------------
+
+#1: Create a custom function to calculate the predicted value y 
+#    for the equation y = beta_0 + beta_1*x for any value of 
+#    beta_0, beta_1 and x. Assume that beta_0 and 
+#    beta_1 are both scalar, whereas x is a numeric vector. 
+#    Use this function to calculate y for the values of 
+#    $x$ = 1,...,10 with $\beta_0 = 2$, and $\beta_1= -1$. 
+#    Use base R plotting (`plot()` function) to plot the results.
+#
+#2: Write a FOR loop that takes a numeric vector as input and 
+#    computes the cumulative mean (for each element of the vector, 
+#    compute the mean of all previous elements of the vector, 
+#    including the current element). 
+#
+#3: Using the built-in 'volcano' dataset (a matrix of elevation data 
+#    with columns representing longitude and rows representing latitude),
+#    calculate the standard deviation of elevation as an index of
+#    'ruggedness' from the rows () of the volcano elevation data matrix.
+#    Using the "apply()" function. Which row (latitude band) of the
+#    'volcano' dataset has the most rugged terrain?
 

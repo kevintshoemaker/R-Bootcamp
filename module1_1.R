@@ -42,16 +42,16 @@ fielding <- tibble(Lahman::Fielding)
 # explore the data --------------------
 
 salaries
-summary(salaries)    # summary statistics for all variables in data frame
+# summary(salaries)    # summary statistics for all variables in data frame
 
 master
-summary(master)
+# summary(master)
 
 batting
-summary(batting)
+# summary(batting)
 
 fielding
-summary(fielding)
+# summary(fielding)
 
 
 # Do some wrangling! -----------------------
@@ -356,6 +356,12 @@ ncol(my.data)     # get number of columns/variables in a data frame
 str(my.data)      # look at the "internals" of an object (useful for making sense of complex objects!)
 
 
+# Code for visualizing the results from challenge problem 5
+
+plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
+abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
+
+
 # CHALLENGE EXERCISES -------------------------
 
 
@@ -375,9 +381,7 @@ c(3,6)
 
 ###     HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq()' functions instead.
 
-
-########
-# Code for visualizing the results from challenge problem 8
+# You can use this code for plotting:
 
 plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)

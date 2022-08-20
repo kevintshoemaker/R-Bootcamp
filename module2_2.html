@@ -441,12 +441,12 @@ RStudio Project and click on the folder icon in the toolbar at the top
 and load your script.</p></li>
 </ol>
 <p>Let’s get started with basic programming in R!</p>
-<p>One quick note: this is the only submodule that uses only base R. You
-don’t need to load any packages here. You’ll notice that we use the
-<code>plot()</code> function, which is R’s built in plotting function.
-This is less powerful than ggplot in many ways, and is much harder to
-use for quick data visualizations, but it’s still useful to know how to
-use base R graphics…</p>
+<p><em>One quick note</em>: this submodule primarily uses base R instead
+of the tidyverse. You’ll notice that we use the <code>plot()</code>
+function, which is R’s built in plotting functionality. This is less
+sophisticated than ggplot in many ways, and is much harder to use for
+quick data visualizations, but it’s still useful to know how to use
+…</p>
 </div>
 <div id="functions-in-r" class="section level2">
 <h2>Functions in R</h2>
@@ -475,8 +475,9 @@ my.function &lt;- function(input1,input2,...){         # function takes various 
 </code></pre>
 <div id="mean-function" class="section level3">
 <h3>‘Mean’ function</h3>
-<p>Let’s write a function to compute the mean of a vector. Okay fine,
-base R already has the “mean()” function, but let’s do it anyway!</p>
+<p>Let’s write a function to compute the mean of a numeric vector. Okay
+fine, base R already has the “mean()” function, but let’s do it
+anyway!</p>
 <pre class="r"><code>## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
 my.mean &lt;- function(x){       # &#39;x&#39; is the function argument- &#39;x&#39; stands in for whatever numeric vector the user wants
     m &lt;- sum(x)/length(x)
@@ -486,6 +487,10 @@ my.mean &lt;- function(x){       # &#39;x&#39; is the function argument- &#39;x&
 foo &lt;- c(2, 4, 6, 8)
 my.mean(foo)</code></pre>
 <pre><code>## [1] 5</code></pre>
+<p>Here, the variable “x” stands in for any possible numeric vector. The
+function takes the user input, names it “x” (within the function
+environment), computes a new scalar variable “m” that represents the
+mean of the vector “x”, and returns the variable “m”.</p>
 </div>
 <div id="square-function" class="section level3">
 <h3>‘Square’ function</h3>
@@ -501,6 +506,9 @@ square(2)</code></pre>
 <pre class="r"><code>## Square all elements of a vector.
 square(1:10)</code></pre>
 <pre><code>##  [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
+<p>If there is no explicit <code>return</code> function, the function
+will return the output of the last command (line of code) within the
+function.</p>
 </div>
 <div id="logit-function" class="section level3">
 <h3>‘Logit’ function</h3>
@@ -542,55 +550,6 @@ logit.x</code></pre>
 plot(x, logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;logit(x)&quot;)    # View the output graphically.</code></pre>
 <p><img src="module2_2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
-<div id="expit-function" class="section level3">
-<h3>‘Expit’ function</h3>
-<p>Another useful function is the inverse-logit, or “expit”
-function:</p>
-<pre class="r"><code>## Sequence between 0 and 1.
-x &lt;- seq(from = 0, to = 1, by = 0.01)
-
-logit.x &lt;- logit(x)
-
-## The expit (or inverse logit) funtion.
-expit &lt;- function(x){
-    exp(x)/(1+exp(x))
-}
-
-## Calculate the inverse-logit of logit(0.9) = 2.197225.
-expit(2.197225)</code></pre>
-<pre><code>## [1] 0.9</code></pre>
-<pre class="r"><code>expit.logit.x &lt;- expit(logit.x)    # Return to original x values.
-
-## Plot x on x-axis, and expit(logit(x)) = x on y axis.
-plot(x, expit.logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;expit(logit(x))&quot;)</code></pre>
-<p><img src="module2_2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>## Plot &quot;logistic&quot; curve
-plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type=&quot;l&quot;,xlab=&quot;x&quot;,ylab=&quot;expit(x)&quot;)</code></pre>
-<p><img src="module2_2_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
-</div>
-<div id="wildlife-survival-function" class="section level3">
-<h3>Wildlife survival function</h3>
-<p>Finally, let’s develop a function to compute the survival rate from
-data collected on wild individuals tracked over time:</p>
-<pre class="r"><code>## n is the number of animals being monitored.
-## d is the number of animals that died.
-survival &lt;- function(n, d){
-    (n-d)/n
-}
-
-## One year of data.
-survival(n = 10, d = 5)</code></pre>
-<pre><code>## [1] 0.5</code></pre>
-<pre class="r"><code>## Simulate many years of data.
-d &lt;- sample(0:50, 10, replace = TRUE)   # note use of &quot;sample()&quot; function   [random number of dead individuals]
-n &lt;- rep(100, times=10)                 # total number of individuals 
-surv &lt;- survival(n = n, d = d)
-surv</code></pre>
-<pre><code>##  [1] 0.81 0.70 0.57 0.63 0.64 0.68 0.84 0.72 0.54 0.74</code></pre>
-<pre class="r"><code>## Plot year-specific survival rate (random- will look different every time!)
-plot(1:10, surv, type = &#39;l&#39;,xlab=&quot;Year&quot;,ylab=&quot;Survival&quot;)</code></pre>
-<p><img src="module2_2_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-</div>
 </div>
 <div id="conditional-statements" class="section level2">
 <h2>Conditional statements</h2>
@@ -614,7 +573,7 @@ or you can omit these entirely!</p>
 <p>Let’s try it!</p>
 <pre class="r"><code>#  if...else statements -----------------------
 
-# Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
+# Draw a sample from a Binomial distribution with p = 0.7 (here, p represents detection probability).
 p &lt;- 0.7            # probability of detection
 x &lt;- rbinom(n = 1, size = 1, prob = p)      # single &#39;coin flip&#39; with prob success equal to p
 
@@ -623,7 +582,7 @@ if (x &gt; 0) {
 } else {
     print(&quot;not detected&quot;)
 }</code></pre>
-<pre><code>## [1] &quot;detected&quot;</code></pre>
+<pre><code>## [1] &quot;not detected&quot;</code></pre>
 </div>
 <div id="ifelse-function" class="section level3">
 <h3>ifelse() function</h3>
@@ -702,8 +661,8 @@ xt</code></pre>
 ## [10] &quot;Not detected twice&quot;</code></pre>
 </div>
 </div>
-<div id="iterating" class="section level2">
-<h2>Iterating!</h2>
+<div id="iteration" class="section level2">
+<h2>Iteration</h2>
 <p>Iterating, or running the same operation over and over sequentially,
 is another fundamental computer programming tool. Computers are great at
 performing multiple computations really, really fast!
@@ -804,27 +763,29 @@ class="section level3">
 <h3>Iterating using the “apply() family of functions in R”</h3>
 <pre class="r"><code>### apply (another way to iterate) ------------------
 
-W &lt;- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
+W &lt;- matrix(rnorm(4, 10, 3), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Normal random number generator with mu=10 and sd=3
 W</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]   12    5
-## [2,]   10    8</code></pre>
-<pre class="r"><code>## Calculate the row means.
+<pre><code>##          [,1]      [,2]
+## [1,] 12.30590  6.008173
+## [2,] 10.56068 10.191093</code></pre>
+<pre class="r"><code>## For each row, calculate the mean.
 apply(W, 1, mean)</code></pre>
-<pre><code>## [1] 8.5 9.0</code></pre>
-<pre class="r"><code>## Calculate the column means.
+<pre><code>## [1]  9.157038 10.375888</code></pre>
+<pre class="r"><code>## For each column, calculate the mean.
 apply(W, 2, mean)</code></pre>
-<pre><code>## [1] 11.0  6.5</code></pre>
-<pre class="r"><code>## Identify the column that has the largest value.
+<pre><code>## [1] 11.433293  8.099633</code></pre>
+<pre class="r"><code>## For each row, identify the column that has the largest value.
 apply(W, 1, which.max)</code></pre>
 <pre><code>## [1] 1 1</code></pre>
-<pre class="r"><code>## Apply your own functions to each row in a matrix.
+<pre class="r"><code>## Apply your own custom function to each row in a matrix.
 MyFunc &lt;- function(x){
     2+sum(x/5)-3/2*mean(x)^2
 }
 apply(W, 1, MyFunc)</code></pre>
-<pre><code>## [1] -102.975 -115.900</code></pre>
+<pre><code>## [1] -120.1142 -155.3382</code></pre>
 <pre class="r"><code># lapply: apply a function across a list or vector --------------
+
+# apply the &quot;exp()&quot; function to each element in the vector 1:5 
 
 lapply(1:5,function(x) exp(x)) </code></pre>
 <pre><code>## [[1]]
@@ -841,7 +802,9 @@ lapply(1:5,function(x) exp(x)) </code></pre>
 ## 
 ## [[5]]
 ## [1] 148.4132</code></pre>
-<pre class="r"><code>lapply(1:5, function(t) sqrt(trees$Volume[t]))</code></pre>
+<pre class="r"><code># compute the square root of volume for the first five trees in the &#39;trees&#39; dataset
+
+lapply(1:5, function(t) sqrt(trees$Volume[t]))</code></pre>
 <pre><code>## [[1]]
 ## [1] 3.209361
 ## 
@@ -856,237 +819,80 @@ lapply(1:5,function(x) exp(x)) </code></pre>
 ## 
 ## [[5]]
 ## [1] 4.335897</code></pre>
-<pre class="r"><code># sapply: same thing as &#39;lapply&#39; but simplifies the returned object (into a vector if possible)
+<pre class="r"><code># sapply: same thing as &#39;lapply&#39; but simplifies the returned object (i.e., into a vector if the function returns a scalar...)
 
 mylist &lt;- list()
-mylist[[1]] &lt;- seq(-1,1,length=10)
+mylist[[1]] &lt;- seq(1,5,length=10)
 mylist[[2]] &lt;- c(1,.5,-.4)
-mylist[[3]] &lt;- matrix(rnorm(12),nrow=3)
-sapply(mylist,function(x) sum(exp(x))) </code></pre>
-<pre><code>## [1] 12.163382  5.037323 17.580375</code></pre>
-</div>
-</div>
-<div id="more-practice" class="section level2">
-<h2>More Practice</h2>
-<div id="using-conditional-statements" class="section level3">
-<h3>Using conditional statements</h3>
-<div id="reject-null-hypothesis" class="section level4">
-<h4>Reject null hypothesis</h4>
-<p>In traditional statistics, one of the primary goals is to compare a
-test statistic with a “critical value”: if the test statistic exceeds
-the critical value, you can reject a null hypothesis with a reasonable
-degree of certainty (such that the rate at which you incorrectly reject
-the null hypothesis remains at or below a pre-specified value, called
-the “alpha-level”).</p>
-<p>In the example below, we simulate data (n=100) from a normal
-distribution with mean of 1, and we use a Student’s t-test to assess
-whether or not we can reject the null hypothesis that the data were
-derived from a distribution with mean of zero. Here, the <em>test
-statistic</em> is the t-statistic (representing the standardized
-difference of the sample mean from zero), and the <em>critical
-value</em> is determined as a pre-specified quantile of the “t”
-distribution (here, we use a two-tailed test holding alpha=0.05).</p>
-<p>The act of rejecting or failing to reject a null hypothesis is an
-instance of conditional logic (if…then…else). Let’s see how we might
-implement this test in R:</p>
-<pre class="r"><code>#  More Practice -------------------------
-
-#    Perform hypothesis test using if...then...else
-
-
-n.samples &lt;- 100
-x &lt;- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
-hist(x)</code></pre>
-<p><img src="module2_2_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<pre class="r"><code>mu &lt;- mean(x)                               # Compute the sample mean.
-s &lt;- sd(x)                                  # Compute the sample standard deviation.
-t &lt;- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
-t.crit &lt;- qt(p = 0.975, df = 99)            # Calculate critical value for test (above which we can reject the null hypothesis with acceptable type-I error)
-if (t &gt; t.crit) {
-    print(&quot;reject&quot;)                        # Reject if condition holds.
-} else {
-    print(&quot;fail to reject&quot;)                # Fail to reject otherwise.
-}</code></pre>
-<pre><code>## [1] &quot;reject&quot;</code></pre>
-<p>Did you successfully reject the null hypothesis? What if you set the
-mean to zero when you simulate the data?</p>
-</div>
-<div id="cleaning-up-messy-data" class="section level4">
-<h4>Cleaning up messy data</h4>
-<p>Sometimes (like all the time) your data will be “messy” - that is, it
-will have some errors (e.g., incorrect data entry) that need to be fixed
-prior to running an analysis. Take this example of “messy” data from a
-simulated occupancy study:</p>
-<pre class="r"><code># Clean up messy matrix using ifelse  ---------------
-
-
-## Simulate data.
-observations &lt;- matrix(sample(c(&quot;Detected&quot;, &quot;NotDetected&quot;, 1, 0), 20*3, replace = TRUE), 20, 3)    # simulate detection/non-detection data over three sampling occasions
-
-habitat &lt;- rnorm(20, 0, 2)    # simulate environmental covariate
-Data &lt;- cbind(observations, habitat)       # bind into single matrix.
-Data</code></pre>
-<pre><code>##                                                 habitat             
-##  [1,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;1&quot;           &quot;2.31665529967448&quot;  
-##  [2,] &quot;1&quot;           &quot;1&quot;           &quot;Detected&quot;    &quot;-0.600024626226216&quot;
-##  [3,] &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;1&quot;           &quot;-1.19162607148504&quot; 
-##  [4,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;0.952650163756112&quot; 
-##  [5,] &quot;NotDetected&quot; &quot;1&quot;           &quot;Detected&quot;    &quot;3.31960806917777&quot;  
-##  [6,] &quot;0&quot;           &quot;0&quot;           &quot;NotDetected&quot; &quot;-2.82432188658575&quot; 
-##  [7,] &quot;1&quot;           &quot;1&quot;           &quot;NotDetected&quot; &quot;2.00889649628675&quot;  
-##  [8,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;1&quot;           &quot;3.37380275696964&quot;  
-##  [9,] &quot;0&quot;           &quot;0&quot;           &quot;0&quot;           &quot;-1.38505429366756&quot; 
-## [10,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;Detected&quot;    &quot;0.818397336733175&quot; 
-## [11,] &quot;0&quot;           &quot;0&quot;           &quot;NotDetected&quot; &quot;-1.01972896373415&quot; 
-## [12,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-2.96852211723634&quot; 
-## [13,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;1&quot;           &quot;-2.15312731331142&quot; 
-## [14,] &quot;1&quot;           &quot;1&quot;           &quot;0&quot;           &quot;-2.08564204039605&quot; 
-## [15,] &quot;Detected&quot;    &quot;1&quot;           &quot;NotDetected&quot; &quot;-0.725906188492338&quot;
-## [16,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;3.02404054801466&quot;  
-## [17,] &quot;1&quot;           &quot;Detected&quot;    &quot;Detected&quot;    &quot;0.237107059656618&quot; 
-## [18,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;0&quot;           &quot;0.773745221715878&quot; 
-## [19,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;NotDetected&quot; &quot;1.74770636242436&quot;  
-## [20,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;0&quot;           &quot;0.0841186100995515&quot;</code></pre>
-<p>As you can see, non-detections are coded here as both “NotDetected”
-and “0”, and likewise, detection events also have two alternative codes.
-To clean up this data set, let’s do the following:</p>
-<ul>
-<li>Make sure that detections and non-detections are coded in a
-consistent manner!<br />
-</li>
-<li>Reduce the significant digits of the environmental covariate
-“Habitat”.<br />
-</li>
-<li>Finally, we probably want to add column names to our matrix.</li>
-</ul>
-<p>Note the use of the “ifelse()” function here, which is a convenient
-and efficient way to perform a test consecutively on an entire vector
-using a single line of code!</p>
-<pre class="r"><code>## Clean-up data using &quot;ifelse()&quot; function
-NewObs &lt;- ifelse( (Data[, 1:3] == &quot;Detected&quot;) | (Data[, 1:3] == &quot;1&quot;), 1, 0) #  The &quot;|&quot; means &quot;or.&quot; Similarly &quot;&amp;&quot; means &quot;and&quot;
-NewHabitat &lt;- as.numeric(Data[, 4])  # as.numeric gets rid of quotes around habitat data.
-NewHabitat &lt;- round(NewHabitat, 2)   # round rounds to number of decimals specified.
-NewData &lt;- cbind(NewObs, NewHabitat) # bind the columns to form a matrix.
-colnames(NewData) &lt;- c(&quot;obs1&quot;, &quot;obs2&quot;, &quot;obs3&quot;, &quot;Habitat&quot;)  # provide column names
-NewData</code></pre>
-<pre><code>##       obs1 obs2 obs3 Habitat
-##  [1,]    0    1    1    2.32
-##  [2,]    1    1    1   -0.60
-##  [3,]    0    0    1   -1.19
-##  [4,]    1    1    0    0.95
-##  [5,]    0    1    1    3.32
-##  [6,]    0    0    0   -2.82
-##  [7,]    1    1    0    2.01
-##  [8,]    1    0    1    3.37
-##  [9,]    0    0    0   -1.39
-## [10,]    1    0    1    0.82
-## [11,]    0    0    0   -1.02
-## [12,]    1    1    0   -2.97
-## [13,]    1    1    1   -2.15
-## [14,]    1    1    0   -2.09
-## [15,]    1    1    0   -0.73
-## [16,]    0    0    1    3.02
-## [17,]    1    1    1    0.24
-## [18,]    1    0    0    0.77
-## [19,]    1    1    0    1.75
-## [20,]    1    1    0    0.08</code></pre>
-<p>Looks a lot better now, right!</p>
-</div>
-</div>
-<div id="using-for-loops" class="section level3">
-<h3>Using FOR loops</h3>
-<p>Iteration is one of the things computers do best, and harnessing this
-ability is endlessly useful! Here are some examples:</p>
-<div id="view-a-landscape-from-multiple-angles" class="section level4">
-<h4>View a landscape from multiple angles</h4>
-<p>In this example, we use a FOR loop to view the topography of a rugged
-landscape (using the built-in “volcano” dataset in R) from multiple
-perspectives.</p>
-<pre class="r"><code># FOR loop examples --------------------------
-
-## EXAMPLE 1: Plot a 3D surface using data already stored in R.
-
-Z &lt;- 2 * volcano        # Exaggerate the relief (multiply the elevation by 2)   
-
-X &lt;- 10 * (1:nrow(Z))   # set horizontal coordinates -- 10 meter spacing (S to N)     
-
-Y &lt;- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to W)
-
-# Z   # make sure the elevation matrix looks right
-
-par(bg = &quot;white&quot;)
-layout(1)   # reset graphics
-persp(X,  Y, Z, theta = 135, phi = 30, col = &quot;green3&quot;,    # &quot;persp()&quot; produces a 3D &quot;perspective plot&quot;
-      scale = FALSE, ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)</code></pre>
-<p><img src="module2_2_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<p>Now let’s view from an alternative angle!</p>
-<pre class="r"><code>## change the value of theta from 135 to 90 to change the viewing angle
-persp(X, Y, Z, theta = 90, phi = 30, col = &quot;green3&quot;,
-      scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)</code></pre>
-<p><img src="module2_2_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>Now we can use a FOR loop to view this landscape from many angles.
-Try it!</p>
-<pre class="r"><code>## Use a for-loop to help view many angles.
-for(i in 1:18){
-    persp(X, Y, Z, theta = i*20, phi = 30, col = &quot;green3&quot;,
-          scale = FALSE,  ltheta = -120, shade = 0.75,
-          border = NA, box = FALSE)
-    print(i*20)
-    readline()                               # Pauses the for-loop until [enter] is pushed
-}</code></pre>
-</div>
+mylist[[3]] &lt;- matrix(rnorm(12,10,3),nrow=3)
+sapply(mylist,function(x) sum(x)) </code></pre>
+<pre><code>## [1]  30.0000   1.1000 132.7356</code></pre>
 </div>
 </div>
 <div id="challenge-problems" class="section level2">
 <h2>Challenge problems!</h2>
 <ol style="list-style-type: decimal">
-<li><p>Create a function to calculate the value of <span
+<li>Create a custom function to calculate the predicted value <span
 class="math inline">\(y\)</span> for the equation <span
 class="math inline">\(y = \beta_0 + \beta_1*x\)</span> for any value of
 <span class="math inline">\(\beta_0\)</span>, <span
 class="math inline">\(\beta_1\)</span> and <span
-class="math inline">\(x\)</span>.</p></li>
-<li><p>Using the function in part 1, with <span
+class="math inline">\(x\)</span>. Assume that <span
+class="math inline">\(\beta_0\)</span> and <span
+class="math inline">\(\beta_1\)</span> are both scalar, whereas x is a
+numeric vector. Use this function to calculate <span
+class="math inline">\(y\)</span> for the values of <span
+class="math inline">\(x\)</span> = 1,…,10 with <span
 class="math inline">\(\beta_0 = 2\)</span>, and <span
-class="math inline">\(\beta_1= -1\)</span> use a FOR loop to calculate
-<span class="math inline">\(y\)</span> for the values of <span
-class="math inline">\(x\)</span> = 1,…,10. Plot the results.</p></li>
-<li><p>Write a function that conducts a one-sample, two-sided t test for
-a given null hypothesis. Here is a code skeleton to get you
-started!!</p></li>
+class="math inline">\(\beta_1= -1\)</span>. Use base R plotting
+(<code>plot()</code> function) to plot the results.</li>
 </ol>
-<pre class="r"><code>##########
-# Challenge problem 3: code skeleton to get you started!   
-
-get.t.test &lt;- function(data, mu0, alpha = 0.05) {
-    n &lt;- length(data)
-    mu &lt;- mean(____)
-    s &lt;- ____(data)
-    t &lt;- (mu-mu0)/(s/sqrt(n))
-    t.crit &lt;- qt(p = (1-alpha/2), df = n-1)        # get the critical value
-    if (abs(t)&gt;t.crit) {
-        answer = &quot;_______&quot;
-    } ____ {
-        answer = &quot;Fail to reject&quot;
-    }
-    print(answer)
-}</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Calculate the standard deviation of elevation as an index of
-ruggedness from the rows of the volcano elevation data “Z”, using the
-“apply()” function. Which row has the most rugged terrain?</li>
+<p>Your result should look something like this:</p>
+<p><img src="module2_2_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Write a FOR loop that takes a numeric vector as input and computes
+the cumulative mean (for each element of the vector, compute the mean of
+all previous elements of the vector, including the current
+element).</li>
 </ol>
-<p>5: Wrap the code below in a FOR loop to simulate the sun rising and
-setting over the volcano data by looping over values of “lphi” (the
-light angle). Try replacing “readline()” with “Sys.sleep(.5)”.</p>
-<pre class="r"><code>#######
-# Example code to get you started with challenge problem 5... 
+<p>If you apply this loop to the following vector “x”:</p>
+<pre class="r"><code>x=c(5,4,7,3,10,2,5,4,7,6)</code></pre>
+<p>You should get the following result:</p>
+<pre><code>##  [1] 5.000000 4.500000 5.333333 4.750000 5.800000 5.166667 5.142857 5.000000
+##  [9] 5.222222 5.300000</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using the built-in ‘volcano’ dataset (a matrix of elevation data
+with columns representing longitude and rows representing latitude),
+calculate the standard deviation of elevation as an index of
+‘ruggedness’ from the rows () of the volcano elevation data matrix.
+Using the “apply()” function. Which row (latitude band) of the ‘volcano’
+dataset has the most rugged terrain?</li>
+</ol>
+<p>Here’s a quick look at the volcano dataset:</p>
+<pre class="r"><code>filled.contour(volcano, color.palette = terrain.colors, asp = 1)
+title(main = &quot;volcano data: filled contour map&quot;)</code></pre>
+<p><img src="module2_2_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code># CHALLENGE EXERCISES   -------------------------------------
 
-persp(X, Y, Z, theta = 30, phi = 30, col = &quot;green3&quot;,  lphi = ?, scale = FALSE,  ltheta = -120, shade = 0.75, border = NA, box = FALSE)
-print(?)
-readline()</code></pre>
+#1: Create a custom function to calculate the predicted value y 
+#    for the equation y = beta_0 + beta_1*x for any value of 
+#    beta_0, beta_1 and x. Assume that beta_0 and 
+#    beta_1 are both scalar, whereas x is a numeric vector. 
+#    Use this function to calculate y for the values of 
+#    $x$ = 1,...,10 with $\beta_0 = 2$, and $\beta_1= -1$. 
+#    Use base R plotting (`plot()` function) to plot the results.
+#
+#2: Write a FOR loop that takes a numeric vector as input and 
+#    computes the cumulative mean (for each element of the vector, 
+#    compute the mean of all previous elements of the vector, 
+#    including the current element). 
+#
+#3: Using the built-in &#39;volcano&#39; dataset (a matrix of elevation data 
+#    with columns representing longitude and rows representing latitude),
+#    calculate the standard deviation of elevation as an index of
+#    &#39;ruggedness&#39; from the rows () of the volcano elevation data matrix.
+#    Using the &quot;apply()&quot; function. Which row (latitude band) of the
+#    &#39;volcano&#39; dataset has the most rugged terrain?</code></pre>
 <p><a href="module2_3.html">–go to next module–</a></p>
 </div>
 

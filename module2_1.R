@@ -28,40 +28,51 @@ mfv(newdf$Export, na.rm = T)
 detach("package:modeest")  # remove the package from your current working session
 
 
-# 3D Plotting example ---------------
-
-#########
-# Data: dog barks per day (and two explanatory variables)
-
-Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
-        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
-Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
-        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
-        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
-        0.272, 0.098, 0.415)
-Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
-       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
-
-
-# install.packages("car")   # only uncomment these if you don't already have these packages
-# install.packages("rgl")   # you need this one as well!
-
-library(car)
-library(rgl)
-
-
-##########
-# interactive 3-D graphics!
-
-car::scatter3d(Bark~Food+Cars,surface=TRUE)
-
-
 ###########
 # install package from GitHub:
 
  # install.packages("remotes")    # run this if you haven't already installed the "remotes" package
 library(remotes)
-install_github("kbroman/broman")  # install a random package from GitHub!
+remotes::install_github("AckerDWM/gg3D")  # install a package from GitHub!
+
+
+# 3D Plotting example ---------------
+
+
+library(tidyverse)
+library(deSolve)
+library(ggplot2)
+library(gg3D) 
+
+
+# Data: dog barks per day (and two explanatory variables)
+
+dogbarks <- tibble(
+  Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
+          36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21),
+  Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
+          0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
+          0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
+          0.272, 0.098, 0.415),
+  Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
+       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
+)
+
+ggplot(dogbarks, aes(x=Cars, y=Food, z=Bark)) +
+  axes_3D() +
+  stat_3D() +
+  labs(title="Dog barks plot") +
+  theme_void()
+
+# Save plot as PDF
+ggsave(last_plot(), filename="bad_3dplot.pdf")
+
+
+# try plotly package
+
+library(plotly)   # install if needed...
+
+plot_ly(x=dogbarks$Cars, y=dogbarks$Food, z=dogbarks$Bark, type="scatter3d", mode="markers", color="lightblue")
 
 
 # Learning more about packages --------------------
