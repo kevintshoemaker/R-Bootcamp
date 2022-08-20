@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 
 ######################################################
-####  Introduction to Spatial Data Analysis in R  ####
+####  Parallel processing in R                ####
 ####     Assembled by: Mitch Gritts                ####
 ######################################################
 

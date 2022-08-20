@@ -1,216 +1,164 @@
 
-##################################################
-####                                          ####  
-####  R Bootcamp #2, Module 3                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
+#  R Bootcamp #2, submodule 2.3 -----------------------------              
+#     University of Nevada, Reno             
+#     Topic: basic statistics 
 
 
-#############################################
-####  Data Visualization with 'ggplot2'  ####
-####                                     ####
-####  Author: Stephanie Freund           ####
-#############################################
+# STATISTICS! ------------------
+
+#  Load Data ------------------
+
+sculpin.df <- read.csv("sculpineggs.csv")
+
+head(sculpin.df)
 
 
-########
-# Load packages!
+# Summary Statistics ------------------
 
-## note: if you don't already have these packages you will need to install them first!
+mean(sculpin.df$NUMEGGS)      # compute sample mean
+median(sculpin.df$NUMEGGS)    # compute sample median
 
-library(tidyverse)
-library(ggplot2)
-library(ggthemes)
-library(carData)
-library(DAAG)
-library(RColorBrewer)
-library(leaflet)
+min(sculpin.df$NUMEGGS)       # sample minimum
+max(sculpin.df$NUMEGGS)       # sample maximum
+range(sculpin.df$NUMEGGS)     # both min and max.
 
+quantile(sculpin.df$NUMEGGS,0.5)            # compute sample median using quantile function
+quantile(sculpin.df$NUMEGGS,c(0.25,0.75))   # compute sample quartiles
 
-##############
-# Load the example data!
+var(sculpin.df$NUMEGGS)           # sample variance
+sd(sculpin.df$NUMEGGS)            # sample standard deviation
+sd(sculpin.df$NUMEGGS)^2          # another way to compute variance
 
-data(Soils,package = "carData")    # load example data
+apply(sculpin.df,2,mean)       # column means of data frame 
+apply(sculpin.df,2,median)     # column medians of data frame
 
-#See what variables it contains...
-soil <- data.frame(Soils)
-head(soil)
+# maybe you'd like to use some tidyverse functions instead:
 
+sculpin.df %>% summarize(across(everything(),mean) ) 
 
 ########
-# basic boxplot...
+# Or just use the "summary()" function!
 
-ggplot(soil) +
-  geom_boxplot(aes(x=Contour, y=pH))
-
-
-###########
-# basic scatterplot
-
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca))
+summary(sculpin.df) # provides a set of summary statistics for all columns in a data frame. 
 
 
-########
-# Color the points by depth
 
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca, color=Depth))
+# Deal with missing data --------------
 
+newdf <- read.table(file="data_missing.txt", sep="\t", header=T)  # load dataset with missing data
 
-##########
-# make additional alterations (outside the "aes" function)
+mean(newdf$Export)
 
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5)
+mean(newdf$Export,na.rm = TRUE)
 
 
-######
-# Plot several relationships on same graphics window
+#  Plot data  (base R)
+# 
+# hist(sculpin.df$NUMEGGS)
+# plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)
 
-ggplot(soil, aes(x=pH)) +
-  geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
-  geom_point(aes(y=Mg), shape=21, fill="blue", color="black", size=4, stroke=1.5) +
-  geom_point(aes(y=Na), shape=21, fill="gray30", color="black", size=4, stroke=1.5)
+#  Ggplot alternative:
 
+ggplot(sculpin.df,aes(NUMEGGS)) + geom_histogram(bins=5)
+ggplot(sculpin.df,aes(FEMWT,NUMEGGS)) + geom_point()
+
+
+#  Linear Regression   -------------------
+
+m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)      # fit linear regression model
+
+summary(m1)                             # view model summary
+summary(m1)$r.squared                   # extract R-squared
+confint(m1)                             # confidence intervals for intercept and slope
+AIC(m1)                                 # report AIC (Akaike's Information Criterion, used to perform model selection) 
+
+plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
+abline(m1)                                           # plot line of best fit
+
+# Use the "predict()" function! --------------
+
+nd <- data.frame(FEMWT = 30)                   # create new data frame to predict number of eggs at FEMWT of 30
+predict(m1,newdata=nd)                         # make prediction
+predict(m1,newdata=nd,interval="confidence")   # make prediction and get confidence interval
+predict(m1,newdata=nd,interval="prediction")   # make prediction and get prediction interval
+
+
+
+#  Explore the use of the "I()" syntax to interpret mathematical expressions literally (as is) within formulas. 
+
+mod_noI <- lm(NUMEGGS ~ FEMWT^2, data=sculpin.df)                  # fit linear regression model. But the "^2" doesn't seem to do anything here? What happened?
+summary(mod_noI)
+
+mod_withI <- lm(NUMEGGS ~ I(FEMWT^2), data=sculpin.df)                  # fit linear regression model
+summary(mod_withI)
+
+# try a model with a polynomial fit
+mod_withpoly <- lm(NUMEGGS ~ poly(FEMWT,2),data=sculpin.df)
+summary(mod_withpoly)
+
+# try a log transformation on the response:
+
+mod_logtrans <- lm(log(NUMEGGS) ~ FEMWT, data=sculpin.df) 
+summary(mod_logtrans)
+
+
+#  Model selection example -------------------
+
+m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
+summary(m1)
+
+m2 <- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (mean model)
+summary(m2)
+
+m3 <- lm(NUMEGGS ~ poly(FEMWT,2), data=sculpin.df)           # fit polynomial regression
+summary(m3)
+
+
+plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
+abline(m1,col="black")                                     # plot line of best fit
+abline(m2,col="red")                                       # plot intercept only model
+
+# Use 'predict' to draw lines on scatterplot  -----------------
+#  Here's a flexible method for drawing any arbitrary modeled relationship!
+nd <- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
+NUMEGGS.pred <- predict(m3,newdata=nd,interval="confidence")             # make prediction using "predict()" function
+lines(nd$FEMWT,NUMEGGS.pred[,1],col="green")  # plot sqrt model (note the use of the "lines()" function to draw a line!)
+
+# some of you might want to try recreating this plot using gglot!
+
+# Perform model selection! -------------
+
+#Compare models using AIC
+AIC(m1)
+AIC(m2)
+AIC(m3)
+
+# which model has the lowest AIC?
 
 #########
-# Use 'tidyverse' tricks to simplify the syntax for ggplot to color by nutrient
+#  And finally, here's how you can draw a confidence interval or prediction interval around a non-linear regression relationship!
 
-soil.nut <- pivot_longer(soil, cols=c("Ca","Mg","Na"), names_to="nutrient",values_to = "value" )
-
-ggplot(soil.nut) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
-
-
-######
-# or if we wanted to plot different nutrients...
-
-soil.nut2 <- pivot_longer(soil, cols=c("Ca","Mg","K"), names_to="nutrient",values_to = "value" )
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
+plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
+NUMEGGS.confint <- predict(m3,newdata=nd,interval="confidence")             # use "predict()" function to compute the confidence interval!
+lines(nd$FEMWT,NUMEGGS.confint[,"fit"],col="green",typ="l",lwd=2)  # plot fitted sqrt model
+lines(nd$FEMWT,NUMEGGS.confint[,"lwr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
+lines(nd$FEMWT,NUMEGGS.confint[,"upr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
 
 
-##########
-# plot with facets, scales, and themes!
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), 
-             shape=21, color="black", size=4, stroke=1.5) +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_bw() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-    
-
-############
-# Playing with colors in ggplot!
-
-display.brewer.all()
+# alternative using ggplot:
+NUMEGGS.confint2 <- as_tibble(cbind(nd,NUMEGGS.confint))
+ggplot() %>% +
+  geom_point(data=sculpin.df,mapping=aes(FEMWT,NUMEGGS)) +
+  geom_path(data=NUMEGGS.confint2,aes(x=FEMWT,y=fit)) +
+  geom_ribbon(data=NUMEGGS.confint2,aes(x=FEMWT,ymin=lwr,ymax=upr),alpha=0.5)
 
 
-#########
-# Choose a new color palette from the RColorBrewer package
 
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
-  theme_bw() +
-  ylab("Ca (mg/100g soil)") +
-  scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
+# CHALLENGE EXERCISES   -------------------------------------
+
+#1. Fit a polynomial regression model with NUMEGGS as the response and `poly(FEMWT,3)` as the response. Plot the results by overlaying the regression line on a scatterplot using ggplot2.
+#
+#2. Use the model you built in part 1 to predict the number of eggs for FEMWT=5. What is the 95% confidence interval around this prediction? Is this prediction biologically reasonable?
 
 
-#########
-# Choose your own palette!
-
-ggplot(soil) +
-  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
-  theme_bw() +
-  ylab("Ca (mg/100g soil)") +
-  scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
-
-
-##########
-# add trendlines
-
-ggplot(soil.nut2) +
-  geom_point(aes(x=pH, y=value, fill=nutrient), 
-             shape=21, color="black", size=4, stroke=1.5) +
-  geom_smooth(aes(x=pH, y=value), method="lm", color="black") +
-  facet_wrap(~nutrient, scales="free_y") +
-  ylab("mg / 100 g soil") +
-  theme_bw() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-    
-
-###########
-# Adding density/smooth curves to plots
-
-   ## first produce some histograms
-
-ggplot(soil.nut) +
-  geom_histogram(aes(x=value), color="black", fill="white", bins=15) +
-  facet_wrap(~nutrient, scales="free") +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-########
-# Then add density curves
-
-ggplot(soil.nut) +
-  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
-  geom_density(aes(x=value,color=nutrient), size=1.5) +
-  facet_wrap(~nutrient, scales="free") +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-
-###########
-# And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
-
-ggplot(soil.nut) +
-  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
-  stat_function(fun = dnorm, color = "blue", size = 1.5,
-                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
-  facet_wrap(~nutrient, scales="free") +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(legend.position="none",
-        axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-
-#######
-# add error bars and other stat summaries (e.g., mean) to boxplot
-
-ggplot(soil, aes(x=Contour, y=pH)) +
-  stat_boxplot(geom="errorbar", width=0.2) +  
-  geom_boxplot() +
-  stat_summary(fun.y=mean, geom="point", size=5, color="black")
-  
-
-##########
-# use leaflet for interactive mapping!
-
-leaflet(possumsites) %>%
-  addTiles() %>% #Adds map tiles from OpenStreetMap
-  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
-             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
 

@@ -25,7 +25,8 @@ options(knitr.duplicate.label = 'allow')
 ##################################################
 
 ##################################################
-####  Parallel processing in R                ####
+####  Introduction to Spatial Data Analysis in R  ####
+
 ####  Developed by: Jonathan Greenberg         ####
 ####     jgreenberg@unr.edu                   ####
 ##################################################
