@@ -20,9 +20,9 @@ navbar:
         - text: "Submodule 2.1: R packages"
           href: module2_1.html
         - text: "Submodule 2.2: Programming in R"
-          href: module2_0.html
-        - text: "Submodule 2.3: Stats in R"
           href: module2_2.html
+        - text: "Submodule 2.3: Stats in R"
+          href: module2_3.html
         - text: "Submodule 2.4: Spatial analysis in R"
           href: module2_4.html
     - text: "Data sets"
