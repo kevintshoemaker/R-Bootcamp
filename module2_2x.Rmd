@@ -1,0 +1,47 @@
+---
+title: "Module 2.2"
+author: "The Tidyverse and Data Wrangling in R"
+date: "Fall 2021"
+output: 
+  html_document: 
+    theme: journal
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r echo=FALSE}
+
+##################################################
+####                                          ####  
+####  R Bootcamp #2, Module 2                 ####
+####                                          #### 
+####   University of Nevada, Reno             ####
+####                                          #### 
+##################################################
+
+
+#########################################
+####  Data Wrangling with Tidyverse  ####
+####                                 ####
+####  Author: Christine Albano       ####
+#########################################
+
+
+```
+
+Thanks to Christine Albano, who pulled this module together!
+
+# Load script for module #2.2
+1. Click [here](module2_2.R) to download the script! Save the script to a convenient folder on your laptop.
+
+2. Load your script in RStudio.
+
+
+[--go to next module--](module2_3.html)
+
+
+

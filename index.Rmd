@@ -70,7 +70,9 @@ Email: [phurtado@unr.edu](phurtado@unr.edu)
 
 The statistical programming software 'R' is one of the fundamental tools for modern data exploration and analysis, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of high-quality figures) will make upcoming classes, research, and graduate school less intimidating and more productive (and fun!).
 
-This workshop consists of a series of short(ish) submodules, each of which covers a particular aspect of working with data (e.g., read and writing data to/from files, making exploratory plots). Each submodule will consist of a set of lectures and demos (worked examples), followed by hands-on activities. The main goal of this workshop will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. The workshop is primarily intended for students with little prior experience with R, but may be useful for others as a refresher- especially the latter portion, which will delve into more advanced topics. The first modules will focus on R syntax, data management (loading data, writing to file), data summaries and visualizations, and basic statistical operations. The second set of modules will focus on some more advanced programming operations (loops, functions, debugging etc.), R packages (loading, getting help), more advanced graphical visualizations and spatial analyses, and working with large data sets. We will not get through all submodules in our allotted time, but participants are encouraged to work through the remaining material on their own.   
+This workshop consists of a series of short(ish) submodules, each of which covers a particular aspect of working with data (e.g., read and writing data to/from files, making exploratory plots). Each submodule will consist of a set of lectures and demos (worked examples), followed by hands-on activities. The main goal of this workshop will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. 
+
+The workshop is primarily intended for students with little prior experience with R. The first modules will focus on R syntax, data management (loading data, writing to file), data visualizations, and data "wrangling". The second set of modules will focus on R packages (loading, getting help), programming operations (loops, functions, debugging etc.), statistics, and spatial analyses.   
 
 All code will be available as scripts that you can download from this website (at the top of each module page on this website) and load in RStudio. That way you won't need to constantly copy and paste from the website!  
 
@@ -81,11 +83,6 @@ Before we dig in and get started with the modules, you should have installed R a
 [Download and install R](https://cran.r-project.org/)          
 [Download and install RStudio](https://www.rstudio.com/products/rstudio/download/)    (use free version!)         
 
-Also, it can be very helpful to print out an R 'cheat sheet' and bring that with you (we will also have some available at the workshop!). Here are some links:
-
-[Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
-[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)               
-[All RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
 
 Okay, now we're ready to go!
 

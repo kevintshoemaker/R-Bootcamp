@@ -30,6 +30,7 @@ knitr::opts_chunk$set(
 library(ggplot2)
 library(cowplot)
 library(tidyverse)
+library(leaflet)
 
 ```
 
@@ -636,9 +637,10 @@ ggplot(soil.nut) +
         strip.text = element_text(size=25, face="bold"))
 
 ```
+
 Let's go back to our basic boxplot, the default plot for visualizing continuous data against categories.
 
-First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of ~~principle~~ personal preference, but if capless whiskers look "off" to you, then you can work around it using **`stat_boxplot`**. **`stat`** functions are another group of functions for creating layers based on statistical properties of the data. Another example is **`stat_summary`**, which we use in the example below to add means to the boxplot. 
+First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of ~~principle~~ personal preference, but if capless whiskers look "off" to you, then you can work around it using **`stat_boxplot`**. **`stat_`** functions are another group of functions for creating layers based on statistical properties of the data. Another example is **`stat_summary`**, which we use in the example below to add means to the boxplot. 
 
 ```{r}
 
@@ -647,22 +649,21 @@ First, you may have noticed that the whiskers do not have caps on them, as they 
 
 ggplot(soil, aes(x=Contour, y=pH)) +
   stat_boxplot(geom="errorbar", width=0.2) +  
-  geom_boxplot() +
-  stat_summary(fun.y=mean, geom="point", size=5, color="black")
+  stat_boxplot() +
+  stat_summary(fun=mean,geom="point",size=5, color="black")
   
 ```
+Interestingly, there is generally a way to add just about any graphical element using either "stat_" or "geom_" functions. It's a good idea to play around with both! 
 
-### Beyond ggplot
+## Beyond ggplot
 
 ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:
 
-START HERE!!!
-
-##### ggplot extensions
+### ggplot extensions
 
 Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](https://exts.ggplot2.tidyverse.org/gallery/). 
 
-##### Technique-specific plotting libraries
+### Technique-specific plotting libraries
 
 Several analytical packages come with their own plotting functions that produce some very nice visualizations. There are dozens out there, but a few of them are [visreg](https://cran.r-project.org/web/packages/visreg/visreg.pdf) for regression plots, [corrplot](https://cran.r-project.org/web/packages/corrplot/index.html) (and its ggplot counterpart, [ggcorrplot](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2)) for graphical presentation of correlation matrices, and [rpart.plot](https://cran.r-project.org/web/packages/rpart.plot/index.html) as a companion to the decision tree package rpart.
 
@@ -684,60 +685,120 @@ leaflet(possumsites) %>%
 
 ```
 
-Happy plotting!
+## Challenge exercises
 
 
+### Challenge exercises
 
+1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, fit a separate trendline for each depth category. Have the color of the trendline match the color of each cloud of points. Remove the confidence band from the trendlines. The plot should look something like this:
 
+```{r echo=FALSE}
 
-
-## Challenge Yourself by recreating the following plots:
-
-Feel free to work in groups!    
-
-### Using colors
-
-
-
-
-
-```{r, echo=FALSE}
+ggplot(soil) +
+  geom_point(aes(pH, Ca, fill=Depth), shape=21, color='black', size=4, stroke=1.5) +
+  geom_smooth(method='lm', aes(pH, Ca, color=Depth), se=FALSE) +
+  theme_bw() +
+  ylab('Ca (mg/100g soil)') +
+  scale_fill_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'), name='Depth (cm)') +
+  scale_color_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'))
 
 ```
 
-### Bar Plots Challenge
 
-The following data represent survival of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:
+2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient. The plot should look something like this:
+
+```{r echo=FALSE}
+
+ggplot(soil.nut) +
+  geom_boxplot(aes(nutrient, value, fill=Contour)) +
+  stat_summary(aes(nutrient, value), 
+               fun=mean, geom="point", shape=18, size=4, color='black')
+
+
+```
+
+3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color (use `alpha=0.5`) in order to see overlapping areas. The plot should look like this (uses `theme_dark()`):
+
+```{r echo=FALSE}
+
+ggplot(soil.nut) +
+  geom_density(aes(x=value, fill=nutrient), color="black", alpha=0.5) +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+
+```
 
 ```{r}
 
-prop <- c(0.18, 0.25, 0.13, 0.05)
-asympLCL <- c(0.14, 0.20, 0.11, 0.035)
-asympUCL <- c(0.24, 0.33, 0.18, 0.09)
+
+# CHALLENGE EXERCISES   -------------------------------------
+
+# 1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, 
+#     fit a separate trendline for each depth category. Have the color of the trendline match the color of each 
+#     cloud of points. Remove the confidence band from the trendlines. 
+#
+# 2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). 
+#     Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
+#
+# 3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color 
+#     (use `alpha=0.5`) in order to see overlapping areas.
+
 
 ```
 
-![](plantsurv1.png)
 
-### Scatterplot Challenge Error Bars
-The randomly generated data below are measurements of the number of the number of angels who get their wings as a function of the number of bells that have been rung. There is some uncertainty in measuring wing acquisition (represented as the offset from the sampled mean). How would you add error bars to a scatter plot? See if you can re-create the plot below: 
+```{r include=FALSE, echo=FALSE}
 
-```{r}
 
-set.seed(13)
-n <- 20 # Number of experimental trials
-a <- 12
-b <- 1.5
+# Module 1_3 challenge problems: answers  -------------
 
-rings <- round(runif(n)*50)  # number of bell rings
-wings <- round(a + b*rings + rnorm(n, sd=5))       # number of angels who get their wings
-offset <- rpois(n, lambda=10)           # measurement error
-lwr <- wings - offset                 
-upr <- wings + offset
+
+# 1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, 
+#     fit a separate trendline for each depth category. Have the color of the trendline match the color of each 
+#     cloud of points. Remove the confidence band from the trendlines. 
+
+ggplot(soil) +
+  geom_point(aes(pH, Ca, fill=Depth), shape=21, color='black', size=4, stroke=1.5) +
+  geom_smooth(method='lm', aes(pH, Ca, color=Depth), se=FALSE) +
+  theme_bw() +
+  ylab('Ca (mg/100g soil)') +
+  scale_fill_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'), name='Depth (cm)') +
+  scale_color_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'))
+
+#
+# 2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). 
+#     Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
+#
+
+ggplot(soil.nut) +
+  geom_boxplot(aes(nutrient, value, fill=Contour)) +
+  stat_summary(aes(nutrient, value), 
+               fun=mean, geom="point", shape=18, size=4, color='black')
+
+# 3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color 
+#     (use `alpha=0.5`) in order to see overlapping areas.
+
+ggplot(soil.nut) +
+  geom_density(aes(x=value, fill=nutrient), color="black", alpha=0.5) +
+  xlab("mg / 100g soil") +
+  theme_dark() +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
 
 ```
 
-![](ringswings1.png)
+
+
+[--go to next module--](module1_4.html)
+
+
+
 
 ## Statistics in R!
 
@@ -972,7 +1033,7 @@ How do the predictions compare?
 
 
 
-[--go to next module--](module2_1.html)
+
 
 
 

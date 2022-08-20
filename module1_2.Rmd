@@ -347,6 +347,8 @@ data.df %>%
 
 The 'tidyverse' set of packages takes advantage of the pipe operator `%>%`, which provides a clean and intuitive way to structure code and perform sequential operations in R.
 
+![](magritte.jpg){width=25%}
+
 Key advantages include:
 
 * code is more readable and intuitive --  reads left to right, rather than inside out as is the case for nested function
@@ -596,7 +598,7 @@ missing.df %>%
 ```
 
 
-## Challenge Exercises!
+## Challenge exercises
 
 1: Save the ["comm_data.txt"](comm_data.txt) file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
 
@@ -607,9 +609,7 @@ missing.df %>%
 
 ```{r}
 
-############
-### CHALLENGE EXERCISES
-############
+# CHALLENGE EXERCISES   -------------------------------------
 
 # 1: Save the "comm_data.txt" file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
 # 

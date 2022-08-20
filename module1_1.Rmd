@@ -20,14 +20,13 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 #  Getting started with R: the basics  --------------------
 
-
 ```
 
 Welcome to the 2022 UNR R workshop- let's get started! 
 
 ## Get materials for this module
 
-* I recommend having a printed copy of some R "cheatsheets" as you get started. You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' like this can quickly and easily refresh your memory. So print out the cheatsheet and don't worry if you don't memorize everything we do together in this workshop- the key is that you leave this workshop with comfort working in the R command line, doing some basic data operations in R, and most importantly, learning and trying new things on your own!
+You will be introduced to a lot of new material very quickly in this workshop, and you are not expected to remember everything! 'Cheatsheets' can quickly and easily refresh your memory about syntax that can be difficult to remember. So don't worry if you don't memorize everything we do together in this workshop- the key is that you leave this workshop with comfort working in the RStudio environment, doing some basic data operations in R, and most importantly, learning and trying new things on your own!
 
 Here are links to good R "cheatsheets":
 
@@ -41,8 +40,7 @@ Here are links to good R "cheatsheets":
 [data transformation](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
 [working with dates and times](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf)
 
-Additional cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)
-
+Many additional cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)
 
 ## Load script for module #1.1
 
@@ -78,7 +76,7 @@ Objects are defined using R's **assignment operator** (Windows shortcut: Alt + -
 
 ```{r results=F}
 
-myname <- "Daenerys"  # or use your real name.
+myname <- "Jim Bob"  # or use your real name.
 
 ```
 
@@ -580,7 +578,7 @@ mylist[[3]][1,2]   # extract the first row, second column from the matrix that i
 
 ```
 
-##### Data frames and tibbles (a special kind of list)
+##### Data frames and tibbles
 
 **Data frame** objects are the basic data storage object in R. Data frames are a special type of **list** in which each list element is a *vector* of equal length. Each list element in a data frame is also known as a *column*. 
 
@@ -686,7 +684,7 @@ Here are some useful R functions for exploring data objects:
 
 ```{r eval=FALSE}
 
-# Other data exploration tricks in R 
+# Useful data exploration/checking tools in R 
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array
@@ -699,7 +697,7 @@ str(my.data)      # look at the "internals" of an object (useful for making sens
 ```
 
 
-## Challenge exercises!
+## Challenge exercises
 
 1. Create a 3 row by 2 column matrix named 'mymat'. Use the "rbind()" function to bind the following three rows together using these three vectors as rows:
 
