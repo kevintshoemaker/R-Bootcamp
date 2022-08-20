@@ -189,16 +189,16 @@ Let's examine these data objects in r. Again, we will get into this in more deta
 # explore the data --------------------
 
 salaries
-summary(salaries)    # summary statistics for all variables in data frame
+# summary(salaries)    # summary statistics for all variables in data frame
 
 master
-summary(master)
+# summary(master)
 
 batting
-summary(batting)
+# summary(batting)
 
 fielding
-summary(fielding)
+# summary(fielding)
 
 ```
 
@@ -404,7 +404,7 @@ Functions are routines that take inputs (usually data objects) (also called **ar
 
 In R, the name of the function is followed by parentheses, and any arguments (inputs) are entered inside the parentheses. The basic syntax looks like the code snippet below.
 
-![](funcmach.png){width=25%,height=25%}
+![](funcmach.png){width=25%}
 
 ```
 ## function syntax
@@ -744,7 +744,7 @@ c(3,6)
 
 HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq()' functions instead.
 
-```{r echo=FALSE, results=FALSE}
+```{r echo=FALSE, results=FALSE, eval=FALSE}
 
 # Module 1_1 challenge problems: answers  -------------
 

@@ -655,24 +655,10 @@ salaries</code></pre>
 ##  8   1985 BAL    AL    martide01  560000
 ##  9   1985 BAL    AL    roeniga01  558333
 ## 10   1985 BAL    AL    mcgresc01  547143
-## # … with 23,946 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
-<pre class="r"><code>summary(salaries)    # summary statistics for all variables in data frame</code></pre>
-<pre><code>##      yearID        teamID              lgID             playerID        
-##  Min.   :1985   Length:23956       Length:23956       Length:23956      
-##  1st Qu.:1993   Class :character   Class :character   Class :character  
-##  Median :1999   Mode  :character   Mode  :character   Mode  :character  
-##  Mean   :1999                                                           
-##  3rd Qu.:2006                                                           
-##  Max.   :2013                                                           
-##      salary        
-##  Min.   :       0  
-##  1st Qu.:  250000  
-##  Median :  507950  
-##  Mean   : 1864357  
-##  3rd Qu.: 2100000  
-##  Max.   :33000000</code></pre>
-<pre class="r"><code>master</code></pre>
+## # … with 23,946 more rows</code></pre>
+<pre class="r"><code># summary(salaries)    # summary statistics for all variables in data frame
+
+master</code></pre>
 <pre><code>## # A tibble: 18,354 × 24
 ##    playerID  birthYear birthMo…¹ birth…² birth…³ birth…⁴ birth…⁵ death…⁶ death…⁷
 ##    &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;
@@ -691,66 +677,10 @@ salaries</code></pre>
 ## #   nameLast &lt;chr&gt;, nameGiven &lt;chr&gt;, weight &lt;dbl&gt;, height &lt;dbl&gt;, bats &lt;chr&gt;,
 ## #   throws &lt;chr&gt;, debut &lt;date&gt;, finalGame &lt;date&gt;, retroID &lt;chr&gt;, bbrefID &lt;chr&gt;,
 ## #   and abbreviated variable names ¹​birthMonth, ²​birthDay, ³​birthCountry,
-## #   ⁴​birthState, ⁵​birthCity, ⁶​deathYear, ⁷​deathMonth
-## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
-<pre class="r"><code>summary(master)</code></pre>
-<pre><code>##    playerID           birthYear      birthMonth        birthDay    
-##  Length:18354       Min.   :1820   Min.   : 1.000   Min.   : 1.00  
-##  Class :character   1st Qu.:1894   1st Qu.: 4.000   1st Qu.: 8.00  
-##  Mode  :character   Median :1933   Median : 7.000   Median :15.00  
-##                     Mean   :1929   Mean   : 6.626   Mean   :15.61  
-##                     3rd Qu.:1966   3rd Qu.:10.000   3rd Qu.:23.00  
-##                     Max.   :1993   Max.   :12.000   Max.   :31.00  
-##                     NA&#39;s   :154    NA&#39;s   :340      NA&#39;s   :515    
-##  birthCountry        birthState         birthCity           deathYear   
-##  Length:18354       Length:18354       Length:18354       Min.   :1872  
-##  Class :character   Class :character   Class :character   1st Qu.:1941  
-##  Mode  :character   Mode  :character   Mode  :character   Median :1966  
-##                                                           Mean   :1963  
-##                                                           3rd Qu.:1988  
-##                                                           Max.   :2014  
-##                                                           NA&#39;s   :9226  
-##    deathMonth        deathDay     deathCountry        deathState       
-##  Min.   : 1.000   Min.   : 1.00   Length:18354       Length:18354      
-##  1st Qu.: 3.000   1st Qu.: 8.00   Class :character   Class :character  
-##  Median : 6.000   Median :15.00   Mode  :character   Mode  :character  
-##  Mean   : 6.484   Mean   :15.54                                        
-##  3rd Qu.:10.000   3rd Qu.:23.00                                        
-##  Max.   :12.000   Max.   :31.00                                        
-##  NA&#39;s   :9227     NA&#39;s   :9228                                         
-##   deathCity          nameFirst           nameLast          nameGiven        
-##  Length:18354       Length:18354       Length:18354       Length:18354      
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##                                                                             
-##                                                                             
-##                                                                             
-##                                                                             
-##      weight          height          bats              throws         
-##  Min.   : 65.0   Min.   :43.00   Length:18354       Length:18354      
-##  1st Qu.:170.0   1st Qu.:71.00   Class :character   Class :character  
-##  Median :185.0   Median :72.00   Mode  :character   Mode  :character  
-##  Mean   :185.2   Mean   :72.22                                        
-##  3rd Qu.:195.0   3rd Qu.:74.00                                        
-##  Max.   :320.0   Max.   :83.00                                        
-##  NA&#39;s   :877     NA&#39;s   :821                                          
-##      debut              finalGame            retroID         
-##  Min.   :1871-05-04   Min.   :1871-05-05   Length:18354      
-##  1st Qu.:1916-09-19   1st Qu.:1921-09-06   Class :character  
-##  Median :1957-09-10   Median :1963-07-07   Mode  :character  
-##  Mean   :1953-09-14   Mean   :1958-07-10                     
-##  3rd Qu.:1991-08-22   3rd Qu.:1997-07-25                     
-##  Max.   :2013-09-30   Max.   :2013-09-30                     
-##  NA&#39;s   :189          NA&#39;s   :189                            
-##    bbrefID         
-##  Length:18354      
-##  Class :character  
-##  Mode  :character  
-##                    
-##                    
-##                    
-## </code></pre>
-<pre class="r"><code>batting</code></pre>
+## #   ⁴​birthState, ⁵​birthCity, ⁶​deathYear, ⁷​deathMonth</code></pre>
+<pre class="r"><code># summary(master)
+
+batting</code></pre>
 <pre><code>## # A tibble: 97,889 × 24
 ##    playe…¹ yearID stint teamID lgID      G G_bat…²    AB     R     H  `2B`  `3B`
 ##    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -767,58 +697,10 @@ salaries</code></pre>
 ## # … with 97,879 more rows, 12 more variables: HR &lt;dbl&gt;, RBI &lt;dbl&gt;, SB &lt;dbl&gt;,
 ## #   CS &lt;dbl&gt;, BB &lt;dbl&gt;, SO &lt;dbl&gt;, IBB &lt;dbl&gt;, HBP &lt;dbl&gt;, SH &lt;dbl&gt;, SF &lt;dbl&gt;,
 ## #   GIDP &lt;dbl&gt;, G_old &lt;dbl&gt;, and abbreviated variable names ¹​playerID,
-## #   ²​G_batting
-## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
-<pre class="r"><code>summary(batting)</code></pre>
-<pre><code>##    playerID             yearID         stint          teamID         
-##  Length:97889       Min.   :1871   Min.   :1.000   Length:97889      
-##  Class :character   1st Qu.:1931   1st Qu.:1.000   Class :character  
-##  Mode  :character   Median :1970   Median :1.000   Mode  :character  
-##                     Mean   :1962   Mean   :1.077                     
-##                     3rd Qu.:1995   3rd Qu.:1.000                     
-##                     Max.   :2013   Max.   :5.000                     
-##                                                                      
-##      lgID                 G            G_batting            AB       
-##  Length:97889       Min.   :  1.00   Min.   :  0.00   Min.   :  0.0  
-##  Class :character   1st Qu.: 13.00   1st Qu.:  7.00   1st Qu.:  9.0  
-##  Mode  :character   Median : 35.00   Median : 32.00   Median : 61.0  
-##                     Mean   : 51.65   Mean   : 49.13   Mean   :154.1  
-##                     3rd Qu.: 81.00   3rd Qu.: 81.00   3rd Qu.:260.0  
-##                     Max.   :165.00   Max.   :165.00   Max.   :716.0  
-##                                      NA&#39;s   :1406     NA&#39;s   :6413   
-##        R                H                2B             3B        
-##  Min.   :  0.00   Min.   :  0.00   Min.   : 0.0   Min.   : 0.000  
-##  1st Qu.:  0.00   1st Qu.:  1.00   1st Qu.: 0.0   1st Qu.: 0.000  
-##  Median :  5.00   Median : 12.00   Median : 2.0   Median : 0.000  
-##  Mean   : 20.47   Mean   : 40.37   Mean   : 6.8   Mean   : 1.424  
-##  3rd Qu.: 31.00   3rd Qu.: 66.00   3rd Qu.:10.0   3rd Qu.: 2.000  
-##  Max.   :192.00   Max.   :262.00   Max.   :67.0   Max.   :36.000  
-##  NA&#39;s   :6413     NA&#39;s   :6413     NA&#39;s   :6413   NA&#39;s   :6413    
-##        HR              RBI               SB                CS        
-##  Min.   : 0.000   Min.   :  0.00   Min.   :  0.000   Min.   : 0.000  
-##  1st Qu.: 0.000   1st Qu.:  0.00   1st Qu.:  0.000   1st Qu.: 0.000  
-##  Median : 0.000   Median :  5.00   Median :  0.000   Median : 0.000  
-##  Mean   : 3.002   Mean   : 18.47   Mean   :  3.265   Mean   : 1.385  
-##  3rd Qu.: 3.000   3rd Qu.: 28.00   3rd Qu.:  2.000   3rd Qu.: 1.000  
-##  Max.   :73.000   Max.   :191.00   Max.   :138.000   Max.   :42.000  
-##  NA&#39;s   :6413     NA&#39;s   :6837     NA&#39;s   :7713      NA&#39;s   :29867   
-##        BB               SO              IBB              HBP        
-##  Min.   :  0.00   Min.   :  0.00   Min.   :  0.00   Min.   : 0.000  
-##  1st Qu.:  0.00   1st Qu.:  2.00   1st Qu.:  0.00   1st Qu.: 0.000  
-##  Median :  4.00   Median : 11.00   Median :  0.00   Median : 0.000  
-##  Mean   : 14.21   Mean   : 21.95   Mean   :  1.28   Mean   : 1.136  
-##  3rd Qu.: 21.00   3rd Qu.: 31.00   3rd Qu.:  1.00   3rd Qu.: 1.000  
-##  Max.   :232.00   Max.   :223.00   Max.   :120.00   Max.   :51.000  
-##  NA&#39;s   :6413     NA&#39;s   :14251    NA&#39;s   :42977    NA&#39;s   :9233    
-##        SH               SF             GIDP           G_old       
-##  Min.   : 0.000   Min.   : 0.0    Min.   : 0.00   Min.   :  0.00  
-##  1st Qu.: 0.000   1st Qu.: 0.0    1st Qu.: 0.00   1st Qu.: 11.00  
-##  Median : 1.000   Median : 0.0    Median : 1.00   Median : 34.00  
-##  Mean   : 2.564   Mean   : 1.2    Mean   : 3.33   Mean   : 50.99  
-##  3rd Qu.: 3.000   3rd Qu.: 2.0    3rd Qu.: 5.00   3rd Qu.: 82.00  
-##  Max.   :67.000   Max.   :19.0    Max.   :36.00   Max.   :165.00  
-##  NA&#39;s   :12751    NA&#39;s   :42446   NA&#39;s   :32521   NA&#39;s   :5189</code></pre>
-<pre class="r"><code>fielding</code></pre>
+## #   ²​G_batting</code></pre>
+<pre class="r"><code># summary(batting)
+
+fielding</code></pre>
 <pre><code>## # A tibble: 147,080 × 18
 ##    playe…¹ yearID stint teamID lgID  POS       G    GS InnOuts    PO     A     E
 ##    &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;fct&gt;  &lt;fct&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -833,49 +715,8 @@ salaries</code></pre>
 ##  9 ansonc…   1871     1 RC1    NA    3B       20    19     555    38    52    28
 ## 10 ansonc…   1871     1 RC1    NA    C         5     4      93    10     0     8
 ## # … with 147,070 more rows, 6 more variables: DP &lt;int&gt;, PB &lt;int&gt;, WP &lt;int&gt;,
-## #   SB &lt;int&gt;, CS &lt;int&gt;, ZR &lt;int&gt;, and abbreviated variable name ¹​playerID
-## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
-<pre class="r"><code>summary(fielding)</code></pre>
-<pre><code>##    playerID             yearID         stint           teamID       lgID      
-##  Length:147080      Min.   :1871   Min.   :1.000   CHN    :  6847   AA: 3677  
-##  Class :character   1st Qu.:1932   1st Qu.:1.000   PHI    :  6645   AL:65247  
-##  Mode  :character   Median :1976   Median :1.000   SLN    :  6563   FL:  672  
-##                     Mean   :1966   Mean   :1.078   PIT    :  6471   NA: 1512  
-##                     3rd Qu.:2002   3rd Qu.:1.000   CIN    :  6305   NL:75003  
-##                     Max.   :2021   Max.   :5.000   CLE    :  5968   PL:  293  
-##                                                    (Other):108281   UA:  676  
-##      POS                  G                GS            InnOuts      
-##  Length:147080      Min.   :  1.00   Min.   :  0.00   Min.   :   0.0  
-##  Class :character   1st Qu.:  5.00   1st Qu.:  0.00   1st Qu.:  52.0  
-##  Mode  :character   Median : 19.00   Median :  7.00   Median : 215.0  
-##                     Mean   : 34.93   Mean   : 26.08   Mean   : 697.9  
-##                     3rd Qu.: 47.00   3rd Qu.: 32.00   3rd Qu.: 764.5  
-##                     Max.   :165.00   Max.   :164.00   Max.   :4469.0  
-##                                      NA&#39;s   :46156    NA&#39;s   :29929   
-##        PO                A                E                 DP         
-##  Min.   :   0.00   Min.   :  0.00   Min.   :  0.000   Min.   :  0.000  
-##  1st Qu.:   2.00   1st Qu.:  1.00   1st Qu.:  0.000   1st Qu.:  0.000  
-##  Median :   9.00   Median :  7.00   Median :  1.000   Median :  1.000  
-##  Mean   :  81.41   Mean   : 34.17   Mean   :  3.673   Mean   :  7.111  
-##  3rd Qu.:  71.00   3rd Qu.: 26.00   3rd Qu.:  4.000   3rd Qu.:  3.000  
-##  Max.   :1846.00   Max.   :641.00   Max.   :119.000   Max.   :194.000  
-##                                     NA&#39;s   :1                          
-##        PB               WP               SB               CS        
-##  Min.   :  0.00   Min.   : 0.00    Min.   :  0.00   Min.   :  0.00  
-##  1st Qu.:  0.00   1st Qu.: 2.00    1st Qu.:  1.00   1st Qu.:  0.00  
-##  Median :  2.00   Median : 7.00    Median : 10.00   Median :  4.00  
-##  Mean   :  5.24   Mean   :10.47    Mean   : 22.75   Mean   : 12.27  
-##  3rd Qu.:  6.00   3rd Qu.:16.00    3rd Qu.: 34.00   3rd Qu.: 17.00  
-##  Max.   :114.00   Max.   :63.00    Max.   :293.00   Max.   :189.00  
-##  NA&#39;s   :135245   NA&#39;s   :145911   NA&#39;s   :137001   NA&#39;s   :137001  
-##        ZR        
-##  Min.   : 0.00   
-##  1st Qu.: 0.00   
-##  Median : 0.00   
-##  Mean   : 0.96   
-##  3rd Qu.: 1.00   
-##  Max.   :15.00   
-##  NA&#39;s   :145911</code></pre>
+## #   SB &lt;int&gt;, CS &lt;int&gt;, ZR &lt;int&gt;, and abbreviated variable name ¹​playerID</code></pre>
+<pre class="r"><code># summary(fielding)</code></pre>
 <p>Before we can do much with these data, we need to “wrangle” these
 data into a format that can be visualized and analyzed effectively.</p>
 <p>Let’s begin by merging these datasets into a single master
@@ -1107,7 +948,7 @@ files).</p>
 <p>In R, the name of the function is followed by parentheses, and any
 arguments (inputs) are entered inside the parentheses. The basic syntax
 looks like the code snippet below.</p>
-<p><img src="funcmach.png" /></p>
+<p><img src="funcmach.png" style="width:25.0%" /></p>
 <pre><code>## function syntax
 functionName([argument 1, argument2, ...])</code></pre>
 <p>If you don’t type the parenthesis, the function is not run- instead,
@@ -1472,7 +1313,6 @@ and lat: [-1,1].</p></li>
 </ol>
 <p>HINT: you don’t need to type each location in by hand! Use the
 ‘rep()’ and ‘seq()’ functions instead.</p>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>To make sure you got it right, use the following commands in R:</p>
 <p>Don’t worry if you don’t understand the code- we’ll talk about
 plotting soon enough!</p>

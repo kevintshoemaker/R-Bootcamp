@@ -98,55 +98,6 @@ detach("package:modeest")  # remove the package from your current working sessio
 
 ```
 
-
-### 3d scatterplot example!
-
-Before we move on, the "car" package (_c_ompanion to _a_pplied _r_egression) gives us an example of the things we can do with R packages. Here we will make our own interactive 3d plot! (example from "prelude in R").
-
-Here is a data set that represents the number of times a dog barks in a day, and two potential explanatory factors: food given (in lbs) and cars passing by the house. 
-
-```{r}
-
-# 3D Plotting example ---------------
-
-#########
-# Data: dog barks per day (and two explanatory variables)
-
-Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
-        36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21)
-Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
-        0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
-        0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
-        0.272, 0.098, 0.415)
-Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
-       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
-
-```
-
-
-Let's install and load the "car" package:
-
-```{r eval=FALSE}
-
-# install.packages("car")   # only uncomment these if you don't already have these packages
-# install.packages("rgl")   # you need this one as well!
-
-library(car)
-library(rgl)
-
-```
-
-Now for the fun part- interactive 3-D graphics! Run the following code and take a minute to play around with the resulting scatterplot. 
-
-```{r eval=FALSE}
-
-##########
-# interactive 3-D graphics!
-
-car::scatter3d(Bark~Food+Cars,surface=TRUE)
-
-```
-
 ### Loading packages from GitHub
 
 Many package developers use [GitHub](https://github.com/) to make their packages available. Sometimes these packages are not yet on CRAN because they are not yet ready for prime time (so be careful!). Other times developers may choose to bypass the CRAN repository entirely, and instead just use GitHub. Most of the time, developers will use both GitHub and CRAN, where the version available on CRAN is not the latest version -- for the latest version, you will need to use GitHub. There are some good reasons to put an R package on GitHub:
@@ -164,9 +115,75 @@ The syntax for using "install_github()" is just install_github("[author]/[packag
 
  # install.packages("remotes")    # run this if you haven't already installed the "remotes" package
 library(remotes)
-install_github("kbroman/broman")  # install a random package from GitHub!
+remotes::install_github("AckerDWM/gg3D")  # install a package from GitHub!
 
 ```
+
+### 3d scatterplot example!
+
+Before we move on, let's use the package we just installed from github to make a 3d scatterplot!
+
+Let's load the packages:
+
+```{r}
+
+# 3D Plotting example ---------------
+
+
+library(tidyverse)
+library(deSolve)
+library(ggplot2)
+library(gg3D) 
+
+```
+
+Here is a data set that represents the number of times a dog barks in a day, and two potential explanatory factors: food given (in lbs) and cars passing by the house. 
+
+```{r}
+
+# Data: dog barks per day (and two explanatory variables)
+
+dogbarks <- tibble(
+  Cars= c(32, 28, 9, 41, 23, 26, 26, 31, 12, 25, 32, 13, 19, 19, 38,
+          36, 43, 26, 21, 15, 17, 12, 7, 41, 38, 33, 31, 9, 40, 21),
+  Food= c(0.328, 0.213, 0.344, 0.339, 0.440, 0.335, 0.167, 0.440, 0.328,
+          0.100, 0.381, 0.175, 0.238, 0.360, 0.146, 0.430, 0.446, 0.345,
+          0.199, 0.301, 0.417, 0.409, 0.142, 0.301, 0.305, 0.230, 0.118,
+          0.272, 0.098, 0.415),
+  Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
+       15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
+)
+```
+
+
+Now let's make our plot. The package we installed, `gg3d`, extends ggplot2 to make 3d plots. 
+
+```{r}
+
+ggplot(dogbarks, aes(x=Cars, y=Food, z=Bark)) +
+  axes_3D() +
+  stat_3D() +
+  labs(title="Dog barks plot") +
+  theme_void()
+
+# Save plot as PDF
+ggsave(last_plot(), filename="bad_3dplot.pdf")
+
+```
+
+Okay, so this first attempt was not so great. Let's try a different package. This time we will try the `plotly` package:
+
+```{r}
+
+# try plotly package
+
+library(plotly)   # install if needed...
+
+plot_ly(x=dogbarks$Cars, y=dogbarks$Food, z=dogbarks$Bark, type="scatter3d", mode="markers", color="lightblue")
+
+```
+
+Plotly specializes in interactive plots- try changing the view angle by clicking and dragging. Or zooming in and out!
 
 ### Finding the right package for the job
 
