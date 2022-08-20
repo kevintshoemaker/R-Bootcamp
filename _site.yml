@@ -23,10 +23,8 @@ navbar:
           href: module2_0.html
         - text: "Submodule 2.3: Stats in R"
           href: module2_2.html
-        - text: "Submodule 2.4: GIS in R"
+        - text: "Submodule 2.4: Spatial analysis in R"
           href: module2_4.html
-        - text: "Submodule 2.5: Spatial analysis"
-          href: module2_5.html
     - text: "Data sets"
       menu:
         - text: "Example: tab-separated data"

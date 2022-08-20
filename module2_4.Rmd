@@ -1,7 +1,7 @@
 ---
-title: "Module 2.4"
-author: "Parallel processing in R"
-date: "Fall 2021"
+title: "Submodule 2.4"
+author: "Introduction to Spatial Data"
+date: "Fall 2022"
 output: 
   html_document: 
     theme: journal
@@ -33,659 +33,913 @@ options(knitr.duplicate.label = 'allow')
 
 ```
 
-NOTE: Jonathan Greenberg (https://naes.unr.edu/gears/) developed this module  
-
-This is the first of the modules that really go *beyond the basics*. Module 2.5 also provides a "whirlwhind" tour of more advanced things you can do in R, from parallel computing, to sophisticated visualizations to geographic analysis.  
-
-## Load script for module #2.4
-
-1. Click [here](module2_4.R) to download the script! Save the script to a convenient folder on your laptop. [alternative: [load Jonathan's original script](greenberg_code.R)]
-
-2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar. 
-
-Let's get started with parallel processing in R!
-
-## Running R in parallel!
-
-This is a huge topic, but the basic concept of parallel computing is the following:
-
-Given some problem X that can be divided into subproblems x1, x2, x3, each subproblem can be sent to a different "worker" processor (which may be located on a different physical computer).  
-
-Each processor then sends the results of its subproblem back to a central "master". The master often then pieces the subproblems back together to return to the user.
 
 
-Parallel computing is not a cure-all, and not all problems will benefit from it.  We'll come back to this issue in a bit.
+## Load script for module 2.5
 
-There are a lot of packages to realize parallel computing within R, and current versions of R even come with some parallel computing packages built-in.  A full list can be found [here](http://cran.r-project.org/web/views/HighPerformanceComputing.html).
+1. Click [here](module2_5.R) to download the script! Save the script to a convenient folder on your laptop.
 
-I will be following the examples from [http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf](http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf). 
+2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
+
+Let's get started with spatial data in R!
+
+## The Science of Where
+
+Spatial analysis allows you to solve complex location-oriented problems and better understand where and what is occurring in your world. It goes beyond mere mapping to let you study the characteristics of places and the relationships between them.
+
+<div style="margin: 16px 0">
+  <img class="img-responsive center-block" src="assets/SpatialAnalysisLayers.jpg" alt="gis analysis layers", width="50%" align="middle">
+  <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">Spatial data analysis combines several different data types and methods in an attempt to model the real world.</figcaption>
+</div>
+
+The best resource I've found for learning about spatial data in R is [Geocomputation with R](https://geocompr.robinlovelace.net). The book is available free online.
+
+## Spatial isn't Special (in R)
+
+Spatial data, just like all other data in R, are combinations of vectors, matrices, and lists. These combinations of data are wrapped into specialized classes, and have many specialized methods to make working with them easier. Most of the functionality comes from the `sf` package for vector data, and `raster` package for raster data. In addition to these packages we will use a few other packages:
+
+1. `rgdal` - an R wrapper to the open source [gdal library](https://www.gdal.org/)
+2. `rgeos` - an R wrapper to the open source [geos library](http://trac.osgeo.org/geos)
+4. `leaflet` - an R wrapper to the javascript library 'leaflet' for interactive maps
+
+```{r message=FALSE}
+
+###################
+# before starting make sure we have a clean global environment
+rm(list = ls())
+
+# install.packages(c('dplyr', 'spData', 'sf', 'raster', 'rgdal', 'rgeos', 'rcartocolor', 'magrittr', 'leaflet'))   # run this line if you haven't already installed these packages!
+
+file_name <- 'https://kevintshoemaker.github.io/R-Bootcamp/data.zip'
+download.file(file_name, destfile = 'data.zip')
+unzip(zipfile = 'data.zip', exdir = '.')
 
 
-### Set up your workspace
-
-First, let's set up our workspace to run an example using a genomics data set. This example uses [bioconductor](https://www.bioconductor.org/), which provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses R and is open source and open development.
-
-Installing the packages for this module can take a while, so hopefully you have already had a chance to do this prior to coming to this workshop! 
-
-```{r eval=FALSE}
-
-################
-# Set up the workspace (can take a surprisingly long time!)
-
-# examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
-
-# First, load this script directly from the web (which also installs required packages for you!):
-
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("Biobase")
-
-
-```
-
-NOTE: if you had trouble running the above code, you can just load the example dataset [here](geneData.csv)
-
-We are going to run a test using gene expression data-- let's load the example dataset! 
-
-```{r}
-
-data(geneData, package = "Biobase")   # load example data from Biobase package between all pairs of genes across all samples.
-  # geneData <- read.csv("geneData.csv")    # alternative!
-
-
-# This data represents 500 genes (organized by rows)
-# with expression data (numerical). 
-
-# The goal is to calculate the correlation coefficient
-# between all pairs of genes across all samples.  For example,
-# to test gene 12 vs 13:
+# load libraries and set working directory
+library(dplyr)
+library(spData)
+library(sf)
+library(raster)
+library(rgdal)
+library(rgeos)
+library(rcartocolor)
+library(magrittr)
+library(leaflet)
 
 ```
 
+*Check the footnotes for info about some of the warnings* [^1]
 
-### Example: A simple yet computationally intensive problem
+[^1]: The `raster` and `dplyr` libraries each have a function called `select`. I prefer to load `dplyr` first and have the `raster` library mask the `select` function in the `dplyr` library. In order to call the `select` function in the `raster` library we need to explicitly reference the library we want to use with two colons: `dplyr::select`. When using double colons the libraries namespace (list of functions, variable, etc.) is loaded, but not attached to the session. This allows us to call function from libraries we haven't explicitly loaded with `library()` or `requrie()` function. I have a tendancy to (over)use this method. It is very helpful when writing your own functions and libraries as those functions will not throw errors about a library not being loaded.
 
-This data represents 500 genes (organized by rows) with expression data (numerical) across 26 samples. The goal is to calculate the correlation coefficient between all pairs of genes across all samples. 
+## Spatial Data
 
-For example, let's examine the correlation between gene 12 vs 13:
+> Everything is related to everything else, but near things are more related than distant things
+<p class="display-block text-right"><small>Waldo Tobler, <em>Tobler's first law of geography</em></small></p>
 
-```{r eval=FALSE}
+There are two ways to model geographic data: as vectors or rasters. In the sections that follow we will first review vector data, then raster data. First we will review the theory behind each model then demonstrate how to implement them in R
 
-?cor    # view help page for "cor()" function
-geneData[12,]
-geneData[13,]
+### Vector Data
+
+Vector [^vector] data represents the world as points with a geographic refence (they are somewhere on the earth). These points can be linked together to form more complex geometries such as lines and polygons.
+
+[^vector]: In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will almost always be refering to the geographic data .
+
+#### Points
+
+Points represent single features, such as a tree in a forest or a location of an captured animal. Points are pairs of (x, y) coordinates. Points are often 2 dimensions, however they can be extended with a z value to represent height above sea level. Attribute data can be attached to each point. An example of points with attribute data might be trees in a forest, and the attributes are height, diameter, species, etc.
+
+#### Lines
+
+Lines are a bit more complex. They are composed of many vertices (points) that are ordered and connected. Each line can also have data associated with it. Roads or rivers are great examples, and might have data like width, speed limit, flow as attribute data.
+
+In R lines can be one or more line objects. For instance, the Truckee River and all its tributaries can be a single lines (multi-line) object, composed of many line objects for each of the tributaries.
+
+#### Polygons
+
+A polygon is a set of closed lines. It is very similar to lines, however the first vertex must also be the last vertex in order to close the polygon. Polygons can have holes in them, think an island in a lake, which is a polygon enclosed inside another polygon. And just like lines, multiple polygon objects can make up a single polygons (multi-polygons) object. For instance, a chain of islands. Each island is a single polygon. Together all the individual island polygons represent the entire island chain polygon (multi-polygon). 
+
+I find polygons easier to think about, so in the examples below I will first review points, then polygons, then lines.
+
+### Raster
+
+Raster data divides an area of interest into a grid to represent continuous (and sometimes discrete) data such as elevation. The grid has equally sized rectangular cells (or pixels) that can have one or more values (multi-band rasters). The size of the cells is refered to as the resolution of the grid, smaller cell sizes are higher resolution. The value of that cell generally represent the average value for the area that cell covers. However, the value of each cell can represent the maximum or minimum value as well. If this is the case, the data provider will reference the cell values in a metadata document (hopefully).
+
+Raster data is represented by a matrix of the spatial extent we are interested in. So if we have a 1km square area of interest with a 1 meter resoltion we have 1000 x 1000 matrix, each element of that matrix representing the value of a variable for that 1 meter cell.
+
+We will likely not have much time to cover raster data because of our limited time together, and the amount of time loading and working with raster can take. I'll provide a few short examples at the end to run on your own.  
+
+## Coordinate Reference Systems
+
+<div style="margin: 16px 0">
+  <img class="img-responsive center-block" src="assets/geoid.jpg" alt="The shape of the earth", width="50%" align="middle">
+  <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">This figure depicts one of the most accurate representations of the shape of the earth, or geoid.</figcaption>
+</div>
+
+An important component all spatial objects share is a coordinate refernece system (CRS). A CRS defines how the spatial elements of the data relate to the surface of the Earth. CRSs are either geographic or projected. 
+
+CRSs are a very important concept in spatial data (maybe the most important?). I'll go into detail below as a reference, however we will not have enought time to cover this topic in detail. 
+
+### Geographic Coordinate Systems
+
+Geographic coordinate system: identify any location on the Earth using *longitude* and *latitude*. These are measures of the angular distance from the Prime Meridian or equatorial plane (for longitude and latitude, respectively). Distances in Geographic CRSs are measured in degrees, minutes, and seconds (or other angular unit of measurement). 
+
+Geographic CRSs will make some assumptions to model the shape of the earth. As stated above, the surface of the earth isn't a perfect sphere or ellipse. Spherical models assume that the earth is a perfect sphere. These models are simple but rarely used because of the amount of inaccuracy in them. Ellipsoidal models are a more accurate model of the Earth. They are defined by an equatorial radius and polar radius.
+
+### Projected Coordinate Systems
+
+Projected coordinate system: based on Cartesian coordinates on a flat surface. They have an origin, x and y axes. These rely on map projections to convert the three dimensional shape surface of the earth into Easting and Northing (x and y) in the projected CRS. Easting and Northing of a point are measures of distance from the axes as defined in the CRS. Distances in projected CRSs are linear units of measurement such as meters. 
+
+The projection from an ellipsoid to a plane cannot be done without distorting some of the properties of the Earth's surface. In most cases one or two of the following properties are distorted: area, direction, shape, distance. Projections are often named based on the properties the accurately maintain: equal-area maintains area, azimuthal maintains direction, equidistant maintains distance, and conformal maintains local shape.
+
+<div style="margin: 16px 0">
+  <img class="img-responsive center-block" src="assets/projections.gif" alt="ana animation of different geographic projections" align="middle">
+  <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">Watch how the representation of the earth changes as the projections change</figcaption>
+</div>
+
+There are several methods to add a projection to `sf` and `raster` objects. The underlying structure of a projection string is from the [PROJ.4 open source library](https://proj4.org/). These are often refered to as a coordinate reference system (CRS). A common shorthand for creating CRSs is to use an EPSG id[^2].
+
+Below is a list of common projections:
+
+1. WGS84 ([EPSG:4326](epsg.io/4326)) - Latlong used in GPS systems
+2. Pseudo-Mercator ([EPSG:3857](epsg.io/3857)) - Used in web maps
+3. NAD83 zone 11n ([EPSG:26911](epsg.io/26911)) - North America metric based, Nevada. Can be used across zone lines, however accuracy suffers, especially further North
+4. NAD27 zone 11n ([EPSG:26711](epsg.io/26711)) - Old, replaced by NAD83. Works best within zone lines. Don't use this, convert old data to NAD83.
+5. Albers Equal-area Conic ([EPSG:102003](epsg.io/102003)) - Used by the USGS and US Census
+
+[^2]: The European Petroleum Survey Group maintains a list of IDs to all the projection systems. These are a nice shorthand for create coordinate reference strings in R. [epsg.io](epsg.io) is a great interactive site to discover EPSG IDs.
+
+Coordinate reference systems are confusing, and I have a super difficult time understanding them sometimes. [Here is a super helpful reference](https://www.axismaps.com/guide/general/map-projections/).
+
+## Spatial Objects
+
+In 2005 Edzer Pebesma and Roger Bivand cretaed the `sp` package to handle spatial data in R. `sp` provides a set of classes and methods for vector and raster data types. At the time, there weren't many agreed upon standards for spatial data. In 2004 the Open Geospatial Consortium published a formal international standard for spatial data called *simple feature access*. It was originaly developed for SQL, and has since been adopted by many spatial communities (ESRI, QGIS, Postgres). 
+
+Over the last year Pebesma et al. are actively developing a new package to handle spatial data in R. It is called `sf` for simple feature.
+
+### Introduction to simple features
+
+At the core `sf` extends the `data.frame` class to include a geometry column. This geometry column can be of several types (found within the simple feature standard): `POINT`, `LINE`, `POLYGON`, ...etc.
+
+The major classes in the `sf` package are:
+
+* `sf`: a `data.frame` with a spatial attribute
+* `sfc`: a column storing the all the geometries for different records of a `data.frame`
+* `sfg`: a geometry of each individual record.
+
+Let's dig into the details of spatial data with `sf` in the sections below.
+
+### sf geometry types
+
+As mentioned above, `sf` has many different types of geometries. Let's create a few simple geometries so that we have an idea of what they are. These (class `sfg`) are the basic building blocks of all the classes in the `sf` package.
+
+```{r sf_intro, results=F}
+
+## a single point
+pt <- st_point(c(1, 1))
+plot(pt)
+
+## multiple points 
+mpt <- st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(mpt)
+
+## a line
+l <- st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(l, col = 'purple')
+
+## a polygon
+poly <- st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))
+plot(poly, col = 'purple')
+
+## ...etc, multiline and multipolygons
+```
+
+A comprehensive overview of all the geometry classes can be [found here](https://r-spatial.github.io/sf/articles/sf1.html)
+
+### Creating Spatial Points Data
+
+Let's start out by creating a `sf` object. 
+
+First, download the following data set and save to your working directory: [reptiles.csv](reptiles.csv)
+
+```{r create_sf_points, message=FALSE}
+
+# create spatial points data frame ----
+## load reptile data 
+reptiles <- readr::read_csv('reptiles.csv')
+
+## create a SpatialPoints object
+## provide data (x), the columns that contain the x & y (coords)
+## and the coordinate reference system (crs)
+sf_points <- st_as_sf(x = reptiles, 
+                      coords = c('x', 'y'), 
+                      crs = '+init=epsg:26911')
+
+## inspect the SpatialPoints object
+str(sf_points)
+
+```
+
+We used the `st_as_sf` function to create an object of class `sf`. The first parameter in the function call is `x`, which is the object to be converted to class `sf`. This should be a `data.frame` like object. The second parameter, `coords`, are the names of the coordiante fields in the object supplied to `x`, given as a vector. The final parameter, `crs`, is the coordinate reference system. This data was collected using NAD83 zone 11, so we used the EPSG ID (26911) to specify the projection.
+
+Let's review the structure and summary data of this `sf` object. 
+
+```{r st_crs, eval = F}
+
+# inspecting the sf object ----
+## checking the projection of the sf object 
+st_crs(sf_points)
+
+## summary funciton
+summary(sf_points)
+
+## what type is the geometry column
+class(sf_points$geometry)
+
+## plot the data
+plot(sf_points[0])
 
 ```
 
 
-```{r}
+#### Subset sf object
 
-plot(geneData[12,],geneData[13,])    # plot the correlation between two genes
-cor(geneData[12,],geneData[13,])
+```{r sf_head}
+head(sf_points)
+```
+
+As you can see, this does look like a normal `data.frame` with a geometry column. In this case the geometry is a point, as shown by a coordinate pair. Just like `data.frames` we can use indexing to subset the data. One of the columns is species. Lets use this column to subset the data frame for only desert horned lizards (**Phrynosoma platyrhinos*).
+
+```{r subset_spdf}
+
+# subset an sf object ----
+phpl <- sf_points[sf_points$species == 'Phrynosoma platyrhinos', ]
+head(phpl)
+
+## check to see that there is only one species in the data.frame
+phpl %>% magrittr::extract2('species') %>% unique()
 
 ```
 
+If you check the class of `sf_points` you'll see a list of different classes. `sf_points` is an object of class `sf`. But it inherits properties of the `tbl_df`, `tbl`, and `data.frame` class. That means that any methods that work on these classes will also work on objects of class `sf`. 
 
-The total number of paired correlations will be 500 x 499 / 2 = **124,750 correlations**!
+```{r sf with dplyr}
+class(sf_points)
 
-We can identify all combinations in a vector using the "combn() function:
-
-```{r eval=FALSE}
-
-?combn    # function to determine all combination ids
-
-```
-
-
-We are going to leave this as a list, for now...
-
-```{r}
-
-pair <- combn(1:nrow(geneData),2,simplify=F)   #leave this as a list, for now...
-
-length(pair)
-head(pair,n=3)     # note that the "head()" and "tail()" functions can be used on lists in addition to data frames...
-tail(pair,n=3)
+## we can filter using dplyr syntax
+sf_points %>% 
+  dplyr::filter(species == 'Phrynosoma platyrhinos') %>% 
+  head()
 
 ```
 
+Finally, let's plot this data. The plot function provided by `sf` behaves slightly differently than it does for most other classes. It'll create a plot for each attribute column in the `sf` objecct. I think this behavior is strange, I don't like it. But it is handy.
 
-It often makes sense to break a problem like this down a set of repeated tasks, each of which is expressed as a function. 
+```{r plotting with sf}
 
-Let's write (and test) a function to accept a pair in the database and returns the correlation:
-
-```{r}
-
-############
-# New function: accepts a gene pair and the database as arguments and returns
-# the correlation:
-
-geneCor <- function(pair,gene=geneData){
-  cor(gene[pair[1],],gene[pair[2],])
-}
-
-# Test the function:
-cor(geneData[12,],geneData[13,])
-geneCor(pair=c(12,13),gene=geneData)    # should be the same result as the previous command...
+## plot with sf::plot
+plot(head(sf_points, n = 100))
 
 ```
 
-We left our pairs as a list, so we can use *lapply*!  Recall that *lapply* takes each element in a list (in sequence), applies a specified function to that element, and returns the results from the function in another list.  
+If you want to plot just a single variable, you must use the following syntax.
 
-Let's just test the first 3 pairs:
+```{r plot with sf 2}
 
+plot(head(sf_points['year'], n = 100))
 
-```{r}
+## the plot function also uses this syntax to select a single row to plot
+## plot(head(sf_points['year'], n = 100))
 
-########
-# use "lapply" to run our function on the first three gene pairs
-
-pair[1:3]
-outcor <- lapply(pair[1:3],geneCor)
-outcor
-
-```
-
-Now let's do the whole calculation.  First, open your task manager by hitting control-alt-delete (on Windows) and choosing "Start Task Manager". 
-
-Click the "Performance" tab. You may also need to click on another link to open the "Resource Monitor". Notice you have a few graphs next to "CPU Usage", which shows each processor you have on your machine.
-
-Type the following in R and watch the CPU Usage History graph. Note the use of the "system.time()" function, which allows us to keep track of processing time for one or more R commands. Processing time can vary substantially among machines. 
-
-```{r}
-
-#################
-# Examine processor use and speed
-
-# First, open your task manager to view processor usage (see website for more details).
-
-system.time(outcor <- lapply(pair,geneCor))
-
-# Notice ONE CPU spiked.  Make note of how long it took to run.
-
-```
-
-Notice ONE CPU spiked.  Make note of how long it took to run. 
-
-Now let's make an even bigger dataset (just repeating geneData four times), making 26 x 4 = 104 columns:
-
-```{r}
-
-fakeData <- cbind(geneData,geneData,geneData,geneData)    # make an even bigger dataset!
-
+## and if you don't want to color the plot by feature you can use 0
+## to specify plotting 0 attributes
+## note, this is plotting all the points
+plot(sf_points[0], col = 'purple')
 ```
 
 
-Now lets make a more complex, computationally intensive function that calculates the 95% confidence intervals of the correlation coefficients through a process of *bootstrapping*:
+### Loading Spatial Data
+
+It is possible to create polygons from scratch in R. It takes a bit of work, and I'll provide an example later for reference. Most of the time you will not need to do this. Instead you will likely load data from a shapefile. In the code example below we are going to load county polygons for the state of Nevada. Like everything in R there are multiple methods to read shapefiles. Since we are using the `sf` package we'll use the functions provided in that package.
+
+NOTE: for the next examples you will need to use GIS files that are stored in the following compressed data directory: [GIS data for module 2.6](data.zip). If you want to follow along, please download this file and unzip it in your working directory. Make sure the folder called "data" (that contains subdirectories called "nv_counties" and "roads") is in now in your working directory. 
 
 
-```{r}
+```{r read_shapefile, message=FALSE}
+
+#############
+# Nevada Counties example...
+
+# read in nv county shapefile ----
+counties <- st_read(dsn = 'data/nv_counties/NV_Admin_Counties.shp')
+
+
+## once finished check the structure
+str(counties, max.level = 3)
+
+## some data management
+### check the contents of the geometry field
+counties$geometry
+
+### let's double check that projection of the counties
+st_crs(counties)
+
+### How does this projection compare to the sf_points object?
+### double check the sf_points projection
+st_crs(sf_points)
+
+### then explicitly compare them using boolean logic
+st_crs(counties) == st_crs(sf_points)
+
+### let's reproject the points to our desired CRS, utm
+### we will go into more detail on reprojections later
+counties <- st_transform(counties, st_crs(sf_points))
+
+### double check they are equal
+st_crs(counties) == st_crs(sf_points)
+
+```
+
+`counties`, just like `sf_points`, is an object of class `sf`, which is extends the `data.frame` class. The difference is that the `counties$geometry` column is of a different vector type, in this case the type is `POLYGON`
+
+```{r check_polygons, eval = F}
+
+## check structure of a polygon within a SpatialPolygonsDataFrame
+str(counties)
+
+## check the geometry type
+class(counties$geometry)
+
+## print the first few rows for inspection
+head(counties, n = 4)
+
+```
+
+Plotting polygons uses the same methods as plotting points. 
+
+```{r plotting_spatial_polygon_1}
+
+## plot a spatial polygon
+plot(counties)
+
+## we don't wan't to color by any feature
+## st_geometry returns just the geometry column
+plot(st_geometry(counties))
+
+## we can plot certain polygons...
+## which has a plotting behavior we aren't used to
+## this will plot every attribute for the first county
+plot(counties[1, ])
+
+## if we only want to include the outline, the following will work
+plot(st_geometry(counties)[1])
+
+## multiple at once
+layout(matrix(1:3, ncol = 3, nrow = 1))
+plot(st_geometry(counties)[1])
+plot(st_geometry(counties)[1:4])
+plot(st_geometry(counties)[counties$CNTYNAME == 'Clark'])
+
+
+## we can even plot our reptile points ontop of the counties
+layout(matrix(1))
+plot(st_geometry(counties))
+plot(st_geometry(sf_points), pch = 1, cex = .5, col = 'purple', add = TRUE)
+
+```
+
+## GIS Operations
+
+### Spatial Joins
+
+Spatial data joining relies on shared geographic space. Joining two spatial objects results in a new object with the columns of the two joined spatial objects. This operation is also known as a spatial overly. The term spatial overlay might do a better job defining what the operation does. We overlay one spatial object over a second spatial object and ask the question, "For each item in the first geometry, what data in the second geometry is underneath it". 
+
+The `sf` package has a function called `st_join()` that will perform the join. The function usage is as follows, `st_join(x, y)` where `x` is the first `sf` object and `y` is the second `sf` object.
+
+The `st_join` function isn't limited to points and polygons, it can be run with lines and points, lines and lines, polygons and polygons, and lines and polygons. The code chunk below runs a spatial join for point and polygon geometries.
+
+```{r spatial_joins} 
+
+# Spatial joins ----
+
+## use the %over% funcstion, which is the same as over(spdf_points, counties)
+rslt <- st_join(sf_points, counties)
+
+## what does rslt look like?
+str(rslt)
+
+## how about summary
+summary(rslt)
+
+```
+
+`rslt` is an `sf` object with 60,955 observations of 13 columns (all the columns of each `sf` object in the functino call). If you look at `sf_points` there are 60,955 elements, and `rslt` has 60,955 elements, this is a good sign! To reiterate `st_join()` has taken each point in our first geometry, `sf_points`, and looked at the polygons in `counties` to see which polygon that point lies within, then binds those colunns together to make a new `sf` object. 
+
+Notice that the geometry column for of `rslt` is still a `POINT`. What does happens if you switch the order of `sf_points` and `counties`? Run the code chunk below to find out.
+
+```{r st_join_reverse, eval = F}
+
+## what happens if you change the order of the input objects?
+summary(st_join(counties, sf_points))
+
+```
+
+### Spatial Unions
+
+Spatial unions (or aggregation) can dissolve the boundaries of geometries that are touching. This is a common operation if you are trying to create a boundary of multiple polygons
+
+```{r unions}
+
+# unioning polygons ----
+## all of these function come from the rgeos package.
+## select two counties to union
+plot(st_geometry(counties)[2:3])
+
+## union them
+plot(st_union(st_geometry(counties)[2:3]))
+
+# union all interior polygons ----
+## we ccan do the same thing to get a the border of NV
+## the following uses the pipe (%>%) to increase code readability
+nv <- counties %>% st_geometry() %>% st_union()
+plot(nv)
+
+```
+
+### Topological relations
+
+Topological relations describe the spatial relationship between objects. That is, whether sets of spatial objects are within, outside, touching, or intersecting eachother. The example below will help illustrate that point.
+
+```{r topological relations}
+# topological relations ----
+
+# create a polygon
+a_poly = st_polygon(list(rbind(c(-1, -1), c(1, -1), c(1, 1), c(-1, -1))))
+a = st_sfc(a_poly)
+# create a line
+l_line = st_linestring(x = matrix(c(-1, -1, -0.5, 1), ncol = 2))
+l = st_sfc(l_line)
+# create points
+p_matrix = matrix(c(0.5, 1, -1, 0, 0, 1, 0.5, 1), ncol = 2)
+p_multi = st_multipoint(x = p_matrix)
+p = st_cast(st_sfc(p_multi), "POINT")
+
+## plot
+par(pty = "s")
+plot(a, border = "red", col = "gray", axes = TRUE)
+plot(l, add = TRUE)
+plot(p, add = TRUE, lab = 1:4)
+text(p_matrix[, 1] + 0.04, p_matrix[, 2] - 0.06, 1:4, cex = 1.3)
+```
+
+In the plot above there are several points (1 - 4), each with a certain spatial relationship to the triangle polygon. 
+
+Point 1 (`p[1]`) is with the polygon (`a`), we can check with the following code:
+
+```{r point1}
+st_within(p[1], a, sparse = F)
+```
+
+However, point 2 (`p[2]`) isn't within the polygon, instead, it is touching the polygon.
+
+```{r point2}
+st_within(p[2], a, sparse = F)
+st_touches(p[2], a, sparse = F)
+```
+
+Both points do intersect polygon a:
+
+```{r point1 point2}
+st_intersects(p[1:2], a, sparse = F)
+```
+
+And points 3 and 4 (`p[3:4]`) don't intersect the polgyon.
+
+```{r points3-4}
+st_intersects(p[3:4], a, sparse = F)
+```
+
+The same operations can be performed with the line (`l`), or even with points. The `sparse = F` tells the function to return a boolean matrix rather than a sparse matrix of 1's and 0's. For analysis I recommend using the default `sparse = T` due to the smaller footprint.
+
+#### Points outside NV
+
+Now that we have a basic understanding of some spatial operations, and the topological relationships between geometries we can get rid of all the points in `sf_points` that are outside of Nevada (see the map below).
+
+```{r remove points, echo = F}
+
+# remove points outside nv ----
+plot(nv)
+plot(st_geometry(sf_points), col = 'purple', add = T)
+
+```
+
+```{r remove points outside nv}
+
+# remove points outside
+sparse <- st_intersects(rslt, nv)
+sel_logical <- lengths(sparse) > 0
+
+sf_points <- rslt[sel_logical, ]
+
+## check the results by uncommenting this code, and running
+# plot(nv)
+# plot(st_geometry(sf_points), col = 'purple', add = T)
+
+```
+
+We will use this `sf_points` object for the rest of the module, so make sure you get the correct result.
+
+### Reproject
+
+Spatial data is often read into the R session with a coordinate reference system (CRS) defined by the maintainers of the data set. When reading shapefiles with the `st_read()` function, the `.prj` file specifies a CRS of the data. In some cases, where you are creating the data yourself, such as the reptile data we loaded earlier, we need to know what CRS the data is being collected in. These settings can be changed in handheld GPSs. If the coordinates are in a combination of degrees, minutes, seconds the CRS is WGS84, a geographic coordinate system with an EPSG ID of 4326. In Nevada, if the coordinates are in meters then it is likely NAD83 zone 11. The zone is important as you'll see below.
+
+In order to convert coordinates from one CRS to another we use the `st_transform()` function and provide the CRS we want to reproject the data into. Below we will use a dataset from `spData` that is an `sf` object of the contiguous US. The data is originally in EPSG 4269. We will convert this to WGS84.
+
+```{r reproject}
+
+# spTranform ----
+## we will use a data set from the spData package
+## the epsg id for this data is 4269
+us_states <- spData::us_states
+
+## check the CRS
+st_crs(us_states)
+
+plot(st_geometry(us_states), 
+     col = 'white',
+     graticule = st_crs(us_states), 
+     axes = T, main = 'Initial, EPSG = 4269')
+
+## reproject basics, and replot
+wgs_usa <- st_transform(us_states, crs = '+init=epsg:4326')
+plot(st_geometry(wgs_usa), 
+     col = 'white',
+     graticule = st_crs(wgs_usa), 
+     axes = T, main = 'WGS84')
+
+```
+
+There are many, many different CRSs to choose from. Ultimately, the most important apsect of CRSs (and spatial data) is that we document the CRS of our data. Without a CRS we can't plot our points onto Earth. So please, do everyone a favor and document your data's CRS.
+
+Below is a figure demonstrating how the shape of Nevada counties change depending on the projection. You can find a list of all these projections, and many more, at the [PROJ4 website](https://proj4.org/operations/projections/index.html).
+
+```{r many_projections}
+
+## we can do this with other reprojections as well so you can really tell a difference
+layout(matrix(1:8, nrow = 2))
+us_states %>% st_geometry() %>% 
+  st_transform(crs = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" ) %>%   
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Albers Equal Area')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=sinu') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Van Der Grinten')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=robin') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Robinson')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=gall') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Gall-Peters')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=eqc') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Plate Carree')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=goode') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Goode Homolosine')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+init=epsg:26911') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'NAD83 Zone 11')
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+init=epsg:26921') %>% 
+  plot(col = 'white', 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'NAD83 Zone 21')
+
+```
+
+The code above relies on predefined CRSs, hence the `+proj=...` statement. Some of these look really bad for plotting the US. These are due to how the CRS is created. Some are conic (Earth's geoid is projected onto a cone), others are cylindrical (projected onto a cylinder). Each has consequences for the distortion in the resulting maps. PROJ4 strings take a number of other parameters that define how the cone or cylinder are aligned for the projection. Below we will define our own CRS using the [Lambert conformal conic projection](https://en.wikipedia.org/wiki/Lambert_conformal_conic_projection).
+
+```{r lcc_proj}
+
+## we can also define our own projection
+layout(matrix(1:2, nrow = 2))
+
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=lcc +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs') %>% 
+  plot(col = 'white',
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Lambert Conformal Standard')
+
+us_states %>% st_geometry() %>% 
+  st_transform(crs = '+proj=lcc +lat_1=33 +lat_2=45 +lat_0=39 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs') %>% 
+  plot(col = 'white',
+       graticule = st_crs(wgs_usa),
+       axes = T, main = 'Lambert Conformal USA')
+
+```
+
+The map on the left shows the standard Lambert projection, while the map on the right shows the Lambert projections with the standard parallels set to show a good representation of the US.
+
+## Raster Data
+
+You will almost always read raster data from external files. There are many different file types to store raster data. The most common is probably .tif, or .geotiff. R has a native raster format that is very compact with an extension .grd & .gri (there are two files). We will use this format to read in raster data.
+
+```{r rasters}
+
+# working with raster data ----
+## save some data for later
+save(counties, sf_points, rslt, nv, file = 'data/module2_6.RData')
+
+## let's clean our workspace first
+rm(list = ls())
+load('data/module2_6.RData')
+
+## load a raster
+dem <- raster('data/nv_dem_coarse.grd')
+
+## check dem structure
+str(dem)
+
+## what is this?
+dem@data@inmemory
+
+```
+
+Wow, that is a lot of data packed into a single class[^slots]. Check that last command. What does that mean? Well, the Raster package cleverly keeps raster data saved in on disk, in a temporary file, rather than loading it into memory. This is a very nice feature because raster data can be huge. Don't let anyone tell you differently, geographic data was the first big data!
+
+[^slots]: R supports two different class types, S3 classes and S4 classes. All we really need to now about them right now is how they differ in terms of accessing values. The `@` symbol is analogous to the `$` symbol for lists. It access named items from an S4 class. These items in S4 classes are called slots.
+
+How about plotting the data? We have two different methods, `plot` and `image`. The essentially do the same thing. Pick your favorite.
+
+```{r plot a raster}
+
+## plot raster
+terrain_colors <- rcartocolor::carto_pal(7, 'TealRose')
+plot(dem)
+
+## or, with a new set of more aesthetic colors!
+image(dem, asp = 1, col = terrain_colors)
+
+```
+
+Let's load a second raster. This next one represents major roads in Nevada (from the Census TIGER dataset). I've converted the data from a `LINES` object to a `raster` so that we can do some computations with it. The plot below looks like a road network. If you look closely down near Las Vegas you'll see some darker green colors. Those cells are all the roads and highways lumped together in a single raster cell. The value of each cell in this data is the number of roads in that cell.
+
+```{r distance to roads raster}
+
+# load a second raster, distance to roads ----
+road_rast <- raster('data/road_dist.grd')
+
+## plot
+plot(road_rast, col = rcartocolor::carto_pal(7, 'Mint'))
+```
+
+Check the projection on our Raster objects. The rasters we just loaded should be the same. What about when we compare it to `nv`? This is one of those instances, again, where the datasets are using the same coordinate reference system, however two different methods have been used to apply that coordinate reference system to the data. To prove they are the same coordinate reference system, we can plot the state border over the dem raster. 
+
+```{r check raster projection}
+
+## use the raster::projection function
+projection(road_rast)
+projection(dem)
+identicalCRS(road_rast, dem)
+
+## compare to nv SpatialPolygonsDataFrame
+identicalCRS(dem, as(nv, 'Spatial'))
+
+## proof these are the same crs
+plot(dem, col = terrain_colors)
+plot(nv, lwd = 3, add = T)
+
+```
+
+If we wanted to reproject the raster into a different coordinate reference system we would use the `raster::projectRaster` function. One of the parameters for this function is `filename`. This parameter allows you to give the function a filename so that data is saved onto disk as the operation progresses, rather than saving it in memory. Most of the time you should specify a filename when working with rasters.
+
+### sp vs. sf
+
+The `sf` package is very new. The first version was published on Jan 5, 2017. This means that not all packages play nicely with `sf`, yet. The `raster` package is an example. The core functions in `raster` can take `raster` objects, or `sp` objects, but not `sf` objects. This should be thought of as a minor nuisance. We can use the `as(x, 'Spatial`) function from `sf` to easily coerce `sf` objects to `sp` objects. This can always be done as part of the function call. You've already seen this in the code chunk above, and you'll see it as we continue working with the `raster` package. This is what it will look like: `extract(dem, as(sf_points, 'Spatial'))`.
+
+An al
+
+### Distance to Roads
+
+Lets create a distance to roads raster from `road_rast`. We can later use this to perform spatial overlays, intersections, or joins. This should be a relatively quick operation. If you have an older computer with a slower processor and few RAM patience is required.
+
+```{r distance to roads}
+
+# create distance to roads ----
+road_dist <- distance(road_rast, filename = "road_dist.grd", overwrite = T)
+
+## cool, what does this look like?
+plot(road_dist)
+plot(nv, lwd = 3, add = T)
+```
+
+Very cool! This raster represents a continuous measure of distance to roads across the landscape. White pixels are directly on roads, so the cell value is 0. The darker the and greener the color, the further away from major roads that cell is. The units for each cell are meters. This isn't as clean as the DEM we have loaded. The lower left corner is all in California, and because we didn't include any California roads in the calculation of this raster, that data isn't accurate. Instead of including California roads we will clip or mask this raster to the state border.
+
+```{r clip raster}
+
+## mask raster to NV border. This will set all values outside NV to NA
+nv_road_dist <- mask(road_dist, mask = as(nv, 'Spatial'), filename = 'nv_road_dist.grd', overwrite = T)
+
+```
+
+*If you need to overwrite a file that already exists on disk provide the `overwrite = T` parameter. Without this the operation will error out.*
+
+```{r plot new raster}
+## plot our new raster, with nevada border
+plot(nv_road_dist)
+plot(nv, lwd = 3, add = T)
+```
+
+The appearance of the raster changed but the data is still the same. The change in appearance is due to the range of our cell values. Check for yourself. Removing all those extremely large values from California changes the distribution of our cell values.
+
+```{r compare cell values}
+
+## compare raster values
+summary(road_dist)
+summary(nv_road_dist)
+
+```
+
+### Overlay Operations
+
+We can perform overlay operations between vector and raster geometries, similar to what we did with two raster geometries. When interacting with raster-vector geometries this is referred to as extraction. The easiest way for me to think about this is with point data. We want to provide additional attribute data to the points by extracting the cell value from a raster at that points' position.
+
+```{r raster extractions}
+
+# raster extraction ----
+## global env setup
+rm(road_dist, road_rast)
+
+```
+
+Before we do anything else, lets visualize what we are trying to do. In the figure below we have several points ontop of the elevation DEM for Humboldt county. For each point on the map we want to get the value of the raster cell underneath that point.
+
+```{r visualize the problem, echo = F}
+
+## create an extent object to limit the size of our raster plot
+## subset the points so we can see them
+bounds <- rslt[rslt$CNTYNAME == 'Humboldt' & !(is.na(rslt$CNTYNAME)), ] %>%
+  st_geometry() %>% 
+  as('Spatial') %>% 
+  extent()
+
+## extend the extent object so all the points fit on the map
+plot(dem, ext = extend(bounds, 10000), col = terrain_colors, axes = F, bty = 'n',
+     main = 'Raster Overlay')
+rslt[rslt$CNTYNAME == 'Humboldt'  & !(is.na(rslt$CNTYNAME)), ] %>% 
+  st_geometry() %>% 
+  plot(add = T, cex = 2)
+  
+```
+
+Now let's do the extraction.
+
+```{r the extraction dem}
+
+## extract values from the dem
+## this returns a vector of length = nrow(sf_points)
+elevation <- raster::extract(dem, as(sf_points, 'Spatial'))
+summary(elevation)
+
+## this can be combined with our data
+## and yes, this can be done in one step instead of 2
+sf_points$elevation <- elevation
+
+```
+
+Once the extraction is complete, and we add this column to our data we can do some data exploration. There are some `NA` values, what is that about? We can also plot a histogram and see the distribution of elevations for our data.
+
+```{r explore data}
+
+## and now, we can figure out the distribution of elevations in our data!
+hist(sf_points$elevation * 3.28, main = 'Distribution of Elevation', xlab = 'Elevation (ft)', freq = T)
+
+## what about those NAs?
+na_points <- sf_points[is.na(sf_points$elevation), ]
+## honestly, this 2000 number is purely experimental, 
+## change values till you get what you want on the map
+bounds <- extend(extent(as(na_points, 'Spatial')), 2000)
+
+## plot the map, zoom in on these points in the map
+raster::plot(dem, ext = bounds, col = terrain_colors)
+plot(st_geometry(na_points), col = 'black', add = T)
+plot(nv, add = T)
+
+```
+
+This is due to the fact that a raster is a grid of rectangles (squares) and we can't perfectly mimic every vector shape. A solution is to use smaller resolutions for rasters, or buffer the state border to include cells outside the state.
+
+## Interactive Maps
+
+I'll often hear that many people don't use R as a GIS because it is hard to add basemaps. Well, some wonderful R user decided to write a library that allows for interactive mapping in R. Underneath the hood this library is calling a JavaScript library called leaflet.
+
+```{r interactive, eval=FALSE}
+
+load("data/module2_6.RData")
+wgs_pts <- sf_points[1:100, ] %>% st_transform(4326)
+
+library(leaflet)
+# interactive mapping ----
+leaflet::leaflet(wgs_pts) %>% 
+  addTiles() %>% 
+  addCircleMarkers(radius = 5)
+
+```
+
+We can change the basemap too.
+
+```{r leaflet basemap, eval=FALSE}
+
+## leaflet provider tiles
+leaflet::leaflet(wgs_pts) %>% 
+  addProviderTiles(providers$Esri.WorldTopoMap) %>% 
+  addCircleMarkers(radius = 5)
+
+```
+
+And popups!
+
+```{r popups, eval=FALSE}
+
+## and popups
+leaflet::leaflet(wgs_pts) %>% 
+  addTiles() %>% 
+  addCircleMarkers(radius = 5, popup = paste(wgs_pts$species))
+
+```
+
+## Challenge: Spatial Lines
+
+Lines are very similar to polygons. See if you can load a shapefile of lines and plot it over the counties.
+
+1. Read in the roads shapefile
+2. reproject to match the counties CRS
+3. Plot counties and roads
+4. Plot roads based on road type
+4. Intersect counties and roads
+5. Plot some intersections
+
+```{r spatial_lines_instructions}
 
 ###########
-# New, more complex function that generates bootstrap confidence intervals for correlation coefficients
+# CHALLENGE PROBLEMS
 
-library(boot)   # load the "boot" library for performing bootstrapping analysis
 
-# 'x' represents vector with two elements, indicating the pair of genes to compare
-# 'gene' represents a gene expression database
+# SpatialLines solution ----
+## 1. read in data
+### HINT: use readshapefile
+### data to use:
+#### data/roads/roads.shp
+#### data/counties/counties.shp
 
-geneCor2 <- function(x, gene = fakeData){
-  mydata <- cbind(gene[x[1], ], gene[x[2], ])      # extract the rows (genes) to compare
-  mycor <- function(x, i) cor(x[i,1], x[i,2])     # function (correlation) to perform bootstrap analysis with
-  boot.out <- boot(mydata, mycor, 1000)           # perform bootstrap analysis (1000 iterations)
-  boot.ci(boot.out, type = "bca")$bca[4:5]         # extract and return the bootstrap confidence interval
-}
+## 2. reproject
+### HINT: check counties projection
+
+## 3. plot
+
+## 4. plot roads, style based on road type 
+
+## 5. intersect counties and roads
+
+## 6. plot some of the intersections
+
+## etc ...
+
 
 ```
 
-How long would it take to run correlation analyses using this new function for just 10 gene pairs?
+```{r spatial_lines_solution}
 
-```{r}
-
-# Test how long 10 pairs would take:
-genCor2_system_time <- system.time(outcor <- lapply(pair[1:10],geneCor2))
-genCor2_system_time["elapsed"] 
-
-```
-
-What did you get? On my machine this operation (for 10 pairs) took around 1 second...
-
-Let's use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again? 
-
-```{r}
-
-length(pair)   # how many pairs were there again?
-
-```
-
-Okay, so there are 124,750 pairs...  So let's figure out how long 124,750 pairs will take:
+# SpatialLines solution ----
+## read data
 
 
-```{r}
+## reproject
 
-############
-# estimate time to run 124,750 pairs
 
-genCor2_system_time["elapsed"]      # time it took to run 10 pairs, in seconds
+## plot counties
 
-genCor2_system_time["elapsed"] *(124750/10)     # time it would take to run 124750 pairs, in seconds 
-genCor2_system_time["elapsed"] *(124750/10/60/60)    # in hours...
+## intersect
+
+## etc ...
 
 ```
 
 
-Ouch!  This is a good candidate for parallel processing! 
-
-### Running in Parallel!
-
-Let's take a subsample of all the pairs for exploring this further:
-
-```{r}
-
-###########
-# Explore parallel processing vs sequential processing
-
-pair2 <- sample(pair,300)    # first extract a subsamble of all the pairs
-
-```
-
-
-The opposite of parallel processing is "sequential processing". Let's first test a sequential version of this task:
-
-```{r}
-
-# Let's test a sequential version of this:
-system.time(outcor <- lapply(pair2,geneCor2))
-
-# Note the elapsed time.
-
-```
-
-Now, we can explore implementing this operation in parallel. To do this, we will use the "parallel" package in R. 
-
-#### 'parallel' package
-
-Parallel's basic concept is to launch "worker" instances of R on other processors, and then send the subproblems to each R instance. This means that if you want to use 4 processors ("cores"), after you start a parallel cluster, you will have 5 copies of R running: the master copy (the one you are typing into) and 4 worker copies.  
-
-The "cluster" of processors can be either a single computer with multiple processors (like the one you are working on), or a network of computers linked by some clustering framework.   
-
-The basic order of operations with using 'parallel' is as follows:
-1. library("parallel")   
-2. Make a parallel cluster using makeCluster(...)   
-3. Load packages that your function needs into the workers using clusterEvalQ(cl=...,library(...))    
-4. Load objects (data) from the master environment into the worker environments using clusterExport(cl=...)    
-5. Following basic lapply() semantics, use e.g. clusterApplyLB(cl=...) to apply your function to an input list, where each iteration of the "loop" will be sent to an available processor. The output is usually a list.    
-6. Shut down your cluster using stopCluster(...)    
-
-
-So the first step is to load the 'parallel' package:
-
-```{r}
-
-###########
-# Run this operation in parallel!!
-
-### parallel: built-in parallel computation package.
-library("parallel")       # load the package (comes with basic R installation)
-
-```
-
-We're also going to grab the "future" package for later use:
-
-```{r eval=FALSE}
-install.packages("future")    # install "future" package, which we will use later
-```
-
-```{r  eval=FALSE}
-library("future")
-
-```
-
-
-The way parallel works, is we first have to make an R cluster via "makeCluster()":   
-
-```{r eval=FALSE}
-
-?makeCluster    # learn more about "makeCluster()"
-
-```
-
-
-We are going to create a cluster with 4 cpus of type "PSOCK". 
-
-Click the task manager "Processes" (Windows) or Activity Monitor (mac), and scroll down to the "R"s:
-
-```{r}
-
-########
-# Make a cluster
-
-myCluster <- parallel::makeCluster(spec=4,type="PSOCK")    # make cluster with 4 cpus of type "PSOCK"
-myCluster
-
-length(myCluster) # One entry per "worker".
-
-myCluster[[1]]    # more info about this "worker"
-
-```
-
-Notice you now have multiple instances of Rscript.exe running now!
-
-
-We can stop the cluster by using the "stopCluster()" function:
-
-```{r eval=FALSE}
-
-?stopCluster
-```
-
-```{r eval=FALSE}
-parallel::stopCluster(myCluster)
-
-```
-
-
-Now let's make a new cluster using all available cores.
-
-```{r  eval=FALSE}
-
-######
-# Make a cluster with all available cores
-
-mycorenum <- availableCores()   # determine number of available cores
-myCluster <- parallel::makeCluster(spec=mycorenum,type="PSOCK")
-
-```
-
-
-We can send the same function to each node (worker) in the cluster using "clusterCall()":
-
-```{r eval=FALSE}
-
-######
-# Run a function on each cluster:
-
-?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster
-
-```
-
-For example, we might run the "date()" function on each cluster! Note that the results get returned as lists:
-
-```{r}
-
-date()    # run the "date()" function
-
-workerDates <- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the "date()" function on all clusters 
-class(workerDates)
-length(workerDates) # One list element per worker.
-
-```
-
-You need to remember that each worker instance of R that is running is essentially "empty" -- it won't, be default, have access to the environment of the master.  Thus, we need to send some commands/data to them in anticipation of running the code.  
-
-For example, the "search()" function tells us what packages and data are loaded (attached). Let's explore what packages are loaded in our worker environments:
-
-```{r eval=FALSE}
-
-####
-# explore packages loaded in our worker environments
-
-search()      # packages loaded in global environment
-workerPackages <- parallel::clusterCall(cl=myCluster,fun=search)     # .. and worker environments
-# workerPackages
-
-```
-
-
-We are using a package called "boot" in our function, so we need to load up this package on every worker using the "clusterEvalQ()" function:
-
-```{r eval=FALSE}
-
-#########
-# load required packages on every worker:
-
-?clusterEvalQ
-```
-
-```{r}
-loadOnCls <- parallel::clusterEvalQ(cl=myCluster,library("boot"))   
-
-```
-
-```{r eval=FALSE}
-# We can confirm the boot package is now loaded:
-parallel::clusterCall(cl=myCluster,fun=search)
-
-```
-
-Next, we will export the dataset "fakeData" to each worker using the "clusterExport()" function. 
-
-First, look at the worker Rs and note how much memory they are using (in task manager).
-
-```{r eval=FALSE}
-
-########
-# Load required data on every worker
-
-?clusterExport
-```
-
-```{r}
-loadData <- parallel::clusterExport(cl=myCluster,"fakeData")
-```
-
-```{r eval=FALSE}
-parallel::clusterEvalQ(cl=myCluster,ls())   # Check the environment on each worker- make sure data are loaded
-
-```
-
-Check the memory now. Note that each worker is using more memory, since we loaded the fakeData into each of those worker Rs.
-
-Note we could send the entire Global environment over to the workers! To do this, we could use the "ls()" function:
-
-```{r  eval=FALSE}
-
-#### alternatively, load all data in our environment into each worker:
-# loadData <- parallel::clusterExport(cl=myCluster,ls())
-```
-
-```{r eval=FALSE}
-# parallel::clusterEvalQ(cl=myCluster,ls())
-
-```
-
-
-#### Finally: run corrlation analysis in parallel!
-
-Now comes the actual function call. To do this, we use the "clusterApplyLB()" function:
-
-```{r eval=FALSE}
-
-############
-# Spread function calls across workers using an "lapply"-like function
-
-?clusterApplyLB     # function for performing the actual function call
-
-```
-
-This is VERY similar to an 'lapply' statement, except we identify the cluster to send the command to. Let's call the "geneCor2()" function for each gene pair, using parallel processing. We can compare the speed of the parallel vs sequential processing using the "system.time()" function.
-
-Let's call the "geneCor2()" function for each gene pair, using parallel processing!
-
-Watch your Performance tab as your cores light up:
-
-```{r}
-
-#######
-# Call the "geneCor2()" function for each gene pair, using parallel processing
-
-system.time(outcor2 <- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   
-```
-
-```{r}
-
-# vs the non-clustered version:
-system.time(outcor <- lapply(pair2,geneCor2))   # takes much longer!
-
-```
-
-
-We got a big performance boost here!
-
-Don't forget to shut down your cluster:
-
-```{r  eval=FALSE}
-
-stopCluster(myCluster)   # finally, stop the cluster..
-
-```
-
-
-### 'foreach': making parallel computing EVEN EASIER
-
-There are multiple parallel "backends" to R, including 'parallel', 'snow', 'multicore', 'Rmpi', to name a few.
-
-'foreach' is a meta-wrapper that works on many parallel backends. What this means is you can write one set of code, and not have to modify it if the user prefers to use Rmpi instead of parallel (in which case the commands are very different).
-
-The basic order of ops with using 'foreach' is as follows:
-
-1. library("foreach")       
-2. Load a parallel backend and foreach registration package        
-    e.g. library("doParallel")      
-3. Start a parallel backend with e.g. makeCluster(...)      
-4. Register the parallel backend with foreach,      
-    e.g.: registerDoParallel(...)      
-5. Use foreach(...) %dopar% function() to run your function in parallel.       
-6. Use '.packages' parameter in foreach(...) to load needed packages.     
-7. Stop your cluster using e.g. stopCluster(...)      
-8. Register the sequential backend to foreach using registerDoSEQ()         
-
-```{r eval=FALSE}
-
-##########
-# Parallel processing using 'foreach'
-
-install.packages("foreach")
-# Install the parallel backend to foreach:
-install.packages("doParallel")
-
-```
-
-```{r}
-
-library("foreach")
-library("doParallel")
-
-```
-
-```{r eval=FALSE}
-
-?foreach
-```
-
-Try running in sequential mode...
-
-```{r}
-
-# sequential mode:
-registerDoSEQ() # Avoids warnings
-
-system.time(
-  outcor <- foreach(
-    p = pair2, 
-    .packages="boot", 
-    .combine="rbind") %dopar% { 
-      return(geneCor2(p)) 
-    }
-)
-
-```
-
-
-
-And now with a parallel backend!
-
-```{r eval=FALSE}
-
-# Parallel mode (use a parallel backend):
-
-# Create a cluster using parallel:
-myCluster <- makeCluster(spec=4,type="PSOCK")
-```
-
-
-```{r}
-
-# Register the backend with foreach (doParallel):
-registerDoParallel(myCluster)
-# Run our code! Notice I didn't change the foreach call at all:
-
-system.time(
-  outcor <- foreach(
-    p = pair2, 
-    .packages="boot",
-    .combine="rbind") %dopar% {
-      return(geneCor2(p)) 
-    }
-)
-
-```
-
-
-Some things to notice:     
-- we explicitly define what packages are to be sent over using the .packages parameter    
-- foreach calls have access to the master's global environment.
-- we can use specific functions to join the data once its done (e.g. rbind)
-
-Don't forget to stop the cluster:
-
-```{r}
-
-stopCluster(myCluster)     # Don't forget to stop the cluster:
-
-```
-
-You should also register the default, non-parallel backend for 'foreach'. Otherwise the next time you use 'foreach' it will not work.
-
-```{r eval=FALSE}
-
-registerDoSEQ()    # register the default, non-parallel backend for foreach
-
-```
-
-
-### Sources of overhead
-
-Parallel computing, optimally, should be linear in terms of number of processors vs. time.  However, this is never the case.  A process running on one core does not take twice the time as a process running on two cores.  There are losses along the way from various sources.  These need to be thought about when writing the most efficient code.
-
-First, many programs will have parallel and non-parallel components. If your non-parallel components take X amount of time, no matter how many processors you have available, you will never run faster than X amount of time.
-
-#### Chunking
-Chunking is one of the most important considerations.  So far, we've been iterating one "row" at a time.  For faster computations, this may not be very efficient, as the overhead of sending/receiving/managing the parallel cluster swamps out gains from the processing. We can get more clever with this by sending MULTIPLE rows at one time to a worker.  This optimization of the chunk size (number of rows to send at one time to a single worker) can dramatically speed up your computation, at the cost of heavier RAM usage.
-
-#### Shared-memory machines
-A single computer like the one you are working on is a "shared memory machine" -- each processor has access to the same physical RAM.  When two processors "ask" for an R object in RAM they must compete against each other.  One process will have to wait until the other process are done reading that area of memory.  Memory access, thus, can be a bottleneck.
-
-####Networked systems of computers
-A cluster computer ("supercomputer") is really just a bunch of individual computers networked together. Each individual computer ("node" in cluster terminology) has its own set of processors, memory, and hard drive space.  When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer.  This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.  
-
-For instance, you could copy the data the function will work on to each node in a cluster, so the data does not have to be transferred from the master R to the worker Rs.
-
-Note that two nodes in a cluster do not share memory.
-
-#### Other things to worry about
-
-**RACE CONDITIONS.** This comes in to play if your workers are all writing to the same output file (say, a raster file).  As we discussed before, in general only one "thread" (worker) can write to a file at a time, otherwise the file may get corrupt.  In parallel computing, we can increase the chance that this might happen if we aren't careful.  This often requires a programmer to be able to "lock" a file -- i.e. before a worker tries to write to a file, it 1) checks if the file is "locked", 2) if it finds it unlocked it first locks the file itself, 3) it opens/writes/close to the file, 4) it unlocks the file for other workers.
-
-**Embarrassingly parallel applications and those that aren't:** the term "embarrassingly parallel" refers to problems that are absolutely trivial to parallelize.  The function we've been looking at is embarassingly parallel.  Each iteration takes (basically) the same amount of time, uses the same amount of memory, doesn't require cross-talk between workers, etc.  Raster processing, as we will see, is often an embarrassingly parallel problem -- we process an image one line at a time, sending each line to a different processor.
-
-Vector based processing, on the other hand, is often not embarrassingly parallel, and takes a lot more thought to properly parallelize a function.
-
-Parallel computing takes a lot of practice and understanding of the underlying systems to get good at.  Other issues start popping up such as load balancing (what if the functions take non-constant amounts of time on each processor), optimization of the chunk size, and a host of other issues.
-
-Debugging can also be tricky, as the various parallel backends do not typically allows workers to print to your main screen, so you have to have them dump their outputs to a file that you then do a post-mortem on.  'foreach' makes this a bit easier, since you can test a function on a single node (using registerDoSEQ()), debug it, and once it works on one node, try it out on a cluster.
-
-[--go to next module--](module2_5.html)
+[--go to next submodule--](module2_5.html)
 
 
 

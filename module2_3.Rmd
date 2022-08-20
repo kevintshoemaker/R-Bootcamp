@@ -15,14 +15,17 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE}
 
-#  R Bootcamp #2, Module 3 ------------------------------                
+#  R Bootcamp #2, submodule 2.3 -----------------------------              
 #     University of Nevada, Reno             
-#     Data Visualization with 'ggplot2'
-
+#     Topic: basic statistics 
 
 ```
 
+## Load script for submodule #2.2
 
+1. Click [here](module2_3.R) to download the script! Save the script to your working directory (R Project directory).
+
+2. Load your script in your RStudio Project. To do this, open your RStudio Project and click on the folder icon in the toolbar at the top and load your script. 
 
 ## Statistics in R!
 
@@ -35,13 +38,9 @@ First, download the sculpin eggs data [here](sculpineggs.csv) and save this to y
 
 ```{r}
 
-####################
-# STATISTICS!
-####################
+# STATISTICS! ------------------
 
-#####
-#####  Load Data
-#####
+#  Load Data ------------------
 
 sculpin.df <- read.csv("sculpineggs.csv")
 

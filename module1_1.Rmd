@@ -42,9 +42,9 @@ Here are links to good R "cheatsheets":
 
 Many additional cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)
 
-## Load script for module #1.1
+## Load script for submodule #1.1
 
-1. Click [here](module1_1.R) to download the script for this module! I recommend right-clicking (or command-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called "Rworkshop2022"), which will serve as your **working directory** for this workshop. 
+1. Click [here](module1_1.R) to download the script for this submodule! I recommend right-clicking (or command-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called "Rworkshop2022"), which will serve as your **working directory** for this workshop. 
 
 2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (your working directory). Select this folder to be your **project directory**. Every time you open this project (File >> Open Project), this project directory will be the first place that R looks for data files and code, and will be the default location for saving data and code.  
 

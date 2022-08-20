@@ -1,32 +1,17 @@
 
-##################################################
-####                                          ####  
-####  R Bootcamp #2, Module 1                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
+#  R Bootcamp #2, Submodule 2.1 --------------------------
+#   University of Nevada, Reno            
+#   Expanding R functionality: packages etc. 
 
 
-###################################################
-####  Expanding R functionality: packages etc. ####
-###################################################
+# PACKAGES!  ---------------------
 
-
-
-##############
-# PACKAGES!
-##############
-
-install.packages("modeest")    # run this if you haven't yet installed the package from CRAN! 
+# install.packages("modeest")    # uncomment and run this if you haven't yet installed the package from CRAN! 
                                    # you only need to install this once, so you can comment it out if
                                    # you already have this package installed
 
 
 library(modeest)    # load the package: This is package 'modeest' written by P. PONCET.
-
-   # install.packages("BiocManager")
-   # BiocManager::install("genefilter")    # you might need to install a dependency in order to make this work!
 
 
 library(help = "modeest")    # get overview of package
@@ -34,18 +19,16 @@ library(help = "modeest")    # get overview of package
 
 newdf <- read.table(file="data_missing.txt", sep="\t", header=T)
 
-# ?mlv   # learn more about the function for computing the mode (most likely value). Who knew there were so many methods for computing the mode?
+# ?mlv   ?mfv # learn more about the functions for computing the mode (most likely value or most frequent value). Who knew there were so many methods for computing the mode?
 
   # lets find the most frequent value(s) in the "Export" column:
-mlv(newdf$Export, method="mfv", na.rm = T)    
+mfv(newdf$Export, na.rm = T)    
 
 
 detach("package:modeest")  # remove the package from your current working session
 
 
-#########
-# 3D Plotting example 
-#########
+# 3D Plotting example ---------------
 
 #########
 # Data: dog barks per day (and two explanatory variables)
@@ -60,10 +43,11 @@ Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
        15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
 
 
-install.packages("car")
-install.packages("rgl")   # you need this one as well!
+# install.packages("car")   # only uncomment these if you don't already have these packages
+# install.packages("rgl")   # you need this one as well!
 
 library(car)
+library(rgl)
 
 
 ##########
@@ -80,62 +64,32 @@ library(remotes)
 install_github("kbroman/broman")  # install a random package from GitHub!
 
 
-###########
-# Learning more about packages
-###########
+# Learning more about packages --------------------
 
-###########
 # Package overview
 
-library(help = "car")    # help file for the useful "car" package for applied regression
+library(help = "car")    # help file for the "car" package for applied regression
 
 
-##########
-# package vignette
+# package vignette --------------------
 
 browseVignettes('car')
 vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
 
 
-################
-#### GENERAL TIPS
-################
-
-#############
-# 1. Use code examples provided by others
-
-# install.packages("dismo")     # install "dismo" for species distribution modeling
-
-browseVignettes('dismo')
-vignette('sdm','dismo')      # pull up one of the helpful vignettes from the 'dismo' package, with useful code examples! Many packages have built-in vignettes.
-vignette('brt','dismo')      # and another one!
-
-
-########
-# package demo
-
-demo(package="stats")    # list all demos for package 'stats', which is included in base R
-demo('nlm','stats')
-
-
-###########
-# Load html documentation for R and all installed packages
+# Load html documentation for R and all installed packages ---------
 
 help.start()
 
 
-#########
-# Built-in examples
+# Built-in examples --------------------
 
 example(lm)   # run examples for "lm" function (included in base R)
 
 
-########
-# package citations
+# package citations ---------------------------
 
 citation('car')   # citation for the 'car' package
 
 citation()    # and here's the citation for R in general- useful for when you use R for manuscripts
-
-
 
