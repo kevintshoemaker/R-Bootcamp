@@ -9,13 +9,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Getting started: basic plotting and statistics in R" />
+<meta name="author" content="Basic plotting R (ggplot)" />
 
 
-<title>Module 1.3</title>
+<title>Submodule 1.3</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -64,6 +64,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -84,6 +85,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -309,12 +313,12 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, TWS-WS 2022</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2022</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -322,8 +326,8 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #1: getting started
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #1: getting started
      
     <span class="caret"></span>
   </a>
@@ -335,16 +339,16 @@ div.tocify {
       <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting in ggplot2</a>
     </li>
     <li>
-      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: data wrangling</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #2: Beyond the basics
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #2: beyond the basics
      
     <span class="caret"></span>
   </a>
@@ -353,13 +357,13 @@ div.tocify {
       <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Submodule 2.2: Using the 'tidyverse'</a>
+      <a href="module2_0.html">Submodule 2.2: Programming in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Plotting with 'ggplot'</a>
+      <a href="module2_2.html">Submodule 2.3: Stats in R</a>
     </li>
     <li>
-      <a href="module2_4.html">Submodule 2.4: Parallel computing in R</a>
+      <a href="module2_4.html">Submodule 2.4: GIS in R</a>
     </li>
     <li>
       <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
@@ -367,7 +371,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Data sets
      
     <span class="caret"></span>
@@ -423,24 +427,36 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Module 1.3</h1>
-<h4 class="author">Getting started: basic plotting and statistics in R</h4>
-<h4 class="date">TWS-WS 2022</h4>
+<h1 class="title toc-ignore">Submodule 1.3</h1>
+<h4 class="author">Basic plotting R (ggplot)</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University.<br />
-- Thanks to Perry Williams for allowing us to use these materials!!<br />
-- Thanks to John Tipton at CSU for developing much of this module (plotting in R)!</p>
+<p>Visualization often plays a major role in the research process, from
+quality assurance, to data exploration, to the presentation of
+results.</p>
+<p>The data visualization package <em>ggplot2</em> makes it very easy
+and straightforward to create a lot of different types of plots, from
+simple to complex. In this module, we’ll introduce ggplot syntax and
+briefly survey some of the package’s plotting capabilities.</p>
+<p>A good ggplot cheat sheet can be found here: <a
+href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf">ggplot
+cheat sheet</a></p>
 <div id="load-script-for-module-1.3-plotting" class="section level2">
 <h2>Load script for module #1.3: Plotting</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module1_3.R">here</a> to download the script! Save the script to your working directory (R Project folder).</p></li>
-<li><p>Load your script in your RStudio Project. To do this, open your RStudio Project and click on the folder icon in the toolbar at the top and load your script.</p></li>
+<li><p>Click <a href="module1_3.R">here</a> to download the script, and
+save the script to your working directory (R Project folder).</p></li>
+<li><p>Load the script into your RStudio Project. To do this, open your
+RStudio Project and click on the folder icon in the toolbar at the top
+and load your script.</p></li>
 </ol>
 <p>Let’s get started with plotting in R!</p>
-<p>We’ll start with the ‘trees’ dataset, which is built into R. It describes the girth, height, and volume of 31 felled black cherry trees.</p>
+<p>We’ll start with the ‘trees’ dataset, which is built into R. It
+describes the girth, height, and volume of 31 felled black cherry
+trees.</p>
 <pre class="r"><code># ?trees      # description of built in dataset  (uncomment to run)
 
 dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
@@ -458,263 +474,217 @@ dim(trees)   # Show the dimension of the trees dataframe                        
 ## 4  10.5     72   16.4
 ## 5  10.7     81   18.8
 ## 6  10.8     83   19.7</code></pre>
-<pre class="r"><code># Access the columns 
-trees$Girth     
-trees$Volume</code></pre>
+<pre class="r"><code>summary(trees)  # Summary stats for each column</code></pre>
+<pre><code>##      Girth           Height       Volume     
+##  Min.   : 8.30   Min.   :63   Min.   :10.20  
+##  1st Qu.:11.05   1st Qu.:72   1st Qu.:19.40  
+##  Median :12.90   Median :76   Median :24.20  
+##  Mean   :13.25   Mean   :76   Mean   :30.17  
+##  3rd Qu.:15.25   3rd Qu.:80   3rd Qu.:37.30  
+##  Max.   :20.60   Max.   :87   Max.   :77.00</code></pre>
 </div>
-<div id="basic-plots" class="section level2">
-<h2>Basic plots</h2>
-<p>R’s basic “plot()” function takes an “x” argument (defining coordinates on an x axis) and a “y” argument (defining coordinates on a y axis).</p>
-<p>Here is an example of a <strong>scatterplot</strong> in R:</p>
-<pre class="r"><code>plot(x=trees$Girth, y=trees$Volume)    # use R&#39;s built-in &quot;trees&quot; dataset: ?trees</code></pre>
+<div id="ggplot-basics" class="section level2">
+<h2>ggplot basics</h2>
+<p>A typical workflow begins with initiating plotting with the
+<strong><code>ggplot()</code></strong> function and specifying the data
+frame you want to use to create your visualizations. We then often
+define the “x” argument (defining coordinates on an x axis) and (if
+applicable) a “y” argument (defining coordinates on a y axis). In ggplot
+these are known as aesthetic mappings! That is because it is a way of
+conveying information in the dataset graphically! Other ways of
+conveying information graphically include point size, color, and symbol-
+all of which are also referred to as aesthetic mappings (syntax:
+<code>mapping=aes()</code>).</p>
+<p>You can then add geometric objects to your plot, often using
+functions beginning with <strong><code>geom_</code></strong>, to
+represent your data in the form of a boxplot
+(<strong><code>geom_boxplot()</code></strong>), scatterplot
+(<strong><code>geom_point()</code></strong>), or a variety of other
+types of plots. The <strong><code>aes()</code></strong> function can be
+called within these “geoms” to specify which variables to display and
+how these data should be displayed (which data should be used to
+represent the bar height, or the x coordinate, or the point size, etc.).
+<strong><code>aes()</code></strong> can also be used within the initial
+call to <strong><code>ggplot()</code></strong>.</p>
+<p>Here is an example of a simple <strong>scatterplot</strong> in
+ggplot:</p>
+<pre class="r"><code># scatterplot
+
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point()</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+And some more fancy and informative scatterplots</p>
+<pre class="r"><code>    # try representing tree height using the color aesthetic
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point(aes(col=Height))</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>    # try representing tree height using the size aesthetic
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point(aes(size=Height))</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>   # try adding a regression line
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point() +
+  geom_smooth(method=&quot;lm&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
 <div id="change-plot-type" class="section level3">
 <h3>Change Plot Type</h3>
-<p>Because we’re exploring different ways of plotting, it is useful to include multiple plots in the same image.</p>
-<p>We can do this using the <code>par()</code> function (graphical parameters), which has arguments that control just about every aspect of a plot in R.</p>
-<pre class="r"><code>?par
+<p>Because we’re exploring different ways of plotting, it is useful to
+include multiple plots in the same image.</p>
+<p>We can do this using the <code>plot_grid()</code> function in the
+cowplot package (commonly used extensions to ggplot). Here we explore
+different ways of graphically representing the relationship between tree
+girth and volume.</p>
+<pre class="r"><code># Explore different &quot;geoms&quot; or plot types ----------------
 
-par()   # view the default graphical parameters (can be kind of overwhelming!)</code></pre>
-<p>We could change the “mfrow” graphical parameter from c(1,1) to c(2,2): this means that we can fit four plots into a single window.</p>
-<p>An even more powerful solution is to use the function <code>layout()</code>. An example using <code>layout()</code> is below.</p>
-<p>The default plot type for two quantitative variables is points (classic scatterplot), but you can change it to lines or both points and lines (or others) by using the <code>type=</code> option:</p>
-<pre class="r"><code># Use &quot;layout&quot; to define a 2 row x 2 column matrix with elements 1, 2, 3, and 4.
-# This divides the image into four sections and then fills these with the plot function
-layout(matrix(1:4, nrow=2, ncol=2))
+plot1 &lt;- ggplot(trees,aes(Girth,Volume)) +    # plot the relationship as a line
+  geom_line()
+plot2 &lt;- ggplot(trees,aes(Girth,Volume)) +    # plot a smoothed &quot;spline&quot; fit of the relationship
+  geom_smooth()
+plot3 &lt;- ggplot(trees,aes(Girth,Volume)) +    # plot scatterplot
+  geom_point() 
+plot4 &lt;- ggplot(trees,aes(Girth,Volume)) +    # plot scatterplot with smoothed regression line
+  geom_point() + 
+  geom_smooth()
+plot_grid(plot1,plot2,plot3,plot4,labels=&quot;auto&quot;)</code></pre>
+</div>
+<div id="change-symbols-colors-and-point-sizes" class="section level3">
+<h3>Change symbols, colors and point sizes</h3>
+<p>Point shape is specified using the <code>shape=</code> option.</p>
+<p>Color is specified using the <code>color=</code> option.</p>
+<p>Size is specified using the <code>size=</code> option.</p>
+<p>If you want convey information in your data via the color, symbol, or
+point size, you include it as an aesthetic mapping- and link it to one
+of the columns in your data.</p>
+<p>If you just want to color all the points the same way, or use the
+same symbol for everything, specify this outside of the aesthetic
+mapping.</p>
+<p>To illustrate this, let’s use the built in <code>iris</code> dataset,
+which gives the sepal length/width and petal length/width (in cm), for
+50 flowers from each of 3 iris species.</p>
+<pre class="r"><code># Explore different aesthetic mappings ---------------------
 
-# layout.show(n=4)   # uncomment to run
-
-plot(x=trees$Girth, y=trees$Volume)             # points
-plot(x=trees$Girth, y=trees$Volume, type=&quot;l&quot;)   # lines
-plot(x=trees$Girth, y=trees$Volume, type=&quot;b&quot;)   # both
-plot(x=trees$Girth, y=trees$Volume, type=&quot;o&quot;)   # both with conected lines</code></pre>
+plot1 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # shape represents species
+  geom_point(aes(shape=Species))
+plot2 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +       # shape is same for everything!
+  geom_point(shape=2)
+plot3 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) 
+plot4 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color is same across the board
+  geom_point(col=&quot;purple&quot;)  
+plot5 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # size represents species
+  geom_point(aes(size=Species)) 
+plot6 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # size is same across the board
+  geom_point(size=2) 
+plot_grid(plot1,plot2,plot3,plot4,plot5,plot6,ncol=2)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Whenever you use <code>layout()</code> or <code>par()</code>, the graphics window will retain this layout for all subsequent plots. To start over (and return to the default graphical parameters), use <code>graphics.off()</code> to reset the plot. For example:</p>
-<pre class="r"><code>plot(x=trees$Girth, y=trees$Volume)             ## The plot is still in 4 parts
-
-graphics.off()                                  ## now the plot is reset!
-
-# layout(1)   # (alternative way to reset back to a single plot)
-
-plot(x=trees$Girth, y=trees$Volume)             ## The plot is still in 4 parts</code></pre>
+<p>Here is a graphic illustrating the main plot symbols you can
+reference using <code>shape=</code>:</p>
+<p><img src="points.png" /> Colors are a bit more intuitive, but here’s
+a <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">link
+to a chart of R colors</a>)</p>
 </div>
-<div id="change-plot-symbol" class="section level3">
-<h3>Change Plot Symbol</h3>
-<p>We can also change the type of points used when plotting using the <code>pch=</code> option. For example, we plot three different shape options below:</p>
-<pre class="r"><code># Use layout to define a 3 row x 1 column matrix with elements 1, 2, and 3.
-# This divides the image into three sections and then fills these with the plot function
-layout(matrix(1:3, nrow=3, ncol=1))
+<div id="themes" class="section level3">
+<h3>Themes</h3>
+<p>You can see that the default plot includes a gray background with
+white gridlines. This makes all of the elements on this plot easy to
+see, but as you start adjusting colors and identifying your personal
+preferences, you’ll probably want to customize this – ggplot has a ton
+of options for doing so. Here’s a few examples of ggplot
+<strong>themes</strong>:</p>
+<pre class="r"><code># explore themes -----------------------------
 
-# pch: &#39;plotting character&#39; changes the type of point that is used (default is an open circle)!
-plot(x=trees$Girth, y=trees$Volume, pch=19)     # filled point
-plot(x=trees$Girth, y=trees$Volume, pch=2)      # open triangle
-plot(x=trees$Girth, y=trees$Volume, pch=11)     # star</code></pre>
+plot1 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_bw()
+plot2 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_classic()
+plot3 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_minimal()
+plot4 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_minimal_grid(font_size = 11)
+
+plot_grid(plot1,plot2,plot3,plot4,labels = &quot;AUTO&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code># note: many other themes are available in ggplot, cowplot and other related packages</code></pre>
+</div>
+<div id="changing-title-and-axis-labels" class="section level3">
+<h3>Changing title and axis labels</h3>
+<p>We can also add titles, axis labels, and other options to make the
+plots look prettier.</p>
+<pre class="r"><code># add additional plot elements: title, axis limis, axis labels ------------------
+
+plot1 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x=&quot;Sepal Length (cm)&quot;)
+
+plot2 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x=&quot;Sepal Length (cm)&quot;,y=&quot;Petal Length (cm)&quot;,color=&quot;Iris sp.&quot;)
+
+plot3 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x=&quot;Sepal Length (cm)&quot;,y=&quot;Petal Length (cm)&quot;,color=&quot;Iris sp.&quot;,
+       title=&quot;Fisher&#39;s Iris Data&quot;,subtitle = &quot;practice with ggplot&quot;)
+
+plot4 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  coord_cartesian(xlim=c(0,10),ylim=c(0,10)) +
+  labs(x=&quot;Sepal Length (cm)&quot;,y=&quot;Petal Length (cm)&quot;,color=&quot;Iris sp.&quot;,
+       title=&quot;Fisher&#39;s Iris Data&quot;,subtitle = &quot;practice with ggplot&quot;)
+
+plot_grid(plot1,plot2,plot3,plot4,labels = &quot;AUTO&quot;)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Here is a graphic illustrating the main plot symbols you can reference using ‘pch’:</p>
-<p><img src="points.png" /></p>
-<p>You might want to remember a couple favorites (for example, I like to use pch=20).</p>
 </div>
-<div id="specify-title-and-axes" class="section level3">
-<h3>Specify Title and Axes</h3>
-<p>We can also add titles, axis labels, and other options to make the plots look pretty. For example, we show below how each plot is changed by the addition of one extra command, starting at the top left corner and moving top-to-bottom:</p>
-<pre class="r"><code>layout(matrix(1:4, 2, 2))
-# main: adds a title
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;)
+</div>
+<div id="bar-plots-and-box-whisker-plots" class="section level2">
+<h2>Bar Plots and box-whisker plots</h2>
+<pre class="r"><code># bar plots and box-whisker plots -----------------------
 
-# xlab: adds an x axis label
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;, 
-     xlab=&quot;Tree Girth (in)&quot;)
+plot1 &lt;- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot
+  geom_boxplot() 
+  
+plot2 &lt;- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot +
+  geom_violin() 
 
-# ylab: adds a y axis label
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;, 
-     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;)
+# bar plot
+bar.heights &lt;- iris %&gt;% 
+  group_by(Species) %&gt;% 
+  summarize(meanSL = mean(Sepal.Length))
 
-# las: rotates axis labels; las=1 makes them all parallel to reading direction
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;, 
-     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;, 
-     las=1)</code></pre>
+plot3 &lt;- ggplot(bar.heights, aes(Species,meanSL)) +
+  geom_col()
+
+
+plot4 &lt;- ggplot(bar.heights, aes(Species,meanSL)) +
+  geom_col(aes(fill=Species)) +
+  theme_classic() +
+  scale_fill_manual(values=c(&quot;gray&quot;,&quot;red&quot;,&quot;brown&quot;))
+  
+plot_grid(plot1,plot2,plot3,plot4,labels = &quot;AUTO&quot;)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-</div>
-<div id="add-colors" class="section level3">
-<h3>Add Colors</h3>
-<p>If we want we can add colors to the points in the plot as well using the <code>col=</code> option. We will also use the <code>layout()</code> function to make a more interesting plot</p>
-<pre class="r"><code># Use layout to define a 2 row x 2 column matrix with elements 1, 1, 2, and 3.
-# This divides the image into four sections but fills the first two sections
-# with the first plot and then fills these next two sections with the final two plots
-layout(matrix(c(1, 1, 2, 3), nrow=2, ncol=2))
-# layout.show(3)
+<p>But what if we want to have some error bars?</p>
+<pre class="r"><code># Bar plot with error bars ------------------------
 
-# col: select a color for the plotting characters
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;,
-     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;,
-     las=1, col=&quot;blue&quot;)
-
-# We can use the c() function to make a vector and have several colors, plotting characters, etc. per plot.
-# We start with alternating colors for each point
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;,
-     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;, 
-     las=1, col=c(&quot;black&quot;, &quot;blue&quot;))
-
-# And we can also alternate the plotting symbol at each point.
-plot(x=trees$Girth, y=trees$Volume, pch=c(1,19), 
-     main=&quot;Girth vs. Volume for Black Cherry Trees&quot;, 
-     xlab=&quot;Tree Girth (in)&quot;, ylab=&quot;Tree Volume (cu ft)&quot;, 
-     las=1, col=&quot;blue&quot;)</code></pre>
+bar.heights &lt;- iris %&gt;% 
+  group_by(Species) %&gt;% 
+  summarize(meanSL = mean(Sepal.Length),
+            n = n(),
+            sdSL = sd(Sepal.Length),
+            se = sdSL/sqrt(n))
+  
+ggplot(bar.heights,aes(x=Species,y=meanSL)) + 
+  geom_col(fill=gray(0.7),color=&quot;black&quot;) +
+  geom_errorbar(aes(ymin=meanSL-2*sdSL,ymax=meanSL+2*sdSL),width=.2) +
+  labs(y=&quot;Sepal Length&quot;)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-</div>
-</div>
-<div id="plotting-by-group" class="section level2">
-<h2>Plotting By Group</h2>
-<p>In our previous plot, we alternated colors between points - wouldn’t it be awesome to use color to distinguish between groups in the data? To do this, we look at the <code>iris</code> dataset. This dataset describes the sepal length, sepal width, petal length, petal width, and species for 150 different irises representing 3 different species (<em>I. setosa</em>, <em>I. versicolor</em>, <em>I. virginica</em>) . First we look at the data:</p>
-<pre class="r"><code>?iris</code></pre>
-<pre><code>## starting httpd help server ... done</code></pre>
-<pre class="r"><code>head(iris)     # display first few rows of data</code></pre>
-<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-## 1          5.1         3.5          1.4         0.2  setosa
-## 2          4.9         3.0          1.4         0.2  setosa
-## 3          4.7         3.2          1.3         0.2  setosa
-## 4          4.6         3.1          1.5         0.2  setosa
-## 5          5.0         3.6          1.4         0.2  setosa
-## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
-<pre class="r"><code>dim(iris)      # dimensionality of the data</code></pre>
-<pre><code>## [1] 150   5</code></pre>
-<pre class="r"><code>str(iris)      # details of the data structure</code></pre>
-<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
-##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
-##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
-##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
-##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
-##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<p>We will use the <code>col=</code> option of our <code>plot()</code> function.</p>
-<p>First we will define a new object with the three colors that we want to use. You can use any colors you like (Google “R color chart”, or just click <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">here</a>)</p>
-<pre class="r"><code>plot.colors &lt;- c(&quot;violet&quot;, &quot;purple&quot;, &quot;blue&quot;)   # define the colors for representing species ID</code></pre>
-<p>Then, let’s name each element of our plot colors vector to match the species names:</p>
-<pre class="r"><code>names(plot.colors) &lt;- levels(iris$Species)   # the &quot;levels()&quot; function returns all unique labels for any &quot;factor&quot; variable    
-plot.colors</code></pre>
-<pre><code>##     setosa versicolor  virginica 
-##   &quot;violet&quot;   &quot;purple&quot;     &quot;blue&quot;</code></pre>
-<p>Now, each color is directly associated with a species. We can now use a logical operation to generate a vector of colors for our plot:</p>
-<pre class="r"><code># generate a vector of colors for our plot (one color for each observation)
-
-indices &lt;- match(iris$Species,names(plot.colors))   # the &quot;match()&quot; function goes through each element of the first vector and finds the matching index in the second vector         
-color.vector &lt;- plot.colors[indices]</code></pre>
-<p>Now we can use our new color vector in our plotting!</p>
-<pre class="r"><code>plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main=&quot;Iris sepal length vs. petal length&quot;, xlab=&quot;Petal length&quot;, 
-     ylab=&quot;Sepal length&quot;, las=1)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-</div>
-<div id="add-a-legend" class="section level2">
-<h2>Add a Legend</h2>
-<p>We use the <code>legend()</code> function to add a legend to an existing plot. You can customize the legend if you wish. Here I pass a character vector to the <code>legend=</code> argument so that I can include the first letter of the genus in the second plot and use the <code>bty='n'</code> argument to remove the box around the legend. We can also Italicize the labels in the legend using <code>text.font=3</code>, as in the third plot.</p>
-<pre class="r"><code>########
-# experiment with legends
-
-# ?legend
-
-layout(matrix(1:3, nrow=1, ncol=3))
-
-# Plot
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main=&quot;Iris sepal length vs. petal length&quot;, xlab=&quot;Petal length&quot;, 
-     ylab=&quot;Sepal length&quot;, las=1)
-
-# First legend
-legend(&quot;topleft&quot;, pch=19, col=plot.colors, legend=unique(iris$Species))
-
-# Second plot
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector,
-     main=&quot;Iris sepal length vs. petal length&quot;, 
-     xlab=&quot;Petal length&quot;, ylab=&quot;Sepal length&quot;, las=1)
-
-# Second legend
-# The bty=&quot;n&quot; argument suppresses the border around the legend. (A personal preference)
-legend(&quot;topleft&quot;, pch=19, col=plot.colors, 
-       legend=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), bty=&quot;n&quot;)
-
-
-# Plot Three
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main=&quot;Iris sepal length vs. petal length&quot;, 
-     xlab=&quot;Petal length&quot;, ylab=&quot;Sepal length&quot;, las=1)
-
-#Legend tree with Italics
-legend(&quot;topleft&quot;, pch=19, col=plot.colors, 
-       legend=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), 
-       bty=&quot;n&quot;, text.font=3)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-</div>
-<div id="diplaying-gradients-continuous-data-using-color-and-size" class="section level2">
-<h2>Diplaying gradients (continuous data) using color and size</h2>
-<p>To illustrate some other cool ways to convey information graphically in R, let’s turn to the “mtcars” dataset (which comes with base R):</p>
-<pre class="r"><code>## Diplaying gradients (continuous data) using color and size
-
- # ?mtcars
-
-head(mtcars)</code></pre>
-<p>First, let’s plot fuel economy (mpg) as a function of vehicle weight:</p>
-<pre class="r"><code>## Plot fuel economy by weight
-
-plot(mpg~wt,  data=mtcars,pch=20,xlab=&quot;Vehicle weight (1000 lbs)&quot;,ylab=&quot;Fuel economy (mpg)&quot;)      # note the tilde, which can be read &quot;as a function of&quot; -- i.e., &quot;plot mpg as a function of wt&quot;   </code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>Now what if we want to look at another factor that might influence fuel economy: gross horsepower. We might imagine that cars with greater horsepower within a weight class will tend to have lower fuel economy. One way to do this is to use the size of the dots to indicate horsepower…</p>
-<pre class="r"><code>## Plot fuel economy by weight and horsepower
-
-hp_rescale &lt;- (mtcars$hp-min(mtcars$hp))/diff(range(mtcars$hp))    # scale from 0 to 1
-
-plot(mpg~wt,  data=mtcars,pch=1,xlab=&quot;Vehicle weight (1000 lbs)&quot;,ylab=&quot;Fuel economy (mpg)&quot;,cex=(hp_rescale+0.6)*1.2)   # plot with different sized points
-
-legend(&quot;topright&quot;,pch=c(1,1),pt.cex=c(0.6,0.6*1.2),legend=paste(range(mtcars$hp),&quot;horsepower&quot;),bty=&quot;n&quot;)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-</div>
-<div id="bar-plots" class="section level2">
-<h2>Bar Plots</h2>
-<pre class="r"><code>## calculate the mean Sepal Length of for each species
-bar.heights &lt;- tapply(iris$Sepal.Length, iris$Species, mean)   #use &quot;tapply()&quot; function, which summarizes a numeric variable by levels of a categorical variable)
-
-# The basic &#39;barplot()&#39; function
-barplot(bar.heights)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-</div>
-<div id="error-bars" class="section level2">
-<h2>Error bars</h2>
-<p>Error bars can be added to scatter plots in a similar way. We’ll plot error bars representing 2 standard deviations from the mean. The object that you called your barplot (<code>b</code>) is interpreted by R as the x values in the middle of each bar <code>b</code> (which are very hard to guess!).</p>
-<p>We’ll use the <code>arrows()</code> function to add arrows to an existing plot. With some modifications, our arrows will have an arrowhead at each end (<code>code=3</code>), and the ‘arrowhead’ will actually be perpendicular to the arrow shaft (<code>angle=90</code>)</p>
-<pre class="r"><code>CI &lt;- 2 * tapply(iris$Sepal.Length, iris$Species, sd)
-lwr &lt;- bar.heights - CI
-upr &lt;- bar.heights + CI
-
-# I used the ylim= argument to pass a 2-element numeric vector specifying the y extent of the barplot (y axis lower and upper bounds). I added some extra room on the top to account for error bars.
-# Importantly, assign the barplot to an object. I called it &#39;b&#39; but you can call it whatever you like. (otherwise, it&#39;s hard to know what the &quot;X&quot; values of the error bars are!)
-
-b &lt;- barplot(bar.heights, 
-             names.arg=c(&quot;I. setosa&quot;, &quot;I. versicolor&quot;, &quot;I. virginica&quot;), 
-             las=1, ylim=c(0,8), col=adjustcolor(plot.colors, alpha.f=0.5),
-             main=&quot;Sepal length for 3 Irises&quot;, ylab=&quot;Sepal length (cm)&quot;)
-
-# Specify where each arrow starts (x0= and y0=) and ends (x1= and y1=)
-arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<pre class="r"><code># ?arrows</code></pre>
-</div>
-<div id="pairs-plots" class="section level2">
-<h2>Pairs Plots</h2>
-<p>The <code>pairs()</code> function allows for quick investigation into relationships between variables. Be careful if your data set is large (e.g., lots of columns), as this can be a slow function.</p>
-<pre class="r"><code>pairs(iris)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-</div>
-<div id="challenge-yourself-by-recreating-the-following-plots" class="section level2">
-<h2>Challenge Yourself by recreating the following plots:</h2>
-<p>Feel free to work in groups!</p>
-<div id="using-colors" class="section level3">
-<h3>Using colors</h3>
-<p>Using the <code>ToothGrowth</code> dataset built into <code>R</code>, plot the tooth length (the <code>len</code> variable) as a function of the vitamin C dosage (the <code>dose</code> variable). Use a different color for each method of administering the vitamin C (the <code>supp</code> variable). Try and re-create the plot below:</p>
+<p>And for a slightly more complex example, let’s consider the built in
+<code>ToothGrowth</code> data set, which looks at tooth growth in guinea
+pigs under three different vitamin C doses and two different delivery
+methods (orange juice or ascorbic acid).</p>
 <pre class="r"><code># ?ToothGrowth
 head(ToothGrowth)</code></pre>
 <pre><code>##    len supp dose
@@ -724,290 +694,440 @@ head(ToothGrowth)</code></pre>
 ## 4  5.8   VC  0.5
 ## 5  6.4   VC  0.5
 ## 6 10.0   VC  0.5</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<pre class="r"><code># toothgrowth plot -------------------
+
+
+ToothGrowth$dose &lt;- as.factor(ToothGrowth$dose)
+
+sumTC &lt;- ToothGrowth %&gt;% 
+  group_by(supp,dose) %&gt;% 
+  summarize(mean = mean(len),
+            sd = sd(len))
+
+
+p&lt;- ggplot(sumTC, aes(x=dose, y=mean, fill=supp)) + 
+  geom_col(color=&quot;black&quot;, 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.2,
+                 position=position_dodge(0.9)) +
+  labs(title=&quot;Tooth growth&quot;, x=&quot;Dose (mg)&quot;, y = &quot;Length&quot;) +
+   theme_classic() +
+   scale_fill_manual(values=c(&#39;#999999&#39;,&#39;#E69F00&#39;))
+
+print(p)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
-<div id="bar-plots-challenge" class="section level3">
-<h3>Bar Plots Challenge</h3>
-<p>The following data represent survival of plant seedlings in 4 different treatments: ambient, watered, heated + watered, and heated. Make a bar plot with their 95% confidence intervals. Note these are asymmetric (more uncertainty above the mean than below), like what might come from a logistic regression model. Try and re-create the plot below:</p>
-<pre class="r"><code>prop &lt;- c(0.18, 0.25, 0.13, 0.05)
-asympLCL &lt;- c(0.14, 0.20, 0.11, 0.035)
-asympUCL &lt;- c(0.24, 0.33, 0.18, 0.09)</code></pre>
-<p><img src="plantsurv1.png" /></p>
+<div id="practice-demo-with-some-new-stuff" class="section level2">
+<h2>Practice demo (with some new stuff)</h2>
+<p>, let’s use the Soils dataset from the ‘carData’ package, which
+contains soil attributes from a gilgai landscape (depressions caused by
+shrinking and swelling of clays during dry and wet seasons) in
+Australia.</p>
+<p>First we will need to load a few more packages. Make sure to install
+any packages in this list you don’t already have!</p>
+<pre class="r"><code># More complex example -----------------------------
+
+library(ggthemes)
+library(carData)
+library(DAAG)
+library(RColorBrewer)</code></pre>
+<p>Now load the dataset.</p>
+<pre class="r"><code># Load the example data -----------------------
+
+soil &lt;- carData::Soils    # load example data
+
+#See what variables it contains...
+head(soil)    # plot out the first few lines...</code></pre>
+<pre><code>##   Group Contour Depth Gp Block   pH     N Dens   P    Ca   Mg    K   Na Conduc
+## 1     1     Top  0-10 T0     1 5.40 0.188 0.92 215 16.35 7.65 0.72 1.14   1.09
+## 2     1     Top  0-10 T0     2 5.65 0.165 1.04 208 12.25 5.15 0.71 0.94   1.35
+## 3     1     Top  0-10 T0     3 5.14 0.260 0.95 300 13.02 5.68 0.68 0.60   1.41
+## 4     1     Top  0-10 T0     4 5.14 0.169 1.10 248 11.92 7.88 1.09 1.01   1.64
+## 5     2     Top 10-30 T1     1 5.14 0.164 1.12 174 14.17 8.12 0.70 2.17   1.85
+## 6     2     Top 10-30 T1     2 5.10 0.094 1.22 129  8.55 6.92 0.81 2.67   3.18</code></pre>
+<p>Staring simply, let’s say we’re interested in how pH, a continuous
+variable, varies with contour position, a categorical factor. See if you
+can reproduce one or both of the following plots:</p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Next let’s try a simple scatterplot of two continuous variables,
+Calcium content and pH. Try to reproduce the following plot:</p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Now let’s say you wanted to examine if/how the relationship between
+pH and Ca varies with depth. You could go back to your scatterplot and
+use color to identify points from the different sampling depths.
+Reproduce this plot if you can!</p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Try playing around with applying a few graphical attributes to all
+the points (specified outside the <code>aes()</code> argument). Try
+specifying <code>shape=21</code>, <code>color="black"</code> ,
+<code>size=3</code> and <code>stroke=1</code>:</p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Now for something new: let’s plot relationships between pH and
+several soil nutrients on the same graph. Notice that the y axis label
+defaults to the first set of points (Ca), and we’d need to modify it.
+Also there is no legend! You’d have to change things like axis labels
+and legend titles ‘manually’ to complete this figure.</p>
+<pre class="r"><code>######
+# Plot several relationships on same graphics window
+
+ggplot(soil, aes(x=pH)) +
+  geom_point(aes(y=Ca), shape=21, fill=&quot;red&quot;, color=&quot;black&quot;, size=4, stroke=1.5) +
+  geom_point(aes(y=Mg), shape=21, fill=&quot;blue&quot;, color=&quot;black&quot;, size=4, stroke=1.5) +
+  geom_point(aes(y=Na), shape=21, fill=&quot;gray30&quot;, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>There’s a better way to do it. But first we need to ‘reshape’ our
+soils data with the tidyverse function `pivot_longer().</p>
+<div id="aside-tidy-data-and-reshaping-functions"
+class="section level3">
+<h3>ASIDE: tidy data and reshaping functions</h3>
+<p>All of the tidyverse set of packages are designed to work with
+<em>Tidy</em> formatted data.</p>
+<p>This means:</p>
+<ul>
+<li>Each variable must have its own column.</li>
+<li>Each observation must have its own row.</li>
+<li>Each value must have its own cell.</li>
+</ul>
+<p>This is what it looks like:</p>
+<p><img src="tidy-1.png" /></p>
+<p>The <em>tidyr</em> package has several functions to help you get your
+data into this format.</p>
+<p>Use “pivot_longer()” to get all of the values and variables from
+multiple columns into a single column.</p>
+<p><img src="tidy-9.png" /></p>
+<p>Use “pivot_wider()” to distribute two variables in a single column
+into separate columns, with their data values(‘value’)</p>
+<p><img src="tidy-8.png" /></p>
+<p>For a nice intro to ‘pivot_wider’ and ‘pivot_longer’, see <a
+href="https://tidyr.tidyverse.org/articles/pivot.html">this link</a></p>
 </div>
-<div id="scatterplot-challenge-error-bars" class="section level3">
-<h3>Scatterplot Challenge Error Bars</h3>
-<p>The randomly generated data below are measurements of the number of the number of angels who get their wings as a function of the number of bells that have been rung. There is some uncertainty in measuring wing acquisition (represented as the offset from the sampled mean). How would you add error bars to a scatter plot? See if you can re-create the plot below:</p>
-<pre class="r"><code>set.seed(13)
-n &lt;- 20 # Number of experimental trials
-a &lt;- 12
-b &lt;- 1.5
+<div id="back-to-the-example" class="section level3">
+<h3>Back to the example…</h3>
+<p>Let’s reshape the soil dataset into the long format- which in this
+case treats each separate nutrient measurement as a different
+observation (row).</p>
+<pre class="r"><code># Use &#39;tidyverse&#39; to reshape the data  ---------------
 
-rings &lt;- round(runif(n)*50)  # number of bell rings
-wings &lt;- round(a + b*rings + rnorm(n, sd=5))       # number of angels who get their wings
-offset &lt;- rpois(n, lambda=10)           # measurement error
-lwr &lt;- wings - offset                 
-upr &lt;- wings + offset</code></pre>
-<p><img src="ringswings1.png" /></p>
+soil.nut &lt;- pivot_longer(soil, cols=c(&quot;Ca&quot;,&quot;Mg&quot;,&quot;Na&quot;), names_to=&quot;nutrient&quot;,values_to = &quot;value&quot; )
+soil.nut</code></pre>
+<pre><code>## # A tibble: 144 × 13
+##    Group Contour Depth Gp    Block    pH     N  Dens     P     K Conduc nutrient
+##    &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   
+##  1 1     Top     0-10  T0    1      5.4  0.188  0.92   215  0.72   1.09 Ca      
+##  2 1     Top     0-10  T0    1      5.4  0.188  0.92   215  0.72   1.09 Mg      
+##  3 1     Top     0-10  T0    1      5.4  0.188  0.92   215  0.72   1.09 Na      
+##  4 1     Top     0-10  T0    2      5.65 0.165  1.04   208  0.71   1.35 Ca      
+##  5 1     Top     0-10  T0    2      5.65 0.165  1.04   208  0.71   1.35 Mg      
+##  6 1     Top     0-10  T0    2      5.65 0.165  1.04   208  0.71   1.35 Na      
+##  7 1     Top     0-10  T0    3      5.14 0.26   0.95   300  0.68   1.41 Ca      
+##  8 1     Top     0-10  T0    3      5.14 0.26   0.95   300  0.68   1.41 Mg      
+##  9 1     Top     0-10  T0    3      5.14 0.26   0.95   300  0.68   1.41 Na      
+## 10 1     Top     0-10  T0    4      5.14 0.169  1.1    248  1.09   1.64 Ca      
+## # … with 134 more rows, and 1 more variable: value &lt;dbl&gt;
+## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
+<p>This lets us plot our different nutrients as factor levels without
+typing each one with its specifications on its own line, and generates a
+legend that identifies the series (and also gives the default ggplot
+colors).</p>
+<pre class="r"><code>ggplot(soil.nut) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>What if instead of Na, we had K as our third nutrient of
+interest?</p>
+<pre class="r"><code>######
+# or if we wanted to plot different nutrients...
+
+soil.nut2 &lt;- pivot_longer(soil, cols=c(&quot;Ca&quot;,&quot;Mg&quot;,&quot;K&quot;), names_to=&quot;nutrient&quot;,values_to = &quot;value&quot; )
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>The problem here is that K occurs at natural concentrations that
+differ from the other nutrients by an order of magnitude, so it’s
+difficult to examine them all on the same scale. One approach we can
+take is to plot them separately. While we’re at it, let’s also make sure
+that we specify the response units on the y-axis.</p>
 </div>
-</div>
-<div id="statistics-in-r" class="section level2">
-<h2>Statistics in R!</h2>
-<p>This workshop is NOT an intro to statistics!</p>
-<p>But, R is an environment developed for statistical computing, so let’s run some basic statistics in R!</p>
-<div id="load-data" class="section level3">
-<h3>Load data</h3>
-<p>First, download the sculpin eggs data <a href="sculpineggs.csv">here</a> and save this to your working directory.</p>
-<pre class="r"><code>####################
-# STATISTICS!
-####################
-
-#####
-#####  Load Data
-#####
-
-sculpin.df &lt;- read.csv(&quot;sculpineggs.csv&quot;)
-
-head(sculpin.df)</code></pre>
-<pre><code>##   FEMWT NUMEGGS
-## 1    14      61
-## 2    17      37
-## 3    24      65
-## 4    25      69
-## 5    27      54
-## 6    33      93</code></pre>
-</div>
-<div id="summary-statistics" class="section level3">
-<h3>Summary statistics</h3>
-<p>Let’s start by generating summary statistics, some of which are the same ones that are displayed by the “summary()” function. Most of the function names are pretty intuitive, like mean() and median():</p>
-<pre class="r"><code>#####
-#####  Summary Statistics
-#####
-
-mean(sculpin.df$NUMEGGS)      # compute sample mean</code></pre>
-<pre><code>## [1] 76.54545</code></pre>
-<pre class="r"><code>median(sculpin.df$NUMEGGS)    # compute sample median</code></pre>
-<pre><code>## [1] 87</code></pre>
-<pre class="r"><code>min(sculpin.df$NUMEGGS)       # sample minimum</code></pre>
-<pre><code>## [1] 37</code></pre>
-<pre class="r"><code>max(sculpin.df$NUMEGGS)       # sample maximum</code></pre>
-<pre><code>## [1] 100</code></pre>
-<pre class="r"><code>range(sculpin.df$NUMEGGS)     # both min and max.</code></pre>
-<pre><code>## [1]  37 100</code></pre>
-<pre class="r"><code>quantile(sculpin.df$NUMEGGS,0.5)            # compute sample median using quantile function</code></pre>
-<pre><code>## 50% 
-##  87</code></pre>
-<pre class="r"><code>quantile(sculpin.df$NUMEGGS,c(0.25,0.75))   # compute sample quartiles</code></pre>
-<pre><code>##  25%  75% 
-## 63.0 91.5</code></pre>
-<pre class="r"><code>var(sculpin.df$NUMEGGS)           # sample variance</code></pre>
-<pre><code>## [1] 418.8727</code></pre>
-<pre class="r"><code>sd(sculpin.df$NUMEGGS)            # sample standard deviation</code></pre>
-<pre><code>## [1] 20.46638</code></pre>
-<pre class="r"><code>sd(sculpin.df$NUMEGGS)^2          # another way to compute variance</code></pre>
-<pre><code>## [1] 418.8727</code></pre>
-<pre class="r"><code>var(sculpin.df$NUMEGGS)^0.5       # another way to compute std. dev.</code></pre>
-<pre><code>## [1] 20.46638</code></pre>
-<pre class="r"><code>colMeans(sculpin.df)           # column mean of data frame</code></pre>
-<pre><code>##    FEMWT  NUMEGGS 
-## 30.36364 76.54545</code></pre>
-<pre class="r"><code>apply(sculpin.df,2,mean)       # column mean of data frame   # note the use of the &quot;apply()&quot; function. </code></pre>
-<pre><code>##    FEMWT  NUMEGGS 
-## 30.36364 76.54545</code></pre>
-<pre class="r"><code>apply(sculpin.df,2,median)     # column median of data frame</code></pre>
-<pre><code>##   FEMWT NUMEGGS 
-##      33      87</code></pre>
-<pre class="r"><code>########
-# Or just use the &quot;summary()&quot; function!
-
-summary(sculpin.df) # provides a set of summary statistics for all columns in a data frame. </code></pre>
-<pre><code>##      FEMWT          NUMEGGS      
-##  Min.   :14.00   Min.   : 37.00  
-##  1st Qu.:24.50   1st Qu.: 63.00  
-##  Median :33.00   Median : 87.00  
-##  Mean   :30.36   Mean   : 76.55  
-##  3rd Qu.:38.50   3rd Qu.: 91.50  
-##  Max.   :42.00   Max.   :100.00</code></pre>
-<p>If your data have missing values (coded as ‘NA’ in R), some statistical functions won’t work properly unless you specify an “na.rm=TRUE” argument (click <a href="data_missing.txt">here</a> if you don’t already have the test dataset with missing values):</p>
-<pre class="r"><code>###########
-# Deal with missing data
-
-newdf &lt;- read.table(file=&quot;data_missing.txt&quot;, sep=&quot;\t&quot;, header=T)  # load dataset with missing data
-
-mean(newdf$Export)</code></pre>
-<pre><code>## [1] NA</code></pre>
-<pre class="r"><code>mean(newdf$Export,na.rm = TRUE)</code></pre>
-<pre><code>## [1] 10.22222</code></pre>
-</div>
-<div id="visual-exploration" class="section level3">
-<h3>Visual exploration</h3>
-<p>Plots (see beginning of module) take data exploration to the next level- we can start to discern patterns and identify outliers visually, giving us cues for further analyses we might want to perform.</p>
-<pre class="r"><code>#####
-#####  Plot data 
-#####
-
-hist(sculpin.df$NUMEGGS)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-<pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
-</div>
-<div id="linear-regression" class="section level3">
-<h3>Linear Regression</h3>
-<p>The plot above suggests a fairly strong relationship between sculpin weight (“FEMWT”) and number of eggs (“NUMEGGS”). Let’s try to model this relationship!</p>
-<p>Note the use of the generic “summary()” function below, which returns something very different when the input object is a linear model vs. when the input object is a data frame!</p>
-<p>Also note the use of the “predict()” function, which not only allows you to use the model to make predictions, but also reports the uncertainty bounds on these predictions (via confidence or prediction intervals).</p>
-<pre class="r"><code>#####
-#####  Linear Regression  
-#####
-
-m1 &lt;- lm(NUMEGGS ~ FEMWT, data=sculpin.df)      # fit linear regression model
-
-m1                                      # view estimates of intercept and slope </code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = NUMEGGS ~ FEMWT, data = sculpin.df)
-## 
-## Coefficients:
-## (Intercept)        FEMWT  
-##       19.77         1.87</code></pre>
-<pre class="r"><code>summary(m1)                             # view summary of fit</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = NUMEGGS ~ FEMWT, data = sculpin.df)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -16.2556  -3.8700   0.3543   4.5448  15.0538 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  19.7668    10.5497   1.874 0.093747 .  
-## FEMWT         1.8700     0.3325   5.624 0.000324 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 10.15 on 9 degrees of freedom
-## Multiple R-squared:  0.7785, Adjusted R-squared:  0.7539 
-## F-statistic: 31.63 on 1 and 9 DF,  p-value: 0.0003242</code></pre>
-<pre class="r"><code>summary(m1)$r.squared                   # extract R-squared</code></pre>
-<pre><code>## [1] 0.7784851</code></pre>
-<pre class="r"><code>confint(m1)                             # confidence intervals for intercept and slope</code></pre>
-<pre><code>##                 2.5 %    97.5 %
-## (Intercept) -4.098376 43.632008
-## FEMWT        1.117797  2.622113</code></pre>
-<pre class="r"><code>AIC(m1)                                 # report AIC (Akaike&#39;s Information Criterion, used to perform model selection) </code></pre>
-<pre><code>## [1] 86.00155</code></pre>
-<pre class="r"><code>plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
-abline(m1)                                           # plot line of best fit</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
-<pre class="r"><code>########
-# Use the &quot;predict()&quot; function!
-
-FEMWT.pred &lt;- data.frame(FEMWT = 30)                   # create new data frame to predict number of eggs at FEMWT of 30
-predict(m1,newdata=FEMWT.pred)                         # make prediction</code></pre>
-<pre><code>##        1 
-## 75.86547</code></pre>
-<pre class="r"><code>predict(m1,newdata=FEMWT.pred,interval=&quot;confidence&quot;)   # make prediction and get confidence interval</code></pre>
-<pre><code>##        fit      lwr      upr
-## 1 75.86547 68.93463 82.79631</code></pre>
-<pre class="r"><code>predict(m1,newdata=FEMWT.pred,interval=&quot;prediction&quot;)   # make prediction and get prediction interval</code></pre>
-<pre><code>##        fit      lwr      upr
-## 1 75.86547 51.87347 99.85748</code></pre>
-</div>
-<div id="model-selection-example" class="section level3">
-<h3>Model selection example</h3>
-<p>Sometimes we may be uncertain which model is “best”. In this case, we run a set of <strong>plausible models</strong> and compare these models using metrics of model fit and performance, like AIC or R-squared.</p>
-<p>Note the use of the “I()” within the formula specification (i.e., the “[response] ~ [predictors]” statement). Using “I()” causes R to interpret what’s inside the parentheses literally (“as is”), instead of using R’s formula shorthands. For instance, you might try running a linear model (“lm()”) in the following two ways and see how the results differ!</p>
-<p>Click <a href="http://faculty.washington.edu/jmiyamot/p448/hahnpr%20r%20formula%20notation.pdf">here</a> for more information on R’s formula notation.</p>
+<div id="facets-and-scales-and-themes" class="section level3">
+<h3>Facets and scales, and themes</h3>
+<p>The next plot introduces:</p>
+<ul>
+<li><p><strong>facets</strong>, which allow you to display data on
+separate panels using some grouping variable</p></li>
+<li><p><strong>scales</strong>, which allow you to adjust how to
+represent the data with axes and colors</p></li>
+</ul>
+<p>We also play around with some more ggplot <em>themes</em>.</p>
 <pre class="r"><code>##########
-#  Explore the use of the &quot;I()&quot; syntax to interpret mathematical expressions literally (as is) within formulas. 
+# plot with facets, scales, and themes!
 
-mod_noI &lt;- lm(NUMEGGS ~ FEMWT^2, data=sculpin.df)                  # fit linear regression model. But the &quot;^2&quot; doesn&#39;t seem to do anything here? What happened?
-summary(mod_noI)
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales=&quot;free_y&quot;) +
+  labs(y=&quot;mg / 100 g soil&quot;) +
+  theme_bw() +
+  theme(legend.position=&quot;none&quot;,
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face=&quot;bold&quot;))</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="768" /></p>
+<p>In this plot, we’ve kept the different colors for each nutrient, but
+suppressed the legend that is auto-generated by ggplot, because this
+information is now redundant with the headers of the three facets. In
+the <strong><code>facet_wrap</code></strong> function, we used
+<strong><code>scales</code></strong> to specify that the y-axis should
+be bounded to fit the data within each facet. There are some cases where
+you would probably want the axes to be the same – e.g. if you were
+comparing raw values across groups, rather than the distributions or
+trends of the data.</p>
+<p>We also changed the theme. ggplot has <a
+href="http://r4ds.had.co.nz/images/visualization-themes.png">8 built-in
+themes</a> to choose from. There are also lots of other themes built
+into extension packages such as ggthemes.</p>
+<p>You can also fine-tune pretty much any of the details (gridlines or
+no? plot borders? line weight of the borders and gridlines? axis label
+angles?) to your heart’s content using the arguments in the
+<strong><code>theme()</code></strong> function.</p>
+</div>
+<div id="aside-specifying-colors" class="section level3">
+<h3>ASIDE: Specifying colors</h3>
+<p>Sometimes sticking to the default colors in ggplot isn’t the best
+choice. You might have factors representing ordered ranks, like in an
+experiment with different levels of light exposure, and want to
+represent these levels on a monochromatic scale. Or you might want to
+make a map displaying regions of positive or negative change in forest
+cover, using a diverging color scale. Or you don’t even like the default
+ggplot colors, and have your own preferred color schemes. It’s also
+important to remember that red-green colorblindness is fairly common, so
+if you are presenting data that must be distinguished by colors in a
+single plotting area, you should probably avoid this combination or
+combine it with changes in value (light to dark) in order for your plot
+to be accessible.</p>
+<p>Going back to our earlier example showing Ca content by pH at
+different depths, let’s say we want a color scheme where deeper depths
+are represented by darker values of the same color. We can do this by
+using another scale function.</p>
+<p>One method is to use <strong><code>scale_fill_brewer</code></strong>,
+and select an already composed color palette from RColorBrewer (a
+package you’ll need to install). You can check out all of the options
+available in RColorBrewer by entering
+<strong><code>display.brewer.all()</code></strong>, which shows the
+sequential palettes, then categorical palettes, than diverging
+palettes.</p>
+<pre class="r"><code>############
+# Playing with colors in ggplot!
 
-mod_withI &lt;- lm(NUMEGGS ~ I(FEMWT^2), data=sculpin.df)                  # fit linear regression model
-summary(mod_withI)</code></pre>
-<p>Below we perform AIC model selection and also visualize the differences between these alternative linear models.</p>
-<p>A flexible method for visualizing the fit of alternative linear models involves overlaying predictions from each model (using the “predict()” function) on a basic scatterplot:</p>
-<pre class="r"><code>##################################
-####  Model selection example ####
-##################################
-
-## Try to work through these examples and make sure you understand them before moving on to the challenge exercises.
-
-m1 &lt;- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
-summary(m1)
-
-m2 &lt;- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (mean model)
-summary(m2)
-
-m3 &lt;- lm(NUMEGGS ~ I(FEMWT^0.5), data=sculpin.df)           # fit linear regression with intercept and sqrt of FEMWT term
-summary(m3)</code></pre>
-<pre class="r"><code>plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
-abline(m1,col=&quot;black&quot;)                                     # plot line of best fit
-abline(m2,col=&quot;red&quot;)                                       # plot intercept only model
-
-#########
-#  Here&#39;s a flexible method for drawing any arbitrary non-linear relationship!
-FEMWT.pred &lt;- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
-NUMEGGS.pred &lt;- predict(m3,newdata=FEMWT.pred)             # make prediction using &quot;predict()&quot; function
-lines(FEMWT.pred$FEMWT,NUMEGGS.pred,col=&quot;green&quot;)  # plot sqrt model (note the use of the &quot;lines()&quot; function to draw a line!)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
-<pre class="r"><code>########
-# Perform model selection!
-
-
-#Compare models using AIC
-AIC(m1)</code></pre>
-<pre><code>## [1] 86.00155</code></pre>
-<pre class="r"><code>AIC(m2)</code></pre>
-<pre><code>## [1] 100.5815</code></pre>
-<pre class="r"><code>AIC(m3)</code></pre>
-<pre><code>## [1] 86.87398</code></pre>
-<pre class="r"><code>#Compare models using R-squared
-summary(m1)$r.squared </code></pre>
-<pre><code>## [1] 0.7784851</code></pre>
-<pre class="r"><code>summary(m2)$r.squared </code></pre>
-<pre><code>## [1] 0</code></pre>
-<pre class="r"><code>summary(m3)$r.squared </code></pre>
-<pre><code>## [1] 0.7602009</code></pre>
+display.brewer.all()</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="576" /></p>
+<p>I’m going to pick the YlOrBr (Yellow-Orange-Brown) palette, because
+those seem like good soil-y colors. Notice that because
+<strong><code>fill</code></strong> is mapped to the values of the data,
+inside this function is where I can change the title of the legend (and
+the labels for the different values, if I wanted to do that).</p>
 <pre class="r"><code>#########
-#  And finally, here&#39;s how you can draw a confidence interval or prediction interval around a regression relationship!
+# Choose a new color palette from the RColorBrewer package
 
-plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
-NUMEGGS.confint &lt;- predict(m3,newdata=FEMWT.pred,interval=&quot;prediction&quot;)             # use &quot;predict()&quot; function to compute the prediction interval!
-points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;fit&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lwd=2)  # plot fitted sqrt model
-points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;lwr&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lty=2)  # plot fitted sqrt model
-points(FEMWT.pred$FEMWT,NUMEGGS.confint[,&quot;upr&quot;],col=&quot;green&quot;,typ=&quot;l&quot;,lty=2)  # plot fitted sqrt model</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-33-2.png" width="672" /></p>
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
+  theme_classic() +
+  labs(y=&quot;Ca (mg/100g soil)&quot;) +
+  scale_fill_brewer(palette=&quot;YlOrBr&quot;, name=&quot;Depth (cm)&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>Another method is to use
+<strong><code>scale_fill_manual</code></strong>, with which you define
+your own palette. To pick out your colors, you can use the <a
+href="&#39;http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">names
+of colors</a> already recognized by R, or use <a
+href="https://htmlcolorcodes.com/">hex codes</a> for any color you
+want.</p>
+<pre class="r"><code>#########
+# Choose your own palette!
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
+  theme_bw() +
+  ylab(&quot;Ca (mg/100g soil)&quot;) +
+  scale_fill_manual(values=c(&quot;#FFF0BF&quot;,&quot;#FFC300&quot;,&quot;#BF9200&quot;,&quot;#604900&quot;), name=&quot;Depth (cm)&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>What if depth were a continuous variable, rather than a set of four
+discrete categories? We could use
+<strong><code>scale_fill_gradient</code></strong>, supply the hues we
+want (one for monochromatic, two for diverging) and R would map the soil
+depth values to color values along the gradient.</p>
+<div id="trendlines" class="section level4">
+<h4>Trendlines</h4>
+<p>Next, we might want to add a trendline to each set of points. Try it
+for the plot we made of different nutrient concentrations as a function
+of pH. Arguments in the <strong><code>geom_smooth()</code></strong>
+function allow us to change the confidence level, the smoothing method,
+and other details. Try to reproduce the following figure using
+geom_smooth with <code>method="lm"</code>.</p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-26-1.png" width="768" /></p>
 </div>
-<div id="statistics-challenge-exercises" class="section level3">
-<h3>Statistics challenge exercises</h3>
-<p>1: Fit a linear regression model with NUMEGGS as the response and some other transformation of FEMWT (e.g., lm(NUMEGGS ~ I(FEMWT^3))) as the predictor.</p>
-<p>2: Plot the data and the curve of best fit from #1. How does the model fit the data?</p>
-<p>3: Fit a linear regression model with NUMEGGS as the response and with both a linear and quadratic effect of FEMWT (within the same formula).</p>
-<p>4: Plot the data and the curve of best fit from #1 and #3. Compare the two models. Can you identify a “best model”? If so, which one?</p>
-<p>5: Predict the number of eggs (along with prediction interval) for FEMWT=15 using the models you fit in #1 and #3.</p>
-<p>How do the predictions compare?</p>
-<p><a href="module2_1.html">–go to next module–</a></p>
+</div>
+<div id="density-curves-and-error-bars" class="section level3">
+<h3>Density curves and error bars</h3>
+<p>Using <strong><code>geom_smooth</code></strong> to plot trendlines is
+a useful way to get more information from your scatterplots. To get an
+idea for how other kinds of statistical elements can be drawn onto
+plots, we’ll look at examples using histograms and boxplots.</p>
+<p>First, a simple histogram of 3 soil nutrients.</p>
+<pre class="r"><code>###########
+# Adding density/smooth curves to plots
+
+   ## first produce some histograms
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value), color=&quot;black&quot;, fill=&quot;white&quot;, bins=15) +
+  facet_wrap(~nutrient, scales=&quot;free&quot;) +
+  xlab(&quot;mg / 100g soil&quot;) +
+  theme_classic() +
+  theme(axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face=&quot;bold&quot;))</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-27-1.png" width="768" /></p>
+<p>Here is how to add a density curve to the histogram with another
+<strong><code>geom</code></strong>:</p>
+<pre class="r"><code>########
+# Then add density curves
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color=&quot;black&quot;, fill=&quot;white&quot;, bins=15) +
+  geom_density(aes(x=value,color=nutrient), size=1.5) +
+  facet_wrap(~nutrient, scales=&quot;free&quot;) +
+  xlab(&quot;mg / 100g soil&quot;) +
+  theme_classic() +
+  theme(legend.position=&quot;none&quot;,
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face=&quot;bold&quot;))</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-28-1.png" width="768" /></p>
+<p>And here’s how we can compare our distributions to a normal
+distribution, using a <strong><code>stat</code></strong> function:</p>
+<pre class="r"><code>###########
+# And now let&#39;s use a statistical function (dnorm) in ggplot to compare with a normal distribution:
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color=&quot;black&quot;, fill=&quot;white&quot;, bins=15) +
+  stat_function(fun = dnorm, color = &quot;blue&quot;, size = 1.5,
+                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
+  facet_wrap(~nutrient, scales=&quot;free&quot;) +
+  xlab(&quot;mg / 100g soil&quot;) +
+  theme_classic() +
+  theme(legend.position=&quot;none&quot;,
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face=&quot;bold&quot;))</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-29-1.png" width="768" /></p>
+<p>Let’s go back to our basic boxplot, the default plot for visualizing
+continuous data against categories.</p>
+<p>First, you may have noticed that the whiskers do not have caps on
+them, as they do in base R. This is a matter of <del>principle</del>
+personal preference, but if capless whiskers look “off” to you, then you
+can work around it using <strong><code>stat_boxplot</code></strong>.
+<strong><code>stat_</code></strong> functions are another group of
+functions for creating layers based on statistical properties of the
+data. Another example is <strong><code>stat_summary</code></strong>,
+which we use in the example below to add means to the boxplot.</p>
+<pre class="r"><code>#######
+# add error bars and other stat summaries (e.g., mean) to boxplot
+
+ggplot(soil, aes(x=Contour, y=pH)) +
+  stat_boxplot(geom=&quot;errorbar&quot;, width=0.2) +  
+  stat_boxplot() +
+  stat_summary(fun=mean,geom=&quot;point&quot;,size=5, color=&quot;black&quot;)</code></pre>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-30-1.png" width="672" />
+Interestingly, there is generally a way to add just about any graphical
+element using either “stat_” or “geom_” functions. It’s a good idea to
+play around with both!</p>
 </div>
 </div>
-<div id="extra-histograms" class="section level2">
-<h2>Extra: Histograms</h2>
-<p>We can also use histograms to explore our data.</p>
-<pre class="r"><code>layout(matrix(1:2, 1, 2))
+<div id="beyond-ggplot" class="section level2">
+<h2>Beyond ggplot</h2>
+<p>ggplot contains an incredibly rich and powerful set of tools for
+visualizing data. But ggplot and base R are not your only options! A
+variety of packages exist for visualization, including:</p>
+<div id="ggplot-extensions" class="section level3">
+<h3>ggplot extensions</h3>
+<p>Several packages have been created that build off of ggplot’s syntax
+with additional functions. You can find a list of them <a
+href="https://exts.ggplot2.tidyverse.org/gallery/">here</a>.</p>
+</div>
+<div id="technique-specific-plotting-libraries" class="section level3">
+<h3>Technique-specific plotting libraries</h3>
+<p>Several analytical packages come with their own plotting functions
+that produce some very nice visualizations. There are dozens out there,
+but a few of them are <a
+href="https://cran.r-project.org/web/packages/visreg/visreg.pdf">visreg</a>
+for regression plots, <a
+href="https://cran.r-project.org/web/packages/corrplot/index.html">corrplot</a>
+(and its ggplot counterpart, <a
+href="http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2">ggcorrplot</a>)
+for graphical presentation of correlation matrices, and <a
+href="https://cran.r-project.org/web/packages/rpart.plot/index.html">rpart.plot</a>
+as a companion to the decision tree package rpart.</p>
+<div id="interactive-plots-leaflet-and-plotly" class="section level5">
+<h5>Interactive plots: leaflet and plotly</h5>
+<p>Increasingly, scientific journals are providing platforms for
+interactive graphics on their websites to accompany published articles.
+Interactive plots are also popular for personal, lab, and organizational
+websites, and they can provide another option for your own data
+exploration. Two of the most popular in R are <a
+href="https://plot.ly/r/">plotly</a>, which offers a huge variety of 2D
+and 3D plots, and <a
+href="https://rstudio.github.io/leaflet/">leaflet</a>, which is
+specifically for mapping.</p>
+<p>Here’s a quick and simple example of leaflet in action using the
+“possumsites” dataframe that accompanies the “possum” dataset in the
+DAAG package. The dataset contains body measurements of several possums
+in Australia. Where did they catch these possums?</p>
+<pre class="r"><code>##########
+# use leaflet for interactive mapping!
 
-## y-axis is in counts by default (total observations in each &quot;bin&quot;)
-hist(iris$Sepal.Length, main=&quot;Histogram of Sepal Length&quot;,
-     xlab = &quot;Sepal Length&quot;)
-
-## change y-axis to proportions of the entire dataset using freq=FALSE
-hist(iris$Sepal.Length, freq=FALSE, main=&quot;Histogram of Sepal Length&quot;, 
-     xlab = &quot;Sepal Length&quot;)
-## Add a density estimator
-
-lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
-curve(dnorm(x,mean(iris$Sepal.Length),sd(iris$Sepal.Length)),add=T,col=&quot;red&quot;,lty=3)   # add a normal distribution</code></pre>
+leaflet(possumsites) %&gt;%
+  addTiles() %&gt;% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites</code></pre>
+</div>
+</div>
+</div>
+<div id="challenge-exercises" class="section level2">
+<h2>Challenge exercises</h2>
+<ol style="list-style-type: decimal">
+<li>Using our scatterplot of calcium by pH, in which points were colored
+according to which depth they represent, fit a separate trendline for
+each depth category. Have the color of the trendline match the color of
+each cloud of points. Remove the confidence band from the trendlines.
+The plot should look something like this:</li>
+</ol>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Create a boxplot that shows the values of Ca, Mg, and Na across all
+3 contour positions, with no faceting (all on one plot). Add a diamond
+symbol indicating the mean value across all 3 contour positions for each
+nutrient. The plot should look something like this:</li>
+</ol>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Plot the density curves of Ca, Mg, and Na atop each other with fixed
+y and x axes. Make them transparent in color (use
+<code>alpha=0.5</code>) in order to see overlapping areas. The plot
+should look like this (uses <code>theme_dark()</code>):</li>
+</ol>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<pre class="r"><code># CHALLENGE EXERCISES   -------------------------------------
+
+# 1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, 
+#     fit a separate trendline for each depth category. Have the color of the trendline match the color of each 
+#     cloud of points. Remove the confidence band from the trendlines. 
+#
+# 2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). 
+#     Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
+#
+# 3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color 
+#     (use `alpha=0.5`) in order to see overlapping areas.</code></pre>
+<p><a href="module1_4.html">–go to next submodule–</a></p>
 </div>
 
 

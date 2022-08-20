@@ -9,13 +9,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Basic programming in R" />
+<meta name="author" content="Data ‘wrangling’ in R" />
 
 
 <title>Module 1.4</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -64,6 +64,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -84,6 +85,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -309,12 +313,12 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, TWS-WS 2022</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2022</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -322,8 +326,8 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #1: getting started
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #1: getting started
      
     <span class="caret"></span>
   </a>
@@ -335,16 +339,16 @@ div.tocify {
       <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting in ggplot2</a>
     </li>
     <li>
-      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: data wrangling</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #2: Beyond the basics
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #2: beyond the basics
      
     <span class="caret"></span>
   </a>
@@ -353,13 +357,13 @@ div.tocify {
       <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Submodule 2.2: Using the 'tidyverse'</a>
+      <a href="module2_0.html">Submodule 2.2: Programming in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Plotting with 'ggplot'</a>
+      <a href="module2_2.html">Submodule 2.3: Stats in R</a>
     </li>
     <li>
-      <a href="module2_4.html">Submodule 2.4: Parallel computing in R</a>
+      <a href="module2_4.html">Submodule 2.4: GIS in R</a>
     </li>
     <li>
       <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
@@ -367,7 +371,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Data sets
      
     <span class="caret"></span>
@@ -424,721 +428,559 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Module 1.4</h1>
-<h4 class="author">Basic programming in R</h4>
-<h4 class="date">TWS-WS 2022</h4>
+<h4 class="author">Data ‘wrangling’ in R</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<p>NOTE: this module borrows heavily from an R short course developed by a team at Colorado State University.</p>
 <div id="load-script-for-module-1.4" class="section level2">
 <h2>Load script for module #1.4</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module1_4.R">here</a> to download the script! Save the script to your working directory (R Project directory).</p></li>
-<li><p>Load your script in your RStudio Project. To do this, open your RStudio Project and click on the folder icon in the toolbar at the top and load your script.</p></li>
+<li><p>Click <a href="module1_4.R">here</a> to download the script! Save
+the script to your working directory (R Project directory).</p></li>
+<li><p>Load your script in your RStudio Project. To do this, open your
+RStudio Project and click on the folder icon in the toolbar at the top
+and load your script.</p></li>
 </ol>
-<p>Let’s get started with basic programming in R!</p>
+<p>Let’s get started with some data wrangling!</p>
 </div>
-<div id="functions-in-r" class="section level2">
-<h2>Functions in R</h2>
-<p>Everything in R can be boiled down to this: data are expressed as <em>vectors</em>, and data objects are managed, manipulated, and visualized via <strong>functions</strong>. Functions are absolutely central!</p>
-<p>Let’s start with a blank workspace:</p>
-<pre class="r"><code>#######
-# Start with blank workspace
-
-rm(list=ls())</code></pre>
-<p>As we have seen, base R already includes lots of functions, and thousands more functions are available in packages that you can install (next module of this workshop). Nonetheless, it’s really useful to know how to write your own functions! For example, we might write our own function if we have to repeat certain sets of operations over and over in different contexts.</p>
-<p>We use the following syntax when we are writing our own functions:</p>
-<pre><code>
-my.function &lt;- function(input1,input2,...){         # function takes various arguments (inputs)
-    
-    ## [Algorithm goes here: Do something useful with the inputs]
-    
-    return(output)  # return some output
-}
-</code></pre>
-<div id="mean-function" class="section level3">
-<h3>‘Mean’ function</h3>
-<p>Let’s write a function to compute the mean of a vector. Okay fine, base R already has the “mean()” function, but let’s do it anyway!</p>
-<pre class="r"><code>## We can write our own functions. Useful if we have to repeat the same operations over and over with different inputs.
-my.mean &lt;- function(x){       # &#39;x&#39; is the function argument- &#39;x&#39; stands in for whatever numeric vector the user wants
-    m &lt;- sum(x)/length(x)
-    return(m)
-}
-
-foo &lt;- c(2, 4, 6, 8)
-my.mean(foo)</code></pre>
-<pre><code>## [1] 5</code></pre>
-</div>
-<div id="square-function" class="section level3">
-<h3>‘Square’ function</h3>
-<p>How about a function to square its arguments?</p>
-<pre class="r"><code>## A function to square the arguments.
-square &lt;- function(x){
-    x^2
-}
-
-## Square a single value (scalar).
-square(2)</code></pre>
-<pre><code>## [1] 4</code></pre>
-<pre class="r"><code>## Square all elements of a vector.
-square(1:10)</code></pre>
-<pre><code>##  [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
-</div>
-<div id="logit-function" class="section level3">
-<h3>‘Logit’ function</h3>
-<p>The logit operation (log-odds) is not included in the base R package. Let’s write it ourselves!</p>
-<pre class="r"><code>## Often, we need to write functions that are not included in the base R package e.g., the logit function.
-## Calculate the log-odds (logit).
-logit &lt;- function(x){
-    log(x/(1-x))
-}
-
-## Calculate logit of 0.9.
-logit(.9)</code></pre>
-<pre><code>## [1] 2.197225</code></pre>
-<pre class="r"><code>## Sequence between 0 and 1.
-x &lt;- seq(from = 0, to = 1, by = 0.01)
-
-## Caclulate the logit of a vector.
-logit.x &lt;- logit(x)
-logit.x</code></pre>
-<pre><code>##   [1]        -Inf -4.59511985 -3.89182030 -3.47609869 -3.17805383 -2.94443898
-##   [7] -2.75153531 -2.58668934 -2.44234704 -2.31363493 -2.19722458 -2.09074110
-##  [13] -1.99243016 -1.90095876 -1.81528997 -1.73460106 -1.65822808 -1.58562726
-##  [19] -1.51634749 -1.45001018 -1.38629436 -1.32492541 -1.26566637 -1.20831121
-##  [25] -1.15267951 -1.09861229 -1.04596856 -0.99462258 -0.94446161 -0.89538405
-##  [31] -0.84729786 -0.80011930 -0.75377180 -0.70818506 -0.66329422 -0.61903921
-##  [37] -0.57536414 -0.53221681 -0.48954823 -0.44731222 -0.40546511 -0.36396538
-##  [43] -0.32277339 -0.28185115 -0.24116206 -0.20067070 -0.16034265 -0.12014431
-##  [49] -0.08004271 -0.04000533  0.00000000  0.04000533  0.08004271  0.12014431
-##  [55]  0.16034265  0.20067070  0.24116206  0.28185115  0.32277339  0.36396538
-##  [61]  0.40546511  0.44731222  0.48954823  0.53221681  0.57536414  0.61903921
-##  [67]  0.66329422  0.70818506  0.75377180  0.80011930  0.84729786  0.89538405
-##  [73]  0.94446161  0.99462258  1.04596856  1.09861229  1.15267951  1.20831121
-##  [79]  1.26566637  1.32492541  1.38629436  1.45001018  1.51634749  1.58562726
-##  [85]  1.65822808  1.73460106  1.81528997  1.90095876  1.99243016  2.09074110
-##  [91]  2.19722458  2.31363493  2.44234704  2.58668934  2.75153531  2.94443898
-##  [97]  3.17805383  3.47609869  3.89182030  4.59511985         Inf</code></pre>
-<pre class="r"><code>## Plot x on x-axis, and logit(x) on y axis.
-plot(x, logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;logit(x)&quot;)    # View the output graphically.</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-</div>
-<div id="expit-function" class="section level3">
-<h3>‘Expit’ function</h3>
-<p>A useful, related function is the inverse-logit, or “expit” function:</p>
-<pre class="r"><code>## Sequence between 0 and 1.
-x &lt;- seq(from = 0, to = 1, by = 0.01)
-
-logit.x &lt;- logit(x)
-
-## The expit (or inverse logit) funtion.
-expit &lt;- function(x){
-    exp(x)/(1+exp(x))
-}
-
-## Calculate the inverse-logit of logit(0.9) = 2.197225.
-expit(2.197225)</code></pre>
-<pre><code>## [1] 0.9</code></pre>
-<pre class="r"><code>expit.logit.x &lt;- expit(logit.x)    # Return to original x values.
-
-## Plot x on x-axis, and expit(logit(x)) = x on y axis.
-plot(x, expit.logit.x, type = &#39;l&#39;,xlab=&quot;x&quot;,ylab=&quot;expit(logit(x))&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>## Plot &quot;logistic&quot; curve
-plot(x=seq(-3,3,0.1),y=expit(seq(-3,3,0.1)),type=&quot;l&quot;,xlab=&quot;x&quot;,ylab=&quot;expit(x)&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
-</div>
-<div id="wildlife-survival-function" class="section level3">
-<h3>Wildlife survival function</h3>
-<p>Finally, let’s develop a function to compute the survival rate from data collected on wild individuals tracked over time:</p>
-<pre class="r"><code>## n is the number of animals being monitored.
-## d is the number of animals that died.
-survival &lt;- function(n, d){
-    (n-d)/n
-}
-
-## One year of data.
-survival(n = 10, d = 5)</code></pre>
-<pre><code>## [1] 0.5</code></pre>
-<pre class="r"><code>## Simulate many years of data.
-d &lt;- sample(0:50, 10, replace = TRUE)   # note use of &quot;sample()&quot; function   [random number of dead individuals]
-n &lt;- rep(100, times=10)                 # total number of individuals 
-surv &lt;- survival(n = n, d = d)
-surv</code></pre>
-<pre><code>##  [1] 0.57 0.93 0.54 0.94 0.84 0.77 0.86 0.71 0.98 0.94</code></pre>
-<pre class="r"><code>## Plot year-specific survival rate (random- will look different every time!)
-plot(1:10, surv, type = &#39;l&#39;,xlab=&quot;Year&quot;,ylab=&quot;Survival&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-</div>
-</div>
-<div id="conditional-statements" class="section level2">
-<h2>Conditional statements</h2>
-<p>Conditional, or logical, operations (IF [condition] THEN [do something] ELSE [do something]) are a basic building block of computer programming.</p>
-<div id="ifelse-statements-in-r" class="section level3">
-<h3>if…else statements in R</h3>
-<p>The basic syntax for if…else statements in R is as follows:</p>
-<pre><code>
-if([some condition]){               ## if some condition is met
-  [execute some commands]
-}else if ([some other condition]){   ## if some other condition is met (often this clause is not necessary)
-  [execute some other commands]
-}else{                               ## if none of the above conditions are met (otherwise...)
-  [execute some other commands]
-}
-</code></pre>
-<p>NOTE: you can include any number of “else if(…)” statements- or you can omit these entirely!</p>
-<p>Let’s try it!</p>
-<pre class="r"><code>####
-####  if...else statements
-####
-
-########
-# Draw a sample from a Binomial distribution with p = 0.7 (here, p is detection probability).
-p &lt;- 0.7            # probability of detection
-x &lt;- rbinom(n = 1, size = 1, prob = p)      # single &#39;coin flip&#39; with prob success equal to p
-
-if (x &gt; 0) {
-    print(&quot;Detected&quot;)
-} else {
-    print(&quot;Not detected&quot;)
-}</code></pre>
-<pre><code>## [1] &quot;Detected&quot;</code></pre>
-</div>
-<div id="ifelse-function" class="section level3">
-<h3>ifelse() function</h3>
-<p>Note that “if…else” only works for testing one condition at a time. If we have a spreadsheet with lots of data, we need something else – something “vectorized” – like the “ifelse()” function:</p>
-<pre class="r"><code>####
-####  ifelse()
-####
-
-## Note if...else only works for running one logical (T/F) test at a time. If we have a spreadsheet with lots of data, we need something else.
-n.samples &lt;- 100
-set.seed(2017)     # the &#39;seed&#39; allows random number generators to give the same result every time!
-
-## 100 samples from a binomial distribution with detection probability p = 0.7.
-y &lt;- rbinom(n = n.samples, size = 1, prob = p)
-y</code></pre>
-<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0 1 1
-##  [38] 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1 0 1 1 0
-##  [75] 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
-<pre class="r"><code>## incorrect usage
-if (y == 1) {
-    print(&quot;Detected&quot;)
-} else {
-    print(&quot;Not detected&quot;)
-}   # PRINTS A WARNING MESSAGE!</code></pre>
-<pre><code>## Warning in if (y == 1) {: the condition has length &gt; 1 and only the first
-## element will be used</code></pre>
-<pre><code>## [1] &quot;Not detected&quot;</code></pre>
-<pre class="r"><code>## Use ifelse instead.
-detection.history &lt;- ifelse(y == 1, print(&quot;Detected&quot;), print(&quot;Not detected&quot;))</code></pre>
-<pre><code>## [1] &quot;Detected&quot;
-## [1] &quot;Not detected&quot;</code></pre>
-<pre class="r"><code>detection.history</code></pre>
-<pre><code>##   [1] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##   [6] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [11] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [16] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Not detected&quot;
-##  [21] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;    
-##  [26] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [31] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [36] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [41] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [46] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
-##  [51] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [56] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
-##  [61] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
-##  [66] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [71] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
-##  [76] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [81] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
-##  [86] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [91] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [96] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;</code></pre>
-<pre class="r"><code>## Going the other direction.
-ifelse(detection.history == &quot;Detected&quot;, 1, 0)</code></pre>
-<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0 1 1
-##  [38] 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1 0 1 1 0
-##  [75] 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
-<pre class="r"><code>xt  &lt;-  cbind(rbinom(10, 1, .5), rbinom(10, 1, .6))
-xt</code></pre>
-<pre><code>##       [,1] [,2]
-##  [1,]    1    1
-##  [2,]    1    1
-##  [3,]    0    0
-##  [4,]    0    1
-##  [5,]    1    0
-##  [6,]    0    0
-##  [7,]    0    1
-##  [8,]    1    1
-##  [9,]    0    1
-## [10,]    0    1</code></pre>
-<pre class="r"><code>ifelse(xt[, 1] &gt; 0 &amp; xt[, 2] &gt; 0, print(&quot;Detected twice&quot;),
-       print(&quot;Not detected twice&quot;))</code></pre>
-<pre><code>## [1] &quot;Detected twice&quot;
-## [1] &quot;Not detected twice&quot;</code></pre>
-<pre><code>##  [1] &quot;Detected twice&quot;     &quot;Detected twice&quot;     &quot;Not detected twice&quot;
-##  [4] &quot;Not detected twice&quot; &quot;Not detected twice&quot; &quot;Not detected twice&quot;
-##  [7] &quot;Not detected twice&quot; &quot;Detected twice&quot;     &quot;Not detected twice&quot;
-## [10] &quot;Not detected twice&quot;</code></pre>
-</div>
-</div>
-<div id="iterating" class="section level2">
-<h2>Iterating!</h2>
-<p>Iterating, or running the same operation over and over sequentially, is another fundamental computer programming tool. Computers are great at performing multiple computations really, really fast! <strong>Loops</strong> are a good way to take advantage of computers!</p>
-<p>The basic syntax for iterating in R is called a “FOR loop”, and looks like this:</p>
-<pre><code>
-for([iteration variable] in [iteration vector of length x]){
-  [perform specified operation(s) x times, with the iteration variable set at each value of the iteration vector in succession]
-}
-</code></pre>
-<p>For example…</p>
-<pre class="r"><code>####
-####  for loops
-####
-
-for(i in 1:10){
-  print(i)
-}</code></pre>
-<pre><code>## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10</code></pre>
-<pre class="r"><code>for(j in c(1,2,3,4,5,6,7,8,9,10)){       # alternative
-  print(j)
-}</code></pre>
-<pre><code>## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10</code></pre>
-<pre class="r"><code>n.iter &lt;- 10                   # another alternative!
-count &lt;- 0
-for(i in 1:n.iter){
-  count &lt;- count+1            # assign a new value of count equal to the old value of count plus 1
-  print(count)
-}</code></pre>
-<pre><code>## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10</code></pre>
-<p>Take the first FOR loop above. Here, “i” is the <em>iteration variable</em> and “1:n.iter” is the <em>iteration vector</em>:</p>
-<pre class="r"><code>  # closer look at iteration vector:
-1:n.iter</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<p>Essentially, R starts this FOR loop by setting the value of the placeholder <em>iteration variable</em> “i” to the first value of the <em>iteration vector</em> (i.e., the value 1). It then runs the two commands in the body of the for loop [count &lt;- count+1; print(count)]. Then, it sets the iteration variable “i” to the next value in the <em>iteration vector</em> (i.e., the value 2) and runs the commands again. It keeps doing this until it reaches the end of the iteration vector, at which point it stops!</p>
-<p>It is often useful to reference the iteration variable directly within the FOR loop. Here are some examples:</p>
-<pre class="r"><code>## Using the iteration variable &quot;i&quot; within the for loop:
-n.iter &lt;- 5
-count &lt;- 0
-for(i in 1:n.iter){
-  count &lt;- count+i            # assign a new value of count equal to the old value of count + i
-  print(count)
-}</code></pre>
-<pre><code>## [1] 1
-## [1] 3
-## [1] 6
-## [1] 10
-## [1] 15</code></pre>
-<pre class="r"><code>## A for-loop for dependent sequence (here, the Fibonacci sequence)
-n.iter &lt;- 10
-x &lt;- rep(0, n.iter)           # set up vector of all zeros
-x[1] &lt;- 1                     # assign x_1  &lt;-  1
-x[2] &lt;- 1                     # assign x_2 = 0
-for(i in 3:n.iter){
-  x[i] &lt;- x[i-1]+x[i-2]       # x_i = x_(i-1) + x_(i-2)
-}
-x</code></pre>
-<pre><code>##  [1]  1  1  2  3  5  8 13 21 34 55</code></pre>
-<div id="iterating-using-the-apply-family-of-functions-in-r" class="section level3">
-<h3>Iterating using the “apply() family of functions in R”</h3>
-<pre class="r"><code>###
-### apply (another way to iterate)
-###
-
-W &lt;- matrix(rpois(4, 10), nrow = 2, ncol = 2)  # Create a 2X2 matrix using a Poisson distribution with lambda = 10.
-W</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]   12    5
-## [2,]   10    8</code></pre>
-<pre class="r"><code>## Calculate the row means.
-apply(W, 1, mean)</code></pre>
-<pre><code>## [1] 8.5 9.0</code></pre>
-<pre class="r"><code>## Calculate the column means.
-apply(W, 2, mean)</code></pre>
-<pre><code>## [1] 11.0  6.5</code></pre>
-<pre class="r"><code>## Identify the column that has the largest value.
-apply(W, 1, which.max)</code></pre>
-<pre><code>## [1] 1 1</code></pre>
-<pre class="r"><code>## Apply your own functions to each row in a matrix.
-MyFunc &lt;- function(x){
-    2+sum(x/5)-3/2*mean(x)^2
-}
-apply(W, 1, MyFunc)</code></pre>
-<pre><code>## [1] -102.975 -115.900</code></pre>
-<pre class="r"><code>##########
-# lapply: apply a function across a list or vector
-
-lapply(1:5,function(x) exp(x)) </code></pre>
-<pre><code>## [[1]]
-## [1] 2.718282
-## 
-## [[2]]
-## [1] 7.389056
-## 
-## [[3]]
-## [1] 20.08554
-## 
-## [[4]]
-## [1] 54.59815
-## 
-## [[5]]
-## [1] 148.4132</code></pre>
-<pre class="r"><code>lapply(1:5, function(t) sqrt(trees$Volume[t]))</code></pre>
-<pre><code>## [[1]]
-## [1] 3.209361
-## 
-## [[2]]
-## [1] 3.209361
-## 
-## [[3]]
-## [1] 3.193744
-## 
-## [[4]]
-## [1] 4.049691
-## 
-## [[5]]
-## [1] 4.335897</code></pre>
-<pre class="r"><code>##########
-# sapply: same thing as &#39;lapply&#39; but simplifies the returned object (into a vector if possible)
-
-mylist &lt;- list()
-mylist[[1]] &lt;- seq(-1,1,length=10)
-mylist[[2]] &lt;- c(1,.5,-.4)
-mylist[[3]] &lt;- matrix(rnorm(12),nrow=3)
-sapply(mylist,function(x) sum(exp(x))) </code></pre>
-<pre><code>## [1] 12.163382  5.037323 17.580375</code></pre>
-<pre class="r"><code>#########
-# tapply: summarize a vector by group (apply a summary function separately to each group)
-
-df.new &lt;- data.frame(
-  var1 = runif(10),
-  group = sample(c(&quot;A&quot;,&quot;B&quot;),10,replace=T)
-)
-tapply(df.new$var1,df.new$group,sum)</code></pre>
-<pre><code>##        A        B 
-## 1.902469 2.777040</code></pre>
-</div>
-</div>
-<div id="more-practice" class="section level2">
-<h2>More Practice</h2>
-<div id="using-conditional-statements" class="section level3">
-<h3>Using conditional statements</h3>
-<div id="reject-null-hypothesis" class="section level4">
-<h4>Reject null hypothesis</h4>
-<p>In traditional statistics, one of the primary goals is to compare a test statistic with a “critical value”: if the test statistic exceeds the critical value, you can reject a null hypothesis with a reasonable degree of certainty (such that the rate at which you incorrectly reject the null hypothesis remains at or below a pre-specified value, called the “alpha-level”).</p>
-<p>In the example below, we simulate data (n=100) from a normal distribution with mean of 1, and we use a Student’s t-test to assess whether or not we can reject the null hypothesis that the data were derived from a distribution with mean of zero. Here, the <em>test statistic</em> is the t-statistic (representing the standardized difference of the sample mean from zero), and the <em>critical value</em> is determined as a pre-specified quantile of the “t” distribution (here, we use a two-tailed test holding alpha=0.05).</p>
-<p>The act of rejecting or failing to reject a null hypothesis is an instance of conditional logic (if…then…else). Let’s see how we might implement this test in R:</p>
-<pre class="r"><code>####################
-####  More Practice ####
-####################
-
-
-###
-### Perform hypothesis test using if...then...else
-###
-
-n.samples &lt;- 100
-x &lt;- rnorm(n = n.samples, mean = 1, sd = 1) # Generate fake data from a normal distribution (using random number generator).
-hist(x)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<pre class="r"><code>mu &lt;- mean(x)                               # Compute the sample mean.
-s &lt;- sd(x)                                  # Compute the sample standard deviation.
-t &lt;- mu/(s/sqrt(n.samples))                 # Calculate t-statistic (here, standardized difference of the sample mean from zero)
-t.crit &lt;- qt(p = 0.975, df = 99)            # Calculate critical value for test (above which we can reject the null hypothesis with acceptable type-I error)
-if (t &gt; t.crit) {
-    print(&quot;reject&quot;)                        # Reject if condition holds.
-} else {
-    print(&quot;fail to reject&quot;)                # Fail to reject otherwise.
-}</code></pre>
-<pre><code>## [1] &quot;reject&quot;</code></pre>
-<p>Did you successfully reject the null hypothesis? What if you set the mean to zero when you simulate the data?</p>
-</div>
-<div id="cleaning-up-messy-data" class="section level4">
-<h4>Cleaning up messy data</h4>
-<p>Sometimes (like all the time) your data will be “messy” - that is, it will have some errors (e.g., incorrect data entry) that need to be fixed prior to running an analysis. Take this example of “messy” data from a simulated occupancy study:</p>
-<pre class="r"><code>###
-### Clean up messy matrix using ifelse
-###
-
-## Simulate data.
-observations &lt;- matrix(sample(c(&quot;Detected&quot;, &quot;NotDetected&quot;, 1, 0), 20*3, replace = TRUE), 20, 3)    # simulate detection/non-detection data over three sampling occasions
-
-habitat &lt;- rnorm(20, 0, 2)    # simulate environmental covariate
-Data &lt;- cbind(observations, habitat)       # bind into single matrix.
-Data</code></pre>
-<pre><code>##                                                 habitat             
-##  [1,] &quot;Detected&quot;    &quot;1&quot;           &quot;0&quot;           &quot;-1.01972896373415&quot; 
-##  [2,] &quot;1&quot;           &quot;Detected&quot;    &quot;0&quot;           &quot;-2.96852211723634&quot; 
-##  [3,] &quot;NotDetected&quot; &quot;1&quot;           &quot;Detected&quot;    &quot;-2.15312731331142&quot; 
-##  [4,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;-2.08564204039605&quot; 
-##  [5,] &quot;1&quot;           &quot;Detected&quot;    &quot;NotDetected&quot; &quot;-0.725906188492338&quot;
-##  [6,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;3.02404054801466&quot;  
-##  [7,] &quot;1&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;0.237107059656618&quot; 
-##  [8,] &quot;NotDetected&quot; &quot;1&quot;           &quot;1&quot;           &quot;0.773745221715878&quot; 
-##  [9,] &quot;0&quot;           &quot;0&quot;           &quot;0&quot;           &quot;1.74770636242436&quot;  
-## [10,] &quot;NotDetected&quot; &quot;Detected&quot;    &quot;NotDetected&quot; &quot;0.0841186100995515&quot;
-## [11,] &quot;0&quot;           &quot;NotDetected&quot; &quot;1&quot;           &quot;-3.3810253129317&quot;  
-## [12,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;1&quot;           &quot;0.841672269980858&quot; 
-## [13,] &quot;Detected&quot;    &quot;1&quot;           &quot;Detected&quot;    &quot;0.0997555434833619&quot;
-## [14,] &quot;1&quot;           &quot;0&quot;           &quot;0&quot;           &quot;-2.35257749480205&quot; 
-## [15,] &quot;1&quot;           &quot;NotDetected&quot; &quot;NotDetected&quot; &quot;-1.27098003363229&quot; 
-## [16,] &quot;NotDetected&quot; &quot;1&quot;           &quot;0&quot;           &quot;3.03583050294013&quot;  
-## [17,] &quot;Detected&quot;    &quot;Detected&quot;    &quot;1&quot;           &quot;0.686551469718866&quot; 
-## [18,] &quot;NotDetected&quot; &quot;0&quot;           &quot;1&quot;           &quot;0.191828681947982&quot; 
-## [19,] &quot;Detected&quot;    &quot;NotDetected&quot; &quot;0&quot;           &quot;-3.40291520964907&quot; 
-## [20,] &quot;Detected&quot;    &quot;0&quot;           &quot;1&quot;           &quot;0.724004758512111&quot;</code></pre>
-<p>As you can see, non-detections are coded here as both “NotDetected” and “0”, and likewise, detection events also have two alternative codes. To clean up this data set, let’s do the following:</p>
+<div id="the-tidyverse" class="section level2">
+<h2>The ‘tidyverse’</h2>
+<p>Throughout this workshop we have been making use of the ‘Tidyverse’
+set of packages, which were designed to facilitate everyday data
+management and visualization tasks in R using a consistent data
+structure and syntax.</p>
+<p>For a much more comprehensive introduction to data wrangling and
+analysis, you should definitely consider working through the online
+textbook, <a href="http://r4ds.had.co.nz/">R for Data Science</a> by
+Garrett Grolemund and Hadley Wickham.</p>
+<p>Here is a schematic taken from this book, that illustrates the
+typical data analysis workflow. In general, much of data science
+consists of <strong>wrangling</strong> data, or getting it in shape for
+visualization and analysis.</p>
+<p><img src="data-science-wrangle.png" /></p>
+<p>The core tidyverse set of packages includes:</p>
 <ul>
-<li>Make sure that detections and non-detections are coded in a consistent manner!<br />
-</li>
-<li>Reduce the significant digits of the environmental covariate “Habitat”.<br />
-</li>
-<li>Finally, we probably want to add column names to our matrix.</li>
+<li>tidyr, for data tidying</li>
+<li>dplyr, for data transformation</li>
+<li>readr, for data import</li>
+<li>tibble, for tibbles, a re-imagining of data frames</li>
+<li>magrittr, for implementing the ‘pipe’ operator</li>
+<li>ggplot2, for data visualisation (the subject of the next
+module)</li>
+<li>purrr, for functional programming</li>
+<li>stringr, for strings</li>
+<li>forcats, for factors</li>
+<li>lubridate, for dates (load this separately!)</li>
 </ul>
-<p>Note the use of the “ifelse()” function here, which is a convenient and efficient way to perform a test consecutively on an entire vector using a single line of code!</p>
-<pre class="r"><code>## Clean-up data using &quot;ifelse()&quot; function
-NewObs &lt;- ifelse( (Data[, 1:3] == &quot;Detected&quot;) | (Data[, 1:3] == &quot;1&quot;), 1, 0) #  The &quot;|&quot; means &quot;or.&quot; Similarly &quot;&amp;&quot; means &quot;and&quot;
-NewHabitat &lt;- as.numeric(Data[, 4])  # as.numeric gets rid of quotes around habitat data.
-NewHabitat &lt;- round(NewHabitat, 2)   # round rounds to number of decimals specified.
-NewData &lt;- cbind(NewObs, NewHabitat) # bind the columns to form a matrix.
-colnames(NewData) &lt;- c(&quot;obs1&quot;, &quot;obs2&quot;, &quot;obs3&quot;, &quot;Habitat&quot;)  # provide column names
-NewData</code></pre>
-<pre><code>##       obs1 obs2 obs3 Habitat
-##  [1,]    1    1    0   -1.02
-##  [2,]    1    1    0   -2.97
-##  [3,]    0    1    1   -2.15
-##  [4,]    1    0    0   -2.09
-##  [5,]    1    1    0   -0.73
-##  [6,]    0    0    1    3.02
-##  [7,]    1    0    1    0.24
-##  [8,]    0    1    1    0.77
-##  [9,]    0    0    0    1.75
-## [10,]    0    1    0    0.08
-## [11,]    0    0    1   -3.38
-## [12,]    1    0    1    0.84
-## [13,]    1    1    1    0.10
-## [14,]    1    0    0   -2.35
-## [15,]    1    0    0   -1.27
-## [16,]    0    1    0    3.04
-## [17,]    1    1    1    0.69
-## [18,]    0    0    1    0.19
-## [19,]    1    0    0   -3.40
-## [20,]    1    0    1    0.72</code></pre>
-<p>Looks a lot better now, right!</p>
+<p>The following cheat sheets will be helpful in this submodule:</p>
+<p><a
+href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf">data
+‘tidying’</a> <a
+href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf">data
+transformation</a> <a
+href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf">working
+with dates and times</a></p>
 </div>
+<div id="learning-goals" class="section level2">
+<h2>Learning goals</h2>
+<ul>
+<li>Get more comfortable with <em>tidyverse</em> grammar (e.g., piping)
+and data structures to perform basic data manipulation tasks</li>
+<li>Use <em>tidyr</em> and <em>dplyr</em> data transformation ‘verbs’ to
+wrangle data</li>
+<li>Work with and parse dates using <em>lubridate</em></li>
+</ul>
+<pre class="r"><code># load packages ---------------------------
+
+library(tidyverse)
+library(lubridate)</code></pre>
 </div>
-<div id="using-for-loops" class="section level3">
-<h3>Using FOR loops</h3>
-<p>Iteration is one of the things computers do best, and harnessing this ability is endlessly useful! Here are some examples:</p>
-<div id="view-a-landscape-from-multiple-angles" class="section level4">
-<h4>View a landscape from multiple angles</h4>
-<p>In this example, we use a FOR loop to view the topography of a rugged landscape (using the built-in “volcano” dataset in R) from multiple perspectives.</p>
-<pre class="r"><code>###
-### FOR loop examples
-###
+<div id="import-sample-data" class="section level2">
+<h2>Import sample data</h2>
+<p>The next few examples use meteorological data from Hungry Horse (HH)
+and Polson Kerr (PK) dams. You can download this data set by clicking <a
+href="MTMetStations.csv">here</a>. Make sure you download this data set
+into your project directory!!</p>
+<p>Let’s load this data into R!</p>
+<pre class="r"><code>#  Import data as a Tibble dataframe and take a quick glance at the data -----------------------------
 
-#############
-## EXAMPLE 1: Plot a 3D surface using data already stored in R.
+# import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
+clim_data &lt;- read_csv(&quot;MTMetStations.csv&quot;)
 
-Z &lt;- 2 * volcano        # Exaggerate the relief (multiply the elevation by 2)   
-
-X &lt;- 10 * (1:nrow(Z))   # set horizontal coordinates -- 10 meter spacing (S to N)     
-
-Y &lt;- 10 * (1:ncol(Z))   # set vertical coordinates -- 10 meter spacing (E to W)
-
-# Z   # make sure the elevation matrix looks right
-
-par(bg = &quot;white&quot;)
-layout(1)   # reset graphics
-persp(X,  Y, Z, theta = 135, phi = 30, col = &quot;green3&quot;,    # &quot;persp()&quot; produces a 3D &quot;perspective plot&quot;
-      scale = FALSE, ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<p>Now let’s view from an alternative angle!</p>
-<pre class="r"><code>## change the value of theta from 135 to 90 to change the viewing angle
-persp(X, Y, Z, theta = 90, phi = 30, col = &quot;green3&quot;,
-      scale = FALSE,  ltheta = -120, shade = 0.75,
-      border = NA, box = FALSE)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>Now we can use a FOR loop to view this landscape from many angles. Try it!</p>
-<pre class="r"><code>## Use a for-loop to help view many angles.
-for(i in 1:18){
-    persp(X, Y, Z, theta = i*20, phi = 30, col = &quot;green3&quot;,
-          scale = FALSE,  ltheta = -120, shade = 0.75,
-          border = NA, box = FALSE)
-    print(i*20)
-    readline()                               # Pauses the for-loop until [enter] is pushed
-}</code></pre>
+# quick look at the contents
+clim_data</code></pre>
+<pre><code>## # A tibble: 1,734 × 7
+##    Date      PK.TMaxF PK.TMinF PK.PrcpIN HH.TMaxF HH.TMinF HH.PrcpIN
+##    &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+##  1 1/1/2013        27       19      0          26       22      0   
+##  2 1/2/2013        27       22      0          27       23      0   
+##  3 1/3/2013        23       14      0          25       21      0   
+##  4 1/4/2013        25       19      0          22       13      0   
+##  5 1/5/2013        29       20      0          24       13      0   
+##  6 1/6/2013        36       25      0          30       20      0.1 
+##  7 1/7/2013        35       30      0.16       35       22      0.23
+##  8 1/8/2013        39       32      0.04       36       25      0.32
+##  9 1/9/2013        44       31      0.07       39       30      0.1 
+## 10 1/10/2013       39       27      0.22       46       32      0.1 
+## # … with 1,724 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre class="r"><code> # display the last few lines of the data frame (often useful to check!)
+tail(clim_data)</code></pre>
+<pre><code>## # A tibble: 6 × 7
+##   Date      PK.TMaxF PK.TMinF PK.PrcpIN HH.TMaxF HH.TMinF HH.PrcpIN
+##   &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 9/25/2017       59       47     0.001       56       39         0
+## 2 9/26/2017       66       47     0           58       43         0
+## 3 9/27/2017       66       41     0           68       43         0
+## 4 9/28/2017       67       39     0           66       43         0
+## 5 9/29/2017       70       40     0           71       38         0
+## 6 9/30/2017       62       47     0.06        71       38         0</code></pre>
 </div>
-</div>
-</div>
-<div id="challenge-problems" class="section level2">
-<h2>Challenge problems!</h2>
+<div id="making-data-tidy" class="section level2">
+<h2>Making data tidy!</h2>
+<p>The <em>tidyr</em> package has several functions to help you get your
+data into this format. We have already seen <code>pivot_longer()</code>
+and <code>pivot_wider()</code>.</p>
+<p><img src="tidy-9.png" /></p>
+<p><img src="tidy-8.png" /></p>
+<p>Use <code>separate()</code> to separate a single column into two
+separate columns. <code>unite()</code> does the opposite</p>
+<p><img src="tidy-17.png" /></p>
+<p>Let’s take a close look at the climate dataset and see if there’s
+anything we need to tidy up.</p>
+<pre class="r"><code>#  Use Tidyr verbs to make data &#39;tidy&#39; ---------------------------
+
+# look at clim_data -- is it in tidy format? What do we need to do to get it there?
+head(clim_data)</code></pre>
+<pre><code>## # A tibble: 6 × 7
+##   Date     PK.TMaxF PK.TMinF PK.PrcpIN HH.TMaxF HH.TMinF HH.PrcpIN
+##   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 1/1/2013       27       19         0       26       22       0  
+## 2 1/2/2013       27       22         0       27       23       0  
+## 3 1/3/2013       23       14         0       25       21       0  
+## 4 1/4/2013       25       19         0       22       13       0  
+## 5 1/5/2013       29       20         0       24       13       0  
+## 6 1/6/2013       36       25         0       30       20       0.1</code></pre>
+<p>First of all, recall that tidy data should have have a single
+observation per row. In this case, each row represents observations
+taken from two different observatories: PK and HH. Ultimately, we want
+each row to represent a single date at a single station, one column to
+represent the station, and three columns to represent three different
+measurements: TMaxF, TMinF, and PrcpIN.</p>
+<p>Our strategy will be the following:</p>
 <ol style="list-style-type: decimal">
-<li><p>Create a function to calculate the value of <span class="math inline">\(y\)</span> for the equation <span class="math inline">\(y = \beta_0 + \beta_1*x\)</span> for any value of <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(x\)</span>.</p></li>
-<li><p>Using the function in part 1, with <span class="math inline">\(\beta_0 = 2\)</span>, and <span class="math inline">\(\beta_1= -1\)</span> use a FOR loop to calculate <span class="math inline">\(y\)</span> for the values of <span class="math inline">\(x\)</span> = 1,…,10. Plot the results.</p></li>
-<li><p>Write a function that conducts a one-sample, two-sided t test for a given null hypothesis. Here is a code skeleton to get you started!!</p></li>
+<li>Use <code>pivot_longer()</code> to make one row for every
+measurement at every station.</li>
+<li>Use <code>separate()</code> to separate station labels from climate
+variable labels.</li>
+<li>Use <code>pivot_wider()</code> to put all three measurements from
+each date/station into its own row.</li>
 </ol>
-<pre class="r"><code>##########
-# Challenge problem 3: code skeleton to get you started!   
+<p>The first step looks like this:</p>
+<pre class="r"><code># step 1: pivot this data frame into long format: 
+#    we will create a new column called &#39;climvar_station&#39;, and all of the numeric precip and temp values into a column called &#39;value&#39;. 
+clim_vars_longer &lt;- clim_data %&gt;% pivot_longer( 
+                           cols = !Date,
+                           names_to = &quot;climvar_station&quot;,
+                           values_to = &quot;value&quot;
+                    )
 
-get.t.test &lt;- function(data, mu0, alpha = 0.05) {
-    n &lt;- length(data)
-    mu &lt;- mean(____)
-    s &lt;- ____(data)
-    t &lt;- (mu-mu0)/(s/sqrt(n))
-    t.crit &lt;- qt(p = (1-alpha/2), df = n-1)        # get the critical value
-    if (abs(t)&gt;t.crit) {
-        answer = &quot;_______&quot;
-    } ____ {
-        answer = &quot;Fail to reject&quot;
-    }
-    print(answer)
-}</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Calculate the standard deviation of elevation as an index of ruggedness from the rows of the volcano elevation data “Z”, using the “apply()” function. Which row has the most rugged terrain?</li>
-</ol>
-<p>5: Wrap the code below in a FOR loop to simulate the sun rising and setting over the volcano data by looping over values of “lphi” (the light angle). Try replacing “readline()” with “Sys.sleep(.5)”.</p>
-<pre class="r"><code>#######
-# Example code to get you started with challenge problem 5... 
+clim_vars_longer</code></pre>
+<pre><code>## # A tibble: 10,404 × 3
+##    Date     climvar_station value
+##    &lt;chr&gt;    &lt;chr&gt;           &lt;dbl&gt;
+##  1 1/1/2013 PK.TMaxF           27
+##  2 1/1/2013 PK.TMinF           19
+##  3 1/1/2013 PK.PrcpIN           0
+##  4 1/1/2013 HH.TMaxF           26
+##  5 1/1/2013 HH.TMinF           22
+##  6 1/1/2013 HH.PrcpIN           0
+##  7 1/2/2013 PK.TMaxF           27
+##  8 1/2/2013 PK.TMinF           22
+##  9 1/2/2013 PK.PrcpIN           0
+## 10 1/2/2013 HH.TMaxF           27
+## # … with 10,394 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>In the second step, we separate the station and climate variable
+labels into two different columns:</p>
+<pre class="r"><code># step 2: separate the climvar_station column into two separate columns that identify the climate variable and the station
+clim_vars_separate &lt;- clim_vars_longer %&gt;% separate(
+                           col = climvar_station, 
+                           into = c(&quot;Station&quot;,&quot;climvar&quot;)
+                      )
 
-persp(X, Y, Z, theta = 30, phi = 30, col = &quot;green3&quot;,  lphi = ?, scale = FALSE,  ltheta = -120, shade = 0.75, border = NA, box = FALSE)
-print(?)
-readline()</code></pre>
-<p><a href="module2_1.html">–go to next module–</a></p>
+clim_vars_separate</code></pre>
+<pre><code>## # A tibble: 10,404 × 4
+##    Date     Station climvar value
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
+##  1 1/1/2013 PK      TMaxF      27
+##  2 1/1/2013 PK      TMinF      19
+##  3 1/1/2013 PK      PrcpIN      0
+##  4 1/1/2013 HH      TMaxF      26
+##  5 1/1/2013 HH      TMinF      22
+##  6 1/1/2013 HH      PrcpIN      0
+##  7 1/2/2013 PK      TMaxF      27
+##  8 1/2/2013 PK      TMinF      22
+##  9 1/2/2013 PK      PrcpIN      0
+## 10 1/2/2013 HH      TMaxF      27
+## # … with 10,394 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>Finally, let’s put climate measurements from a single station on the
+same row:</p>
+<pre class="r"><code># step 3: pivot_wider distributes the clim_var column into separate columns, with the data values from the &#39;value&#39; column
+
+tidy_clim_data &lt;- clim_vars_separate %&gt;% pivot_wider( 
+                        names_from = climvar, 
+                        values_from = value
+                  )
+
+tidy_clim_data</code></pre>
+<pre><code>## # A tibble: 3,468 × 5
+##    Date     Station TMaxF TMinF PrcpIN
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1/1/2013 PK         27    19      0
+##  2 1/1/2013 HH         26    22      0
+##  3 1/2/2013 PK         27    22      0
+##  4 1/2/2013 HH         27    23      0
+##  5 1/3/2013 PK         23    14      0
+##  6 1/3/2013 HH         25    21      0
+##  7 1/4/2013 PK         25    19      0
+##  8 1/4/2013 HH         22    13      0
+##  9 1/5/2013 PK         29    20      0
+## 10 1/5/2013 HH         24    13      0
+## # … with 3,458 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>Note: we can do all of these tidying steps at once using the pipe
+operator:</p>
+<pre class="r"><code># repeat above as single pipe series without creation of intermediate datasets
+  
+tidy_clim_data &lt;- clim_data %&gt;% 
+  pivot_longer(cols = !Date,
+               names_to = &quot;climvar_station&quot;,
+               values_to = &quot;value&quot;) %&gt;% 
+  separate(col = climvar_station, 
+           into = c(&quot;Station&quot;,&quot;climvar&quot;)) %&gt;% 
+  pivot_wider(names_from = climvar, 
+              values_from = value)
+  
+tidy_clim_data</code></pre>
+<pre><code>## # A tibble: 3,468 × 5
+##    Date     Station TMaxF TMinF PrcpIN
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1/1/2013 PK         27    19      0
+##  2 1/1/2013 HH         26    22      0
+##  3 1/2/2013 PK         27    22      0
+##  4 1/2/2013 HH         27    23      0
+##  5 1/3/2013 PK         23    14      0
+##  6 1/3/2013 HH         25    21      0
+##  7 1/4/2013 PK         25    19      0
+##  8 1/4/2013 HH         22    13      0
+##  9 1/5/2013 PK         29    20      0
+## 10 1/5/2013 HH         24    13      0
+## # … with 3,458 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 </div>
-<div id="more-practice-with-programming-in-r" class="section level2">
-<h2>More practice with programming in R</h2>
-<div id="test-the-central-limit-theorem" class="section level4">
-<h4>Test the Central Limit Theorem!</h4>
-<p>In this example, we test the famous <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">Central Limit Theorem (CLT)</a> using repeated simulations.</p>
-<p>Specifically, as we collect more samples from an arbitrary distribution, the sample mean (e.g., the mean of all the sample means) should converge on the true mean (here, equal to 5).</p>
-<p>To test this, let’s first write some <em>pseudocode</em> for how to perform this operation:</p>
+<div id="using-dplyr-the-data-wrangling-workhorse"
+class="section level1">
+<h1>Using dplyr – the data wrangling workhorse</h1>
+<p>dplyr is by far one of the most useful packages in all of the
+tidyverse as it allows you to quickly and easily summarize and
+manipulate your data once you have it in tidy form.</p>
+<p>We have already worked with dplyr without really knowing it. The
+basic dplyr verbs include:</p>
+<pre><code>  * grouping data with *group_by()*
+  * filtering rows with *filter()*
+  * creating new variables with *mutate()*
+  * summarizing with *summarize()*
+  * selecting columns with *select()*
+  * sorting columns by row with *arrange()*</code></pre>
+<pre class="r"><code>#  Use dplyr verbs to wrangle data   ----------------------------
+
+# example of simple data selection and summary using group_by, summarize, and mutate verbs
+
+# take tidy_clim_data, then
+# group data by station, then 
+# calculate summaries and put in columns with names mean.precip.in, mean.TMax.F, and mean.Tmin.F, then 
+# transform to metric and put in new columns mean.precip.in, mean.TMax.F, and mean.Tmin.F
+
+station_mean1 &lt;- tidy_clim_data %&gt;%
+  group_by(Station) %&gt;% 
+  summarize(
+    mean.precip.in = mean(PrcpIN, na.rm=TRUE),
+    mean.TMax.F = mean(TMaxF, na.rm=TRUE),
+    mean.TMin.F = mean(TMinF, na.rm=TRUE)) %&gt;%
+  mutate(
+    mean.precip.mm = mean.precip.in * 25.4,
+    mean.TMax.C = (mean.TMax.F - 32) * 5 / 9,
+    mean.TMin.C = (mean.TMin.F - 32) * 5 / 9
+  )
+  
+station_mean1</code></pre>
+<pre><code>## # A tibble: 2 × 7
+##   Station mean.precip.in mean.TMax.F mean.TMin.F mean.precip.mm mean.T…¹ mean.…²
+##   &lt;chr&gt;            &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+## 1 HH              0.0972        56.0        36.3           2.47     13.3    2.36
+## 2 PK              0.0442        57.8        36.5           1.12     14.3    2.48
+## # … with abbreviated variable names ¹​mean.TMax.C, ²​mean.TMin.C</code></pre>
+<p>There are several tricks that tidyverse provides that allow you to
+write as compact code as possible (avoiding re-typing the same
+code).</p>
+<p>For example, the above code block involves doubling the formula for
+converting to celsius.</p>
+<pre class="r"><code># using an even more compact form:
+
+# take tidy_clim_data, then
+# group data by station, then 
+# calculate summary (mean of all non-NA values) for numeric data only, then 
+# transform temp data (.) from F to C, then
+# transform precip data (.) from in to mm
+
+
+station_mean2 &lt;- tidy_clim_data %&gt;%
+  group_by(Station) %&gt;% 
+  summarize(across(where(is.numeric), mean, na.rm=TRUE)) %&gt;%
+  mutate(across(c(&quot;TMaxF&quot;, &quot;TMinF&quot;), ~(.-32)*(5/9)))   %&gt;% 
+  rename_with(~gsub(&quot;F&quot;,&quot;C&quot;,.),starts_with(&quot;T&quot;)) %&gt;% 
+  mutate(across(PrcpIN, ~.*25.4,.names=&quot;Prcp_mm&quot;)) %&gt;% 
+  select(!PrcpIN)
+
+station_mean2</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   Station TMaxC TMinC Prcp_mm
+##   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 HH       13.3  2.36    2.47
+## 2 PK       14.3  2.48    1.12</code></pre>
+<div id="working-with-dates-with-lubridate---date-from-character-string"
+class="section level2">
+<h2>Working with Dates with <em>lubridate</em> - Date from character
+string</h2>
+<p>Dates can be tricky to work with and we often want to eventually get
+to the point that we can summarize our data by years, seasons, months,
+or even day of the year. The <em>lubridate</em> package in R (also part
+of the tidyverse) is very useful for creating and parsing dates for this
+purpose. Date/time data often come as strings in a variety of
+orders/formats. <code>Lubridate</code> is useful because it
+automatically works out the date format once you specify the order of
+the components. To do this, identify the order in which year, month, and
+day appear in your dates, then arrange “y”, “m”, and “d” in the same
+order. That gives you the name of the lubridate function that will parse
+your date!</p>
+<p>For example:</p>
+<pre class="r"><code>#  Using lubridate to format and create date data types -----------------
+
+library(lubridate)
+
+date_string &lt;- (&quot;2017-01-31&quot;)
+
+# convert date string into date format by identifing the order in which
+#   year, month, and day appear in your dates, then arrange &quot;y&quot;, &quot;m&quot;, and #   &quot;d&quot; in the same order. That gives you the name of the lubridate
+#    function that will parse your date
+
+ymd(date_string)</code></pre>
+<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
+<pre class="r"><code># note the different formats of the date_string and date_dtformat objects in the environment window.
+
+# a variety of other formats/orders can also be accommodated. Note how each of these are reformatted to &quot;2017-01-31&quot; A timezone can be specified using tz=
+
+mdy(&quot;January 31st, 2017&quot;)</code></pre>
+<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
+<pre class="r"><code>dmy(&quot;31-Jan-2017&quot;)</code></pre>
+<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
+<pre class="r"><code>ymd(20170131)</code></pre>
+<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
+<pre class="r"><code>ymd(20170131, tz = &quot;UTC&quot;)</code></pre>
+<pre><code>## [1] &quot;2017-01-31 UTC&quot;</code></pre>
+<pre class="r"><code># can also make a date from components. 
+#   this is useful if you have columns for year, month, 
+#   day in a dataframe
+
+year&lt;-2017
+month&lt;-1
+day&lt;-31
+make_date(year, month, day)</code></pre>
+<pre><code>## [1] &quot;2017-01-31&quot;</code></pre>
+<pre class="r"><code># times can be included as well. Note that unless otherwise specified, R assumes UTC time
+
+ymd_hms(&quot;2017-01-31 20:11:59&quot;)</code></pre>
+<pre><code>## [1] &quot;2017-01-31 20:11:59 UTC&quot;</code></pre>
+<pre class="r"><code>mdy_hm(&quot;01/31/2017 08:01&quot;)</code></pre>
+<pre><code>## [1] &quot;2017-01-31 08:01:00 UTC&quot;</code></pre>
+<pre class="r"><code># we can also have R tell us the current time or date
+
+now()</code></pre>
+<pre><code>## [1] &quot;2022-08-19 19:51:40 PDT&quot;</code></pre>
+<pre class="r"><code>today()</code></pre>
+<pre><code>## [1] &quot;2022-08-19&quot;</code></pre>
+<div id="working-with-dates-with-lubridate---parsing-dates"
+class="section level3">
+<h3>Working with Dates with lubridate - Parsing Dates</h3>
+<p>Once dates are in date format, we can easily pull out their
+individual components like this:</p>
+<pre class="r"><code>#  Parsing dates with lubridate -----------------------
+
+datetime &lt;- ymd_hms(&quot;2016-07-08 12:34:56&quot;)
+
+# year
+year(datetime)</code></pre>
+<pre><code>## [1] 2016</code></pre>
+<pre class="r"><code># month as numeric
+month(datetime)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r"><code># month as name
+month(datetime, label = TRUE)</code></pre>
+<pre><code>## [1] Jul
+## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec</code></pre>
+<pre class="r"><code># day of month
+mday(datetime)</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code># day of year (julian day)
+yday(datetime)</code></pre>
+<pre><code>## [1] 190</code></pre>
+<pre class="r"><code># day of week
+wday(datetime)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>wday(datetime, label = TRUE, abbr = FALSE)</code></pre>
+<pre><code>## [1] Friday
+## 7 Levels: Sunday &lt; Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; ... &lt; Saturday</code></pre>
+</div>
+<div id="working-with-dates---parsing-dates-example"
+class="section level3">
+<h3>Working with Dates - Parsing Dates Example</h3>
+<p>We can use lubridate and dplyr to make new columns from a date for
+year, month, day of month, and day of year</p>
+<p>first we convert the character string date into date format. Here we
+are naming the new column “Date”, so R will replace character string
+with date formatted dates</p>
+<pre class="r"><code>####  Using lubridate with dataframes and dplyr verbs
+
+# going back to our tidy_clim_data dataset we see that 
+#   the date column is formatted as character, not date
+
+head(tidy_clim_data)</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##   Date     Station TMaxF TMinF PrcpIN
+##   &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 1/1/2013 PK         27    19      0
+## 2 1/1/2013 HH         26    22      0
+## 3 1/2/2013 PK         27    22      0
+## 4 1/2/2013 HH         27    23      0
+## 5 1/3/2013 PK         23    14      0
+## 6 1/3/2013 HH         25    21      0</code></pre>
+<pre class="r"><code># change format of date column
+tidy_clim_data &lt;- tidy_clim_data %&gt;% 
+  mutate(Date = mdy(Date))
+tidy_clim_data</code></pre>
+<pre><code>## # A tibble: 3,468 × 5
+##    Date       Station TMaxF TMinF PrcpIN
+##    &lt;date&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 2013-01-01 PK         27    19      0
+##  2 2013-01-01 HH         26    22      0
+##  3 2013-01-02 PK         27    22      0
+##  4 2013-01-02 HH         27    23      0
+##  5 2013-01-03 PK         23    14      0
+##  6 2013-01-03 HH         25    21      0
+##  7 2013-01-04 PK         25    19      0
+##  8 2013-01-04 HH         22    13      0
+##  9 2013-01-05 PK         29    20      0
+## 10 2013-01-05 HH         24    13      0
+## # … with 3,458 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>Now we can use mutate to create individual columns for the date
+components</p>
+<pre class="r"><code># parse date into year, month, day, and day of year columns
+tidy_clim_data &lt;- tidy_clim_data %&gt;% 
+  mutate(
+    Year = year(Date),
+    Month = month(Date),
+    Day = mday(Date),
+    Yday = yday(Date)
+  )
+
+tidy_clim_data</code></pre>
+<pre><code>## # A tibble: 3,468 × 9
+##    Date       Station TMaxF TMinF PrcpIN  Year Month   Day  Yday
+##    &lt;date&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+##  1 2013-01-01 PK         27    19      0  2013     1     1     1
+##  2 2013-01-01 HH         26    22      0  2013     1     1     1
+##  3 2013-01-02 PK         27    22      0  2013     1     2     2
+##  4 2013-01-02 HH         27    23      0  2013     1     2     2
+##  5 2013-01-03 PK         23    14      0  2013     1     3     3
+##  6 2013-01-03 HH         25    21      0  2013     1     3     3
+##  7 2013-01-04 PK         25    19      0  2013     1     4     4
+##  8 2013-01-04 HH         22    13      0  2013     1     4     4
+##  9 2013-01-05 PK         29    20      0  2013     1     5     5
+## 10 2013-01-05 HH         24    13      0  2013     1     5     5
+## # … with 3,458 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre class="r"><code># calculate total annual precipitation by station and year
+annual_sum_precip_by_station &lt;- tidy_clim_data %&gt;%
+  group_by(Station, Year) %&gt;%
+  summarise(PrecipSum = sum(PrcpIN))
+
+annual_sum_precip_by_station </code></pre>
+<pre><code>## # A tibble: 10 × 3
+## # Groups:   Station [2]
+##    Station  Year PrecipSum
+##    &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+##  1 HH       2013      29.8
+##  2 HH       2014      40.8
+##  3 HH       2015      25.7
+##  4 HH       2016      47.0
+##  5 HH       2017      25.1
+##  6 PK       2013      14.7
+##  7 PK       2014      19.9
+##  8 PK       2015      12.6
+##  9 PK       2016      17.7
+## 10 PK       2017      11.8</code></pre>
+</div>
+</div>
+<div id="challenge-exercises" class="section level2">
+<h2>Challenge Exercises</h2>
 <ol style="list-style-type: decimal">
-<li>Specify the number of hypothetical repeat samples to draw<br />
-</li>
-<li>Specify the sample size for each hypothetical repeat sample<br />
-</li>
-<li>Specify the min and max of the “true” (uniform) population from which we will sample</li>
-<li>For each hypothetical sampling experiment:
-<ol style="list-style-type: lower-alpha">
-<li>Draw a random sample from the known distribution<br />
-</li>
-<li>Compute and store the sample mean<br />
-</li>
-</ol></li>
-<li>Visualize the distribution of sample means. Evaluate whether the sample means tend toward the true mean…</li>
+<li>Try to put tidyr’s built-in <code>relig_income</code> dataset into a
+tidier format. This dataset stores counts based on a survey which (among
+other things) asked people about their religion and annual income:</li>
 </ol>
-<p>Here we translate the pseudocode into real R code!</p>
-<pre class="r"><code>##################
-## EXAMPLE 2: Use a FOR loop to create a simulation to test the central limit theorem (CLT).
+<p>Your final result should look like this:</p>
+<pre><code>## # A tibble: 180 × 3
+##    religion Income             count
+##    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;
+##  1 Agnostic &lt;$10k                 27
+##  2 Agnostic $10-20k               34
+##  3 Agnostic $20-30k               60
+##  4 Agnostic $30-40k               81
+##  5 Agnostic $40-50k               76
+##  6 Agnostic $50-75k              137
+##  7 Agnostic $75-100k             122
+##  8 Agnostic $100-150k            109
+##  9 Agnostic &gt;150k                 84
+## 10 Agnostic Don&#39;t know/refused    96
+## # … with 170 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Use the dplyr verbs and the tidy_clim_data dataset you created
+above to calculate monthly average Tmin and Tmax for each
+station</p></li>
+<li><p>Using lubridate, make a date object out of a character string of
+your birthday and find the day of week it occurred on. Note, you can use
+the ‘wday’ function in lubridate to extract the day of the week (1 is
+sunday).</p></li>
+</ol>
+<pre class="r"><code># CHALLENGE EXERCISES   -------------------------------------
 
-n.iter &lt;- 1000                                # large number of hypothetical &quot;repeat samples.&quot;
-sample.size &lt;- 30                             # Sample size of 30 from each repeat sample.
-min &lt;- 2                                       # True population minimum of 2.
-max &lt;- 6                                       # True population maximum of 6.
-means &lt;- numeric(n.iter)                      # Initialize empty vector to store the sample means.
-for(i in 1:n.iter){                           # For each of the repeat samples...
-    sample &lt;- runif(sample.size,min=min,max=max)     # draw a random sample from the true population
-    means[i] &lt;- mean(sample)                # and store the sample mean.
-}
-hist(means)                                # Histogram of all the means.
-abline(v = mean(means), col = 2, lwd = 4)          # The mean of the means is close to the true mean of 4.</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<pre class="r"><code>plot(density(means), main = &quot;&quot;)
-abline(v = mean(means), col = 2, lwd = 4)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
-<pre class="r"><code>mean(means)                                # Close to true mean of 5</code></pre>
-<pre><code>## [1] 3.99953</code></pre>
-</div>
-<div id="practice-putting-it-all-together" class="section level3">
-<h3>Practice putting it all together!</h3>
-<p>To make sure we can apply the fundamental components of programming (iterative loops and functions), let’s work out an example that uses both!</p>
-<div id="logistic-population-growth-example" class="section level4">
-<h4>Logistic population growth example</h4>
-<p>Here we model the growth/dynamics of a wild population using a classical <em>logistic</em> (S-shaped) population growth model:</p>
-<p>To get some more practice with functions, let’s first write a function to compute the expected rate of population growth on the basis of <span class="math inline">\(r\)</span> (intrinsic rate of population growth), <span class="math inline">\(K\)</span> (carrying capacity), and <span class="math inline">\(P_0\)</span> (current population size). The logistic growth equation can be written mathematically as:</p>
-<p><span class="math inline">\(P_{t+1}=P_t+r\cdot P0 \cdot (1-\frac{P0}{K})\)</span></p>
-<p>Let’s implement this equation as a function in R:</p>
-<pre class="r"><code>##############
-##  Logistic population growth example (uses function and for loop)
+# 1. Try to put tidyr&#39;s built-in `relig_income` dataset into a tidier format. 
+#      This dataset stores counts based on a survey which (among other things) 
+#      asked people about their religion and annual income:
 
+# 2. Use the dplyr verbs and the tidy_clim_data dataset you created above 
+#       to calculate monthly average Tmin and Tmax for each station (in Fahrenheit is okay)
 
-## Logistic growth function: calculate population size using logistic growth model.
-  # K = carrying capacity.
-  # r = intrinsic growth rate
-  # P0 = initial population size
-
-logistic.growth &lt;- function(r, P0, K){            
-    dpdt &lt;- r*P0*(1-P0/K)                   # implement logistic growth equation
-    P0+dpdt                                   
-}                                           
-logistic.growth(r = .5, P0 = 10, K = 100)   # try out the new function!</code></pre>
-<pre><code>## [1] 14.5</code></pre>
-<p>Now, we can use a FOR loop simulate population growth over many years:</p>
-<pre class="r"><code>## Logistic growth function within a for-loop
-
-years &lt;- 20                                   # How many years we want to calc population size.
-pop.size &lt;- numeric(years)                    # Empty vector to store population size.
-pop.size[1] &lt;- 5                              # Starting population size (P0).
-for(i in 1:(years-1)){                     # Function within a FOR loop!
-    pop.size[i+1] &lt;- logistic.growth(r = 0.5, P0 = pop.size[i], K = 100)
-}
-plot(1:years, pop.size, type = &#39;l&#39;,
-     xlab = &quot;Years&quot;, ylab = &quot;Population Size&quot;)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>And finally, we could wrap this all up in a more complex function that simulates across years and produces a plot! That way, we could run an entire population simulation with a single line of code. Let’s try it!</p>
-<pre class="r"><code>## A more complex function that outputs a plot.
-plot.logistic.growth &lt;- function(r, P, K, years){
-    pop.size[1] &lt;- P
-    for(i in 1:(years-1)){
-        pop.size[i+1] &lt;- P+r*P*(1-P/K)
-        P &lt;- pop.size[i+1]
-    }
-    plot(1:years, pop.size, type = &#39;l&#39;, xlab = &quot;Years&quot;,
-         ylab = &quot;Population Size&quot;,
-         main = paste(&quot;r = &quot;, r, &quot;K = &quot;, K))
-}
-
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
-<pre class="r"><code>par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))                  # Multi-figure (mf) plot with 2 rows and 2 columns.
-plot.logistic.growth(r = 0.1, P = 10, K = 100, years = 20)   # Change the values of r and quickly print plots.
-plot.logistic.growth(r = 0.2, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.3, P = 10, K = 100, years = 20)
-plot.logistic.growth(r = 0.5, P = 10, K = 100, years = 20)</code></pre>
-<p><img src="module1_4_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
-<pre class="r"><code>par(mfrow = c(1, 1))                               # Return to a 1X1 plot.</code></pre>
-</div>
+# 3. Using lubridate, make a date object out of a character string of your 
+#        birthday and find the day of week it occurred on. Note, you 
+#        can use the &#39;wday&#39; function in lubridate to extract the day of the #         week (1 is sunday).</code></pre>
+<p><a href="module2_1.html">–go to next submodule–</a></p>
 </div>
 </div>
 

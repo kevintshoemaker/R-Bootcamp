@@ -1,7 +1,7 @@
 ---
-title: "Module 2.3"
-author: "Data visualization with ggplot and more"
-date: "Fall 2021"
+title: "Submodule 2.3"
+author: "Statistics"
+date: "Fall 2022"
 output: 
   html_document: 
     theme: journal
@@ -21,6 +21,242 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 
 ```
+
+
+
+## Statistics in R!
+
+R is a programming environment developed specifically for working with data and running statistical analyses! It seems about time to run some stats in R! 
+
+### Load data
+
+First, download the sculpin eggs data [here](sculpineggs.csv) and save this to your working directory.
+
+
+```{r}
+
+####################
+# STATISTICS!
+####################
+
+#####
+#####  Load Data
+#####
+
+sculpin.df <- read.csv("sculpineggs.csv")
+
+head(sculpin.df)
+
+```
+
+### Summary statistics
+
+Let's start by generating summary statistics, some of which are the same ones that are displayed by the "summary()" function. Most of the function names are pretty intuitive, like mean() and median():
+
+```{r}
+
+#####
+#####  Summary Statistics
+#####
+
+mean(sculpin.df$NUMEGGS)      # compute sample mean
+median(sculpin.df$NUMEGGS)    # compute sample median
+
+min(sculpin.df$NUMEGGS)       # sample minimum
+max(sculpin.df$NUMEGGS)       # sample maximum
+range(sculpin.df$NUMEGGS)     # both min and max.
+
+quantile(sculpin.df$NUMEGGS,0.5)            # compute sample median using quantile function
+quantile(sculpin.df$NUMEGGS,c(0.25,0.75))   # compute sample quartiles
+
+var(sculpin.df$NUMEGGS)           # sample variance
+sd(sculpin.df$NUMEGGS)            # sample standard deviation
+sd(sculpin.df$NUMEGGS)^2          # another way to compute variance
+var(sculpin.df$NUMEGGS)^0.5       # another way to compute std. dev.
+
+colMeans(sculpin.df)           # column mean of data frame
+apply(sculpin.df,2,mean)       # column mean of data frame   # note the use of the "apply()" function. 
+apply(sculpin.df,2,median)     # column median of data frame
+
+
+########
+# Or just use the "summary()" function!
+
+summary(sculpin.df) # provides a set of summary statistics for all columns in a data frame. 
+
+
+```
+
+If your data have missing values (coded as 'NA' in R), some statistical functions won't work properly unless you specify an "na.rm=TRUE" argument (click [here](data_missing.txt) if you don't already have the test dataset with missing values):
+
+```{r}
+
+###########
+# Deal with missing data
+
+newdf <- read.table(file="data_missing.txt", sep="\t", header=T)  # load dataset with missing data
+
+mean(newdf$Export)
+
+mean(newdf$Export,na.rm = TRUE)
+
+```
+
+
+### Visual exploration
+
+Plots (see beginning of module) take data exploration to the next level- we can start to discern patterns and identify outliers visually, giving us cues for further analyses we might want to perform. 
+
+```{r}
+
+#####
+#####  Plot data 
+#####
+
+hist(sculpin.df$NUMEGGS)
+
+plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)
+
+```
+
+
+### Linear Regression
+
+The plot above suggests a fairly strong relationship between sculpin weight ("FEMWT") and number of eggs ("NUMEGGS"). Let's try to model this relationship!
+
+Note the use of the generic "summary()" function below, which returns something very different when the input object is a linear model vs. when the input object is a data frame!
+
+Also note the use of the "predict()" function, which not only allows you to use the model to make predictions, but also reports the uncertainty bounds on these predictions (via confidence or prediction intervals). 
+
+```{r}
+
+#####
+#####  Linear Regression  
+#####
+
+m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)      # fit linear regression model
+
+m1                                      # view estimates of intercept and slope 
+summary(m1)                             # view summary of fit
+summary(m1)$r.squared                   # extract R-squared
+confint(m1)                             # confidence intervals for intercept and slope
+AIC(m1)                                 # report AIC (Akaike's Information Criterion, used to perform model selection) 
+
+plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
+abline(m1)                                           # plot line of best fit
+
+########
+# Use the "predict()" function!
+
+FEMWT.pred <- data.frame(FEMWT = 30)                   # create new data frame to predict number of eggs at FEMWT of 30
+predict(m1,newdata=FEMWT.pred)                         # make prediction
+predict(m1,newdata=FEMWT.pred,interval="confidence")   # make prediction and get confidence interval
+predict(m1,newdata=FEMWT.pred,interval="prediction")   # make prediction and get prediction interval
+
+
+```
+
+
+### Model selection example
+
+Sometimes we may be uncertain which model is "best". In this case, we run a set of **plausible models** and compare these models using metrics of model fit and performance, like AIC or R-squared. 
+
+Note the use of the "I()" within the formula specification (i.e., the "[response] ~ [predictors]" statement). Using "I()" causes R to interpret what's inside the parentheses literally ("as is"), instead of using R's formula shorthands. For instance, you might try running a linear model ("lm()") in the following two ways and see how the results differ!
+
+Click [here](http://faculty.washington.edu/jmiyamot/p448/hahnpr%20r%20formula%20notation.pdf) for more information on R's formula notation.
+
+```{r eval=FALSE}
+
+##########
+#  Explore the use of the "I()" syntax to interpret mathematical expressions literally (as is) within formulas. 
+
+mod_noI <- lm(NUMEGGS ~ FEMWT^2, data=sculpin.df)                  # fit linear regression model. But the "^2" doesn't seem to do anything here? What happened?
+summary(mod_noI)
+
+mod_withI <- lm(NUMEGGS ~ I(FEMWT^2), data=sculpin.df)                  # fit linear regression model
+summary(mod_withI)
+
+```
+
+Below we perform AIC model selection and also visualize the differences between these alternative linear models.
+
+A flexible method for visualizing the fit of alternative linear models involves overlaying predictions from each model (using the "predict()" function) on a basic scatterplot:   
+
+```{r results=FALSE}
+
+##################################
+####  Model selection example ####
+##################################
+
+## Try to work through these examples and make sure you understand them before moving on to the challenge exercises.
+
+m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
+summary(m1)
+
+m2 <- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (mean model)
+summary(m2)
+
+m3 <- lm(NUMEGGS ~ I(FEMWT^0.5), data=sculpin.df)           # fit linear regression with intercept and sqrt of FEMWT term
+summary(m3)
+
+```
+
+
+```{r}
+
+plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
+abline(m1,col="black")                                     # plot line of best fit
+abline(m2,col="red")                                       # plot intercept only model
+
+#########
+#  Here's a flexible method for drawing any arbitrary non-linear relationship!
+FEMWT.pred <- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
+NUMEGGS.pred <- predict(m3,newdata=FEMWT.pred)             # make prediction using "predict()" function
+lines(FEMWT.pred$FEMWT,NUMEGGS.pred,col="green")  # plot sqrt model (note the use of the "lines()" function to draw a line!)
+
+########
+# Perform model selection!
+
+
+#Compare models using AIC
+AIC(m1)
+AIC(m2)
+AIC(m3)
+
+#Compare models using R-squared
+summary(m1)$r.squared 
+summary(m2)$r.squared 
+summary(m3)$r.squared 
+
+#########
+#  And finally, here's how you can draw a confidence interval or prediction interval around a regression relationship!
+
+plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
+NUMEGGS.confint <- predict(m3,newdata=FEMWT.pred,interval="prediction")             # use "predict()" function to compute the prediction interval!
+points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"fit"],col="green",typ="l",lwd=2)  # plot fitted sqrt model
+points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"lwr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
+points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"upr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
+
+
+```
+
+
+### Statistics challenge exercises
+
+1: Fit a linear regression model with NUMEGGS as the response and some other transformation of FEMWT (e.g., lm(NUMEGGS ~ I(FEMWT^3))) as the predictor.
+
+2: Plot the data and the curve of best fit from #1. How does the model fit the data?
+
+3: Fit a linear regression model with NUMEGGS as the response and with both a linear and quadratic effect of FEMWT (within the same formula).
+
+4: Plot the data and the curve of best fit from #1 and #3. Compare the two models. Can you identify a "best model"? If so, which one?
+
+5: Predict the number of eggs (along with prediction interval) for FEMWT=15 using the models you fit in #1 and #3. 
+
+How do the predictions compare?
+
+
+
 
 
 ### Load script for module #2.3

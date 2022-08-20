@@ -12,7 +12,7 @@
 <meta name="author" content="Getting started" />
 
 
-<title>Module 1.1</title>
+<title>Submodule 1.1</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -339,16 +339,16 @@ div.tocify {
       <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting in ggplot2</a>
     </li>
     <li>
-      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: data wrangling</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Workshop #2: Beyond the basics
+    Workshop #2: beyond the basics
      
     <span class="caret"></span>
   </a>
@@ -357,13 +357,13 @@ div.tocify {
       <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Submodule 2.2: Using the 'tidyverse'</a>
+      <a href="module2_0.html">Submodule 2.2: Programming in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Plotting with 'ggplot'</a>
+      <a href="module2_2.html">Submodule 2.3: Stats in R</a>
     </li>
     <li>
-      <a href="module2_4.html">Submodule 2.4: Parallel computing in R</a>
+      <a href="module2_4.html">Submodule 2.4: GIS in R</a>
     </li>
     <li>
       <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
@@ -427,7 +427,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Module 1.1</h1>
+<h1 class="title toc-ignore">Submodule 1.1</h1>
 <h4 class="author">Getting started</h4>
 <h4 class="date">Fall 2022</h4>
 
@@ -437,17 +437,14 @@ div.tocify {
 <p>Welcome to the 2022 UNR R workshop- let’s get started!</p>
 <div id="get-materials-for-this-module" class="section level2">
 <h2>Get materials for this module</h2>
-<ul>
-<li>I recommend having a printed copy of some R “cheatsheets” as you get
-started. You will be introduced to a lot of new material very quickly in
-this workshop, and you are not expected to remember everything!
-‘Cheatsheets’ like this can quickly and easily refresh your memory. So
-print out the cheatsheet and don’t worry if you don’t memorize
-everything we do together in this workshop- the key is that you leave
-this workshop with comfort working in the R command line, doing some
-basic data operations in R, and most importantly, learning and trying
-new things on your own!</li>
-</ul>
+<p>You will be introduced to a lot of new material very quickly in this
+workshop, and you are not expected to remember everything! ‘Cheatsheets’
+can quickly and easily refresh your memory about syntax that can be
+difficult to remember. So don’t worry if you don’t memorize everything
+we do together in this workshop- the key is that you leave this workshop
+with comfort working in the RStudio environment, doing some basic data
+operations in R, and most importantly, learning and trying new things on
+your own!</p>
 <p>Here are links to good R “cheatsheets”:</p>
 <div id="base-r" class="section level3">
 <h3>Base R</h3>
@@ -467,7 +464,7 @@ href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transforma
 transformation</a> <a
 href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf">working
 with dates and times</a></p>
-<p>Additional cheat sheets are available <a
+<p>Many additional cheat sheets are available <a
 href="https://www.rstudio.com/resources/cheatsheets/">here</a></p>
 </div>
 </div>
@@ -533,7 +530,7 @@ shortly.</p></li>
 (Windows shortcut: Alt + -)(Mac: replace Alt with Option), which looks
 like a left arrow (<code>&lt;-</code>). Type the following statement
 directly into the console:</p>
-<pre class="r"><code>myname &lt;- &quot;Daenerys&quot;  # or use your real name.</code></pre>
+<pre class="r"><code>myname &lt;- &quot;Jim Bob&quot;  # or use your real name.</code></pre>
 <p>Then hit “Enter”. What does R return?</p>
 <p>NOTHING!</p>
 <p>BUT…. check the <strong>Environment</strong> window (top right of
@@ -1190,7 +1187,7 @@ composed of one or more scalar <strong>elements</strong> of the same
 type.</p>
 <p>Now let’s do some stuff with vectors!</p>
 <pre class="r"><code>d1 &lt;- 1:3             # make a vector: 1,2,3
-d2 &lt;- d1+3         # add 3 to all elements of the vector &quot;myvec&quot;
+d2 &lt;- d1+3            # add 3 to all elements of the vector &quot;myvec&quot;
 d3 &lt;- d1+d2           # elementwise addition
 
 length(d1)            # number of elements in a vector
@@ -1277,8 +1274,8 @@ mylist[[2]]    # extract the second list element</code></pre>
 <pre><code>## [1] &quot;foo&quot; &quot;bar&quot;</code></pre>
 <pre class="r"><code>mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list !   </code></pre>
 <pre><code>## [1] 3</code></pre>
-<div id="data-frames-a-special-kind-of-list" class="section level5">
-<h5>Data frames (a special kind of list)</h5>
+<div id="data-frames-and-tibbles" class="section level5">
+<h5>Data frames and tibbles</h5>
 <p><strong>Data frame</strong> objects are the basic data storage object
 in R. Data frames are a special type of <strong>list</strong> in which
 each list element is a <em>vector</em> of equal length. Each list
@@ -1307,9 +1304,10 @@ df1</code></pre>
 <pre><code>## [1] &quot;A&quot; &quot;A&quot; &quot;B&quot;</code></pre>
 <p>Now we have a data frame with three observation units and two
 measurements (variables).</p>
-<p>Note that a “tibble” is the same thing as a data frame, just with a
-few tweaks to make it work better in the tidyverse. We will primarily
-work with tibble data frames in this workshop.</p>
+<p>A <strong>tibble</strong> is the same thing as a data frame, just
+with a few tweaks to make it work better in the tidyverse. We will
+primarily work with tibble data frames in this workshop. For our
+purposes right now, tibbles and data frames are the same thing.</p>
 </div>
 </div>
 </div>
@@ -1418,7 +1416,7 @@ mydf</code></pre>
 <pre class="r"><code>mydf$Treatment    # access a column of the data frame by name</code></pre>
 <pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
 <p>Here are some useful R functions for exploring data objects:</p>
-<pre class="r"><code># Other data exploration tricks in R 
+<pre class="r"><code># Useful data exploration/checking tools in R 
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array
@@ -1430,7 +1428,7 @@ str(my.data)      # look at the &quot;internals&quot; of an object (useful for m
 </div>
 </div>
 <div id="challenge-exercises" class="section level2">
-<h2>Challenge exercises!</h2>
+<h2>Challenge exercises</h2>
 <ol style="list-style-type: decimal">
 <li>Create a 3 row by 2 column matrix named ‘mymat’. Use the “rbind()”
 function to bind the following three rows together using these three
@@ -1469,11 +1467,11 @@ data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c(“a”,“a”,“b”)).</p></l
 <li><p>Extract the first and third observation from the 2nd column of
 the data frame in ‘mylist’ (the list created in challenge 6
 above).</p></li>
-<li><p>(extra challenging!) Create a data frame named ‘df_spatial’ that
-contains 25 spatial locations, with ‘long’ and ‘lat’ as the column names
-(25 rows/observations, 2 columns/variables). These locations should
-describe a 5 by 5 regular grid with extent long: [-1,1] and lat:
-[-1,1].</p></li>
+<li><p>(extra challenging!) Create a data frame (or tibble) named
+‘df_spatial’ that contains 25 spatial locations, with ‘long’ and ‘lat’
+as the column names (25 rows/observations, 2 columns/variables). These
+locations should describe a 5 by 5 regular grid with extent long: [-1,1]
+and lat: [-1,1].</p></li>
 </ol>
 <p>HINT: you don’t need to type each location in by hand! Use the
 ‘rep()’ and ‘seq()’ functions instead.</p>
@@ -1488,7 +1486,7 @@ plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&qu
 abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>It should look something like this (above)!</p>
-<p><a href="module1_2.html">–go to next module–</a></p>
+<p><a href="module1_2.html">–go to next submodule–</a></p>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr />

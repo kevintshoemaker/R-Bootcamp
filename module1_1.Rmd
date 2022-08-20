@@ -1,5 +1,5 @@
 ---
-title: "Module 1.1"
+title: "Submodule 1.1"
 author: "Getting started"
 date: "Fall 2022"
 output: 
@@ -802,6 +802,6 @@ abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
 It should look something like this (above)!
 
 
-[--go to next module--](module1_2.html)
+[--go to next submodule--](module1_2.html)
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Module 1.2"
+title: "Submodule 1.2"
 author: "Getting started: managing data"
 date: "Fall 2022"
 output: 
@@ -600,11 +600,11 @@ missing.df %>%
 
 ## Challenge exercises
 
-1: Save the ["comm_data.txt"](comm_data.txt) file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
+1. Save the ["comm_data.txt"](comm_data.txt) file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
 
-2: Read in the file ["turtle_data.txt"](turtle_data.txt). Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the "na.omit()" function to remove rows with NAs] [hint 2: use the write_csv function to write to your working directory] 
+2. Read in the file ["turtle_data.txt"](turtle_data.txt). Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the "na.omit()" function to remove rows with NAs] [hint 2: use the write_csv function to write to your working directory] 
   
-3: Read in the file ["turtle_data.txt"](turtle_data.txt). Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles. 
+3. Read in the file ["turtle_data.txt"](turtle_data.txt). Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles. 
 
 
 ```{r}
@@ -647,7 +647,7 @@ write_csv(turt1,"turt_test1.csv")
 
 
 
-[--go to next module--](module1_3.html)
+[--go to next submodule--](module1_3.html)
 
 
 

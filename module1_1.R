@@ -5,8 +5,7 @@
 #  Getting started with R: the basics  --------------------
 
 
-
-myname <- "Daenerys"  # or use your real name.
+myname <- "Jim Bob"  # or use your real name.
 
 
 # R DEMO ----------------------  
@@ -240,7 +239,7 @@ vector2 <- c('a', 'b', 'c')
 
 
 d1 <- 1:3             # make a vector: 1,2,3
-d2 <- d1+3         # add 3 to all elements of the vector "myvec"
+d2 <- d1+3            # add 3 to all elements of the vector "myvec"
 d3 <- d1+d2           # elementwise addition
 
 length(d1)            # number of elements in a vector
@@ -346,7 +345,7 @@ mydf
 mydf$Treatment    # access a column of the data frame by name
 
 
-# Other data exploration tricks in R 
+# Useful data exploration/checking tools in R 
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array

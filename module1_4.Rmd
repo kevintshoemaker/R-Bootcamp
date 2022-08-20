@@ -80,7 +80,6 @@ library(lubridate)
 
 ```
 
-
 ## Import sample data
 
 The next few examples use meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams. You can download this data set by clicking [here](MTMetStations.csv). Make sure you download this data set into your project directory!! 
@@ -256,29 +255,34 @@ For example, the above code block involves doubling the formula for converting t
 station_mean2 <- tidy_clim_data %>%
   group_by(Station) %>% 
   summarize(across(where(is.numeric), mean, na.rm=TRUE)) %>%
-  mutate(across(c(TMaxF, TMinF), C=(.-32)*5/9)) %>% 
-  mutate_at(vars(PrcpIN), funs(Prcp.mm=.*25.4))
+  mutate(across(c("TMaxF", "TMinF"), ~(.-32)*(5/9)))   %>% 
+  rename_with(~gsub("F","C",.),starts_with("T")) %>% 
+  mutate(across(PrcpIN, ~.*25.4,.names="Prcp_mm")) %>% 
+  select(!PrcpIN)
 
 station_mean2
   
 ```
 
-#  Working with Dates with *lubridate* - Date from character string
-Dates can be tricky to work with and we often want to eventually get to the point that we can summarize our data by years, seasons, months, or even day of the year. The *lubridate* package in R (also part of the tidyverse) is very useful for creating and parsing dates for this purpose. Date/time data often comes as strings in a variety of orders/formats. Lubridate is useful because it automatically works out the date format once you specify the order of the components. To to do this, identify the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date. For example:
+##  Working with Dates with *lubridate* - Date from character string
+
+Dates can be tricky to work with and we often want to eventually get to the point that we can summarize our data by years, seasons, months, or even day of the year. The *lubridate* package in R (also part of the tidyverse) is very useful for creating and parsing dates for this purpose. Date/time data often come as strings in a variety of orders/formats. `Lubridate` is useful because it automatically works out the date format once you specify the order of the components. To do this, identify the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date! 
+
+For example:
 
 ```{r lubridate1}
 
-#### 
-####  Using lubridate to format and create date data types
-####
+#  Using lubridate to format and create date data types -----------------
 
 library(lubridate)
 
 date_string <- ("2017-01-31")
 
-# convert date string into date format by identifing the order in which year, month, and day appear in your dates, then arrange "y", "m", and "d" in the same order. That gives you the name of the lubridate function that will parse your date
+# convert date string into date format by identifing the order in which
+#   year, month, and day appear in your dates, then arrange "y", "m", and #   "d" in the same order. That gives you the name of the lubridate
+#    function that will parse your date
 
-date_dtformat <- ymd(date_string)
+ymd(date_string)
 
 # note the different formats of the date_string and date_dtformat objects in the environment window.
 
@@ -289,7 +293,10 @@ dmy("31-Jan-2017")
 ymd(20170131)
 ymd(20170131, tz = "UTC")
 
-# can also make a date from components. this is useful if you have columns for year, month, day in a dataframe
+# can also make a date from components. 
+#   this is useful if you have columns for year, month, 
+#   day in a dataframe
+
 year<-2017
 month<-1
 day<-31
@@ -304,19 +311,16 @@ mdy_hm("01/31/2017 08:01")
 # we can also have R tell us the current time or date
 
 now()
-now(tz = "UTC")
 today()
 
 ```
 
-#  Working with Dates with lubridate - Parsing Dates
+###  Working with Dates with lubridate - Parsing Dates
 Once dates are in date format, we can easily pull out their individual components like this:
 
 ```{r lubridate components}
 
-####
-####  Parsing dates with lubridate
-####
+#  Parsing dates with lubridate -----------------------
 
 datetime <- ymd_hms("2016-07-08 12:34:56")
 
@@ -341,18 +345,19 @@ wday(datetime, label = TRUE, abbr = FALSE)
 
 ```
 
-##  Working with Dates - Parsing Dates Example
+###  Working with Dates - Parsing Dates Example
+
 We can use lubridate and dplyr to make new columns from a date for year, month, day of month, and day of year
 
 first we convert the character string date into date format. Here we are naming the new column "Date", so R will replace character string with date formatted dates
 
 ```{r lubridate3}
 
-#### 
 ####  Using lubridate with dataframes and dplyr verbs
-####
 
-# going back to our tidy_clim_data dataset we see that the date column is formatted as character, not date
+# going back to our tidy_clim_data dataset we see that 
+#   the date column is formatted as character, not date
+
 head(tidy_clim_data)
 
 # change format of date column
@@ -361,15 +366,17 @@ tidy_clim_data <- tidy_clim_data %>%
 tidy_clim_data
 ```
 
-now we can use mutate to create individual columns for the date components
+Now we can use mutate to create individual columns for the date components
 
 ```{r mutate date}
 # parse date into year, month, day, and day of year columns
-tidy_clim_data <- tidy_clim_data %>% mutate(
-  Year = year(Date),
-  Month = month(Date),
-  Day = mday(Date),
-  Yday = yday(Date))
+tidy_clim_data <- tidy_clim_data %>% 
+  mutate(
+    Year = year(Date),
+    Month = month(Date),
+    Day = mday(Date),
+    Yday = yday(Date)
+  )
 
 tidy_clim_data
 
@@ -383,31 +390,72 @@ annual_sum_precip_by_station
 ```
 
 
-#  Challenge Exercises
+##  Challenge Exercises
 
-##  Exercise 1 - make data tidy
+1. Try to put tidyr's built-in `relig_income` dataset into a tidier format. This dataset stores counts based on a survey which (among other things) asked people about their religion and annual income: 
 
-- Create a tibble dataframe using the code below and make it tidy. Do you need to pivot_longer or pivot_wider? What are the variables? what are the observations?
- 
-``` 
-pregnancy <- tribble(         
-    ~pregnant, ~male, ~female,          
-    "yes",     NA,    10,           
-    "no",      20,    12        
-)
+Your final result should look like this:
+
+```{r echo=FALSE}
+
+relig_income %>% 
+  pivot_longer(cols=!religion, names_to = "Income",values_to="count")
+
+
 ```
-  
-##  Exercise 2 - data summary with dplyr
+2. Use the dplyr verbs and the tidy_clim_data dataset you created above to calculate monthly average Tmin and Tmax for each station
 
-- use the dplyr verbs and the tidy_clim_data dataset you created above to calculate monthly average Tmin and Tmax for each station
+3. Using lubridate, make a date object out of a character string of your birthday and find the day of week it occurred on. Note, you can use the 'wday' function in lubridate to extract the day of the week (1 is sunday).
 
-## Exercise 3 - make and parse a date with lubridate
+```{r}
 
-make a date object out of a character string of your birthday and find the day of year it occurs on.
+# CHALLENGE EXERCISES   -------------------------------------
+
+# 1. Try to put tidyr's built-in `relig_income` dataset into a tidier format. 
+#      This dataset stores counts based on a survey which (among other things) 
+#      asked people about their religion and annual income:
+
+# 2. Use the dplyr verbs and the tidy_clim_data dataset you created above 
+#       to calculate monthly average Tmin and Tmax for each station (in Fahrenheit is okay)
+
+# 3. Using lubridate, make a date object out of a character string of your 
+#        birthday and find the day of week it occurred on. Note, you 
+#        can use the 'wday' function in lubridate to extract the day of the #         week (1 is sunday).
 
 
+```
 
-[--go to next module--](module2_1.html)
+```{r eval=FALSE, echo=FALSE}
+
+# Module 1_2 challenge problems: answers  -------------
+
+
+# 1. Create a tibble dataframe using the code below (`tribble()` constructs a tibble by rows)
+#      and make it tidy. Do you need to pivot_longer or pivot_wider?
+
+relig_income %>% 
+  pivot_longer(cols=!religion, names_to = "Income",values_to="count")
+
+# 2. Use the dplyr verbs and the tidy_clim_data dataset you created above 
+#       to calculate monthly average Tmin and Tmax (in Fahrenheit is okay) for each station
+
+tidy_clim_data %>% 
+  group_by(Station,Month) %>% 
+  summarize(across(c(TMinF,TMaxF),mean))
+
+# 3. Using lubridate, make a date object out of a character string of your 
+#        birthday and find the day of week it occurred on. Note, you 
+#        can use the 'wday' function in lubridate to extract the day of the #         week (1 is sunday).
+
+mybday <- "12/12/1977"
+mybday <- mdy(mybday)
+wday(mybday,label=T)
+
+
+```
+
+
+[--go to next submodule--](module2_1.html)
 
 
 

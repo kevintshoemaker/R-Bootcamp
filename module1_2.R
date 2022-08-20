@@ -23,10 +23,10 @@ getwd()          # note: the results from running this command on my machine wil
 
 #  Import data files into R----------------------
 
-# ?read_table    # some useful functions for reading in data
+# ?read_delim    # some useful functions for reading in data
 
-# read_table to import textfile with columns separated by whitespace
-data.txt.df <- read_table("data.txt")  
+# read_delim to import textfile (if no delim specified, it will try to guess!)
+data.txt.df <- read_delim("data.txt")  
 
 # read_csv to import textfile with columns separated by commas
 data.df <- read_csv("data.csv")
@@ -47,7 +47,7 @@ head(mtcars)    # inspect the first few lines
 # ?mtcars        # learn more about this built-in data set
 
 
-ggplot2::diamonds   # note the use of the package name followed by two colons- this is a way to make sure you are using a function (or data set) from a particular package... (sometimes several packages have functions with the same name...)
+ggplot2::diamonds   # note the use of the package name followed by two colons- this is a way to make sure you are using a function (or data set or other object) from a particular package... (sometimes several packages have functions with the same name...)
 
 
 
@@ -72,16 +72,19 @@ write_csv(data.df[,c("Country","Product")], file="data_export.csv")   # export a
 
 #  Saving and loading--------------------
 
-# ?save: saves particular objects to hard disk
+# saveRDS: save a single object from the environment to hard disk
+# save: saves one or more objects from the environment to hard disk. Must be read back in with the same name.
 
 a <- 1
 b <- data.df$Product
 
-save(a,b,file="Module1_2.RData")
+saveRDS(b, "Myobject1.rds")
+save(a,b,file="Myworkspace.RData")
 
 rm(a,b)   # remove these objects from the environment
 
-load("Module1_2.RData")   # load these objects back in!
+new_b <- readRDS("Myobject1.rds")
+load("Module1_2.RData")   # load these objects back in with the same names!
 
 
 # Clear the environment ------------------------
@@ -150,10 +153,33 @@ data.df %>%
   filter(Country %in% sub.countries)   # subset just those rows that match the list of countries
 
 
-#  Practice subsetting a data frame ------------------------
+#  ASIDE: using the pipe operator %>% (ctrl-shift-m) in R ---------------------
 
-turtles.df <- read_table(file="turtle_data.txt")
+# start with a simple example
+x <- 3
+
+# calculate the log of x
+log(x) # form f(x) is equivalent to
+
+x %>% log() # form x %>% f
+
+# example of multiple steps in pipe
+round(log(x), digits=2) # form g(f(x)) is equivalent to
+
+x %>% log() %>% round(digits=2) 
+
+
+#  Practice subsetting a data frame ------------------------
+turtles.df <- read_delim(file="turtle_data.txt",delim="\t")   # tab-delimited file
 turtles.df
+
+# Subset for turtles that weigh greater than or equal to 10g
+
+subset.turtles.df <- turtles.df %>% 
+  filter(weight >= 10)
+
+subset.turtles.df
+
 
 # Subset for only females
 
@@ -180,17 +206,12 @@ turtles.df$sex[turtles.df$sex=="fem"] <- "female"  # correct the error
 turtles.df = turtles.df %>% 
   mutate(sex = replace(sex,sex=="fem","female"))
 
-turtles.df %>%          # summarize weight by sex
+turtles.df %>%          # summarize weight by sex (check that it's fixed)
   group_by(sex) %>% 
   summarize(meanwt = mean(weight))
 
 
 #  Data Manipulation using subsetting -------------------
-
-subset.turtles.df <- turtles.df %>% 
-  filter(weight >= 10)
-
-subset.turtles.df
 
 # list of tags we do not trust the data for
 bad.tags <- c(13,105)
@@ -203,7 +224,13 @@ turtles.df = turtles.df %>%
     weight = replace(weight,tag_number%in%bad.tags,NA)
   )
 
-# or use the following non-tidyverse syntax... which seems simpler to me!
+# or... use some more tidyverse helper functions and tricks!
+
+turtles.df = turtles.df %>% 
+  mutate(across(c("sex","carapace_length","head_width","weight"),
+                ~replace(.x,tag_number%in%bad.tags,NA)))
+
+# or use the following non-tidyverse syntax... which still seems easier to me!
 
 turtles.df[turtles.df$tag_number%in%bad.tags,c("sex","carapace_length","head_width","weight")]  <- NA
 
@@ -267,6 +294,9 @@ missing.df <- read_delim(file="data_missing.txt",delim="\t")   # try replacing w
 # Missing data are read as an NA
 missing.df
 
+# Can summarize your data and tell you how many NA's per col
+summary(missing.df)
+
 # Omits (removes) rows with missing data
 na.omit(missing.df)
 
@@ -275,19 +305,18 @@ is.na(missing.df)
 
 complete.cases(missing.df)   # Boolean: for each row, tests if there are no NA values
 
-# Replace all missing values in the data frame with a an interpolation function from the 'zoo' package (here we interpolate using the mean value)
+# Replace all missing values in the data frame with a an interpolation function from tidyverse: replace_na
 
 missing.df %>% 
-  mutate(Export = na.fill(Export,mean(Export,na.rm=T)),
-         Import = na.fill(Import,mean(Import,na.rm=T)))
+  mutate(Export = replace_na(Export,mean(Export,na.rm=T)),
+         Import = replace_na(Import,mean(Import,na.rm=T)))
 
-# Can summarize your data and tell you how many NA's per col
-summary(missing.df)
+# or using tidyverse trickery (less code repetition)
+missing.df %>% 
+  mutate(across(where(is.numeric),~replace_na(.,mean(.,na.rm=T))))
 
 
-############
-### CHALLENGE EXERCISES
-############
+# CHALLENGE EXERCISES   -------------------------------------
 
 # 1: Save the "comm_data.txt" file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
 # 

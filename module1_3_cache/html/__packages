@@ -1,1 +1,15 @@
-base
+ggplot2
+cowplot
+tidyverse
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+leaflet
+ggthemes
+carData
+DAAG
+RColorBrewer

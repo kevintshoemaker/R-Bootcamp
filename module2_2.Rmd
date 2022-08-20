@@ -1,7 +1,7 @@
 ---
 title: "Module 2.2"
 author: "The Tidyverse and Data Wrangling in R"
-date: "Fall 2021"
+date: "Fall 2022"
 output: 
   html_document: 
     theme: journal

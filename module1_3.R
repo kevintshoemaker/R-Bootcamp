@@ -1,416 +1,345 @@
 
-##################################################
-####                                          ####  
-####  R Bootcamp #1, Module 3                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
+#  R Bootcamp #1, Module 3  -----------------------------         
+#      University of Nevada, Reno   
 
-## NOTE: this module borrows heavily from an R short-course developed by a team at Colorado State University. 
-   # Thanks to Perry Williams for allowing us to use these materials!!
-   # Thanks to John Tipton at CSU for developing much of this module (plotting in R)!
+#  Data visualization and statistics ----------------------
 
-############################################
-####  Data visualization and statistics ####
-############################################
+library(ggplot2)
+library(cowplot)
+library(tidyverse)
+library(leaflet)
 
 
 # ?trees      # description of built in dataset  (uncomment to run)
 
 dim(trees)   # Show the dimension of the trees dataframe                                              
-
 str(trees)   # Show the structure of the trees dataframe
 
 head(trees)   # Show the first few observations of the trees dataframe
 
+summary(trees)  # Summary stats for each column
 
-# Access the columns 
-trees$Girth     
-trees$Volume
 
+# scatterplot
 
-plot(x=trees$Girth, y=trees$Volume)    # use R's built-in "trees" dataset: ?trees
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point()
 
 
-?par
+    # try representing tree height using the color aesthetic
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point(aes(col=Height))
 
-par()   # view the default graphical parameters (can be kind of overwhelming!)
+    # try representing tree height using the size aesthetic
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point(aes(size=Height))
 
+   # try adding a regression line
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point() +
+  geom_smooth(method="lm")
 
-# Use "layout" to define a 2 row x 2 column matrix with elements 1, 2, 3, and 4.
-# This divides the image into four sections and then fills these with the plot function
-layout(matrix(1:4, nrow=2, ncol=2))
 
-# layout.show(n=4)   # uncomment to run
+# Explore different "geoms" or plot types ----------------
 
-plot(x=trees$Girth, y=trees$Volume)             # points
-plot(x=trees$Girth, y=trees$Volume, type="l")   # lines
-plot(x=trees$Girth, y=trees$Volume, type="b")   # both
-plot(x=trees$Girth, y=trees$Volume, type="o")   # both with conected lines
+plot1 <- ggplot(trees,aes(Girth,Volume)) +    # plot the relationship as a line
+  geom_line()
+plot2 <- ggplot(trees,aes(Girth,Volume)) +    # plot a smoothed "spline" fit of the relationship
+  geom_smooth()
+plot3 <- ggplot(trees,aes(Girth,Volume)) +    # plot scatterplot
+  geom_point() 
+plot4 <- ggplot(trees,aes(Girth,Volume)) +    # plot scatterplot with smoothed regression line
+  geom_point() + 
+  geom_smooth()
+plot_grid(plot1,plot2,plot3,plot4,labels="auto")
 
 
-plot(x=trees$Girth, y=trees$Volume)             ## The plot is still in 4 parts
+# Explore different aesthetic mappings ---------------------
 
-graphics.off()                                  ## now the plot is reset!
+plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # shape represents species
+  geom_point(aes(shape=Species))
+plot2 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +       # shape is same for everything!
+  geom_point(shape=2)
+plot3 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) 
+plot4 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color is same across the board
+  geom_point(col="purple")  
+plot5 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # size represents species
+  geom_point(aes(size=Species)) 
+plot6 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # size is same across the board
+  geom_point(size=2) 
+plot_grid(plot1,plot2,plot3,plot4,plot5,plot6,ncol=2)
 
-# layout(1)   # (alternative way to reset back to a single plot)
 
-plot(x=trees$Girth, y=trees$Volume)             ## The plot is still in 4 parts
+# explore themes -----------------------------
 
+plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_bw()
+plot2 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_classic()
+plot3 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_minimal()
+plot4 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) +
+  theme_minimal_grid(font_size = 11)
 
+plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 
-# Use layout to define a 3 row x 1 column matrix with elements 1, 2, and 3.
-# This divides the image into three sections and then fills these with the plot function
-layout(matrix(1:3, nrow=3, ncol=1))
+# note: many other themes are available in ggplot, cowplot and other related packages
 
-# pch: 'plotting character' changes the type of point that is used (default is an open circle)!
-plot(x=trees$Girth, y=trees$Volume, pch=19)     # filled point
-plot(x=trees$Girth, y=trees$Volume, pch=2)      # open triangle
-plot(x=trees$Girth, y=trees$Volume, pch=11)     # star
 
+# add additional plot elements: title, axis limis, axis labels ------------------
 
-layout(matrix(1:4, 2, 2))
-# main: adds a title
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees")
+plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x="Sepal Length (cm)")
 
-# xlab: adds an x axis label
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees", 
-     xlab="Tree Girth (in)")
+plot2 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x="Sepal Length (cm)",y="Petal Length (cm)",color="Iris sp.")
 
-# ylab: adds a y axis label
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees", 
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)")
+plot3 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  labs(x="Sepal Length (cm)",y="Petal Length (cm)",color="Iris sp.",
+       title="Fisher's Iris Data",subtitle = "practice with ggplot")
 
-# las: rotates axis labels; las=1 makes them all parallel to reading direction
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees", 
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)", 
-     las=1)
+plot4 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
+  geom_point(aes(color=Species)) + 
+  coord_cartesian(xlim=c(0,10),ylim=c(0,10)) +
+  labs(x="Sepal Length (cm)",y="Petal Length (cm)",color="Iris sp.",
+       title="Fisher's Iris Data",subtitle = "practice with ggplot")
 
+plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 
-# Use layout to define a 2 row x 2 column matrix with elements 1, 1, 2, and 3.
-# This divides the image into four sections but fills the first two sections
-# with the first plot and then fills these next two sections with the final two plots
-layout(matrix(c(1, 1, 2, 3), nrow=2, ncol=2))
-# layout.show(3)
 
-# col: select a color for the plotting characters
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees",
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)",
-     las=1, col="blue")
+# bar plots and box-whisker plots -----------------------
 
-# We can use the c() function to make a vector and have several colors, plotting characters, etc. per plot.
-# We start with alternating colors for each point
-plot(x=trees$Girth, y=trees$Volume, pch=19, 
-     main="Girth vs. Volume for Black Cherry Trees",
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)", 
-     las=1, col=c("black", "blue"))
-
-# And we can also alternate the plotting symbol at each point.
-plot(x=trees$Girth, y=trees$Volume, pch=c(1,19), 
-     main="Girth vs. Volume for Black Cherry Trees", 
-     xlab="Tree Girth (in)", ylab="Tree Volume (cu ft)", 
-     las=1, col="blue")
-
-
-?iris
-head(iris)     # display first few rows of data
-dim(iris)      # dimensionality of the data
-str(iris)      # details of the data structure
-
-
-plot.colors <- c("violet", "purple", "blue")   # define the colors for representing species ID
-
-
-names(plot.colors) <- levels(iris$Species)   # the "levels()" function returns all unique labels for any "factor" variable    
-plot.colors
-
-
-# generate a vector of colors for our plot (one color for each observation)
-
-indices <- match(iris$Species,names(plot.colors))   # the "match()" function goes through each element of the first vector and finds the matching index in the second vector         
-color.vector <- plot.colors[indices]
-
-
-
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main="Iris sepal length vs. petal length", xlab="Petal length", 
-     ylab="Sepal length", las=1)
-
-########
-# experiment with legends
-
-# ?legend
-
-layout(matrix(1:3, nrow=1, ncol=3))
-
-# Plot
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main="Iris sepal length vs. petal length", xlab="Petal length", 
-     ylab="Sepal length", las=1)
-
-# First legend
-legend("topleft", pch=19, col=plot.colors, legend=unique(iris$Species))
-
-# Second plot
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector,
-     main="Iris sepal length vs. petal length", 
-     xlab="Petal length", ylab="Sepal length", las=1)
-
-# Second legend
-# The bty="n" argument suppresses the border around the legend. (A personal preference)
-legend("topleft", pch=19, col=plot.colors, 
-       legend=c("I. setosa", "I. versicolor", "I. virginica"), bty="n")
-
-
-# Plot Three
-plot(x=iris$Petal.Length, y=iris$Sepal.Length, pch=19, col=color.vector, 
-     main="Iris sepal length vs. petal length", 
-     xlab="Petal length", ylab="Sepal length", las=1)
-
-#Legend tree with Italics
-legend("topleft", pch=19, col=plot.colors, 
-       legend=c("I. setosa", "I. versicolor", "I. virginica"), 
-       bty="n", text.font=3)
-
-
-## Diplaying gradients (continuous data) using color and size
-
- # ?mtcars
-
-head(mtcars)
-
-
-## Plot fuel economy by weight
-
-plot(mpg~wt,  data=mtcars,pch=20,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)")      # note the tilde, which can be read "as a function of" -- i.e., "plot mpg as a function of wt"   
- 
-
-## Plot fuel economy by weight and horsepower
-
-hp_rescale <- (mtcars$hp-min(mtcars$hp))/diff(range(mtcars$hp))    # scale from 0 to 1
-
-plot(mpg~wt,  data=mtcars,pch=1,xlab="Vehicle weight (1000 lbs)",ylab="Fuel economy (mpg)",cex=(hp_rescale+0.6)*1.2)   # plot with different sized points
-
-legend("topright",pch=c(1,1),pt.cex=c(0.6,0.6*1.2),legend=paste(range(mtcars$hp),"horsepower"),bty="n")
-
-
- 
-
-## calculate the mean Sepal Length of for each species
-bar.heights <- tapply(iris$Sepal.Length, iris$Species, mean)   #use "tapply()" function, which summarizes a numeric variable by levels of a categorical variable)
-
-# The basic 'barplot()' function
-barplot(bar.heights)
-
-
-CI <- 2 * tapply(iris$Sepal.Length, iris$Species, sd)
-lwr <- bar.heights - CI
-upr <- bar.heights + CI
-
-# I used the ylim= argument to pass a 2-element numeric vector specifying the y extent of the barplot (y axis lower and upper bounds). I added some extra room on the top to account for error bars.
-# Importantly, assign the barplot to an object. I called it 'b' but you can call it whatever you like. (otherwise, it's hard to know what the "X" values of the error bars are!)
-
-b <- barplot(bar.heights, 
-             names.arg=c("I. setosa", "I. versicolor", "I. virginica"), 
-             las=1, ylim=c(0,8), col=adjustcolor(plot.colors, alpha.f=0.5),
-             main="Sepal length for 3 Irises", ylab="Sepal length (cm)")
-
-# Specify where each arrow starts (x0= and y0=) and ends (x1= and y1=)
-arrows(x0=b, x1=b, y0=lwr, y1=upr, code=3, angle=90, length=0.1)
-
-# ?arrows
-
-
-pairs(iris)
+plot1 <- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot
+  geom_boxplot() 
+  
+plot2 <- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot +
+  geom_violin() 
+
+# bar plot
+bar.heights <- iris %>% 
+  group_by(Species) %>% 
+  summarize(meanSL = mean(Sepal.Length))
+
+plot3 <- ggplot(bar.heights, aes(Species,meanSL)) +
+  geom_col()
+
+
+plot4 <- ggplot(bar.heights, aes(Species,meanSL)) +
+  geom_col(aes(fill=Species)) +
+  theme_classic() +
+  scale_fill_manual(values=c("gray","red","brown"))
+  
+plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
+
+
+# Bar plot with error bars ------------------------
+
+bar.heights <- iris %>% 
+  group_by(Species) %>% 
+  summarize(meanSL = mean(Sepal.Length),
+            n = n(),
+            sdSL = sd(Sepal.Length),
+            se = sdSL/sqrt(n))
+  
+ggplot(bar.heights,aes(x=Species,y=meanSL)) + 
+  geom_col(fill=gray(0.7),color="black") +
+  geom_errorbar(aes(ymin=meanSL-2*sdSL,ymax=meanSL+2*sdSL),width=.2) +
+  labs(y="Sepal Length")
 
 
 # ?ToothGrowth
 head(ToothGrowth)
 
 
-prop <- c(0.18, 0.25, 0.13, 0.05)
-asympLCL <- c(0.14, 0.20, 0.11, 0.035)
-asympUCL <- c(0.24, 0.33, 0.18, 0.09)
+# toothgrowth plot -------------------
 
 
-set.seed(13)
-n <- 20 # Number of experimental trials
-a <- 12
-b <- 1.5
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
 
-rings <- round(runif(n)*50)  # number of bell rings
-wings <- round(a + b*rings + rnorm(n, sd=5))       # number of angels who get their wings
-offset <- rpois(n, lambda=10)           # measurement error
-lwr <- wings - offset                 
-upr <- wings + offset
+sumTC <- ToothGrowth %>% 
+  group_by(supp,dose) %>% 
+  summarize(mean = mean(len),
+            sd = sd(len))
 
 
-####################
-# STATISTICS!
-####################
+p<- ggplot(sumTC, aes(x=dose, y=mean, fill=supp)) + 
+  geom_col(color="black", 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.2,
+                 position=position_dodge(0.9)) +
+  labs(title="Tooth growth", x="Dose (mg)", y = "Length") +
+   theme_classic() +
+   scale_fill_manual(values=c('#999999','#E69F00'))
 
-#####
-#####  Load Data
-#####
-
-sculpin.df <- read.csv("sculpineggs.csv")
-
-head(sculpin.df)
-
-
-#####
-#####  Summary Statistics
-#####
-
-mean(sculpin.df$NUMEGGS)      # compute sample mean
-median(sculpin.df$NUMEGGS)    # compute sample median
-
-min(sculpin.df$NUMEGGS)       # sample minimum
-max(sculpin.df$NUMEGGS)       # sample maximum
-range(sculpin.df$NUMEGGS)     # both min and max.
-
-quantile(sculpin.df$NUMEGGS,0.5)            # compute sample median using quantile function
-quantile(sculpin.df$NUMEGGS,c(0.25,0.75))   # compute sample quartiles
-
-var(sculpin.df$NUMEGGS)           # sample variance
-sd(sculpin.df$NUMEGGS)            # sample standard deviation
-sd(sculpin.df$NUMEGGS)^2          # another way to compute variance
-var(sculpin.df$NUMEGGS)^0.5       # another way to compute std. dev.
-
-colMeans(sculpin.df)           # column mean of data frame
-apply(sculpin.df,2,mean)       # column mean of data frame   # note the use of the "apply()" function. 
-apply(sculpin.df,2,median)     # column median of data frame
-
-
-########
-# Or just use the "summary()" function!
-
-summary(sculpin.df) # provides a set of summary statistics for all columns in a data frame. 
+print(p)
 
 
 
-###########
-# Deal with missing data
+# More complex example -----------------------------
 
-newdf <- read.table(file="data_missing.txt", sep="\t", header=T)  # load dataset with missing data
-
-mean(newdf$Export)
-
-mean(newdf$Export,na.rm = TRUE)
+library(ggthemes)
+library(carData)
+library(DAAG)
+library(RColorBrewer)
 
 
-#####
-#####  Plot data 
-#####
+# Load the example data -----------------------
 
-hist(sculpin.df$NUMEGGS)
+soil <- carData::Soils    # load example data
 
-plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)
+#See what variables it contains...
+head(soil)    # plot out the first few lines...
 
 
-#####
-#####  Linear Regression  
-#####
+######
+# Plot several relationships on same graphics window
 
-m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)      # fit linear regression model
+ggplot(soil, aes(x=pH)) +
+  geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Mg), shape=21, fill="blue", color="black", size=4, stroke=1.5) +
+  geom_point(aes(y=Na), shape=21, fill="gray30", color="black", size=4, stroke=1.5)
 
-m1                                      # view estimates of intercept and slope 
-summary(m1)                             # view summary of fit
-summary(m1)$r.squared                   # extract R-squared
-confint(m1)                             # confidence intervals for intercept and slope
-AIC(m1)                                 # report AIC (Akaike's Information Criterion, used to perform model selection) 
 
-plot(x = sculpin.df$FEMWT,y = sculpin.df$NUMEGGS)    # plot data
-abline(m1)                                           # plot line of best fit
+# Use 'tidyverse' to reshape the data  ---------------
 
-########
-# Use the "predict()" function!
+soil.nut <- pivot_longer(soil, cols=c("Ca","Mg","Na"), names_to="nutrient",values_to = "value" )
+soil.nut
+ggplot(soil.nut) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
 
-FEMWT.pred <- data.frame(FEMWT = 30)                   # create new data frame to predict number of eggs at FEMWT of 30
-predict(m1,newdata=FEMWT.pred)                         # make prediction
-predict(m1,newdata=FEMWT.pred,interval="confidence")   # make prediction and get confidence interval
-predict(m1,newdata=FEMWT.pred,interval="prediction")   # make prediction and get prediction interval
 
+######
+# or if we wanted to plot different nutrients...
+
+soil.nut2 <- pivot_longer(soil, cols=c("Ca","Mg","K"), names_to="nutrient",values_to = "value" )
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
 
 
 ##########
-#  Explore the use of the "I()" syntax to interpret mathematical expressions literally (as is) within formulas. 
+# plot with facets, scales, and themes!
 
-mod_noI <- lm(NUMEGGS ~ FEMWT^2, data=sculpin.df)                  # fit linear regression model. But the "^2" doesn't seem to do anything here? What happened?
-summary(mod_noI)
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  facet_wrap(~nutrient, scales="free_y") +
+  labs(y="mg / 100 g soil") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face="bold"))
+    
 
-mod_withI <- lm(NUMEGGS ~ I(FEMWT^2), data=sculpin.df)                  # fit linear regression model
-summary(mod_withI)
+############
+# Playing with colors in ggplot!
 
+display.brewer.all()
 
-##################################
-####  Model selection example ####
-##################################
-
-## Try to work through these examples and make sure you understand them before moving on to the challenge exercises.
-
-m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
-summary(m1)
-
-m2 <- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (mean model)
-summary(m2)
-
-m3 <- lm(NUMEGGS ~ I(FEMWT^0.5), data=sculpin.df)           # fit linear regression with intercept and sqrt of FEMWT term
-summary(m3)
-
-
-plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
-abline(m1,col="black")                                     # plot line of best fit
-abline(m2,col="red")                                       # plot intercept only model
 
 #########
-#  Here's a flexible method for drawing any arbitrary non-linear relationship!
-FEMWT.pred <- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
-NUMEGGS.pred <- predict(m3,newdata=FEMWT.pred)             # make prediction using "predict()" function
-lines(FEMWT.pred$FEMWT,NUMEGGS.pred,col="green")  # plot sqrt model (note the use of the "lines()" function to draw a line!)
+# Choose a new color palette from the RColorBrewer package
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_classic() +
+  labs(y="Ca (mg/100g soil)") +
+  scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
+
+
+#########
+# Choose your own palette!
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5) +
+  theme_bw() +
+  ylab("Ca (mg/100g soil)") +
+  scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
+
+
+###########
+# Adding density/smooth curves to plots
+
+   ## first produce some histograms
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value), color="black", fill="white", bins=15) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_classic() +
+  theme(axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face="bold"))
 
 ########
-# Perform model selection!
+# Then add density curves
+
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  geom_density(aes(x=value,color=nutrient), size=1.5) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_classic() +
+  theme(legend.position="none",
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face="bold"))
 
 
-#Compare models using AIC
-AIC(m1)
-AIC(m2)
-AIC(m3)
+###########
+# And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
 
-#Compare models using R-squared
-summary(m1)$r.squared 
-summary(m2)$r.squared 
-summary(m3)$r.squared 
-
-#########
-#  And finally, here's how you can draw a confidence interval or prediction interval around a regression relationship!
-
-plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
-NUMEGGS.confint <- predict(m3,newdata=FEMWT.pred,interval="prediction")             # use "predict()" function to compute the prediction interval!
-points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"fit"],col="green",typ="l",lwd=2)  # plot fitted sqrt model
-points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"lwr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
-points(FEMWT.pred$FEMWT,NUMEGGS.confint[,"upr"],col="green",typ="l",lty=2)  # plot fitted sqrt model
+ggplot(soil.nut) +
+  geom_histogram(aes(x=value, y=..density..), color="black", fill="white", bins=15) +
+  stat_function(fun = dnorm, color = "blue", size = 1.5,
+                args=list(mean=mean(soil.nut$value), sd=sd(soil.nut$value))) +
+  facet_wrap(~nutrient, scales="free") +
+  xlab("mg / 100g soil") +
+  theme_classic() +
+  theme(legend.position="none",
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=25),
+        strip.text = element_text(size=25, face="bold"))
 
 
+#######
+# add error bars and other stat summaries (e.g., mean) to boxplot
 
-layout(matrix(1:2, 1, 2))
+ggplot(soil, aes(x=Contour, y=pH)) +
+  stat_boxplot(geom="errorbar", width=0.2) +  
+  stat_boxplot() +
+  stat_summary(fun=mean,geom="point",size=5, color="black")
+  
 
-## y-axis is in counts by default (total observations in each "bin")
-hist(iris$Sepal.Length, main="Histogram of Sepal Length",
-     xlab = "Sepal Length")
+##########
+# use leaflet for interactive mapping!
 
-## change y-axis to proportions of the entire dataset using freq=FALSE
-hist(iris$Sepal.Length, freq=FALSE, main="Histogram of Sepal Length", 
-     xlab = "Sepal Length")
-## Add a density estimator
+leaflet(possumsites) %>%
+  addTiles() %>% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
 
-lines(density(iris$Sepal.Length))   # add a line to the histogram to approximate the probability density of the data distribution
-curve(dnorm(x,mean(iris$Sepal.Length),sd(iris$Sepal.Length)),add=T,col="red",lty=3)   # add a normal distribution
+
+
+# CHALLENGE EXERCISES   -------------------------------------
+
+# 1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, 
+#     fit a separate trendline for each depth category. Have the color of the trendline match the color of each 
+#     cloud of points. Remove the confidence band from the trendlines. 
+#
+# 2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). 
+#     Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
+#
+# 3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color 
+#     (use `alpha=0.5`) in order to see overlapping areas.
+
 
