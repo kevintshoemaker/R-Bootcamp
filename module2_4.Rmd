@@ -16,29 +16,16 @@ options(knitr.duplicate.label = 'allow')
 
 ```{r echo=FALSE}
 
-##################################################
-####                                          ####  
-####  R Bootcamp #2, Module 4                 ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
-
-##################################################
-####  Introduction to Spatial Data Analysis in R  ####
-
-####  Developed by: Jonathan Greenberg         ####
-####     jgreenberg@unr.edu                   ####
-##################################################
-
+#  R Bootcamp #2, Module 4  ---------------------------
+#    University of Nevada, Reno            
+#    Introduction to Spatial Data Analysis in R  ####
 
 ```
 
 
+## Load script for submodule 2.4
 
-## Load script for module 2.5
-
-1. Click [here](module2_5.R) to download the script! Save the script to a convenient folder on your laptop.
+1. Click [here](module2_4.R) to download the script! Save the script to a convenient folder on your laptop.
 
 2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top and load your script. 
 
@@ -53,11 +40,11 @@ Spatial analysis allows you to solve complex location-oriented problems and bett
   <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">Spatial data analysis combines several different data types and methods in an attempt to model the real world.</figcaption>
 </div>
 
-The best resource I've found for learning about spatial data in R is [Geocomputation with R](https://geocompr.robinlovelace.net). The book is available free online.
+A good resource for learning about spatial data in R is [Geocomputation with R](https://geocompr.robinlovelace.net). The book is available free online.
 
 ## Spatial isn't Special (in R)
 
-Spatial data, just like all other data in R, are combinations of vectors, matrices, and lists. These combinations of data are wrapped into specialized classes, and have many specialized methods to make working with them easier. Most of the functionality comes from the `sf` package for vector data, and `raster` package for raster data. In addition to these packages we will use a few other packages:
+Spatial data, just like all other data in R, are combinations of vectors, matrices, and lists. These combinations of data are wrapped into specialized classes, and have many specialized methods to make working with them easier. Most of the functionality comes from the `sf` package for vector data, and `raster` (or `terra`) package for raster data. In addition to these packages we will use a few other packages:
 
 1. `rgdal` - an R wrapper to the open source [gdal library](https://www.gdal.org/)
 2. `rgeos` - an R wrapper to the open source [geos library](http://trac.osgeo.org/geos)
@@ -65,8 +52,8 @@ Spatial data, just like all other data in R, are combinations of vectors, matric
 
 ```{r message=FALSE}
 
-###################
-# before starting make sure we have a clean global environment
+# clear the global environment -------------------------
+
 rm(list = ls())
 
 # install.packages(c('dplyr', 'spData', 'sf', 'raster', 'rgdal', 'rgeos', 'rcartocolor', 'magrittr', 'leaflet'))   # run this line if you haven't already installed these packages!
@@ -104,31 +91,23 @@ There are two ways to model geographic data: as vectors or rasters. In the secti
 
 Vector [^vector] data represents the world as points with a geographic refence (they are somewhere on the earth). These points can be linked together to form more complex geometries such as lines and polygons.
 
-[^vector]: In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will almost always be refering to the geographic data .
+[^vector]: In a spatial context the definition of vector is different than a how R refers to a vector. It is important to distinguish the two based on context. In this module I will pretty much always be refering to the geographic data .
 
 #### Points
 
-Points represent single features, such as a tree in a forest or a location of an captured animal. Points are pairs of (x, y) coordinates. Points are often 2 dimensions, however they can be extended with a z value to represent height above sea level. Attribute data can be attached to each point. An example of points with attribute data might be trees in a forest, and the attributes are height, diameter, species, etc.
+Points represent single features, such as a tree in a forest or a location of an captured animal. Points are pairs of (x, y) coordinates. Attribute data can be attached to each point. An example of points with attribute data might be trees in a forest, and the attributes are height, diameter, species, etc.
 
 #### Lines
 
-Lines are a bit more complex. They are composed of many vertices (points) that are ordered and connected. Each line can also have data associated with it. Roads or rivers are great examples, and might have data like width, speed limit, flow as attribute data.
-
-In R lines can be one or more line objects. For instance, the Truckee River and all its tributaries can be a single lines (multi-line) object, composed of many line objects for each of the tributaries.
+Lines are composed of many vertices (points) that are ordered and connected. Each line can also have data associated with it. Roads or rivers are great examples, and might have data like width, speed limit, flow as attribute data.
 
 #### Polygons
 
-A polygon is a set of closed lines. It is very similar to lines, however the first vertex must also be the last vertex in order to close the polygon. Polygons can have holes in them, think an island in a lake, which is a polygon enclosed inside another polygon. And just like lines, multiple polygon objects can make up a single polygons (multi-polygons) object. For instance, a chain of islands. Each island is a single polygon. Together all the individual island polygons represent the entire island chain polygon (multi-polygon). 
-
-I find polygons easier to think about, so in the examples below I will first review points, then polygons, then lines.
+A polygon is a set of closed lines, where the first vertex is also the last vertex. Polygons can have holes in them (think an island in a lake), which is a polygon enclosed inside another polygon. And just like lines, multiple polygon objects can make up a single polygons (multi-polygons) layer. For instance, a chain of islands. 
 
 ### Raster
 
-Raster data divides an area of interest into a grid to represent continuous (and sometimes discrete) data such as elevation. The grid has equally sized rectangular cells (or pixels) that can have one or more values (multi-band rasters). The size of the cells is refered to as the resolution of the grid, smaller cell sizes are higher resolution. The value of that cell generally represent the average value for the area that cell covers. However, the value of each cell can represent the maximum or minimum value as well. If this is the case, the data provider will reference the cell values in a metadata document (hopefully).
-
-Raster data is represented by a matrix of the spatial extent we are interested in. So if we have a 1km square area of interest with a 1 meter resoltion we have 1000 x 1000 matrix, each element of that matrix representing the value of a variable for that 1 meter cell.
-
-We will likely not have much time to cover raster data because of our limited time together, and the amount of time loading and working with raster can take. I'll provide a few short examples at the end to run on your own.  
+Raster data divides a landscape into a grid to represent continuous (and sometimes discrete) data such as elevation. The raster has equally sized rectangular cells (or pixels) that can have one or more values (multi-band rasters). The size of the cells is refered to as the resolution of the grid, smaller cell sizes are higher resolution. The value of that cell generally represents the average value for the area that cell covers.
 
 ## Coordinate Reference Systems
 
@@ -139,17 +118,13 @@ We will likely not have much time to cover raster data because of our limited ti
 
 An important component all spatial objects share is a coordinate refernece system (CRS). A CRS defines how the spatial elements of the data relate to the surface of the Earth. CRSs are either geographic or projected. 
 
-CRSs are a very important concept in spatial data (maybe the most important?). I'll go into detail below as a reference, however we will not have enought time to cover this topic in detail. 
-
 ### Geographic Coordinate Systems
 
 Geographic coordinate system: identify any location on the Earth using *longitude* and *latitude*. These are measures of the angular distance from the Prime Meridian or equatorial plane (for longitude and latitude, respectively). Distances in Geographic CRSs are measured in degrees, minutes, and seconds (or other angular unit of measurement). 
 
-Geographic CRSs will make some assumptions to model the shape of the earth. As stated above, the surface of the earth isn't a perfect sphere or ellipse. Spherical models assume that the earth is a perfect sphere. These models are simple but rarely used because of the amount of inaccuracy in them. Ellipsoidal models are a more accurate model of the Earth. They are defined by an equatorial radius and polar radius.
-
 ### Projected Coordinate Systems
 
-Projected coordinate system: based on Cartesian coordinates on a flat surface. They have an origin, x and y axes. These rely on map projections to convert the three dimensional shape surface of the earth into Easting and Northing (x and y) in the projected CRS. Easting and Northing of a point are measures of distance from the axes as defined in the CRS. Distances in projected CRSs are linear units of measurement such as meters. 
+Projected coordinate system: based on Cartesian coordinates on a flat surface. They have an origin, x and y axes. These rely on map projections to convert the three dimensional shape surface of the earth into Easting and Northing (x and y) in the projected CRS.
 
 The projection from an ellipsoid to a plane cannot be done without distorting some of the properties of the Earth's surface. In most cases one or two of the following properties are distorted: area, direction, shape, distance. Projections are often named based on the properties the accurately maintain: equal-area maintains area, azimuthal maintains direction, equidistant maintains distance, and conformal maintains local shape.
 
@@ -158,19 +133,7 @@ The projection from an ellipsoid to a plane cannot be done without distorting so
   <figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">Watch how the representation of the earth changes as the projections change</figcaption>
 </div>
 
-There are several methods to add a projection to `sf` and `raster` objects. The underlying structure of a projection string is from the [PROJ.4 open source library](https://proj4.org/). These are often refered to as a coordinate reference system (CRS). A common shorthand for creating CRSs is to use an EPSG id[^2].
-
-Below is a list of common projections:
-
-1. WGS84 ([EPSG:4326](epsg.io/4326)) - Latlong used in GPS systems
-2. Pseudo-Mercator ([EPSG:3857](epsg.io/3857)) - Used in web maps
-3. NAD83 zone 11n ([EPSG:26911](epsg.io/26911)) - North America metric based, Nevada. Can be used across zone lines, however accuracy suffers, especially further North
-4. NAD27 zone 11n ([EPSG:26711](epsg.io/26711)) - Old, replaced by NAD83. Works best within zone lines. Don't use this, convert old data to NAD83.
-5. Albers Equal-area Conic ([EPSG:102003](epsg.io/102003)) - Used by the USGS and US Census
-
-[^2]: The European Petroleum Survey Group maintains a list of IDs to all the projection systems. These are a nice shorthand for create coordinate reference strings in R. [epsg.io](epsg.io) is a great interactive site to discover EPSG IDs.
-
-Coordinate reference systems are confusing, and I have a super difficult time understanding them sometimes. [Here is a super helpful reference](https://www.axismaps.com/guide/general/map-projections/).
+Coordinate reference systems are confusing- [Here is a super helpful reference](https://www.axismaps.com/guide/general/map-projections/).
 
 ## Spatial Objects
 
@@ -294,7 +257,7 @@ sf_points %>%
 
 ```
 
-Finally, let's plot this data. The plot function provided by `sf` behaves slightly differently than it does for most other classes. It'll create a plot for each attribute column in the `sf` objecct. I think this behavior is strange, I don't like it. But it is handy.
+Finally, let's plot this data. The plot function provided by `sf` behaves slightly differently than it does for most other classes. It'll create a plot for each attribute column in the `sf` objecct. I think this behavior is strange, I'm not sure I love it. 
 
 ```{r plotting with sf}
 

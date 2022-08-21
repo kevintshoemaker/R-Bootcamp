@@ -310,4 +310,4 @@ predict(m33,nd,interval="confidence",alpha=0.95)
 
 
 
-[--go to next module--](module2_4.html)
+[--go to next submodule--](module2_4.html)

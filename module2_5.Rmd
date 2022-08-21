@@ -1,7 +1,7 @@
 ---
 title: "Submodule 2.5"
 author: "Parallel processing"
-date: "Fall 2021"
+date: "Fall 2022"
 output:
   html_document:
     theme: journal
@@ -37,9 +37,9 @@ NOTE: Jonathan Greenberg (https://naes.unr.edu/gears/) developed this module
 
 This is the first of the modules that really go *beyond the basics*. Module 2.5 also provides a "whirlwhind" tour of more advanced things you can do in R, from parallel computing, to sophisticated visualizations to geographic analysis.  
 
-## Load script for module #2.4
+## Load script for submodule #2.5
 
-1. Click [here](module2_4.R) to download the script! Save the script to a convenient folder on your laptop. [alternative: [load Jonathan's original script](greenberg_code.R)]
+1. Click [here](module2_4.R) to download the script! Save the script to a convenient folder on your laptop.
 
 2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar. 
 

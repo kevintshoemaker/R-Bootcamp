@@ -1,5 +1,14 @@
-base
 boot
 foreach
 iterators
 doParallel
+dplyr
+spData
+sf
+sp
+raster
+rgdal
+rgeos
+rcartocolor
+magrittr
+leaflet

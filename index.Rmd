@@ -177,8 +177,6 @@ rmarkdown::render("module2_4.Rmd",rmarkdown::pdf_document())
 rmarkdown::render("module2_5.Rmd",rmarkdown::pdf_document())
 
 
-#Davidson Math and Science Building, room 103 (Zoom link will be sent via email)
-
 ```
 
 

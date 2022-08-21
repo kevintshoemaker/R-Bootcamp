@@ -9,13 +9,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Parallel processing in R" />
+<meta name="author" content="Introduction to Spatial Data" />
 
 
-<title>Module 2.4</title>
+<title>Submodule 2.4</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -64,6 +64,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -84,6 +85,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -309,12 +313,12 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2021</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2022</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -322,8 +326,8 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #1: getting started
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #1: getting started
      
     <span class="caret"></span>
   </a>
@@ -335,16 +339,16 @@ div.tocify {
       <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting in ggplot2</a>
     </li>
     <li>
-      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: data wrangling</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #2: Beyond the basics
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #2: beyond the basics
      
     <span class="caret"></span>
   </a>
@@ -353,21 +357,18 @@ div.tocify {
       <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Submodule 2.2: Using the 'tidyverse'</a>
+      <a href="module2_2.html">Submodule 2.2: Programming in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Plotting with 'ggplot'</a>
+      <a href="module2_3.html">Submodule 2.3: Stats in R</a>
     </li>
     <li>
-      <a href="module2_4.html">Submodule 2.4: Parallel computing in R</a>
-    </li>
-    <li>
-      <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
+      <a href="module2_4.html">Submodule 2.4: Spatial analysis in R</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Data sets
      
     <span class="caret"></span>
@@ -401,6 +402,9 @@ div.tocify {
       <a href="reptiles.csv">Reptile Data</a>
     </li>
     <li>
+      <a href="comm_data.txt">Comm Data</a>
+    </li>
+    <li>
       <a href="data.zip">GIS Data</a>
     </li>
   </ul>
@@ -420,417 +424,1265 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Module 2.4</h1>
-<h4 class="author">Parallel processing in R</h4>
-<h4 class="date">Fall 2021</h4>
+<h1 class="title toc-ignore">Submodule 2.4</h1>
+<h4 class="author">Introduction to Spatial Data</h4>
+<h4 class="date">Fall 2022</h4>
 
 </div>
 
 
-<p>NOTE: Jonathan Greenberg (<a href="https://naes.unr.edu/gears/" class="uri">https://naes.unr.edu/gears/</a>) developed this module</p>
-<p>This is the first of the modules that really go <em>beyond the basics</em>. Module 2.5 also provides a “whirlwhind” tour of more advanced things you can do in R, from parallel computing, to sophisticated visualizations to geographic analysis.</p>
-<div id="load-script-for-module-2.4" class="section level2">
-<h2>Load script for module #2.4</h2>
+<div id="load-script-for-submodule-2.4" class="section level2">
+<h2>Load script for submodule 2.4</h2>
 <ol style="list-style-type: decimal">
-<li><p>Click <a href="module2_4.R">here</a> to download the script! Save the script to a convenient folder on your laptop. [alternative: <a href="greenberg_code.R">load Jonathan’s original script</a>]</p></li>
-<li><p>Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar.</p></li>
+<li><p>Click <a href="module2_4.R">here</a> to download the script! Save
+the script to a convenient folder on your laptop.</p></li>
+<li><p>Load your script in RStudio. To do this, open RStudio and click
+on the folder icon in the toolbar at the top and load your
+script.</p></li>
 </ol>
-<p>Let’s get started with parallel processing in R!</p>
+<p>Let’s get started with spatial data in R!</p>
 </div>
-<div id="running-r-in-parallel" class="section level2">
-<h2>Running R in parallel!</h2>
-<p>This is a huge topic, but the basic concept of parallel computing is the following:</p>
-<p>Given some problem X that can be divided into subproblems x1, x2, x3, each subproblem can be sent to a different “worker” processor (which may be located on a different physical computer).</p>
-<p>Each processor then sends the results of its subproblem back to a central “master”. The master often then pieces the subproblems back together to return to the user.</p>
-<p>Parallel computing is not a cure-all, and not all problems will benefit from it. We’ll come back to this issue in a bit.</p>
-<p>There are a lot of packages to realize parallel computing within R, and current versions of R even come with some parallel computing packages built-in. A full list can be found <a href="http://cran.r-project.org/web/views/HighPerformanceComputing.html">here</a>.</p>
-<p>I will be following the examples from <a href="http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf">http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf</a>.</p>
-<div id="set-up-your-workspace" class="section level3">
-<h3>Set up your workspace</h3>
-<p>First, let’s set up our workspace to run an example using a genomics data set. This example uses <a href="https://www.bioconductor.org/">bioconductor</a>, which provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses R and is open source and open development.</p>
-<p>Installing the packages for this module can take a while, so hopefully you have already had a chance to do this prior to coming to this workshop!</p>
-<pre class="r"><code>################
-# Set up the workspace (can take a surprisingly long time!)
-
-# examples from http://trg.apbionet.org/euasiagrid/docs/parallelR.notes.pdf
-
-# First, load this script directly from the web (which also installs required packages for you!):
-
-if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
-    install.packages(&quot;BiocManager&quot;)
-BiocManager::install(&quot;Biobase&quot;)</code></pre>
-<p>NOTE: if you had trouble running the above code, you can just load the example dataset <a href="geneData.csv">here</a></p>
-<p>We are going to run a test using gene expression data– let’s load the example dataset!</p>
-<pre class="r"><code>data(geneData, package = &quot;Biobase&quot;)   # load example data from Biobase package between all pairs of genes across all samples.
-  # geneData &lt;- read.csv(&quot;geneData.csv&quot;)    # alternative!
-
-
-# This data represents 500 genes (organized by rows)
-# with expression data (numerical). 
-
-# The goal is to calculate the correlation coefficient
-# between all pairs of genes across all samples.  For example,
-# to test gene 12 vs 13:</code></pre>
+<div id="the-science-of-where" class="section level2">
+<h2>The Science of Where</h2>
+<p>Spatial analysis allows you to solve complex location-oriented
+problems and better understand where and what is occurring in your
+world. It goes beyond mere mapping to let you study the characteristics
+of places and the relationships between them.</p>
+<div style="margin: 16px 0">
+&lt;img class=“img-responsive center-block”
+src=“assets/SpatialAnalysisLayers.jpg” alt=“gis analysis layers”,
+width=“50%” align=“middle”&gt;
+<figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">
+Spatial data analysis combines several different data types and methods
+in an attempt to model the real world.
+</figcaption>
 </div>
-<div id="example-a-simple-yet-computationally-intensive-problem" class="section level3">
-<h3>Example: A simple yet computationally intensive problem</h3>
-<p>This data represents 500 genes (organized by rows) with expression data (numerical) across 26 samples. The goal is to calculate the correlation coefficient between all pairs of genes across all samples.</p>
-<p>For example, let’s examine the correlation between gene 12 vs 13:</p>
-<pre class="r"><code>?cor    # view help page for &quot;cor()&quot; function
-geneData[12,]
-geneData[13,]</code></pre>
-<pre class="r"><code>plot(geneData[12,],geneData[13,])    # plot the correlation between two genes</code></pre>
-<p><img src="module2_4_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code>cor(geneData[12,],geneData[13,])</code></pre>
-<pre><code>## [1] 0.548477</code></pre>
-<p>The total number of paired correlations will be 500 x 499 / 2 = <strong>124,750 correlations</strong>!</p>
-<p>We can identify all combinations in a vector using the "combn() function:</p>
-<pre class="r"><code>?combn    # function to determine all combination ids</code></pre>
-<p>We are going to leave this as a list, for now…</p>
-<pre class="r"><code>pair &lt;- combn(1:nrow(geneData),2,simplify=F)   #leave this as a list, for now...
-
-length(pair)</code></pre>
-<pre><code>## [1] 124750</code></pre>
-<pre class="r"><code>head(pair,n=3)     # note that the &quot;head()&quot; and &quot;tail()&quot; functions can be used on lists in addition to data frames...</code></pre>
-<pre><code>## [[1]]
-## [1] 1 2
-## 
-## [[2]]
-## [1] 1 3
-## 
-## [[3]]
-## [1] 1 4</code></pre>
-<pre class="r"><code>tail(pair,n=3)</code></pre>
-<pre><code>## [[1]]
-## [1] 498 499
-## 
-## [[2]]
-## [1] 498 500
-## 
-## [[3]]
-## [1] 499 500</code></pre>
-<p>It often makes sense to break a problem like this down a set of repeated tasks, each of which is expressed as a function.</p>
-<p>Let’s write (and test) a function to accept a pair in the database and returns the correlation:</p>
-<pre class="r"><code>############
-# New function: accepts a gene pair and the database as arguments and returns
-# the correlation:
-
-geneCor &lt;- function(pair,gene=geneData){
-  cor(gene[pair[1],],gene[pair[2],])
-}
-
-# Test the function:
-cor(geneData[12,],geneData[13,])</code></pre>
-<pre><code>## [1] 0.548477</code></pre>
-<pre class="r"><code>geneCor(pair=c(12,13),gene=geneData)    # should be the same result as the previous command...</code></pre>
-<pre><code>## [1] 0.548477</code></pre>
-<p>We left our pairs as a list, so we can use <em>lapply</em>! Recall that <em>lapply</em> takes each element in a list (in sequence), applies a specified function to that element, and returns the results from the function in another list.</p>
-<p>Let’s just test the first 3 pairs:</p>
-<pre class="r"><code>########
-# use &quot;lapply&quot; to run our function on the first three gene pairs
-
-pair[1:3]</code></pre>
-<pre><code>## [[1]]
-## [1] 1 2
-## 
-## [[2]]
-## [1] 1 3
-## 
-## [[3]]
-## [1] 1 4</code></pre>
-<pre class="r"><code>outcor &lt;- lapply(pair[1:3],geneCor)
-outcor</code></pre>
-<pre><code>## [[1]]
-## [1] 0.1536158
-## 
-## [[2]]
-## [1] 0.7066034
-## 
-## [[3]]
-## [1] -0.2125437</code></pre>
-<p>Now let’s do the whole calculation. First, open your task manager by hitting control-alt-delete (on Windows) and choosing “Start Task Manager”.</p>
-<p>Click the “Performance” tab. You may also need to click on another link to open the “Resource Monitor”. Notice you have a few graphs next to “CPU Usage”, which shows each processor you have on your machine.</p>
-<p>Type the following in R and watch the CPU Usage History graph. Note the use of the “system.time()” function, which allows us to keep track of processing time for one or more R commands. Processing time can vary substantially among machines.</p>
-<pre class="r"><code>#################
-# Examine processor use and speed
-
-# First, open your task manager to view processor usage (see website for more details).
-
-system.time(outcor &lt;- lapply(pair,geneCor))</code></pre>
-<pre><code>##    user  system elapsed 
-##    3.61    0.00    3.61</code></pre>
-<pre class="r"><code># Notice ONE CPU spiked.  Make note of how long it took to run.</code></pre>
-<p>Notice ONE CPU spiked. Make note of how long it took to run.</p>
-<p>Now let’s make an even bigger dataset (just repeating geneData four times), making 26 x 4 = 104 columns:</p>
-<pre class="r"><code>fakeData &lt;- cbind(geneData,geneData,geneData,geneData)    # make an even bigger dataset!</code></pre>
-<p>Now lets make a more complex, computationally intensive function that calculates the 95% confidence intervals of the correlation coefficients through a process of <em>bootstrapping</em>:</p>
-<pre class="r"><code>###########
-# New, more complex function that generates bootstrap confidence intervals for correlation coefficients
-
-library(boot)   # load the &quot;boot&quot; library for performing bootstrapping analysis
-
-# &#39;x&#39; represents vector with two elements, indicating the pair of genes to compare
-# &#39;gene&#39; represents a gene expression database
-
-geneCor2 &lt;- function(x, gene = fakeData){
-  mydata &lt;- cbind(gene[x[1], ], gene[x[2], ])      # extract the rows (genes) to compare
-  mycor &lt;- function(x, i) cor(x[i,1], x[i,2])     # function (correlation) to perform bootstrap analysis with
-  boot.out &lt;- boot(mydata, mycor, 1000)           # perform bootstrap analysis (1000 iterations)
-  boot.ci(boot.out, type = &quot;bca&quot;)$bca[4:5]         # extract and return the bootstrap confidence interval
-}</code></pre>
-<p>How long would it take to run correlation analyses using this new function for just 10 gene pairs?</p>
-<pre class="r"><code># Test how long 10 pairs would take:
-genCor2_system_time &lt;- system.time(outcor &lt;- lapply(pair[1:10],geneCor2))
-genCor2_system_time[&quot;elapsed&quot;] </code></pre>
-<pre><code>## elapsed 
-##    0.82</code></pre>
-<p>What did you get? On my machine this operation (for 10 pairs) took around 1 second…</p>
-<p>Let’s use this information to estimate how long it will take to run this for the all pairs! How many pairs were there again?</p>
-<pre class="r"><code>length(pair)   # how many pairs were there again?</code></pre>
-<pre><code>## [1] 124750</code></pre>
-<p>Okay, so there are 124,750 pairs… So let’s figure out how long 124,750 pairs will take:</p>
-<pre class="r"><code>############
-# estimate time to run 124,750 pairs
-
-genCor2_system_time[&quot;elapsed&quot;]      # time it took to run 10 pairs, in seconds</code></pre>
-<pre><code>## elapsed 
-##    0.82</code></pre>
-<pre class="r"><code>genCor2_system_time[&quot;elapsed&quot;] *(124750/10)     # time it would take to run 124750 pairs, in seconds </code></pre>
-<pre><code>## elapsed 
-## 10229.5</code></pre>
-<pre class="r"><code>genCor2_system_time[&quot;elapsed&quot;] *(124750/10/60/60)    # in hours...</code></pre>
-<pre><code>##  elapsed 
-## 2.841528</code></pre>
-<p>Ouch! This is a good candidate for parallel processing!</p>
+<p>A good resource for learning about spatial data in R is <a
+href="https://geocompr.robinlovelace.net">Geocomputation with R</a>. The
+book is available free online.</p>
 </div>
-<div id="running-in-parallel" class="section level3">
-<h3>Running in Parallel!</h3>
-<p>Let’s take a subsample of all the pairs for exploring this further:</p>
-<pre class="r"><code>###########
-# Explore parallel processing vs sequential processing
-
-pair2 &lt;- sample(pair,300)    # first extract a subsamble of all the pairs</code></pre>
-<p>The opposite of parallel processing is “sequential processing”. Let’s first test a sequential version of this task:</p>
-<pre class="r"><code># Let&#39;s test a sequential version of this:
-system.time(outcor &lt;- lapply(pair2,geneCor2))</code></pre>
-<pre><code>##    user  system elapsed 
-##   21.95    0.35   22.30</code></pre>
-<pre class="r"><code># Note the elapsed time.</code></pre>
-<p>Now, we can explore implementing this operation in parallel. To do this, we will use the “parallel” package in R.</p>
-<div id="parallel-package" class="section level4">
-<h4>‘parallel’ package</h4>
-<p>Parallel’s basic concept is to launch “worker” instances of R on other processors, and then send the subproblems to each R instance. This means that if you want to use 4 processors (“cores”), after you start a parallel cluster, you will have 5 copies of R running: the master copy (the one you are typing into) and 4 worker copies.</p>
-<p>The “cluster” of processors can be either a single computer with multiple processors (like the one you are working on), or a network of computers linked by some clustering framework.</p>
-<p>The basic order of operations with using ‘parallel’ is as follows: 1. library(“parallel”)<br />
-2. Make a parallel cluster using makeCluster(…)<br />
-3. Load packages that your function needs into the workers using clusterEvalQ(cl=…,library(…))<br />
-4. Load objects (data) from the master environment into the worker environments using clusterExport(cl=…)<br />
-5. Following basic lapply() semantics, use e.g. clusterApplyLB(cl=…) to apply your function to an input list, where each iteration of the “loop” will be sent to an available processor. The output is usually a list.<br />
-6. Shut down your cluster using stopCluster(…)</p>
-<p>So the first step is to load the ‘parallel’ package:</p>
-<pre class="r"><code>###########
-# Run this operation in parallel!!
-
-### parallel: built-in parallel computation package.
-library(&quot;parallel&quot;)       # load the package (comes with basic R installation)</code></pre>
-<p>We’re also going to grab the “future” package for later use:</p>
-<pre class="r"><code>install.packages(&quot;future&quot;)    # install &quot;future&quot; package, which we will use later</code></pre>
-<pre class="r"><code>library(&quot;future&quot;)</code></pre>
-<p>The way parallel works, is we first have to make an R cluster via “makeCluster()”:</p>
-<pre class="r"><code>?makeCluster    # learn more about &quot;makeCluster()&quot;</code></pre>
-<p>We are going to create a cluster with 4 cpus of type “PSOCK”.</p>
-<p>Click the task manager “Processes” (Windows) or Activity Monitor (mac), and scroll down to the “R”s:</p>
-<pre class="r"><code>########
-# Make a cluster
-
-myCluster &lt;- parallel::makeCluster(spec=4,type=&quot;PSOCK&quot;)    # make cluster with 4 cpus of type &quot;PSOCK&quot;
-myCluster</code></pre>
-<pre><code>## socket cluster with 4 nodes on host &#39;localhost&#39;</code></pre>
-<pre class="r"><code>length(myCluster) # One entry per &quot;worker&quot;.</code></pre>
-<pre><code>## [1] 4</code></pre>
-<pre class="r"><code>myCluster[[1]]    # more info about this &quot;worker&quot;</code></pre>
-<pre><code>## node of a socket cluster on host &#39;localhost&#39; with pid 3172</code></pre>
-<p>Notice you now have multiple instances of Rscript.exe running now!</p>
-<p>We can stop the cluster by using the “stopCluster()” function:</p>
-<pre class="r"><code>?stopCluster</code></pre>
-<pre class="r"><code>parallel::stopCluster(myCluster)</code></pre>
-<p>Now let’s make a new cluster using all available cores.</p>
-<pre class="r"><code>######
-# Make a cluster with all available cores
-
-mycorenum &lt;- availableCores()   # determine number of available cores
-myCluster &lt;- parallel::makeCluster(spec=mycorenum,type=&quot;PSOCK&quot;)</code></pre>
-<p>We can send the same function to each node (worker) in the cluster using “clusterCall()”:</p>
-<pre class="r"><code>######
-# Run a function on each cluster:
-
-?clusterCall       # clustercall(): sends the same function to each node (worker) in the cluster</code></pre>
-<p>For example, we might run the “date()” function on each cluster! Note that the results get returned as lists:</p>
-<pre class="r"><code>date()    # run the &quot;date()&quot; function</code></pre>
-<pre><code>## [1] &quot;Fri Sep 17 14:55:12 2021&quot;</code></pre>
-<pre class="r"><code>workerDates &lt;- parallel::clusterCall(cl=myCluster,fun=date)    # now try running the &quot;date()&quot; function on all clusters 
-class(workerDates)</code></pre>
-<pre><code>## [1] &quot;list&quot;</code></pre>
-<pre class="r"><code>length(workerDates) # One list element per worker.</code></pre>
-<pre><code>## [1] 4</code></pre>
-<p>You need to remember that each worker instance of R that is running is essentially “empty” – it won’t, be default, have access to the environment of the master. Thus, we need to send some commands/data to them in anticipation of running the code.</p>
-<p>For example, the “search()” function tells us what packages and data are loaded (attached). Let’s explore what packages are loaded in our worker environments:</p>
-<pre class="r"><code>####
-# explore packages loaded in our worker environments
-
-search()      # packages loaded in global environment
-workerPackages &lt;- parallel::clusterCall(cl=myCluster,fun=search)     # .. and worker environments
-# workerPackages</code></pre>
-<p>We are using a package called “boot” in our function, so we need to load up this package on every worker using the “clusterEvalQ()” function:</p>
-<pre class="r"><code>#########
-# load required packages on every worker:
-
-?clusterEvalQ</code></pre>
-<pre class="r"><code>loadOnCls &lt;- parallel::clusterEvalQ(cl=myCluster,library(&quot;boot&quot;))   </code></pre>
-<pre class="r"><code># We can confirm the boot package is now loaded:
-parallel::clusterCall(cl=myCluster,fun=search)</code></pre>
-<p>Next, we will export the dataset “fakeData” to each worker using the “clusterExport()” function.</p>
-<p>First, look at the worker Rs and note how much memory they are using (in task manager).</p>
-<pre class="r"><code>########
-# Load required data on every worker
-
-?clusterExport</code></pre>
-<pre class="r"><code>loadData &lt;- parallel::clusterExport(cl=myCluster,&quot;fakeData&quot;)</code></pre>
-<pre class="r"><code>parallel::clusterEvalQ(cl=myCluster,ls())   # Check the environment on each worker- make sure data are loaded</code></pre>
-<p>Check the memory now. Note that each worker is using more memory, since we loaded the fakeData into each of those worker Rs.</p>
-<p>Note we could send the entire Global environment over to the workers! To do this, we could use the “ls()” function:</p>
-<pre class="r"><code>#### alternatively, load all data in our environment into each worker:
-# loadData &lt;- parallel::clusterExport(cl=myCluster,ls())</code></pre>
-<pre class="r"><code># parallel::clusterEvalQ(cl=myCluster,ls())</code></pre>
-</div>
-<div id="finally-run-corrlation-analysis-in-parallel" class="section level4">
-<h4>Finally: run corrlation analysis in parallel!</h4>
-<p>Now comes the actual function call. To do this, we use the “clusterApplyLB()” function:</p>
-<pre class="r"><code>############
-# Spread function calls across workers using an &quot;lapply&quot;-like function
-
-?clusterApplyLB     # function for performing the actual function call</code></pre>
-<p>This is VERY similar to an ‘lapply’ statement, except we identify the cluster to send the command to. Let’s call the “geneCor2()” function for each gene pair, using parallel processing. We can compare the speed of the parallel vs sequential processing using the “system.time()” function.</p>
-<p>Let’s call the “geneCor2()” function for each gene pair, using parallel processing!</p>
-<p>Watch your Performance tab as your cores light up:</p>
-<pre class="r"><code>#######
-# Call the &quot;geneCor2()&quot; function for each gene pair, using parallel processing
-
-system.time(outcor2 &lt;- parallel::clusterApplyLB(cl=myCluster,pair2,geneCor2))   </code></pre>
-<pre><code>##    user  system elapsed 
-##    0.14    0.02    6.09</code></pre>
-<pre class="r"><code># vs the non-clustered version:
-system.time(outcor &lt;- lapply(pair2,geneCor2))   # takes much longer!</code></pre>
-<pre><code>##    user  system elapsed 
-##   22.19    0.08   22.26</code></pre>
-<p>We got a big performance boost here!</p>
-<p>Don’t forget to shut down your cluster:</p>
-<pre class="r"><code>stopCluster(myCluster)   # finally, stop the cluster..</code></pre>
-</div>
-</div>
-<div id="foreach-making-parallel-computing-even-easier" class="section level3">
-<h3>‘foreach’: making parallel computing EVEN EASIER</h3>
-<p>There are multiple parallel “backends” to R, including ‘parallel’, ‘snow’, ‘multicore’, ‘Rmpi’, to name a few.</p>
-<p>‘foreach’ is a meta-wrapper that works on many parallel backends. What this means is you can write one set of code, and not have to modify it if the user prefers to use Rmpi instead of parallel (in which case the commands are very different).</p>
-<p>The basic order of ops with using ‘foreach’ is as follows:</p>
+<div id="spatial-isnt-special-in-r" class="section level2">
+<h2>Spatial isn’t Special (in R)</h2>
+<p>Spatial data, just like all other data in R, are combinations of
+vectors, matrices, and lists. These combinations of data are wrapped
+into specialized classes, and have many specialized methods to make
+working with them easier. Most of the functionality comes from the
+<code>sf</code> package for vector data, and <code>raster</code> (or
+<code>terra</code>) package for raster data. In addition to these
+packages we will use a few other packages:</p>
 <ol style="list-style-type: decimal">
-<li>library(“foreach”)<br />
-</li>
-<li>Load a parallel backend and foreach registration package<br />
-e.g. library(“doParallel”)<br />
-</li>
-<li>Start a parallel backend with e.g. makeCluster(…)<br />
-</li>
-<li>Register the parallel backend with foreach,<br />
-e.g.: registerDoParallel(…)<br />
-</li>
-<li>Use foreach(…) %dopar% function() to run your function in parallel.<br />
-</li>
-<li>Use ‘.packages’ parameter in foreach(…) to load needed packages.<br />
-</li>
-<li>Stop your cluster using e.g. stopCluster(…)<br />
-</li>
-<li>Register the sequential backend to foreach using registerDoSEQ()</li>
+<li><code>rgdal</code> - an R wrapper to the open source <a
+href="https://www.gdal.org/">gdal library</a></li>
+<li><code>rgeos</code> - an R wrapper to the open source <a
+href="http://trac.osgeo.org/geos">geos library</a></li>
+<li><code>leaflet</code> - an R wrapper to the javascript library
+‘leaflet’ for interactive maps</li>
 </ol>
-<pre class="r"><code>##########
-# Parallel processing using &#39;foreach&#39;
+<pre class="r"><code># clear the global environment -------------------------
 
-install.packages(&quot;foreach&quot;)
-# Install the parallel backend to foreach:
-install.packages(&quot;doParallel&quot;)</code></pre>
-<pre class="r"><code>library(&quot;foreach&quot;)</code></pre>
-<pre><code>## Warning: package &#39;foreach&#39; was built under R version 4.1.1</code></pre>
-<pre class="r"><code>library(&quot;doParallel&quot;)</code></pre>
-<pre><code>## Warning: package &#39;doParallel&#39; was built under R version 4.1.1</code></pre>
-<pre><code>## Loading required package: iterators</code></pre>
-<pre><code>## Warning: package &#39;iterators&#39; was built under R version 4.1.1</code></pre>
-<pre class="r"><code>?foreach</code></pre>
-<p>Try running in sequential mode…</p>
-<pre class="r"><code># sequential mode:
-registerDoSEQ() # Avoids warnings
+rm(list = ls())
 
-system.time(
-  outcor &lt;- foreach(
-    p = pair2, 
-    .packages=&quot;boot&quot;, 
-    .combine=&quot;rbind&quot;) %dopar% { 
-      return(geneCor2(p)) 
-    }
-)</code></pre>
-<pre><code>##    user  system elapsed 
-##   22.48    0.11   22.60</code></pre>
-<p>And now with a parallel backend!</p>
-<pre class="r"><code># Parallel mode (use a parallel backend):
+# install.packages(c(&#39;dplyr&#39;, &#39;spData&#39;, &#39;sf&#39;, &#39;raster&#39;, &#39;rgdal&#39;, &#39;rgeos&#39;, &#39;rcartocolor&#39;, &#39;magrittr&#39;, &#39;leaflet&#39;))   # run this line if you haven&#39;t already installed these packages!
 
-# Create a cluster using parallel:
-myCluster &lt;- makeCluster(spec=4,type=&quot;PSOCK&quot;)</code></pre>
-<pre class="r"><code># Register the backend with foreach (doParallel):
-registerDoParallel(myCluster)
-# Run our code! Notice I didn&#39;t change the foreach call at all:
+file_name &lt;- &#39;https://kevintshoemaker.github.io/R-Bootcamp/data.zip&#39;
+download.file(file_name, destfile = &#39;data.zip&#39;)
+unzip(zipfile = &#39;data.zip&#39;, exdir = &#39;.&#39;)</code></pre>
+<pre><code>## Warning in unzip(zipfile = &quot;data.zip&quot;, exdir = &quot;.&quot;): error 1 in extracting from
+## zip file</code></pre>
+<pre class="r"><code># load libraries and set working directory
+library(dplyr)
+library(spData)
+library(sf)
+library(raster)
+library(rgdal)
+library(rgeos)
+library(rcartocolor)
+library(magrittr)
+library(leaflet)</code></pre>
+<p><em>Check the footnotes for info about some of the warnings</em> <a
+href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+</div>
+<div id="spatial-data" class="section level2">
+<h2>Spatial Data</h2>
+<blockquote>
+Everything is related to everything else, but near things are more
+related than distant things
+<p class="display-block text-right">
+<small>Waldo Tobler, <em>Tobler’s first law of geography</em></small>
+</p>
+</blockquote>
+<p>There are two ways to model geographic data: as vectors or rasters.
+In the sections that follow we will first review vector data, then
+raster data. First we will review the theory behind each model then
+demonstrate how to implement them in R</p>
+<div id="vector-data" class="section level3">
+<h3>Vector Data</h3>
+<p>Vector <a href="#fn2" class="footnote-ref"
+id="fnref2"><sup>2</sup></a> data represents the world as points with a
+geographic refence (they are somewhere on the earth). These points can
+be linked together to form more complex geometries such as lines and
+polygons.</p>
+<div id="points" class="section level4">
+<h4>Points</h4>
+<p>Points represent single features, such as a tree in a forest or a
+location of an captured animal. Points are pairs of (x, y) coordinates.
+Attribute data can be attached to each point. An example of points with
+attribute data might be trees in a forest, and the attributes are
+height, diameter, species, etc.</p>
+</div>
+<div id="lines" class="section level4">
+<h4>Lines</h4>
+<p>Lines are composed of many vertices (points) that are ordered and
+connected. Each line can also have data associated with it. Roads or
+rivers are great examples, and might have data like width, speed limit,
+flow as attribute data.</p>
+</div>
+<div id="polygons" class="section level4">
+<h4>Polygons</h4>
+<p>A polygon is a set of closed lines, where the first vertex is also
+the last vertex. Polygons can have holes in them (think an island in a
+lake), which is a polygon enclosed inside another polygon. And just like
+lines, multiple polygon objects can make up a single polygons
+(multi-polygons) layer. For instance, a chain of islands.</p>
+</div>
+</div>
+<div id="raster" class="section level3">
+<h3>Raster</h3>
+<p>Raster data divides a landscape into a grid to represent continuous
+(and sometimes discrete) data such as elevation. The raster has equally
+sized rectangular cells (or pixels) that can have one or more values
+(multi-band rasters). The size of the cells is refered to as the
+resolution of the grid, smaller cell sizes are higher resolution. The
+value of that cell generally represents the average value for the area
+that cell covers.</p>
+</div>
+</div>
+<div id="coordinate-reference-systems" class="section level2">
+<h2>Coordinate Reference Systems</h2>
+<div style="margin: 16px 0">
+&lt;img class=“img-responsive center-block” src=“assets/geoid.jpg”
+alt=“The shape of the earth”, width=“50%” align=“middle”&gt;
+<figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">
+This figure depicts one of the most accurate representations of the
+shape of the earth, or geoid.
+</figcaption>
+</div>
+<p>An important component all spatial objects share is a coordinate
+refernece system (CRS). A CRS defines how the spatial elements of the
+data relate to the surface of the Earth. CRSs are either geographic or
+projected.</p>
+<div id="geographic-coordinate-systems" class="section level3">
+<h3>Geographic Coordinate Systems</h3>
+<p>Geographic coordinate system: identify any location on the Earth
+using <em>longitude</em> and <em>latitude</em>. These are measures of
+the angular distance from the Prime Meridian or equatorial plane (for
+longitude and latitude, respectively). Distances in Geographic CRSs are
+measured in degrees, minutes, and seconds (or other angular unit of
+measurement).</p>
+</div>
+<div id="projected-coordinate-systems" class="section level3">
+<h3>Projected Coordinate Systems</h3>
+<p>Projected coordinate system: based on Cartesian coordinates on a flat
+surface. They have an origin, x and y axes. These rely on map
+projections to convert the three dimensional shape surface of the earth
+into Easting and Northing (x and y) in the projected CRS.</p>
+<p>The projection from an ellipsoid to a plane cannot be done without
+distorting some of the properties of the Earth’s surface. In most cases
+one or two of the following properties are distorted: area, direction,
+shape, distance. Projections are often named based on the properties the
+accurately maintain: equal-area maintains area, azimuthal maintains
+direction, equidistant maintains distance, and conformal maintains local
+shape.</p>
+<div style="margin: 16px 0">
+<img class="img-responsive center-block" src="assets/projections.gif" alt="ana animation of different geographic projections" align="middle">
+<figcaption class="figure-caption" style="color:grey; margin-left:30px; margin-right:30px; margin-top:8px; font-style:italic;">
+Watch how the representation of the earth changes as the projections
+change
+</figcaption>
+</div>
+<p>Coordinate reference systems are confusing- <a
+href="https://www.axismaps.com/guide/general/map-projections/">Here is a
+super helpful reference</a>.</p>
+</div>
+</div>
+<div id="spatial-objects" class="section level2">
+<h2>Spatial Objects</h2>
+<p>In 2005 Edzer Pebesma and Roger Bivand cretaed the <code>sp</code>
+package to handle spatial data in R. <code>sp</code> provides a set of
+classes and methods for vector and raster data types. At the time, there
+weren’t many agreed upon standards for spatial data. In 2004 the Open
+Geospatial Consortium published a formal international standard for
+spatial data called <em>simple feature access</em>. It was originaly
+developed for SQL, and has since been adopted by many spatial
+communities (ESRI, QGIS, Postgres).</p>
+<p>Over the last year Pebesma et al. are actively developing a new
+package to handle spatial data in R. It is called <code>sf</code> for
+simple feature.</p>
+<div id="introduction-to-simple-features" class="section level3">
+<h3>Introduction to simple features</h3>
+<p>At the core <code>sf</code> extends the <code>data.frame</code> class
+to include a geometry column. This geometry column can be of several
+types (found within the simple feature standard): <code>POINT</code>,
+<code>LINE</code>, <code>POLYGON</code>, …etc.</p>
+<p>The major classes in the <code>sf</code> package are:</p>
+<ul>
+<li><code>sf</code>: a <code>data.frame</code> with a spatial
+attribute</li>
+<li><code>sfc</code>: a column storing the all the geometries for
+different records of a <code>data.frame</code></li>
+<li><code>sfg</code>: a geometry of each individual record.</li>
+</ul>
+<p>Let’s dig into the details of spatial data with <code>sf</code> in
+the sections below.</p>
+</div>
+<div id="sf-geometry-types" class="section level3">
+<h3>sf geometry types</h3>
+<p>As mentioned above, <code>sf</code> has many different types of
+geometries. Let’s create a few simple geometries so that we have an idea
+of what they are. These (class <code>sfg</code>) are the basic building
+blocks of all the classes in the <code>sf</code> package.</p>
+<pre class="r"><code>## a single point
+pt &lt;- st_point(c(1, 1))
+plot(pt)</code></pre>
+<p><img src="module2_4_files/figure-html/sf_intro-1.png" width="672" /></p>
+<pre class="r"><code>## multiple points 
+mpt &lt;- st_multipoint(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(mpt)</code></pre>
+<p><img src="module2_4_files/figure-html/sf_intro-2.png" width="672" /></p>
+<pre class="r"><code>## a line
+l &lt;- st_linestring(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))
+plot(l, col = &#39;purple&#39;)</code></pre>
+<p><img src="module2_4_files/figure-html/sf_intro-3.png" width="672" /></p>
+<pre class="r"><code>## a polygon
+poly &lt;- st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0))))
+plot(poly, col = &#39;purple&#39;)</code></pre>
+<p><img src="module2_4_files/figure-html/sf_intro-4.png" width="672" /></p>
+<pre class="r"><code>## ...etc, multiline and multipolygons</code></pre>
+<p>A comprehensive overview of all the geometry classes can be <a
+href="https://r-spatial.github.io/sf/articles/sf1.html">found
+here</a></p>
+</div>
+<div id="creating-spatial-points-data" class="section level3">
+<h3>Creating Spatial Points Data</h3>
+<p>Let’s start out by creating a <code>sf</code> object.</p>
+<p>First, download the following data set and save to your working
+directory: <a href="reptiles.csv">reptiles.csv</a></p>
+<pre class="r"><code># create spatial points data frame ----
+## load reptile data 
+reptiles &lt;- readr::read_csv(&#39;reptiles.csv&#39;)
 
-system.time(
-  outcor &lt;- foreach(
-    p = pair2, 
-    .packages=&quot;boot&quot;,
-    .combine=&quot;rbind&quot;) %dopar% {
-      return(geneCor2(p)) 
-    }
-)</code></pre>
-<pre><code>##    user  system elapsed 
-##    0.09    0.01    6.07</code></pre>
-<p>Some things to notice:<br />
-- we explicitly define what packages are to be sent over using the .packages parameter<br />
-- foreach calls have access to the master’s global environment. - we can use specific functions to join the data once its done (e.g. rbind)</p>
-<p>Don’t forget to stop the cluster:</p>
-<pre class="r"><code>stopCluster(myCluster)     # Don&#39;t forget to stop the cluster:</code></pre>
-<p>You should also register the default, non-parallel backend for ‘foreach’. Otherwise the next time you use ‘foreach’ it will not work.</p>
-<pre class="r"><code>registerDoSEQ()    # register the default, non-parallel backend for foreach</code></pre>
+## create a SpatialPoints object
+## provide data (x), the columns that contain the x &amp; y (coords)
+## and the coordinate reference system (crs)
+sf_points &lt;- st_as_sf(x = reptiles, 
+                      coords = c(&#39;x&#39;, &#39;y&#39;), 
+                      crs = &#39;+init=epsg:26911&#39;)</code></pre>
+<pre><code>## Warning in CPL_crs_from_input(x): GDAL Message 1: +init=epsg:XXXX syntax is
+## deprecated. It might return a CRS with a non-EPSG compliant axis order.</code></pre>
+<pre class="r"><code>## inspect the SpatialPoints object
+str(sf_points)</code></pre>
+<pre><code>## sf [60,955 × 7] (S3: sf/tbl_df/tbl/data.frame)
+##  $ species : chr [1:60955] &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; ...
+##  $ date    : Date[1:60955], format: &quot;2015-04-03&quot; &quot;2015-04-03&quot; ...
+##  $ total   : num [1:60955] 4 1 3 1 1 1 1 1 1 1 ...
+##  $ label   : chr [1:60955] &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; ...
+##  $ year    : num [1:60955] 2015 2015 2015 2015 2015 ...
+##  $ month   : chr [1:60955] &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; ...
+##  $ geometry:sfc_POINT of length 60955; first list element:  &#39;XY&#39; num [1:2] 581906 4015885
+##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
+##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA
+##   ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;species&quot; &quot;date&quot; &quot;total&quot; &quot;label&quot; ...</code></pre>
+<p>We used the <code>st_as_sf</code> function to create an object of
+class <code>sf</code>. The first parameter in the function call is
+<code>x</code>, which is the object to be converted to class
+<code>sf</code>. This should be a <code>data.frame</code> like object.
+The second parameter, <code>coords</code>, are the names of the
+coordiante fields in the object supplied to <code>x</code>, given as a
+vector. The final parameter, <code>crs</code>, is the coordinate
+reference system. This data was collected using NAD83 zone 11, so we
+used the EPSG ID (26911) to specify the projection.</p>
+<p>Let’s review the structure and summary data of this <code>sf</code>
+object.</p>
+<pre class="r"><code># inspecting the sf object ----
+## checking the projection of the sf object 
+st_crs(sf_points)
+
+## summary funciton
+summary(sf_points)
+
+## what type is the geometry column
+class(sf_points$geometry)
+
+## plot the data
+plot(sf_points[0])</code></pre>
+<div id="subset-sf-object" class="section level4">
+<h4>Subset sf object</h4>
+<pre class="r"><code>head(sf_points)</code></pre>
+<pre><code>## Simple feature collection with 6 features and 6 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: 408859 ymin: 4015674 xmax: 581906 ymax: 4369481
+## Projected CRS: NAD83 / UTM zone 11N
+## # A tibble: 6 × 7
+##   species           date       total label  year month         geometry
+##   &lt;chr&gt;             &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;POINT [m]&gt;
+## 1 Crotaphytus bici… 2015-04-03     4 Ivan…  2015 Apr   (581906 4015885)
+## 2 Sauromalus ater   2015-04-03     1 Ivan…  2015 Apr   (581738 4015674)
+## 3 Sauromalus ater   2015-04-03     3 Ivan…  2015 Apr   (581630 4015679)
+## 4 Sauromalus ater   2015-04-03     1 Ivan…  2015 Apr   (581209 4016290)
+## 5 Sauromalus ater   2015-04-03     1 Ivan…  2015 Apr   (581046 4015795)
+## 6 Crotaphytus bici… 2010-06-30     1 Dixi…  2010 Jun   (408859 4369481)</code></pre>
+<p>As you can see, this does look like a normal <code>data.frame</code>
+with a geometry column. In this case the geometry is a point, as shown
+by a coordinate pair. Just like <code>data.frames</code> we can use
+indexing to subset the data. One of the columns is species. Lets use
+this column to subset the data frame for only desert horned lizards
+(**Phrynosoma platyrhinos*).</p>
+<pre class="r"><code># subset an sf object ----
+phpl &lt;- sf_points[sf_points$species == &#39;Phrynosoma platyrhinos&#39;, ]
+head(phpl)</code></pre>
+<pre><code>## Simple feature collection with 6 features and 6 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: 399708 ymin: 3978995 xmax: 678717.7 ymax: 4370088
+## Projected CRS: NAD83 / UTM zone 11N
+## # A tibble: 6 × 7
+##   species           date       total label  year month           geometry
+##   &lt;chr&gt;             &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;POINT [m]&gt;
+## 1 Phrynosoma platy… 2010-04-23     1 Ivan…  2010 Apr     (605707 3978995)
+## 2 Phrynosoma platy… 2012-06-04     1 Gabb…  2012 Jun     (416711 4310457)
+## 3 Phrynosoma platy… 2012-08-30     1 Dixi…  2012 Aug     (399708 4354045)
+## 4 Phrynosoma platy… 2013-05-04     1 Las …  2013 May   (678717.7 3998239)
+## 5 Phrynosoma platy… 2014-05-09     1 Cact…  2014 May     (516255 4099335)
+## 6 Phrynosoma platy… 2015-08-04     1 Dixi…  2015 Aug     (406478 4370088)</code></pre>
+<pre class="r"><code>## check to see that there is only one species in the data.frame
+phpl %&gt;% magrittr::extract2(&#39;species&#39;) %&gt;% unique()</code></pre>
+<pre><code>## [1] &quot;Phrynosoma platyrhinos&quot;</code></pre>
+<p>If you check the class of <code>sf_points</code> you’ll see a list of
+different classes. <code>sf_points</code> is an object of class
+<code>sf</code>. But it inherits properties of the <code>tbl_df</code>,
+<code>tbl</code>, and <code>data.frame</code> class. That means that any
+methods that work on these classes will also work on objects of class
+<code>sf</code>.</p>
+<pre class="r"><code>class(sf_points)</code></pre>
+<pre><code>## [1] &quot;sf&quot;         &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>## we can filter using dplyr syntax
+sf_points %&gt;% 
+  dplyr::filter(species == &#39;Phrynosoma platyrhinos&#39;) %&gt;% 
+  head()</code></pre>
+<pre><code>## Simple feature collection with 6 features and 6 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: 399708 ymin: 3978995 xmax: 678717.7 ymax: 4370088
+## Projected CRS: NAD83 / UTM zone 11N
+## # A tibble: 6 × 7
+##   species           date       total label  year month           geometry
+##   &lt;chr&gt;             &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;POINT [m]&gt;
+## 1 Phrynosoma platy… 2010-04-23     1 Ivan…  2010 Apr     (605707 3978995)
+## 2 Phrynosoma platy… 2012-06-04     1 Gabb…  2012 Jun     (416711 4310457)
+## 3 Phrynosoma platy… 2012-08-30     1 Dixi…  2012 Aug     (399708 4354045)
+## 4 Phrynosoma platy… 2013-05-04     1 Las …  2013 May   (678717.7 3998239)
+## 5 Phrynosoma platy… 2014-05-09     1 Cact…  2014 May     (516255 4099335)
+## 6 Phrynosoma platy… 2015-08-04     1 Dixi…  2015 Aug     (406478 4370088)</code></pre>
+<p>Finally, let’s plot this data. The plot function provided by
+<code>sf</code> behaves slightly differently than it does for most other
+classes. It’ll create a plot for each attribute column in the
+<code>sf</code> objecct. I think this behavior is strange, I’m not sure
+I love it.</p>
+<pre class="r"><code>## plot with sf::plot
+plot(head(sf_points, n = 100))</code></pre>
+<p><img src="module2_4_files/figure-html/plotting%20with%20sf-1.png" width="672" /></p>
+<p>If you want to plot just a single variable, you must use the
+following syntax.</p>
+<pre class="r"><code>plot(head(sf_points[&#39;year&#39;], n = 100))</code></pre>
+<p><img src="module2_4_files/figure-html/plot%20with%20sf%202-1.png" width="672" /></p>
+<pre class="r"><code>## the plot function also uses this syntax to select a single row to plot
+## plot(head(sf_points[&#39;year&#39;], n = 100))
+
+## and if you don&#39;t want to color the plot by feature you can use 0
+## to specify plotting 0 attributes
+## note, this is plotting all the points
+plot(sf_points[0], col = &#39;purple&#39;)</code></pre>
+<p><img src="module2_4_files/figure-html/plot%20with%20sf%202-2.png" width="672" /></p>
 </div>
-<div id="sources-of-overhead" class="section level3">
-<h3>Sources of overhead</h3>
-<p>Parallel computing, optimally, should be linear in terms of number of processors vs. time. However, this is never the case. A process running on one core does not take twice the time as a process running on two cores. There are losses along the way from various sources. These need to be thought about when writing the most efficient code.</p>
-<p>First, many programs will have parallel and non-parallel components. If your non-parallel components take X amount of time, no matter how many processors you have available, you will never run faster than X amount of time.</p>
-<div id="chunking" class="section level4">
-<h4>Chunking</h4>
-<p>Chunking is one of the most important considerations. So far, we’ve been iterating one “row” at a time. For faster computations, this may not be very efficient, as the overhead of sending/receiving/managing the parallel cluster swamps out gains from the processing. We can get more clever with this by sending MULTIPLE rows at one time to a worker. This optimization of the chunk size (number of rows to send at one time to a single worker) can dramatically speed up your computation, at the cost of heavier RAM usage.</p>
 </div>
-<div id="shared-memory-machines" class="section level4">
-<h4>Shared-memory machines</h4>
-<p>A single computer like the one you are working on is a “shared memory machine” – each processor has access to the same physical RAM. When two processors “ask” for an R object in RAM they must compete against each other. One process will have to wait until the other process are done reading that area of memory. Memory access, thus, can be a bottleneck.</p>
-<p>####Networked systems of computers A cluster computer (“supercomputer”) is really just a bunch of individual computers networked together. Each individual computer (“node” in cluster terminology) has its own set of processors, memory, and hard drive space. When the master R process does things like sends variables to the workers, it sends this data through a network, which is a lot slower than sending it within a single computer. This transfer of data causes relatively severe bottlenecks that can be ameliorated by faster networking or more clever code.</p>
-<p>For instance, you could copy the data the function will work on to each node in a cluster, so the data does not have to be transferred from the master R to the worker Rs.</p>
-<p>Note that two nodes in a cluster do not share memory.</p>
+<div id="loading-spatial-data" class="section level3">
+<h3>Loading Spatial Data</h3>
+<p>It is possible to create polygons from scratch in R. It takes a bit
+of work, and I’ll provide an example later for reference. Most of the
+time you will not need to do this. Instead you will likely load data
+from a shapefile. In the code example below we are going to load county
+polygons for the state of Nevada. Like everything in R there are
+multiple methods to read shapefiles. Since we are using the
+<code>sf</code> package we’ll use the functions provided in that
+package.</p>
+<p>NOTE: for the next examples you will need to use GIS files that are
+stored in the following compressed data directory: <a
+href="data.zip">GIS data for module 2.6</a>. If you want to follow
+along, please download this file and unzip it in your working directory.
+Make sure the folder called “data” (that contains subdirectories called
+“nv_counties” and “roads”) is in now in your working directory.</p>
+<pre class="r"><code>#############
+# Nevada Counties example...
+
+# read in nv county shapefile ----
+counties &lt;- st_read(dsn = &#39;data/nv_counties/NV_Admin_Counties.shp&#39;)</code></pre>
+<pre><code>## Reading layer `NV_Admin_Counties&#39; from data source 
+##   `C:\Users\Kevin\Documents\GitHub\R-Bootcamp\data\nv_counties\NV_Admin_Counties.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 17 features and 6 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 240110.2 ymin: 3875834 xmax: 765543.5 ymax: 4653630
+## Projected CRS: NAD83 / UTM zone 11N</code></pre>
+<pre class="r"><code>## once finished check the structure
+str(counties, max.level = 3)</code></pre>
+<pre><code>## Classes &#39;sf&#39; and &#39;data.frame&#39;:   17 obs. of  7 variables:
+##  $ ST        : chr  &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; ...
+##  $ CNTYNAME  : chr  &quot;Washoe&quot; &quot;Elko&quot; &quot;Humboldt&quot; &quot;Eureka&quot; ...
+##  $ COV_NAME  : chr  &quot;WASHOE&quot; &quot;ELKO&quot; &quot;HUMBOLDT&quot; &quot;EUREKA&quot; ...
+##  $ STATEPLANE: chr  &quot;4651&quot; &quot;4601&quot; &quot;4651&quot; &quot;4601&quot; ...
+##  $ STATEPLA_1: chr  &quot;West Zone&quot; &quot;East Zone&quot; &quot;West Zone&quot; &quot;East Zone&quot; ...
+##  $ Acres     : num  4194677 11007449 6177805 2673373 3529614 ...
+##  $ geometry  :sfc_POLYGON of length 17; first list element: List of 1
+##   ..$ : num [1:1486, 1:2] 307493 307395 307254 307197 307152 ...
+##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;XY&quot; &quot;POLYGON&quot; &quot;sfg&quot;
+##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
+##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA
+##   ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;ST&quot; &quot;CNTYNAME&quot; &quot;COV_NAME&quot; &quot;STATEPLANE&quot; ...</code></pre>
+<pre class="r"><code>## some data management
+### check the contents of the geometry field
+counties$geometry</code></pre>
+<pre><code>## Geometry set for 17 features 
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 240110.2 ymin: 3875834 xmax: 765543.5 ymax: 4653630
+## Projected CRS: NAD83 / UTM zone 11N
+## First 5 geometries:</code></pre>
+<pre class="r"><code>### let&#39;s double check that projection of the counties
+st_crs(counties)</code></pre>
+<pre><code>## Coordinate Reference System:
+##   User input: NAD83 / UTM zone 11N 
+##   wkt:
+## PROJCRS[&quot;NAD83 / UTM zone 11N&quot;,
+##     BASEGEOGCRS[&quot;NAD83&quot;,
+##         DATUM[&quot;North American Datum 1983&quot;,
+##             ELLIPSOID[&quot;GRS 1980&quot;,6378137,298.257222101,
+##                 LENGTHUNIT[&quot;metre&quot;,1]]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         ID[&quot;EPSG&quot;,4269]],
+##     CONVERSION[&quot;UTM zone 11N&quot;,
+##         METHOD[&quot;Transverse Mercator&quot;,
+##             ID[&quot;EPSG&quot;,9807]],
+##         PARAMETER[&quot;Latitude of natural origin&quot;,0,
+##             ANGLEUNIT[&quot;Degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8801]],
+##         PARAMETER[&quot;Longitude of natural origin&quot;,-117,
+##             ANGLEUNIT[&quot;Degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8802]],
+##         PARAMETER[&quot;Scale factor at natural origin&quot;,0.9996,
+##             SCALEUNIT[&quot;unity&quot;,1],
+##             ID[&quot;EPSG&quot;,8805]],
+##         PARAMETER[&quot;False easting&quot;,500000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8806]],
+##         PARAMETER[&quot;False northing&quot;,0,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8807]]],
+##     CS[Cartesian,2],
+##         AXIS[&quot;(E)&quot;,east,
+##             ORDER[1],
+##             LENGTHUNIT[&quot;metre&quot;,1]],
+##         AXIS[&quot;(N)&quot;,north,
+##             ORDER[2],
+##             LENGTHUNIT[&quot;metre&quot;,1]],
+##     ID[&quot;EPSG&quot;,26911]]</code></pre>
+<pre class="r"><code>### How does this projection compare to the sf_points object?
+### double check the sf_points projection
+st_crs(sf_points)</code></pre>
+<pre><code>## Coordinate Reference System:
+##   User input: +init=epsg:26911 
+##   wkt:
+## PROJCRS[&quot;NAD83 / UTM zone 11N&quot;,
+##     BASEGEOGCRS[&quot;NAD83&quot;,
+##         DATUM[&quot;North American Datum 1983&quot;,
+##             ELLIPSOID[&quot;GRS 1980&quot;,6378137,298.257222101,
+##                 LENGTHUNIT[&quot;metre&quot;,1]]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         ID[&quot;EPSG&quot;,4269]],
+##     CONVERSION[&quot;UTM zone 11N&quot;,
+##         METHOD[&quot;Transverse Mercator&quot;,
+##             ID[&quot;EPSG&quot;,9807]],
+##         PARAMETER[&quot;Latitude of natural origin&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8801]],
+##         PARAMETER[&quot;Longitude of natural origin&quot;,-117,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8802]],
+##         PARAMETER[&quot;Scale factor at natural origin&quot;,0.9996,
+##             SCALEUNIT[&quot;unity&quot;,1],
+##             ID[&quot;EPSG&quot;,8805]],
+##         PARAMETER[&quot;False easting&quot;,500000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8806]],
+##         PARAMETER[&quot;False northing&quot;,0,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8807]],
+##         ID[&quot;EPSG&quot;,16011]],
+##     CS[Cartesian,2],
+##         AXIS[&quot;(E)&quot;,east,
+##             ORDER[1],
+##             LENGTHUNIT[&quot;metre&quot;,1,
+##                 ID[&quot;EPSG&quot;,9001]]],
+##         AXIS[&quot;(N)&quot;,north,
+##             ORDER[2],
+##             LENGTHUNIT[&quot;metre&quot;,1,
+##                 ID[&quot;EPSG&quot;,9001]]],
+##     USAGE[
+##         SCOPE[&quot;unknown&quot;],
+##         AREA[&quot;North America - between 120°W and 114°W - onshore and offshore. Canada - Alberta; British Columbia; Northwest Territories; Nunavut. United States (USA) - California; Idaho; Nevada, Oregon; Washington.&quot;],
+##         BBOX[30.88,-120,83.5,-114]]]</code></pre>
+<pre class="r"><code>### then explicitly compare them using boolean logic
+st_crs(counties) == st_crs(sf_points)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>### let&#39;s reproject the points to our desired CRS, utm
+### we will go into more detail on reprojections later
+counties &lt;- st_transform(counties, st_crs(sf_points))
+
+### double check they are equal
+st_crs(counties) == st_crs(sf_points)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p><code>counties</code>, just like <code>sf_points</code>, is an object
+of class <code>sf</code>, which is extends the <code>data.frame</code>
+class. The difference is that the <code>counties$geometry</code> column
+is of a different vector type, in this case the type is
+<code>POLYGON</code></p>
+<pre class="r"><code>## check structure of a polygon within a SpatialPolygonsDataFrame
+str(counties)
+
+## check the geometry type
+class(counties$geometry)
+
+## print the first few rows for inspection
+head(counties, n = 4)</code></pre>
+<p>Plotting polygons uses the same methods as plotting points.</p>
+<pre class="r"><code>## plot a spatial polygon
+plot(counties)</code></pre>
+<p><img src="module2_4_files/figure-html/plotting_spatial_polygon_1-1.png" width="672" /></p>
+<pre class="r"><code>## we don&#39;t wan&#39;t to color by any feature
+## st_geometry returns just the geometry column
+plot(st_geometry(counties))</code></pre>
+<p><img src="module2_4_files/figure-html/plotting_spatial_polygon_1-2.png" width="672" /></p>
+<pre class="r"><code>## we can plot certain polygons...
+## which has a plotting behavior we aren&#39;t used to
+## this will plot every attribute for the first county
+plot(counties[1, ])</code></pre>
+<p><img src="module2_4_files/figure-html/plotting_spatial_polygon_1-3.png" width="672" /></p>
+<pre class="r"><code>## if we only want to include the outline, the following will work
+plot(st_geometry(counties)[1])</code></pre>
+<p><img src="module2_4_files/figure-html/plotting_spatial_polygon_1-4.png" width="672" /></p>
+<pre class="r"><code>## multiple at once
+layout(matrix(1:3, ncol = 3, nrow = 1))
+plot(st_geometry(counties)[1])
+plot(st_geometry(counties)[1:4])
+plot(st_geometry(counties)[counties$CNTYNAME == &#39;Clark&#39;])</code></pre>
+<p><img src="module2_4_files/figure-html/plotting_spatial_polygon_1-5.png" width="672" /></p>
+<pre class="r"><code>## we can even plot our reptile points ontop of the counties
+layout(matrix(1))
+plot(st_geometry(counties))
+plot(st_geometry(sf_points), pch = 1, cex = .5, col = &#39;purple&#39;, add = TRUE)</code></pre>
+<p><img src="module2_4_files/figure-html/plotting_spatial_polygon_1-6.png" width="672" /></p>
 </div>
-<div id="other-things-to-worry-about" class="section level4">
-<h4>Other things to worry about</h4>
-<p><strong>RACE CONDITIONS.</strong> This comes in to play if your workers are all writing to the same output file (say, a raster file). As we discussed before, in general only one “thread” (worker) can write to a file at a time, otherwise the file may get corrupt. In parallel computing, we can increase the chance that this might happen if we aren’t careful. This often requires a programmer to be able to “lock” a file – i.e. before a worker tries to write to a file, it 1) checks if the file is “locked”, 2) if it finds it unlocked it first locks the file itself, 3) it opens/writes/close to the file, 4) it unlocks the file for other workers.</p>
-<p><strong>Embarrassingly parallel applications and those that aren’t:</strong> the term “embarrassingly parallel” refers to problems that are absolutely trivial to parallelize. The function we’ve been looking at is embarassingly parallel. Each iteration takes (basically) the same amount of time, uses the same amount of memory, doesn’t require cross-talk between workers, etc. Raster processing, as we will see, is often an embarrassingly parallel problem – we process an image one line at a time, sending each line to a different processor.</p>
-<p>Vector based processing, on the other hand, is often not embarrassingly parallel, and takes a lot more thought to properly parallelize a function.</p>
-<p>Parallel computing takes a lot of practice and understanding of the underlying systems to get good at. Other issues start popping up such as load balancing (what if the functions take non-constant amounts of time on each processor), optimization of the chunk size, and a host of other issues.</p>
-<p>Debugging can also be tricky, as the various parallel backends do not typically allows workers to print to your main screen, so you have to have them dump their outputs to a file that you then do a post-mortem on. ‘foreach’ makes this a bit easier, since you can test a function on a single node (using registerDoSEQ()), debug it, and once it works on one node, try it out on a cluster.</p>
-<p><a href="module2_5.html">–go to next module–</a></p>
+</div>
+<div id="gis-operations" class="section level2">
+<h2>GIS Operations</h2>
+<div id="spatial-joins" class="section level3">
+<h3>Spatial Joins</h3>
+<p>Spatial data joining relies on shared geographic space. Joining two
+spatial objects results in a new object with the columns of the two
+joined spatial objects. This operation is also known as a spatial
+overly. The term spatial overlay might do a better job defining what the
+operation does. We overlay one spatial object over a second spatial
+object and ask the question, “For each item in the first geometry, what
+data in the second geometry is underneath it”.</p>
+<p>The <code>sf</code> package has a function called
+<code>st_join()</code> that will perform the join. The function usage is
+as follows, <code>st_join(x, y)</code> where <code>x</code> is the first
+<code>sf</code> object and <code>y</code> is the second <code>sf</code>
+object.</p>
+<p>The <code>st_join</code> function isn’t limited to points and
+polygons, it can be run with lines and points, lines and lines, polygons
+and polygons, and lines and polygons. The code chunk below runs a
+spatial join for point and polygon geometries.</p>
+<pre class="r"><code># Spatial joins ----
+
+## use the %over% funcstion, which is the same as over(spdf_points, counties)
+rslt &lt;- st_join(sf_points, counties)
+
+## what does rslt look like?
+str(rslt)</code></pre>
+<pre><code>## sf [60,955 × 13] (S3: sf/tbl_df/tbl/data.frame)
+##  $ species   : chr [1:60955] &quot;Crotaphytus bicinctores&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; &quot;Sauromalus ater&quot; ...
+##  $ date      : Date[1:60955], format: &quot;2015-04-03&quot; &quot;2015-04-03&quot; ...
+##  $ total     : num [1:60955] 4 1 3 1 1 1 1 1 1 1 ...
+##  $ label     : chr [1:60955] &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; &quot;Ivanpah-Pahrump Valleys&quot; ...
+##  $ year      : num [1:60955] 2015 2015 2015 2015 2015 ...
+##  $ month     : chr [1:60955] &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; &quot;Apr&quot; ...
+##  $ geometry  :sfc_POINT of length 60955; first list element:  &#39;XY&#39; num [1:2] 581906 4015885
+##  $ ST        : chr [1:60955] &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; &quot;NV&quot; ...
+##  $ CNTYNAME  : chr [1:60955] &quot;Nye&quot; &quot;Nye&quot; &quot;Nye&quot; &quot;Nye&quot; ...
+##  $ COV_NAME  : chr [1:60955] &quot;NYE&quot; &quot;NYE&quot; &quot;NYE&quot; &quot;NYE&quot; ...
+##  $ STATEPLANE: chr [1:60955] &quot;4626&quot; &quot;4626&quot; &quot;4626&quot; &quot;4626&quot; ...
+##  $ STATEPLA_1: chr [1:60955] &quot;Central  Zone&quot; &quot;Central  Zone&quot; &quot;Central  Zone&quot; &quot;Central  Zone&quot; ...
+##  $ Acres     : num [1:60955] 11613744 11613744 11613744 11613744 11613744 ...
+##  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
+##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA NA NA ...
+##   ..- attr(*, &quot;names&quot;)= chr [1:12] &quot;species&quot; &quot;date&quot; &quot;total&quot; &quot;label&quot; ...</code></pre>
+<pre class="r"><code>## how about summary
+summary(rslt)</code></pre>
+<pre><code>##    species               date                total           label          
+##  Length:60955       Min.   :2010-03-18   Min.   : 1.000   Length:60955      
+##  Class :character   1st Qu.:2011-06-13   1st Qu.: 1.000   Class :character  
+##  Mode  :character   Median :2013-05-25   Median : 1.000   Mode  :character  
+##                     Mean   :2013-03-19   Mean   : 1.093                     
+##                     3rd Qu.:2014-08-18   3rd Qu.: 1.000                     
+##                     Max.   :2016-09-14   Max.   :88.000                     
+##                                                                             
+##       year         month                    geometry          ST           
+##  Min.   :2010   Length:60955       POINT        :60955   Length:60955      
+##  1st Qu.:2011   Class :character   epsg:NA      :    0   Class :character  
+##  Median :2013   Mode  :character   +proj=utm ...:    0   Mode  :character  
+##  Mean   :2013                                                              
+##  3rd Qu.:2014                                                              
+##  Max.   :2016                                                              
+##                                                                            
+##    CNTYNAME           COV_NAME          STATEPLANE         STATEPLA_1       
+##  Length:60955       Length:60955       Length:60955       Length:60955      
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##      Acres         
+##  Min.   :  168888  
+##  1st Qu.: 3213476  
+##  Median : 3213476  
+##  Mean   : 6174634  
+##  3rd Qu.:11613744  
+##  Max.   :11613744  
+##  NA&#39;s   :130</code></pre>
+<p><code>rslt</code> is an <code>sf</code> object with 60,955
+observations of 13 columns (all the columns of each <code>sf</code>
+object in the functino call). If you look at <code>sf_points</code>
+there are 60,955 elements, and <code>rslt</code> has 60,955 elements,
+this is a good sign! To reiterate <code>st_join()</code> has taken each
+point in our first geometry, <code>sf_points</code>, and looked at the
+polygons in <code>counties</code> to see which polygon that point lies
+within, then binds those colunns together to make a new <code>sf</code>
+object.</p>
+<p>Notice that the geometry column for of <code>rslt</code> is still a
+<code>POINT</code>. What does happens if you switch the order of
+<code>sf_points</code> and <code>counties</code>? Run the code chunk
+below to find out.</p>
+<pre class="r"><code>## what happens if you change the order of the input objects?
+summary(st_join(counties, sf_points))</code></pre>
+</div>
+<div id="spatial-unions" class="section level3">
+<h3>Spatial Unions</h3>
+<p>Spatial unions (or aggregation) can dissolve the boundaries of
+geometries that are touching. This is a common operation if you are
+trying to create a boundary of multiple polygons</p>
+<pre class="r"><code># unioning polygons ----
+## all of these function come from the rgeos package.
+## select two counties to union
+plot(st_geometry(counties)[2:3])</code></pre>
+<p><img src="module2_4_files/figure-html/unions-1.png" width="672" /></p>
+<pre class="r"><code>## union them
+plot(st_union(st_geometry(counties)[2:3]))</code></pre>
+<p><img src="module2_4_files/figure-html/unions-2.png" width="672" /></p>
+<pre class="r"><code># union all interior polygons ----
+## we ccan do the same thing to get a the border of NV
+## the following uses the pipe (%&gt;%) to increase code readability
+nv &lt;- counties %&gt;% st_geometry() %&gt;% st_union()
+plot(nv)</code></pre>
+<p><img src="module2_4_files/figure-html/unions-3.png" width="672" /></p>
+</div>
+<div id="topological-relations" class="section level3">
+<h3>Topological relations</h3>
+<p>Topological relations describe the spatial relationship between
+objects. That is, whether sets of spatial objects are within, outside,
+touching, or intersecting eachother. The example below will help
+illustrate that point.</p>
+<pre class="r"><code># topological relations ----
+
+# create a polygon
+a_poly = st_polygon(list(rbind(c(-1, -1), c(1, -1), c(1, 1), c(-1, -1))))
+a = st_sfc(a_poly)
+# create a line
+l_line = st_linestring(x = matrix(c(-1, -1, -0.5, 1), ncol = 2))
+l = st_sfc(l_line)
+# create points
+p_matrix = matrix(c(0.5, 1, -1, 0, 0, 1, 0.5, 1), ncol = 2)
+p_multi = st_multipoint(x = p_matrix)
+p = st_cast(st_sfc(p_multi), &quot;POINT&quot;)
+
+## plot
+par(pty = &quot;s&quot;)
+plot(a, border = &quot;red&quot;, col = &quot;gray&quot;, axes = TRUE)
+plot(l, add = TRUE)
+plot(p, add = TRUE, lab = 1:4)
+text(p_matrix[, 1] + 0.04, p_matrix[, 2] - 0.06, 1:4, cex = 1.3)</code></pre>
+<p><img src="module2_4_files/figure-html/topological%20relations-1.png" width="672" /></p>
+<p>In the plot above there are several points (1 - 4), each with a
+certain spatial relationship to the triangle polygon.</p>
+<p>Point 1 (<code>p[1]</code>) is with the polygon (<code>a</code>), we
+can check with the following code:</p>
+<pre class="r"><code>st_within(p[1], a, sparse = F)</code></pre>
+<pre><code>##      [,1]
+## [1,] TRUE</code></pre>
+<p>However, point 2 (<code>p[2]</code>) isn’t within the polygon,
+instead, it is touching the polygon.</p>
+<pre class="r"><code>st_within(p[2], a, sparse = F)</code></pre>
+<pre><code>##       [,1]
+## [1,] FALSE</code></pre>
+<pre class="r"><code>st_touches(p[2], a, sparse = F)</code></pre>
+<pre><code>##      [,1]
+## [1,] TRUE</code></pre>
+<p>Both points do intersect polygon a:</p>
+<pre class="r"><code>st_intersects(p[1:2], a, sparse = F)</code></pre>
+<pre><code>##      [,1]
+## [1,] TRUE
+## [2,] TRUE</code></pre>
+<p>And points 3 and 4 (<code>p[3:4]</code>) don’t intersect the
+polgyon.</p>
+<pre class="r"><code>st_intersects(p[3:4], a, sparse = F)</code></pre>
+<pre><code>##       [,1]
+## [1,] FALSE
+## [2,] FALSE</code></pre>
+<p>The same operations can be performed with the line (<code>l</code>),
+or even with points. The <code>sparse = F</code> tells the function to
+return a boolean matrix rather than a sparse matrix of 1’s and 0’s. For
+analysis I recommend using the default <code>sparse = T</code> due to
+the smaller footprint.</p>
+<div id="points-outside-nv" class="section level4">
+<h4>Points outside NV</h4>
+<p>Now that we have a basic understanding of some spatial operations,
+and the topological relationships between geometries we can get rid of
+all the points in <code>sf_points</code> that are outside of Nevada (see
+the map below).</p>
+<p><img src="module2_4_files/figure-html/remove%20points-1.png" width="672" /></p>
+<pre class="r"><code># remove points outside
+sparse &lt;- st_intersects(rslt, nv)
+sel_logical &lt;- lengths(sparse) &gt; 0
+
+sf_points &lt;- rslt[sel_logical, ]
+
+## check the results by uncommenting this code, and running
+# plot(nv)
+# plot(st_geometry(sf_points), col = &#39;purple&#39;, add = T)</code></pre>
+<p>We will use this <code>sf_points</code> object for the rest of the
+module, so make sure you get the correct result.</p>
 </div>
 </div>
+<div id="reproject" class="section level3">
+<h3>Reproject</h3>
+<p>Spatial data is often read into the R session with a coordinate
+reference system (CRS) defined by the maintainers of the data set. When
+reading shapefiles with the <code>st_read()</code> function, the
+<code>.prj</code> file specifies a CRS of the data. In some cases, where
+you are creating the data yourself, such as the reptile data we loaded
+earlier, we need to know what CRS the data is being collected in. These
+settings can be changed in handheld GPSs. If the coordinates are in a
+combination of degrees, minutes, seconds the CRS is WGS84, a geographic
+coordinate system with an EPSG ID of 4326. In Nevada, if the coordinates
+are in meters then it is likely NAD83 zone 11. The zone is important as
+you’ll see below.</p>
+<p>In order to convert coordinates from one CRS to another we use the
+<code>st_transform()</code> function and provide the CRS we want to
+reproject the data into. Below we will use a dataset from
+<code>spData</code> that is an <code>sf</code> object of the contiguous
+US. The data is originally in EPSG 4269. We will convert this to
+WGS84.</p>
+<pre class="r"><code># spTranform ----
+## we will use a data set from the spData package
+## the epsg id for this data is 4269
+us_states &lt;- spData::us_states
+
+## check the CRS
+st_crs(us_states)</code></pre>
+<pre><code>## Coordinate Reference System:
+##   User input: EPSG:4269 
+##   wkt:
+## GEOGCS[&quot;NAD83&quot;,
+##     DATUM[&quot;North_American_Datum_1983&quot;,
+##         SPHEROID[&quot;GRS 1980&quot;,6378137,298.257222101,
+##             AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]],
+##         TOWGS84[0,0,0,0,0,0,0],
+##         AUTHORITY[&quot;EPSG&quot;,&quot;6269&quot;]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],
+##     UNIT[&quot;degree&quot;,0.0174532925199433,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],
+##     AUTHORITY[&quot;EPSG&quot;,&quot;4269&quot;]]</code></pre>
+<pre class="r"><code>plot(st_geometry(us_states), 
+     col = &#39;white&#39;,
+     graticule = st_crs(us_states), 
+     axes = T, main = &#39;Initial, EPSG = 4269&#39;)</code></pre>
+<p><img src="module2_4_files/figure-html/reproject-1.png" width="672" /></p>
+<pre class="r"><code>## reproject basics, and replot
+wgs_usa &lt;- st_transform(us_states, crs = &#39;+init=epsg:4326&#39;)
+plot(st_geometry(wgs_usa), 
+     col = &#39;white&#39;,
+     graticule = st_crs(wgs_usa), 
+     axes = T, main = &#39;WGS84&#39;)</code></pre>
+<p><img src="module2_4_files/figure-html/reproject-2.png" width="672" /></p>
+<p>There are many, many different CRSs to choose from. Ultimately, the
+most important apsect of CRSs (and spatial data) is that we document the
+CRS of our data. Without a CRS we can’t plot our points onto Earth. So
+please, do everyone a favor and document your data’s CRS.</p>
+<p>Below is a figure demonstrating how the shape of Nevada counties
+change depending on the projection. You can find a list of all these
+projections, and many more, at the <a
+href="https://proj4.org/operations/projections/index.html">PROJ4
+website</a>.</p>
+<pre class="r"><code>## we can do this with other reprojections as well so you can really tell a difference
+layout(matrix(1:8, nrow = 2))
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs&quot; ) %&gt;%   
+  plot(col = &#39;white&#39;, 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;Albers Equal Area&#39;)
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+proj=sinu&#39;) %&gt;% 
+  plot(col = &#39;white&#39;, 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;Van Der Grinten&#39;)
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+proj=robin&#39;) %&gt;% 
+  plot(col = &#39;white&#39;, 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;Robinson&#39;)
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+proj=gall&#39;) %&gt;% 
+  plot(col = &#39;white&#39;, 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;Gall-Peters&#39;)
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+proj=eqc&#39;) %&gt;% 
+  plot(col = &#39;white&#39;, 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;Plate Carree&#39;)
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+proj=goode&#39;) %&gt;% 
+  plot(col = &#39;white&#39;, 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;Goode Homolosine&#39;)
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+init=epsg:26911&#39;) %&gt;% 
+  plot(col = &#39;white&#39;, 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;NAD83 Zone 11&#39;)
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+init=epsg:26921&#39;) %&gt;% 
+  plot(col = &#39;white&#39;, 
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;NAD83 Zone 21&#39;)</code></pre>
+<p><img src="module2_4_files/figure-html/many_projections-1.png" width="672" /></p>
+<p>The code above relies on predefined CRSs, hence the
+<code>+proj=...</code> statement. Some of these look really bad for
+plotting the US. These are due to how the CRS is created. Some are conic
+(Earth’s geoid is projected onto a cone), others are cylindrical
+(projected onto a cylinder). Each has consequences for the distortion in
+the resulting maps. PROJ4 strings take a number of other parameters that
+define how the cone or cylinder are aligned for the projection. Below we
+will define our own CRS using the <a
+href="https://en.wikipedia.org/wiki/Lambert_conformal_conic_projection">Lambert
+conformal conic projection</a>.</p>
+<pre class="r"><code>## we can also define our own projection
+layout(matrix(1:2, nrow = 2))
+
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+proj=lcc +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs&#39;) %&gt;% 
+  plot(col = &#39;white&#39;,
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;Lambert Conformal Standard&#39;)
+
+us_states %&gt;% st_geometry() %&gt;% 
+  st_transform(crs = &#39;+proj=lcc +lat_1=33 +lat_2=45 +lat_0=39 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs&#39;) %&gt;% 
+  plot(col = &#39;white&#39;,
+       graticule = st_crs(wgs_usa),
+       axes = T, main = &#39;Lambert Conformal USA&#39;)</code></pre>
+<p><img src="module2_4_files/figure-html/lcc_proj-1.png" width="672" /></p>
+<p>The map on the left shows the standard Lambert projection, while the
+map on the right shows the Lambert projections with the standard
+parallels set to show a good representation of the US.</p>
+</div>
+</div>
+<div id="raster-data" class="section level2">
+<h2>Raster Data</h2>
+<p>You will almost always read raster data from external files. There
+are many different file types to store raster data. The most common is
+probably .tif, or .geotiff. R has a native raster format that is very
+compact with an extension .grd &amp; .gri (there are two files). We will
+use this format to read in raster data.</p>
+<pre class="r"><code># working with raster data ----
+## save some data for later
+save(counties, sf_points, rslt, nv, file = &#39;data/module2_6.RData&#39;)
+
+## let&#39;s clean our workspace first
+rm(list = ls())
+load(&#39;data/module2_6.RData&#39;)
+
+## load a raster
+dem &lt;- raster(&#39;data/nv_dem_coarse.grd&#39;)
+
+## check dem structure
+str(dem)</code></pre>
+<pre><code>## Formal class &#39;RasterLayer&#39; [package &quot;raster&quot;] with 12 slots
+##   ..@ file    :Formal class &#39;.RasterFile&#39; [package &quot;raster&quot;] with 13 slots
+##   .. .. ..@ name        : chr &quot;C:\\Users\\Kevin\\Documents\\GitHub\\R-Bootcamp\\data\\nv_dem_coarse.grd&quot;
+##   .. .. ..@ datanotation: chr &quot;FLT4S&quot;
+##   .. .. ..@ byteorder   : Named chr &quot;little&quot;
+##   .. .. .. ..- attr(*, &quot;names&quot;)= chr &quot;value&quot;
+##   .. .. ..@ nodatavalue : num -3.4e+38
+##   .. .. ..@ NAchanged   : logi FALSE
+##   .. .. ..@ nbands      : int 1
+##   .. .. ..@ bandorder   : Named chr &quot;BIL&quot;
+##   .. .. .. ..- attr(*, &quot;names&quot;)= chr &quot;value&quot;
+##   .. .. ..@ offset      : int 0
+##   .. .. ..@ toptobottom : logi TRUE
+##   .. .. ..@ blockrows   : int 0
+##   .. .. ..@ blockcols   : int 0
+##   .. .. ..@ driver      : chr &quot;raster&quot;
+##   .. .. ..@ open        : logi FALSE
+##   ..@ data    :Formal class &#39;.SingleLayerData&#39; [package &quot;raster&quot;] with 13 slots
+##   .. .. ..@ values    : logi(0) 
+##   .. .. ..@ offset    : num 0
+##   .. .. ..@ gain      : num 1
+##   .. .. ..@ inmemory  : logi FALSE
+##   .. .. ..@ fromdisk  : logi TRUE
+##   .. .. ..@ isfactor  : logi FALSE
+##   .. .. ..@ attributes: list()
+##   .. .. ..@ haveminmax: logi TRUE
+##   .. .. ..@ min       : num 147
+##   .. .. ..@ max       : num 3576
+##   .. .. ..@ band      : int 1
+##   .. .. ..@ unit      : chr &quot;&quot;
+##   .. .. ..@ names     : chr &quot;w001001&quot;
+##   ..@ legend  :Formal class &#39;.RasterLegend&#39; [package &quot;raster&quot;] with 5 slots
+##   .. .. ..@ type      : chr(0) 
+##   .. .. ..@ values    : logi(0) 
+##   .. .. ..@ color     : logi(0) 
+##   .. .. ..@ names     : logi(0) 
+##   .. .. ..@ colortable: logi(0) 
+##   ..@ title   : chr(0) 
+##   ..@ extent  :Formal class &#39;Extent&#39; [package &quot;raster&quot;] with 4 slots
+##   .. .. ..@ xmin: num 240120
+##   .. .. ..@ xmax: num 766120
+##   .. .. ..@ ymin: num 3875611
+##   .. .. ..@ ymax: num 4653611
+##   ..@ rotated : logi FALSE
+##   ..@ rotation:Formal class &#39;.Rotation&#39; [package &quot;raster&quot;] with 2 slots
+##   .. .. ..@ geotrans: num(0) 
+##   .. .. ..@ transfun:function ()  
+##   ..@ ncols   : int 263
+##   ..@ nrows   : int 389
+##   ..@ crs     :Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
+##   .. .. ..@ projargs: chr &quot;+proj=utm +zone=11 +ellps=GRS80 +units=m +no_defs&quot;
+##   .. .. ..$ comment: chr &quot;PROJCRS[\&quot;unknown\&quot;,\n    BASEGEOGCRS[\&quot;unknown\&quot;,\n        DATUM[\&quot;Unknown based on GRS80 ellipsoid\&quot;,\n      &quot;| __truncated__
+##   ..@ history : list()
+##   ..@ z       : list()</code></pre>
+<pre class="r"><code>## what is this?
+dem@data@inmemory</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>Wow, that is a lot of data packed into a single class<a href="#fn3"
+class="footnote-ref" id="fnref3"><sup>3</sup></a>. Check that last
+command. What does that mean? Well, the Raster package cleverly keeps
+raster data saved in on disk, in a temporary file, rather than loading
+it into memory. This is a very nice feature because raster data can be
+huge. Don’t let anyone tell you differently, geographic data was the
+first big data!</p>
+<p>How about plotting the data? We have two different methods,
+<code>plot</code> and <code>image</code>. The essentially do the same
+thing. Pick your favorite.</p>
+<pre class="r"><code>## plot raster
+terrain_colors &lt;- rcartocolor::carto_pal(7, &#39;TealRose&#39;)
+plot(dem)</code></pre>
+<p><img src="module2_4_files/figure-html/plot%20a%20raster-1.png" width="672" /></p>
+<pre class="r"><code>## or, with a new set of more aesthetic colors!
+image(dem, asp = 1, col = terrain_colors)</code></pre>
+<p><img src="module2_4_files/figure-html/plot%20a%20raster-2.png" width="672" /></p>
+<p>Let’s load a second raster. This next one represents major roads in
+Nevada (from the Census TIGER dataset). I’ve converted the data from a
+<code>LINES</code> object to a <code>raster</code> so that we can do
+some computations with it. The plot below looks like a road network. If
+you look closely down near Las Vegas you’ll see some darker green
+colors. Those cells are all the roads and highways lumped together in a
+single raster cell. The value of each cell in this data is the number of
+roads in that cell.</p>
+<pre class="r"><code># load a second raster, distance to roads ----
+road_rast &lt;- raster(&#39;data/road_dist.grd&#39;)
+
+## plot
+plot(road_rast, col = rcartocolor::carto_pal(7, &#39;Mint&#39;))</code></pre>
+<p><img src="module2_4_files/figure-html/distance%20to%20roads%20raster-1.png" width="672" /></p>
+<p>Check the projection on our Raster objects. The rasters we just
+loaded should be the same. What about when we compare it to
+<code>nv</code>? This is one of those instances, again, where the
+datasets are using the same coordinate reference system, however two
+different methods have been used to apply that coordinate reference
+system to the data. To prove they are the same coordinate reference
+system, we can plot the state border over the dem raster.</p>
+<pre class="r"><code>## use the raster::projection function
+projection(road_rast)</code></pre>
+<pre><code>## [1] &quot;+proj=utm +zone=11 +ellps=GRS80 +units=m +no_defs&quot;</code></pre>
+<pre class="r"><code>projection(dem)</code></pre>
+<pre><code>## [1] &quot;+proj=utm +zone=11 +ellps=GRS80 +units=m +no_defs&quot;</code></pre>
+<pre class="r"><code>identicalCRS(road_rast, dem)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>## compare to nv SpatialPolygonsDataFrame
+identicalCRS(dem, as(nv, &#39;Spatial&#39;))</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>## proof these are the same crs
+plot(dem, col = terrain_colors)
+plot(nv, lwd = 3, add = T)</code></pre>
+<p><img src="module2_4_files/figure-html/check%20raster%20projection-1.png" width="672" /></p>
+<p>If we wanted to reproject the raster into a different coordinate
+reference system we would use the <code>raster::projectRaster</code>
+function. One of the parameters for this function is
+<code>filename</code>. This parameter allows you to give the function a
+filename so that data is saved onto disk as the operation progresses,
+rather than saving it in memory. Most of the time you should specify a
+filename when working with rasters.</p>
+<div id="sp-vs.-sf" class="section level3">
+<h3>sp vs. sf</h3>
+<p>The <code>sf</code> package is very new. The first version was
+published on Jan 5, 2017. This means that not all packages play nicely
+with <code>sf</code>, yet. The <code>raster</code> package is an
+example. The core functions in <code>raster</code> can take
+<code>raster</code> objects, or <code>sp</code> objects, but not
+<code>sf</code> objects. This should be thought of as a minor nuisance.
+We can use the <code>as(x, 'Spatial</code>) function from
+<code>sf</code> to easily coerce <code>sf</code> objects to
+<code>sp</code> objects. This can always be done as part of the function
+call. You’ve already seen this in the code chunk above, and you’ll see
+it as we continue working with the <code>raster</code> package. This is
+what it will look like:
+<code>extract(dem, as(sf_points, 'Spatial'))</code>.</p>
+<p>An al</p>
+</div>
+<div id="distance-to-roads" class="section level3">
+<h3>Distance to Roads</h3>
+<p>Lets create a distance to roads raster from <code>road_rast</code>.
+We can later use this to perform spatial overlays, intersections, or
+joins. This should be a relatively quick operation. If you have an older
+computer with a slower processor and few RAM patience is required.</p>
+<pre class="r"><code># create distance to roads ----
+road_dist &lt;- distance(road_rast, filename = &quot;road_dist.grd&quot;, overwrite = T)
+
+## cool, what does this look like?
+plot(road_dist)
+plot(nv, lwd = 3, add = T)</code></pre>
+<p><img src="module2_4_files/figure-html/distance%20to%20roads-1.png" width="672" /></p>
+<p>Very cool! This raster represents a continuous measure of distance to
+roads across the landscape. White pixels are directly on roads, so the
+cell value is 0. The darker the and greener the color, the further away
+from major roads that cell is. The units for each cell are meters. This
+isn’t as clean as the DEM we have loaded. The lower left corner is all
+in California, and because we didn’t include any California roads in the
+calculation of this raster, that data isn’t accurate. Instead of
+including California roads we will clip or mask this raster to the state
+border.</p>
+<pre class="r"><code>## mask raster to NV border. This will set all values outside NV to NA
+nv_road_dist &lt;- mask(road_dist, mask = as(nv, &#39;Spatial&#39;), filename = &#39;nv_road_dist.grd&#39;, overwrite = T)</code></pre>
+<p><em>If you need to overwrite a file that already exists on disk
+provide the <code>overwrite = T</code> parameter. Without this the
+operation will error out.</em></p>
+<pre class="r"><code>## plot our new raster, with nevada border
+plot(nv_road_dist)
+plot(nv, lwd = 3, add = T)</code></pre>
+<p><img src="module2_4_files/figure-html/plot%20new%20raster-1.png" width="672" /></p>
+<p>The appearance of the raster changed but the data is still the same.
+The change in appearance is due to the range of our cell values. Check
+for yourself. Removing all those extremely large values from California
+changes the distribution of our cell values.</p>
+<pre class="r"><code>## compare raster values
+summary(road_dist)</code></pre>
+<pre><code>## Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (97.75% of all cells)</code></pre>
+<pre><code>##              layer
+## Min.         0.000
+## 1st Qu.   6324.555
+## Median   16124.516
+## 3rd Qu.  39293.766
+## Max.    322552.312
+## NA&#39;s         0.000</code></pre>
+<pre class="r"><code>summary(nv_road_dist)</code></pre>
+<pre><code>## Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (97.75% of all cells)</code></pre>
+<pre><code>##            layer
+## Min.        0.00
+## 1st Qu.  4000.00
+## Median  10198.04
+## 3rd Qu. 20000.00
+## Max.    64124.88
+## NA&#39;s    30352.00</code></pre>
+</div>
+<div id="overlay-operations" class="section level3">
+<h3>Overlay Operations</h3>
+<p>We can perform overlay operations between vector and raster
+geometries, similar to what we did with two raster geometries. When
+interacting with raster-vector geometries this is referred to as
+extraction. The easiest way for me to think about this is with point
+data. We want to provide additional attribute data to the points by
+extracting the cell value from a raster at that points’ position.</p>
+<pre class="r"><code># raster extraction ----
+## global env setup
+rm(road_dist, road_rast)</code></pre>
+<p>Before we do anything else, lets visualize what we are trying to do.
+In the figure below we have several points ontop of the elevation DEM
+for Humboldt county. For each point on the map we want to get the value
+of the raster cell underneath that point.</p>
+<p><img src="module2_4_files/figure-html/visualize%20the%20problem-1.png" width="672" /></p>
+<p>Now let’s do the extraction.</p>
+<pre class="r"><code>## extract values from the dem
+## this returns a vector of length = nrow(sf_points)
+elevation &lt;- raster::extract(dem, as(sf_points, &#39;Spatial&#39;))
+summary(elevation)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   154.2  1242.4  1400.6  1353.8  1563.9  2959.7      31</code></pre>
+<pre class="r"><code>## this can be combined with our data
+## and yes, this can be done in one step instead of 2
+sf_points$elevation &lt;- elevation</code></pre>
+<p>Once the extraction is complete, and we add this column to our data
+we can do some data exploration. There are some <code>NA</code> values,
+what is that about? We can also plot a histogram and see the
+distribution of elevations for our data.</p>
+<pre class="r"><code>## and now, we can figure out the distribution of elevations in our data!
+hist(sf_points$elevation * 3.28, main = &#39;Distribution of Elevation&#39;, xlab = &#39;Elevation (ft)&#39;, freq = T)</code></pre>
+<p><img src="module2_4_files/figure-html/explore%20data-1.png" width="672" /></p>
+<pre class="r"><code>## what about those NAs?
+na_points &lt;- sf_points[is.na(sf_points$elevation), ]
+## honestly, this 2000 number is purely experimental, 
+## change values till you get what you want on the map
+bounds &lt;- extend(extent(as(na_points, &#39;Spatial&#39;)), 2000)
+
+## plot the map, zoom in on these points in the map
+raster::plot(dem, ext = bounds, col = terrain_colors)
+plot(st_geometry(na_points), col = &#39;black&#39;, add = T)
+plot(nv, add = T)</code></pre>
+<p><img src="module2_4_files/figure-html/explore%20data-2.png" width="672" /></p>
+<p>This is due to the fact that a raster is a grid of rectangles
+(squares) and we can’t perfectly mimic every vector shape. A solution is
+to use smaller resolutions for rasters, or buffer the state border to
+include cells outside the state.</p>
+</div>
+</div>
+<div id="interactive-maps" class="section level2">
+<h2>Interactive Maps</h2>
+<p>I’ll often hear that many people don’t use R as a GIS because it is
+hard to add basemaps. Well, some wonderful R user decided to write a
+library that allows for interactive mapping in R. Underneath the hood
+this library is calling a JavaScript library called leaflet.</p>
+<pre class="r"><code>load(&quot;data/module2_6.RData&quot;)
+wgs_pts &lt;- sf_points[1:100, ] %&gt;% st_transform(4326)
+
+library(leaflet)
+# interactive mapping ----
+leaflet::leaflet(wgs_pts) %&gt;% 
+  addTiles() %&gt;% 
+  addCircleMarkers(radius = 5)</code></pre>
+<p>We can change the basemap too.</p>
+<pre class="r"><code>## leaflet provider tiles
+leaflet::leaflet(wgs_pts) %&gt;% 
+  addProviderTiles(providers$Esri.WorldTopoMap) %&gt;% 
+  addCircleMarkers(radius = 5)</code></pre>
+<p>And popups!</p>
+<pre class="r"><code>## and popups
+leaflet::leaflet(wgs_pts) %&gt;% 
+  addTiles() %&gt;% 
+  addCircleMarkers(radius = 5, popup = paste(wgs_pts$species))</code></pre>
+</div>
+<div id="challenge-spatial-lines" class="section level2">
+<h2>Challenge: Spatial Lines</h2>
+<p>Lines are very similar to polygons. See if you can load a shapefile
+of lines and plot it over the counties.</p>
+<ol style="list-style-type: decimal">
+<li>Read in the roads shapefile</li>
+<li>reproject to match the counties CRS</li>
+<li>Plot counties and roads</li>
+<li>Plot roads based on road type</li>
+<li>Intersect counties and roads</li>
+<li>Plot some intersections</li>
+</ol>
+<pre class="r"><code>###########
+# CHALLENGE PROBLEMS
+
+
+# SpatialLines solution ----
+## 1. read in data
+### HINT: use readshapefile
+### data to use:
+#### data/roads/roads.shp
+#### data/counties/counties.shp
+
+## 2. reproject
+### HINT: check counties projection
+
+## 3. plot
+
+## 4. plot roads, style based on road type 
+
+## 5. intersect counties and roads
+
+## 6. plot some of the intersections
+
+## etc ...</code></pre>
+<pre class="r"><code># SpatialLines solution ----
+## read data
+
+
+## reproject
+
+
+## plot counties
+
+## intersect
+
+## etc ...</code></pre>
+<p><a href="module2_5.html">–go to next submodule–</a></p>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>The <code>raster</code> and <code>dplyr</code> libraries
+each have a function called <code>select</code>. I prefer to load
+<code>dplyr</code> first and have the <code>raster</code> library mask
+the <code>select</code> function in the <code>dplyr</code> library. In
+order to call the <code>select</code> function in the
+<code>raster</code> library we need to explicitly reference the library
+we want to use with two colons: <code>dplyr::select</code>. When using
+double colons the libraries namespace (list of functions, variable,
+etc.) is loaded, but not attached to the session. This allows us to call
+function from libraries we haven’t explicitly loaded with
+<code>library()</code> or <code>requrie()</code> function. I have a
+tendancy to (over)use this method. It is very helpful when writing your
+own functions and libraries as those functions will not throw errors
+about a library not being loaded.<a href="#fnref1"
+class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>In a spatial context the definition of vector is
+different than a how R refers to a vector. It is important to
+distinguish the two based on context. In this module I will pretty much
+always be refering to the geographic data .<a href="#fnref2"
+class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>R supports two different class types, S3 classes and S4
+classes. All we really need to now about them right now is how they
+differ in terms of accessing values. The <code>@</code> symbol is
+analogous to the <code>$</code> symbol for lists. It access named items
+from an S4 class. These items in S4 classes are called slots.<a
+href="#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 
