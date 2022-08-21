@@ -15,19 +15,10 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE}
 
-##################################################
-####                                          ####  
-####  R Bootcamp, Module 2.5                  ####
-####                                          #### 
-####   University of Nevada, Reno             ####
-####                                          #### 
-##################################################
+#  R Bootcamp, Module 2.5                  
+#    University of Nevada, Reno             
+####  Parallel processing in R                
 
-
-######################################################
-####  Parallel processing in R                ####
-####     Assembled by: Mitch Gritts                ####
-######################################################
 
 ```
 
