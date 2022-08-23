@@ -1,12 +1,14 @@
 
-#  UNR R workshop #1, Module 2 -------------------
+#  UNR R workshop #1, Module 2
 
-#  Managing data  --------------------
+#  Managing data
 
 library(tidyverse)
 library(ggplot2)
 library(zoo)
 
+
+# Working directories --------------------
 
 # Find the directory you're working in 
 getwd()          # note: the results from running this command on my machine will differ from yours!  
@@ -21,7 +23,7 @@ getwd()          # note: the results from running this command on my machine wil
 # list.files()    # uncomment this to run it...
 
 
-#  Import data files into R----------------------
+#  Import/Export data files into R----------------------
 
 # ?read_delim    # some useful functions for reading in data
 
@@ -51,7 +53,7 @@ ggplot2::diamonds   # note the use of the package name followed by two colons- t
 
 
 
-# Check/explore data object--------------------
+# Check/explore data objects
 
 # ?str: displays the internal structure of the data object
 str(mtcars)
@@ -63,14 +65,14 @@ names(diamonds)
 summary(data.df)
 
 
-# Exporting data (save to hard drive as data file)---------------------------
+# Exporting data (save to hard drive as data file)
 
 # ?write_csv: writes a CSV file to the working directory
    
 write_csv(data.df[,c("Country","Product")], file="data_export.csv")   # export a subset of the data we just read in.
 
 
-#  Saving and loading--------------------
+#  Saving and loading
 
 # saveRDS: save a single object from the environment to hard disk
 # save: saves one or more objects from the environment to hard disk. Must be read back in with the same name.
@@ -87,12 +89,14 @@ new_b <- readRDS("Myobject1.rds")
 load("Module1_2.RData")   # load these objects back in with the same names!
 
 
-# Clear the environment ------------------------
+# Clear the environment
 
 rm(list=ls())   # clear the entire environment. Confirm that your environment is now empty!
 
 data.df <- read_csv("data.csv")  # read the data back in!
 
+
+# Working with data in R ------------------------
 
 # <- assignment operator
 # =  alternative assignment operator
@@ -102,7 +106,7 @@ a = 3      # assign the value "3" to the object named "a" (alternative)
 a == 3     # answer the question: "does the object "a" equal "3"? 
 
 
-####  Boolean operations---------------------------
+#  Boolean operations
 
 # Basic operators
 
@@ -138,7 +142,7 @@ data.df[,2]==74    # tests each element of column to see whether it is equal to 
 data.df[,2]<74|data.df[,2]==91   # use the logical OR operator
 
 
-#  Subsetting data ---------------------------
+#  Subsetting data 
 
 data.df[data.df[,"Import"]<74,]    # select those rows of data for which second column is less than 74
 
@@ -153,7 +157,7 @@ data.df %>%
   filter(Country %in% sub.countries)   # subset just those rows that match the list of countries
 
 
-#  ASIDE: using the pipe operator %>% (ctrl-shift-m) in R ---------------------
+#  ASIDE: using the pipe operator %>% (ctrl-shift-m) in R 
 
 # start with a simple example
 x <- 3
@@ -169,7 +173,9 @@ round(log(x), digits=2) # form g(f(x)) is equivalent to
 x %>% log() %>% round(digits=2) 
 
 
-#  Practice subsetting a data frame ------------------------
+# Subsetting data ----------------------
+
+#  Practice subsetting a data frame 
 turtles.df <- read_delim(file="turtle_data.txt",delim="\t")   # tab-delimited file
 turtles.df
 
@@ -211,7 +217,7 @@ turtles.df %>%          # summarize weight by sex (check that it's fixed)
   summarize(meanwt = mean(weight))
 
 
-#  Data Manipulation using subsetting -------------------
+#  Data Manipulation using subsetting 
 
 # list of tags we do not trust the data for
 bad.tags <- c(13,105)
@@ -263,7 +269,7 @@ names(diamonds2)  # extract the column names
 names(diamonds2)  <- c("length", "width","depth")
 
 
-#  Sorting  ----------------
+#  Sorting  
 
 # The 'order' function returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
 order(turtles.df$carapace_length)
@@ -285,7 +291,7 @@ turtles.df %>%
   arrange(sex,weight)
 
 
-#  Missing Data   ----------------------
+#  Missing Data 
 
 # NOTE: you need to specify that this is a tab-delimited file. It is especially important to specify the delimiter for data files with missing data. If you specify the header and what the text is delimited by correctly, it will read missing data as NA. Otherwise it will fail to read data in properly.
 
