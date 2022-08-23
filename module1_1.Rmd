@@ -15,10 +15,10 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```{r echo=FALSE}
 
-#  R Bootcamp #1, Module 1 --------------------------------     
+#  R Bootcamp #1, Module 1    
 #      University of Nevada, Reno             
 
-#  Getting started with R: the basics  --------------------
+#  Getting started with R: the basics 
 
 ```
 
@@ -143,7 +143,7 @@ Packages in the CRAN repository can be installed using the function "install.pac
 #     taste of where we are going!
 
 
-# Install packages ------------
+# Install packages 
 #   NOTE you only have to do this once. If you have not already installed the packages, you can uncomment and run the following lines:
 
 # install.packages(c("ggplot2","tidyverse"))
@@ -156,7 +156,7 @@ Once packages are installed, you can load them into your workspace (so they are 
 
 ```{r message=FALSE, warning=FALSE}
 
-# Load packages ------------------
+# Load packages 
 
 library(ggplot2)
 library(tidyverse)
@@ -168,7 +168,7 @@ Next we can load in some data. To give you a sense of what R can do, let's load 
 
 ```{r message=FALSE, warning=FALSE}
 
-# Read in data (from the web) -----------------------
+# Read in data (from the web) 
 
 salaries <- read_csv("http://dgrtwo.github.io/pages/lahman/Salaries.csv")
 
@@ -186,7 +186,7 @@ Let's examine these data objects in r. Again, we will get into this in more deta
 
 ```{r}
 
-# explore the data --------------------
+# explore the data 
 
 salaries
 # summary(salaries)    # summary statistics for all variables in data frame
@@ -209,7 +209,7 @@ Let's begin by merging these datasets into a single master dataset...
 
 ```{r}
 
-# Do some wrangling! -----------------------
+# Do some wrangling! 
 
  # merge the batting and salaries data frames
 merged.batting = left_join(batting, salaries, by=c("playerID", "yearID", "teamID", "lgID"))
@@ -239,7 +239,7 @@ Now let's summarize the data by player and start to get a sense for what pattern
 
 ```{r message=FALSE, warning=FALSE}
 
-# summarize by player ---------------------
+# summarize by player 
 
 summarized.batters = merged.all %>% 
   group_by(playerID) %>% 
@@ -255,7 +255,7 @@ summarized.batters = merged.all %>%
   arrange(desc(Total.HR))
 
 
-# visualize the data -----------------------------
+# visualize the data 
 
   # visualize correlation between hits and runs
 ggplot(summarized.batters, aes(Total.H, Total.R)) + geom_point()
@@ -302,7 +302,7 @@ This time, let's look for some time trends by summarizing by year.
 
 ```{r message=FALSE, warning=FALSE}
 
-# Summmarize by time (and league) ------------------------
+# Summmarize by time (and league) 
 
 summarized.year = merged.all %>% 
   filter(yearID>1920) %>%
@@ -317,7 +317,7 @@ summarized.year = merged.all %>%
 
 summarized.year
 
-# visualize the data -----------------------------
+# visualize the data 
 
   # visualize trend in home runs
 ggplot(summarized.year, aes(yearID, Total.HR, col=lgID)) + 
@@ -350,7 +350,7 @@ summarized.teams.year = merged.all %>%
 
 summarized.teams.year
 
-# visualize the data -----------------------------
+# visualize the data 
 
   # visualize correlation between home runs and year
 ggplot(summarized.teams.year, aes(yearID, Total.HR)) + 
@@ -417,7 +417,9 @@ Here are some examples of how functions are used. Note the parentheses!
 
 ```{r results=F}
 
-# functions -------------------------
+# BACK TO BASICS -------------------
+
+# functions ------------------- 
 
 sum(1, 2, 3, 10)    # returns: 15
 
@@ -466,7 +468,7 @@ Scalars are the simplest data objects. A scalar is just a single value of any da
 #  Create R Objects ------------------------
 
 
-# scalars   --------------------------------
+# scalars 
 
 
 scalar1 <- 'this is a scalar'
@@ -486,7 +488,7 @@ First let's create some vectors. In the code below we use a function called `c()
 
 ```{r}
 
-# VECTORS  -------------------------------
+# VECTORS  
 
 vector1 <- c(1.1, 2.1, 3.1, 4)   # the "c()" function combines smaller data objects into a larger object
 vector2 <- c('a', 'b', 'c')
@@ -520,7 +522,7 @@ Let's make our first matrix. One simple way to make a matrix is just by joining 
 
 ```{r}
 
-# MATRICES -----------------
+# MATRICES 
 
 mymat <- cbind(d1,d2)        # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
 mymat
@@ -562,7 +564,7 @@ Let's make our first list:
 
 ```{r}
 
-# LISTS --------------------------------
+# LISTS 
 
 mylist <- list()        # create empty list
 mylist[[1]] <- c(1,2,3)     # note the double brackets- this is one way to reference list elements. 
@@ -590,7 +592,7 @@ Let's make our first data frame.
 
 ```{r}
 
-# DATA FRAMES ---------------------------
+# DATA FRAMES 
 
 df1 <- data.frame(col1=c(1,2,3),col2=c("A","A","B"))        # create a data frame with two columns. Each column is a vector of length 3
 df1
@@ -616,7 +618,7 @@ One task that comes up a lot is generating sequences of numbers:
 
 # MAKING UP DATA!  ----------------------------------
 
-# Generating vector sequences  ----------------
+# Generating vector sequences  
 
 1:10                        # sequential vector from 1 to 10
 
@@ -629,7 +631,7 @@ Another task is to group regular recurring sequences together:
 
 ```{r}
 
-# Repeating vector sequences -----------
+# Repeating vector sequences 
 
 rep(0,times=3)                # repeat 0 three times
 rep(1:3,times=2)              # repeat the vector 1:3 twice
@@ -642,7 +644,7 @@ And finally, we can fill up a vector with random numbers using one of R's built 
 
 ```{r}
 
-# Random numbers ---------------
+# Random numbers 
 
 rnorm(10)                     # 10 samples from std. normal
 
@@ -684,7 +686,7 @@ Here are some useful R functions for exploring data objects:
 
 ```{r eval=FALSE}
 
-# Useful data exploration/checking tools in R 
+# Useful data exploration/checking tools in R --------------------
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array
@@ -753,6 +755,10 @@ Your result should look like this:
 
 HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq()' functions instead.
 
+To make sure you got it right, use the visualization code provided below:
+
+It should look something like this:
+
 ```{r echo=FALSE}
 
 # challenge 5
@@ -760,23 +766,10 @@ HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq(
 x <- rep(seq(-1,1,length=5),each=5)
 y <- rep(seq(-1,1,length=5),times=5)
 df_spatial <- data.frame(long=x,lat=y)
-
-```
-
-To make sure you got it right, use the following commands in R:
-
-Don't worry if you don't understand the code- we'll talk about plotting soon enough!
-
-```{r}
-
-# Code for visualizing the results from challenge problem 5
-
 plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
 
 ```
-
-It should look something like this (above)!
 
 
 ```{r eval=FALSE}
@@ -800,7 +793,7 @@ c(3,6)
 
 ###     HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq()' functions instead.
 
-# You can use this code for plotting:
+# Code for visualizing the results from challenge problem 5:
 
 plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)

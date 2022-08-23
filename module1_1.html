@@ -611,7 +611,7 @@ wrangling and exploration</p>
 #     taste of where we are going!
 
 
-# Install packages ------------
+# Install packages 
 #   NOTE you only have to do this once. If you have not already installed the packages, you can uncomment and run the following lines:
 
 # install.packages(c(&quot;ggplot2&quot;,&quot;tidyverse&quot;))</code></pre>
@@ -620,7 +620,7 @@ right) and use the “install” button.</p>
 <p>Once packages are installed, you can load them into your workspace
 (so they are useable in your R session) using the “library()”
 function:</p>
-<pre class="r"><code># Load packages ------------------
+<pre class="r"><code># Load packages 
 
 library(ggplot2)
 library(tidyverse)
@@ -629,7 +629,7 @@ library(Lahman)    # for getting baseball data</code></pre>
 let’s load in some relatively complex datasets. These datasets happen to
 be about baseball, but they can stand in for any complex datasets you
 might encounter in your work!</p>
-<pre class="r"><code># Read in data (from the web) -----------------------
+<pre class="r"><code># Read in data (from the web) 
 
 salaries &lt;- read_csv(&quot;http://dgrtwo.github.io/pages/lahman/Salaries.csv&quot;)
 
@@ -642,7 +642,7 @@ batting &lt;- read_csv(&quot;http://dgrtwo.github.io/pages/lahman/Batting.csv&qu
 fielding &lt;- tibble(Lahman::Fielding)</code></pre>
 <p>Let’s examine these data objects in r. Again, we will get into this
 in more detail later!</p>
-<pre class="r"><code># explore the data --------------------
+<pre class="r"><code># explore the data 
 
 salaries</code></pre>
 <pre><code>## # A tibble: 23,956 × 5
@@ -724,7 +724,7 @@ fielding</code></pre>
 data into a format that can be visualized and analyzed effectively.</p>
 <p>Let’s begin by merging these datasets into a single master
 dataset…</p>
-<pre class="r"><code># Do some wrangling! -----------------------
+<pre class="r"><code># Do some wrangling! 
 
  # merge the batting and salaries data frames
 merged.batting = left_join(batting, salaries, by=c(&quot;playerID&quot;, &quot;yearID&quot;, &quot;teamID&quot;, &quot;lgID&quot;))
@@ -752,7 +752,7 @@ merged.all = merged.all %&gt;%     # make a new column with the full name
   mutate(name=paste(nameFirst, nameLast))</code></pre>
 <p>Now let’s summarize the data by player and start to get a sense for
 what patterns we can detect.</p>
-<pre class="r"><code># summarize by player ---------------------
+<pre class="r"><code># summarize by player 
 
 summarized.batters = merged.all %&gt;% 
   group_by(playerID) %&gt;% 
@@ -768,7 +768,7 @@ summarized.batters = merged.all %&gt;%
   arrange(desc(Total.HR))
 
 
-# visualize the data -----------------------------
+# visualize the data 
 
   # visualize correlation between hits and runs
 ggplot(summarized.batters, aes(Total.H, Total.R)) + geom_point()</code></pre>
@@ -811,7 +811,7 @@ ggplot(summarized.batters, aes(BattingAverage)) +
 <p><img src="module1_1_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
 <p>This time, let’s look for some time trends by summarizing by
 year.</p>
-<pre class="r"><code># Summmarize by time (and league) ------------------------
+<pre class="r"><code># Summmarize by time (and league) 
 
 summarized.year = merged.all %&gt;% 
   filter(yearID&gt;1920) %&gt;%
@@ -839,9 +839,8 @@ summarized.year</code></pre>
 ##  8   1924 NL         498    5577   12004 42430          0.283
 ##  9   1925 AL         533    6397   12419 42567          0.292
 ## 10   1925 NL         636    6193   12492 42845          0.292
-## # … with 176 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
-<pre class="r"><code># visualize the data -----------------------------
+## # … with 176 more rows</code></pre>
+<pre class="r"><code># visualize the data 
 
   # visualize trend in home runs
 ggplot(summarized.year, aes(yearID, Total.HR, col=lgID)) + 
@@ -882,9 +881,8 @@ summarized.teams.year = merged.all %&gt;%
 ##  8   2012 NYA    AL          245     804    1462  5524          0.265
 ##  9   1999 SEA    AL          244     859    1499  5572          0.269
 ## 10   2000 TOR    AL          244     861    1562  5677          0.275
-## # … with 2,016 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
-<pre class="r"><code># visualize the data -----------------------------
+## # … with 2,016 more rows</code></pre>
+<pre class="r"><code># visualize the data 
 
   # visualize correlation between home runs and year
 ggplot(summarized.teams.year, aes(yearID, Total.HR)) + 
@@ -958,7 +956,9 @@ functionName([argument 1, argument2, ...])</code></pre>
 the function definition is shown instead.</p>
 <p>Here are some examples of how functions are used. Note the
 parentheses!</p>
-<pre class="r"><code># functions -------------------------
+<pre class="r"><code># BACK TO BASICS -------------------
+
+# functions ------------------- 
 
 sum(1, 2, 3, 10)    # returns: 15
 
@@ -1000,7 +1000,7 @@ value of any data type.</p>
 <pre class="r"><code>#  Create R Objects ------------------------
 
 
-# scalars   --------------------------------
+# scalars 
 
 
 scalar1 &lt;- &#39;this is a scalar&#39;
@@ -1018,7 +1018,7 @@ fact, a scalar in R is really just a vector of length 1.</p>
 called <code>c()</code>. You can think of it as the ‘combine’ function-
 it takes several smaller data objects and combines them together into a
 single object.</p>
-<pre class="r"><code># VECTORS  -------------------------------
+<pre class="r"><code># VECTORS  
 
 vector1 &lt;- c(1.1, 2.1, 3.1, 4)   # the &quot;c()&quot; function combines smaller data objects into a larger object
 vector2 &lt;- c(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)</code></pre>
@@ -1047,7 +1047,7 @@ matrix must be of the same <strong>type</strong>.</p>
 by joining two or more vectors using the function <code>cbind()</code>
 (bind vectors or matrices together by column) or <code>rbind()</code>
 (bind vectors or matrices together by row)</p>
-<pre class="r"><code># MATRICES -----------------
+<pre class="r"><code># MATRICES 
 
 mymat &lt;- cbind(d1,d2)        # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
 mymat</code></pre>
@@ -1092,7 +1092,7 @@ single object! The elements of a list don’t need to be the same length
 or the same <strong>type</strong>. The elements of a list can be
 vectors, matrices, other lists, or even functions.</p>
 <p>Let’s make our first list:</p>
-<pre class="r"><code># LISTS --------------------------------
+<pre class="r"><code># LISTS 
 
 mylist &lt;- list()        # create empty list
 mylist[[1]] &lt;- c(1,2,3)     # note the double brackets- this is one way to reference list elements. 
@@ -1131,7 +1131,7 @@ You can think of a data frame like a spreadsheet. Each row of the the
 data frame represents a different observation, and each column
 represents a different measurement taken on each observation unit.</p>
 <p>Let’s make our first data frame.</p>
-<pre class="r"><code># DATA FRAMES ---------------------------
+<pre class="r"><code># DATA FRAMES 
 
 df1 &lt;- data.frame(col1=c(1,2,3),col2=c(&quot;A&quot;,&quot;A&quot;,&quot;B&quot;))        # create a data frame with two columns. Each column is a vector of length 3
 df1</code></pre>
@@ -1162,14 +1162,14 @@ submodule we’ll practice working with real data!</p>
 <p>One task that comes up a lot is generating sequences of numbers:</p>
 <pre class="r"><code># MAKING UP DATA!  ----------------------------------
 
-# Generating vector sequences  ----------------
+# Generating vector sequences  
 
 1:10                        # sequential vector from 1 to 10</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 <pre class="r"><code>seq(0,1,length=5)          # sequence of length 5 between 0 and 1 </code></pre>
 <pre><code>## [1] 0.00 0.25 0.50 0.75 1.00</code></pre>
 <p>Another task is to group regular recurring sequences together:</p>
-<pre class="r"><code># Repeating vector sequences -----------
+<pre class="r"><code># Repeating vector sequences 
 
 rep(0,times=3)                # repeat 0 three times</code></pre>
 <pre><code>## [1] 0 0 0</code></pre>
@@ -1179,7 +1179,7 @@ rep(0,times=3)                # repeat 0 three times</code></pre>
 <pre><code>## [1] 1 1 2 2 3 3</code></pre>
 <p>And finally, we can fill up a vector with random numbers using one of
 R’s built in <strong>random number generators</strong>:</p>
-<pre class="r"><code># Random numbers ---------------
+<pre class="r"><code># Random numbers 
 
 rnorm(10)                     # 10 samples from std. normal</code></pre>
 <pre><code>##  [1]  1.6603479  0.8944701  0.1321728 -1.2993650  0.5006127  0.5980192
@@ -1257,7 +1257,7 @@ mydf</code></pre>
 <pre class="r"><code>mydf$Treatment    # access a column of the data frame by name</code></pre>
 <pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
 <p>Here are some useful R functions for exploring data objects:</p>
-<pre class="r"><code># Useful data exploration/checking tools in R 
+<pre class="r"><code># Useful data exploration/checking tools in R --------------------
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array
@@ -1334,15 +1334,10 @@ and lat: [-1,1].</li>
 </ol>
 <p>HINT: you don’t need to type each location in by hand! Use the
 ‘rep()’ and ‘seq()’ functions instead.</p>
-<p>To make sure you got it right, use the following commands in R:</p>
-<p>Don’t worry if you don’t understand the code- we’ll talk about
-plotting soon enough!</p>
-<pre class="r"><code># Code for visualizing the results from challenge problem 5
-
-plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
-abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
-<p>It should look something like this (above)!</p>
+<p>To make sure you got it right, use the visualization code provided
+below:</p>
+<p>It should look something like this:</p>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <pre class="r"><code># CHALLENGE EXERCISES -------------------------
 
 
@@ -1362,7 +1357,7 @@ c(3,6)
 
 ###     HINT: you don&#39;t need to type each location in by hand! Use the &#39;rep()&#39; and &#39;seq()&#39; functions instead.
 
-# You can use this code for plotting:
+# Code for visualizing the results from challenge problem 5:
 
 plot(x=df_spatial$long, y=df_spatial$lat, main=&quot;Regular grid&quot;,xlab=&quot;long&quot;,ylab=&quot;lat&quot;,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col=&quot;green&quot;,lwd=1)</code></pre>

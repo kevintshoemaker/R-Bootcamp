@@ -1,8 +1,8 @@
 
-#  R Bootcamp #1, Module 1 --------------------------------     
+#  R Bootcamp #1, Module 1    
 #      University of Nevada, Reno             
 
-#  Getting started with R: the basics  --------------------
+#  Getting started with R: the basics 
 
 
 myname <- "Jim Bob"  # or use your real name.
@@ -13,20 +13,20 @@ myname <- "Jim Bob"  # or use your real name.
 #     taste of where we are going!
 
 
-# Install packages ------------
+# Install packages 
 #   NOTE you only have to do this once. If you have not already installed the packages, you can uncomment and run the following lines:
 
 # install.packages(c("ggplot2","tidyverse"))
 
 
-# Load packages ------------------
+# Load packages 
 
 library(ggplot2)
 library(tidyverse)
 library(Lahman)    # for getting baseball data
 
 
-# Read in data (from the web) -----------------------
+# Read in data (from the web) 
 
 salaries <- read_csv("http://dgrtwo.github.io/pages/lahman/Salaries.csv")
 
@@ -39,7 +39,7 @@ batting <- read_csv("http://dgrtwo.github.io/pages/lahman/Batting.csv")
 fielding <- tibble(Lahman::Fielding)
 
 
-# explore the data --------------------
+# explore the data 
 
 salaries
 # summary(salaries)    # summary statistics for all variables in data frame
@@ -54,7 +54,7 @@ fielding
 # summary(fielding)
 
 
-# Do some wrangling! -----------------------
+# Do some wrangling! 
 
  # merge the batting and salaries data frames
 merged.batting = left_join(batting, salaries, by=c("playerID", "yearID", "teamID", "lgID"))
@@ -78,7 +78,7 @@ merged.all = merged.all %>%     # make a new column with the full name
   mutate(name=paste(nameFirst, nameLast))
 
 
-# summarize by player ---------------------
+# summarize by player 
 
 summarized.batters = merged.all %>% 
   group_by(playerID) %>% 
@@ -94,7 +94,7 @@ summarized.batters = merged.all %>%
   arrange(desc(Total.HR))
 
 
-# visualize the data -----------------------------
+# visualize the data 
 
   # visualize correlation between hits and runs
 ggplot(summarized.batters, aes(Total.H, Total.R)) + geom_point()
@@ -136,7 +136,7 @@ ggplot(summarized.batters, aes(BattingAverage)) +
 	 labs(title = "Histogram with Normal Curve")  
 
 
-# Summmarize by time (and league) ------------------------
+# Summmarize by time (and league) 
 
 summarized.year = merged.all %>% 
   filter(yearID>1920) %>%
@@ -151,7 +151,7 @@ summarized.year = merged.all %>%
 
 summarized.year
 
-# visualize the data -----------------------------
+# visualize the data 
 
   # visualize trend in home runs
 ggplot(summarized.year, aes(yearID, Total.HR, col=lgID)) + 
@@ -179,7 +179,7 @@ summarized.teams.year = merged.all %>%
 
 summarized.teams.year
 
-# visualize the data -----------------------------
+# visualize the data 
 
   # visualize correlation between home runs and year
 ggplot(summarized.teams.year, aes(yearID, Total.HR)) + 
@@ -203,7 +203,9 @@ layout(matrix(1:4,nrow=2,byrow=T))  # set up graphics window
 plot(model1)  # run diagnostic plots for our regression
 
 
-# functions -------------------------
+# BACK TO BASICS -------------------
+
+# functions ------------------- 
 
 sum(1, 2, 3, 10)    # returns: 15
 
@@ -225,14 +227,14 @@ help(round)  # a function for getting help with functions!!
 #  Create R Objects ------------------------
 
 
-# scalars   --------------------------------
+# scalars 
 
 
 scalar1 <- 'this is a scalar'
 scalar2 <- 104
 
 
-# VECTORS  -------------------------------
+# VECTORS  
 
 vector1 <- c(1.1, 2.1, 3.1, 4)   # the "c()" function combines smaller data objects into a larger object
 vector2 <- c('a', 'b', 'c')
@@ -248,7 +250,7 @@ sum(d3)               # sum of all elements in a vector
 d2[2]                 # extract the second element in the vector
 
 
-# MATRICES -----------------
+# MATRICES 
 
 mymat <- cbind(d1,d2)        # create a matrix by binding vectors, with vector d1 as column 1 and d2 as column 2
 mymat
@@ -274,7 +276,7 @@ mymat[,1]     # extract the entire first column
 # X[a,]        access row a of matrix/data frame X
 
 
-# LISTS --------------------------------
+# LISTS 
 
 mylist <- list()        # create empty list
 mylist[[1]] <- c(1,2,3)     # note the double brackets- this is one way to reference list elements. 
@@ -289,7 +291,7 @@ mylist[[2]]    # extract the second list element
 mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list !   
 
 
-# DATA FRAMES ---------------------------
+# DATA FRAMES 
 
 df1 <- data.frame(col1=c(1,2,3),col2=c("A","A","B"))        # create a data frame with two columns. Each column is a vector of length 3
 df1
@@ -300,21 +302,21 @@ df1$col2     # extract the second column by name (alternatively, df1[["col2"]])
 
 # MAKING UP DATA!  ----------------------------------
 
-# Generating vector sequences  ----------------
+# Generating vector sequences  
 
 1:10                        # sequential vector from 1 to 10
 
 seq(0,1,length=5)          # sequence of length 5 between 0 and 1 
 
 
-# Repeating vector sequences -----------
+# Repeating vector sequences 
 
 rep(0,times=3)                # repeat 0 three times
 rep(1:3,times=2)              # repeat the vector 1:3 twice
 rep(1:3,each=2)               # repeat each element of 1:3 two times
 
 
-# Random numbers ---------------
+# Random numbers 
 
 rnorm(10)                     # 10 samples from std. normal
 
@@ -345,7 +347,7 @@ mydf
 mydf$Treatment    # access a column of the data frame by name
 
 
-# Useful data exploration/checking tools in R 
+# Useful data exploration/checking tools in R --------------------
 
 length(d2)        # Obtain length (# elements) of vector d2
 dim(mymat)        # Obtain dimensions of matrix or array
@@ -354,12 +356,6 @@ names(my.data)    # get names of variables in a data frame (or names of elements
 nrow(my.data)     # get number of rows/observations in a data frame
 ncol(my.data)     # get number of columns/variables in a data frame
 str(my.data)      # look at the "internals" of an object (useful for making sense of complex objects!)
-
-
-# Code for visualizing the results from challenge problem 5
-
-plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
-abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
 
 
 # CHALLENGE EXERCISES -------------------------
@@ -381,7 +377,7 @@ c(3,6)
 
 ###     HINT: you don't need to type each location in by hand! Use the 'rep()' and 'seq()' functions instead.
 
-# You can use this code for plotting:
+# Code for visualizing the results from challenge problem 5:
 
 plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
 abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
