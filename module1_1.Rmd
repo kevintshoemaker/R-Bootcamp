@@ -35,12 +35,12 @@ Here are links to good R "cheatsheets":
 [R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
 
 ### Helpful packages
-[ggplot cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
-[data 'tidying'](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
-[data transformation](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
-[working with dates and times](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf)
+[ggplot cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)       
+[data 'tidying'](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)    
+[data transformation](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)        
+[working with dates and times](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf)           
 
-Many additional cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)
+Many additional cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)        
 
 ## Load script for submodule #1.1
 
