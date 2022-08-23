@@ -1,5 +1,5 @@
 
-#  R Bootcamp #2, Submodule 2.1 --------------------------
+#  R Bootcamp #2, Submodule 2.1 
 #   University of Nevada, Reno            
 #   Expanding R functionality: packages etc. 
 
@@ -28,7 +28,6 @@ mfv(newdf$Export, na.rm = T)
 detach("package:modeest")  # remove the package from your current working session
 
 
-###########
 # install package from GitHub:
 
  # install.packages("remotes")    # run this if you haven't already installed the "remotes" package
@@ -37,7 +36,6 @@ remotes::install_github("AckerDWM/gg3D")  # install a package from GitHub!
 
 
 # 3D Plotting example ---------------
-
 
 library(tidyverse)
 library(deSolve)
@@ -82,23 +80,23 @@ plot_ly(x=dogbarks$Cars, y=dogbarks$Food, z=dogbarks$Bark, type="scatter3d", mod
 library(help = "car")    # help file for the "car" package for applied regression
 
 
-# package vignette --------------------
+# package vignette 
 
 browseVignettes('car')
 vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
 
 
-# Load html documentation for R and all installed packages ---------
+# Load html documentation for R and all installed packages 
 
 help.start()
 
 
-# Built-in examples --------------------
+# Built-in examples 
 
 example(lm)   # run examples for "lm" function (included in base R)
 
 
-# package citations ---------------------------
+# package citations 
 
 citation('car')   # citation for the 'car' package
 

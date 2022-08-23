@@ -538,8 +538,7 @@ difficult)</li>
 <p>The syntax for using “install_github()” is just
 install_github(“[author]/[package]”) Here’s an example using the
 “install_github()” function:</p>
-<pre class="r"><code>###########
-# install package from GitHub:
+<pre class="r"><code># install package from GitHub:
 
  # install.packages(&quot;remotes&quot;)    # run this if you haven&#39;t already installed the &quot;remotes&quot; package
 library(remotes)
@@ -551,7 +550,6 @@ remotes::install_github(&quot;AckerDWM/gg3D&quot;)  # install a package from Git
 github to make a 3d scatterplot!</p>
 <p>Let’s load the packages:</p>
 <pre class="r"><code># 3D Plotting example ---------------
-
 
 library(tidyverse)
 library(deSolve)
@@ -632,7 +630,7 @@ following syntax to pull up a vignette:</p>
 vignette(&#39;[name of vignette]&#39;, &#39;[name of package]&#39;)
 </code></pre>
 <p>For example,</p>
-<pre class="r"><code># package vignette --------------------
+<pre class="r"><code># package vignette 
 
 browseVignettes(&#39;car&#39;)
 vignette(&#39;embedding&#39;,&#39;car&#39;)   # pull up the &quot;embedding&quot; vignette in the &#39;car&#39; package</code></pre>
@@ -646,7 +644,7 @@ href="https://cran.r-project.org/web/packages/raster/index.html">raster
 package</a>)</p>
 <p>Also, you can load the documentation for any package you have
 installed using the “help.start()” function:</p>
-<pre class="r"><code># Load html documentation for R and all installed packages ---------
+<pre class="r"><code># Load html documentation for R and all installed packages 
 
 help.start()</code></pre>
 </div>
@@ -661,7 +659,7 @@ examples provided in the package documentation. These examples are
 provided at the end of the help file for any function (using ‘help()’ or
 ‘?’). You can also run these examples using the “example()” function.
 For example:</p>
-<pre class="r"><code># Built-in examples --------------------
+<pre class="r"><code># Built-in examples 
 
 example(lm)   # run examples for &quot;lm&quot; function (included in base R)</code></pre>
 <p>Unfortunately, the code examples provided in help files (e.g., when
@@ -677,7 +675,7 @@ peer-reviewed papers that document the novel algorithms included in the
 package, often in more detail than the help files. These are also the
 papers you should cite if you use the package for a manuscript. You can
 find these citations using the “citation()” function:</p>
-<pre class="r"><code># package citations ---------------------------
+<pre class="r"><code># package citations 
 
 citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 <pre><code>## 

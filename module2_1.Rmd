@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ```{r echo=FALSE}
 
-#  R Bootcamp #2, Submodule 2.1 --------------------------
+#  R Bootcamp #2, Submodule 2.1 
 #   University of Nevada, Reno            
 #   Expanding R functionality: packages etc. 
 
@@ -110,7 +110,6 @@ The syntax for using "install_github()" is just install_github("[author]/[packag
 
 ```{r eval=FALSE}
 
-###########
 # install package from GitHub:
 
  # install.packages("remotes")    # run this if you haven't already installed the "remotes" package
@@ -128,7 +127,6 @@ Let's load the packages:
 ```{r}
 
 # 3D Plotting example ---------------
-
 
 library(tidyverse)
 library(deSolve)
@@ -229,7 +227,7 @@ For example,
 
 ```{r eval=FALSE}
 
-# package vignette --------------------
+# package vignette 
 
 browseVignettes('car')
 vignette('embedding','car')   # pull up the "embedding" vignette in the 'car' package
@@ -245,7 +243,7 @@ Also, you can load the documentation for any package you have installed using th
 
 ```{r eval=FALSE}
 
-# Load html documentation for R and all installed packages ---------
+# Load html documentation for R and all installed packages 
 
 help.start()
 
@@ -259,7 +257,7 @@ One way to do this- for base R and for packages, is to access the examples provi
 
 ```{r eval=FALSE}
 
-# Built-in examples --------------------
+# Built-in examples 
 
 example(lm)   # run examples for "lm" function (included in base R)
 
@@ -273,7 +271,7 @@ Most packages include one or more citations, which are often peer-reviewed paper
 
 ```{r}
 
-# package citations ---------------------------
+# package citations 
 
 citation('car')   # citation for the 'car' package
 
