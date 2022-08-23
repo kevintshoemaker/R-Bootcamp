@@ -489,10 +489,6 @@ and data structures to perform basic data manipulation tasks</li>
 wrangle data</li>
 <li>Work with and parse dates using <em>lubridate</em></li>
 </ul>
-<pre class="r"><code># load packages ---------------------------
-
-library(tidyverse)
-library(lubridate)</code></pre>
 </div>
 <div id="import-sample-data" class="section level2">
 <h2>Import sample data</h2>
@@ -501,7 +497,7 @@ and Polson Kerr (PK) dams. You can download this data set by clicking <a
 href="MTMetStations.csv">here</a>. Make sure you download this data set
 into your project directory!!</p>
 <p>Let’s load this data into R!</p>
-<pre class="r"><code>#  Import data as a Tibble dataframe and take a quick glance at the data -----------------------------
+<pre class="r"><code>#  Import and &quot;tidy&quot; your data  -----------------------------
 
 # import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
 clim_data &lt;- read_csv(&quot;MTMetStations.csv&quot;)
@@ -521,8 +517,7 @@ clim_data</code></pre>
 ##  8 1/8/2013        39       32      0.04       36       25      0.32
 ##  9 1/9/2013        44       31      0.07       39       30      0.1 
 ## 10 1/10/2013       39       27      0.22       46       32      0.1 
-## # … with 1,724 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # … with 1,724 more rows</code></pre>
 <pre class="r"><code> # display the last few lines of the data frame (often useful to check!)
 tail(clim_data)</code></pre>
 <pre><code>## # A tibble: 6 × 7
@@ -547,7 +542,7 @@ separate columns. <code>unite()</code> does the opposite</p>
 <p><img src="tidy-17.png" /></p>
 <p>Let’s take a close look at the climate dataset and see if there’s
 anything we need to tidy up.</p>
-<pre class="r"><code>#  Use Tidyr verbs to make data &#39;tidy&#39; ---------------------------
+<pre class="r"><code>#  Use Tidyr verbs to make data &#39;tidy&#39; 
 
 # look at clim_data -- is it in tidy format? What do we need to do to get it there?
 head(clim_data)</code></pre>
@@ -815,7 +810,7 @@ class="section level3">
 <h3>Working with Dates with lubridate - Parsing Dates</h3>
 <p>Once dates are in date format, we can easily pull out their
 individual components like this:</p>
-<pre class="r"><code>#  Parsing dates with lubridate -----------------------
+<pre class="r"><code>#  Parsing dates with lubridate 
 
 datetime &lt;- ymd_hms(&quot;2016-07-08 12:34:56&quot;)
 
@@ -850,7 +845,7 @@ year, month, day of month, and day of year</p>
 <p>first we convert the character string date into date format. Here we
 are naming the new column “Date”, so R will replace character string
 with date formatted dates</p>
-<pre class="r"><code>####  Using lubridate with dataframes and dplyr verbs
+<pre class="r"><code>###  Using lubridate with dataframes and dplyr verbs
 
 # going back to our tidy_clim_data dataset we see that 
 #   the date column is formatted as character, not date
@@ -882,8 +877,7 @@ tidy_clim_data</code></pre>
 ##  8 2013-01-04 HH         22    13      0
 ##  9 2013-01-05 PK         29    20      0
 ## 10 2013-01-05 HH         24    13      0
-## # … with 3,458 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # … with 3,458 more rows</code></pre>
 <p>Now we can use mutate to create individual columns for the date
 components</p>
 <pre class="r"><code># parse date into year, month, day, and day of year columns

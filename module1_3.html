@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Basic plotting R (ggplot)" />
+<meta name="author" content="Basic plotting in R (ggplot)" />
 
 
 <title>Submodule 1.3</title>
@@ -425,7 +425,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Submodule 1.3</h1>
-<h4 class="author">Basic plotting R (ggplot)</h4>
+<h4 class="author">Basic plotting in R (ggplot)</h4>
 <h4 class="date">Fall 2022</h4>
 
 </div>
@@ -451,34 +451,6 @@ RStudio Project and click on the folder icon in the toolbar at the top
 and load your script.</p></li>
 </ol>
 <p>Let’s get started with plotting in R!</p>
-<p>We’ll start with the ‘trees’ dataset, which is built into R. It
-describes the girth, height, and volume of 31 felled black cherry
-trees.</p>
-<pre class="r"><code># ?trees      # description of built in dataset  (uncomment to run)
-
-dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
-<pre><code>## [1] 31  3</code></pre>
-<pre class="r"><code>str(trees)   # Show the structure of the trees dataframe</code></pre>
-<pre><code>## &#39;data.frame&#39;:    31 obs. of  3 variables:
-##  $ Girth : num  8.3 8.6 8.8 10.5 10.7 10.8 11 11 11.1 11.2 ...
-##  $ Height: num  70 65 63 72 81 83 66 75 80 75 ...
-##  $ Volume: num  10.3 10.3 10.2 16.4 18.8 19.7 15.6 18.2 22.6 19.9 ...</code></pre>
-<pre class="r"><code>head(trees)   # Show the first few observations of the trees dataframe</code></pre>
-<pre><code>##   Girth Height Volume
-## 1   8.3     70   10.3
-## 2   8.6     65   10.3
-## 3   8.8     63   10.2
-## 4  10.5     72   16.4
-## 5  10.7     81   18.8
-## 6  10.8     83   19.7</code></pre>
-<pre class="r"><code>summary(trees)  # Summary stats for each column</code></pre>
-<pre><code>##      Girth           Height       Volume     
-##  Min.   : 8.30   Min.   :63   Min.   :10.20  
-##  1st Qu.:11.05   1st Qu.:72   1st Qu.:19.40  
-##  Median :12.90   Median :76   Median :24.20  
-##  Mean   :13.25   Mean   :76   Mean   :30.17  
-##  3rd Qu.:15.25   3rd Qu.:80   3rd Qu.:37.30  
-##  Max.   :20.60   Max.   :87   Max.   :77.00</code></pre>
 </div>
 <div id="ggplot-basics" class="section level2">
 <h2>ggplot basics</h2>
@@ -505,12 +477,42 @@ represent the bar height, or the x coordinate, or the point size, etc.).
 call to <strong><code>ggplot()</code></strong>.</p>
 <p>Here is an example of a simple <strong>scatterplot</strong> in
 ggplot:</p>
-<pre class="r"><code># scatterplot
+<pre class="r"><code># scatterplots ----------------------------
 
 ggplot(trees, aes(x=Girth,y=Volume)) +
   geom_point()</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-And some more fancy and informative scatterplots</p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>We’ll start with the ‘trees’ dataset, which is built into R. It
+describes the girth, height, and volume of 31 felled black cherry
+trees.</p>
+<pre class="r"><code># ASIDE: explore the built-in &#39;trees&#39; dataset
+
+# ?trees      # description of built in dataset  (uncomment to run)
+
+dim(trees)   # Show the dimension of the trees dataframe                                              </code></pre>
+<pre><code>## [1] 31  3</code></pre>
+<pre class="r"><code>str(trees)   # Show the structure of the trees dataframe</code></pre>
+<pre><code>## &#39;data.frame&#39;:    31 obs. of  3 variables:
+##  $ Girth : num  8.3 8.6 8.8 10.5 10.7 10.8 11 11 11.1 11.2 ...
+##  $ Height: num  70 65 63 72 81 83 66 75 80 75 ...
+##  $ Volume: num  10.3 10.3 10.2 16.4 18.8 19.7 15.6 18.2 22.6 19.9 ...</code></pre>
+<pre class="r"><code>head(trees)   # Show the first few observations of the trees dataframe</code></pre>
+<pre><code>##   Girth Height Volume
+## 1   8.3     70   10.3
+## 2   8.6     65   10.3
+## 3   8.8     63   10.2
+## 4  10.5     72   16.4
+## 5  10.7     81   18.8
+## 6  10.8     83   19.7</code></pre>
+<pre class="r"><code>summary(trees)  # Summary stats for each column</code></pre>
+<pre><code>##      Girth           Height       Volume     
+##  Min.   : 8.30   Min.   :63   Min.   :10.20  
+##  1st Qu.:11.05   1st Qu.:72   1st Qu.:19.40  
+##  Median :12.90   Median :76   Median :24.20  
+##  Mean   :13.25   Mean   :76   Mean   :30.17  
+##  3rd Qu.:15.25   3rd Qu.:80   3rd Qu.:37.30  
+##  Max.   :20.60   Max.   :87   Max.   :77.00</code></pre>
+<p>And some more fancy and informative scatterplots</p>
 <pre class="r"><code>    # try representing tree height using the color aesthetic
 ggplot(trees, aes(x=Girth,y=Volume)) +
   geom_point(aes(col=Height))</code></pre>
@@ -532,7 +534,7 @@ include multiple plots in the same image.</p>
 cowplot package (commonly used extensions to ggplot). Here we explore
 different ways of graphically representing the relationship between tree
 girth and volume.</p>
-<pre class="r"><code># Explore different &quot;geoms&quot; or plot types ----------------
+<pre class="r"><code># Explore different &quot;geoms&quot; or plot types 
 
 plot1 &lt;- ggplot(trees,aes(Girth,Volume)) +    # plot the relationship as a line
   geom_line()
@@ -559,7 +561,7 @@ mapping.</p>
 <p>To illustrate this, let’s use the built in <code>iris</code> dataset,
 which gives the sepal length/width and petal length/width (in cm), for
 50 flowers from each of 3 iris species.</p>
-<pre class="r"><code># Explore different aesthetic mappings ---------------------
+<pre class="r"><code># Explore different aesthetic mappings 
 
 plot1 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # shape represents species
   geom_point(aes(shape=Species))
@@ -589,7 +591,7 @@ see, but as you start adjusting colors and identifying your personal
 preferences, you’ll probably want to customize this – ggplot has a ton
 of options for doing so. Here’s a few examples of ggplot
 <strong>themes</strong>:</p>
-<pre class="r"><code># explore themes -----------------------------
+<pre class="r"><code># explore themes 
 
 plot1 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
   geom_point(aes(color=Species)) +
@@ -612,7 +614,7 @@ plot_grid(plot1,plot2,plot3,plot4,labels = &quot;AUTO&quot;)</code></pre>
 <h3>Changing title and axis labels</h3>
 <p>We can also add titles, axis labels, and other options to make the
 plots look prettier.</p>
-<pre class="r"><code># add additional plot elements: title, axis limis, axis labels ------------------
+<pre class="r"><code># add additional plot elements: title, axis limis, axis labels 
 
 plot1 &lt;- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
   geom_point(aes(color=Species)) + 
@@ -639,7 +641,7 @@ plot_grid(plot1,plot2,plot3,plot4,labels = &quot;AUTO&quot;)</code></pre>
 </div>
 <div id="bar-plots-and-box-whisker-plots" class="section level2">
 <h2>Bar Plots and box-whisker plots</h2>
-<pre class="r"><code># bar plots and box-whisker plots -----------------------
+<pre class="r"><code># bar plots, box-whisker plots, violin plots  -----------------------
 
 plot1 &lt;- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot
   geom_boxplot() 
@@ -664,7 +666,7 @@ plot4 &lt;- ggplot(bar.heights, aes(Species,meanSL)) +
 plot_grid(plot1,plot2,plot3,plot4,labels = &quot;AUTO&quot;)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>But what if we want to have some error bars?</p>
-<pre class="r"><code># Bar plot with error bars ------------------------
+<pre class="r"><code># Bar plot with error bars
 
 bar.heights &lt;- iris %&gt;% 
   group_by(Species) %&gt;% 
@@ -691,7 +693,7 @@ head(ToothGrowth)</code></pre>
 ## 4  5.8   VC  0.5
 ## 5  6.4   VC  0.5
 ## 6 10.0   VC  0.5</code></pre>
-<pre class="r"><code># toothgrowth plot -------------------
+<pre class="r"><code># toothgrowth plot 
 
 
 ToothGrowth$dose &lt;- as.factor(ToothGrowth$dose)
@@ -722,14 +724,14 @@ shrinking and swelling of clays during dry and wet seasons) in
 Australia.</p>
 <p>First we will need to load a few more packages. Make sure to install
 any packages in this list you don’t already have!</p>
-<pre class="r"><code># More complex example -----------------------------
+<pre class="r"><code># More complex demo -----------------------------
 
 library(ggthemes)
 library(carData)
 library(DAAG)
 library(RColorBrewer)</code></pre>
 <p>Now load the dataset.</p>
-<pre class="r"><code># Load the example data -----------------------
+<pre class="r"><code># Load the example data 
 
 soil &lt;- carData::Soils    # load example data
 
@@ -764,8 +766,7 @@ several soil nutrients on the same graph. Notice that the y axis label
 defaults to the first set of points (Ca), and we’d need to modify it.
 Also there is no legend! You’d have to change things like axis labels
 and legend titles ‘manually’ to complete this figure.</p>
-<pre class="r"><code>######
-# Plot several relationships on same graphics window
+<pre class="r"><code># Plot several relationships on same graphics window
 
 ggplot(soil, aes(x=pH)) +
   geom_point(aes(y=Ca), shape=21, fill=&quot;red&quot;, color=&quot;black&quot;, size=4, stroke=1.5) +
@@ -803,7 +804,7 @@ href="https://tidyr.tidyverse.org/articles/pivot.html">this link</a></p>
 <p>Let’s reshape the soil dataset into the long format- which in this
 case treats each separate nutrient measurement as a different
 observation (row).</p>
-<pre class="r"><code># Use &#39;tidyverse&#39; to reshape the data  ---------------
+<pre class="r"><code># Use &#39;tidyverse&#39; to reshape the data 
 
 soil.nut &lt;- pivot_longer(soil, cols=c(&quot;Ca&quot;,&quot;Mg&quot;,&quot;Na&quot;), names_to=&quot;nutrient&quot;,values_to = &quot;value&quot; )
 soil.nut</code></pre>
@@ -820,8 +821,7 @@ soil.nut</code></pre>
 ##  8 1     Top     0-10  T0    3      5.14 0.26   0.95   300  0.68   1.41 Mg      
 ##  9 1     Top     0-10  T0    3      5.14 0.26   0.95   300  0.68   1.41 Na      
 ## 10 1     Top     0-10  T0    4      5.14 0.169  1.1    248  1.09   1.64 Ca      
-## # … with 134 more rows, and 1 more variable: value &lt;dbl&gt;
-## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
+## # … with 134 more rows, and 1 more variable: value &lt;dbl&gt;</code></pre>
 <p>This lets us plot our different nutrients as factor levels without
 typing each one with its specifications on its own line, and generates a
 legend that identifies the series (and also gives the default ggplot
@@ -831,8 +831,7 @@ colors).</p>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>What if instead of Na, we had K as our third nutrient of
 interest?</p>
-<pre class="r"><code>######
-# or if we wanted to plot different nutrients...
+<pre class="r"><code># or if we wanted to plot different nutrients...
 
 soil.nut2 &lt;- pivot_longer(soil, cols=c(&quot;Ca&quot;,&quot;Mg&quot;,&quot;K&quot;), names_to=&quot;nutrient&quot;,values_to = &quot;value&quot; )
 
@@ -855,8 +854,7 @@ separate panels using some grouping variable</p></li>
 represent the data with axes and colors</p></li>
 </ul>
 <p>We also play around with some more ggplot <em>themes</em>.</p>
-<pre class="r"><code>##########
-# plot with facets, scales, and themes!
+<pre class="r"><code># plot with facets, scales, and themes!
 
 ggplot(soil.nut2) +
   geom_point(aes(x=pH, y=value, fill=nutrient), 
@@ -912,8 +910,7 @@ available in RColorBrewer by entering
 <strong><code>display.brewer.all()</code></strong>, which shows the
 sequential palettes, then categorical palettes, than diverging
 palettes.</p>
-<pre class="r"><code>############
-# Playing with colors in ggplot!
+<pre class="r"><code># Playing with colors in ggplot!
 
 display.brewer.all()</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="576" /></p>
@@ -922,8 +919,7 @@ those seem like good soil-y colors. Notice that because
 <strong><code>fill</code></strong> is mapped to the values of the data,
 inside this function is where I can change the title of the legend (and
 the labels for the different values, if I wanted to do that).</p>
-<pre class="r"><code>#########
-# Choose a new color palette from the RColorBrewer package
+<pre class="r"><code># Choose a new color palette from the RColorBrewer package
 
 ggplot(soil) +
   geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
@@ -938,8 +934,7 @@ href="&#39;http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">names
 of colors</a> already recognized by R, or use <a
 href="https://htmlcolorcodes.com/">hex codes</a> for any color you
 want.</p>
-<pre class="r"><code>#########
-# Choose your own palette!
+<pre class="r"><code># Choose your own palette!
 
 ggplot(soil) +
   geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color=&quot;black&quot;, size=4, stroke=1.5) +
@@ -970,8 +965,7 @@ a useful way to get more information from your scatterplots. To get an
 idea for how other kinds of statistical elements can be drawn onto
 plots, we’ll look at examples using histograms and boxplots.</p>
 <p>First, a simple histogram of 3 soil nutrients.</p>
-<pre class="r"><code>###########
-# Adding density/smooth curves to plots
+<pre class="r"><code># Adding density/smooth curves to plots
 
    ## first produce some histograms
 
@@ -986,8 +980,7 @@ ggplot(soil.nut) +
 <p><img src="module1_3_files/figure-html/unnamed-chunk-27-1.png" width="768" /></p>
 <p>Here is how to add a density curve to the histogram with another
 <strong><code>geom</code></strong>:</p>
-<pre class="r"><code>########
-# Then add density curves
+<pre class="r"><code># Then add density curves
 
 ggplot(soil.nut) +
   geom_histogram(aes(x=value, y=..density..), color=&quot;black&quot;, fill=&quot;white&quot;, bins=15) +
@@ -1002,8 +995,7 @@ ggplot(soil.nut) +
 <p><img src="module1_3_files/figure-html/unnamed-chunk-28-1.png" width="768" /></p>
 <p>And here’s how we can compare our distributions to a normal
 distribution, using a <strong><code>stat</code></strong> function:</p>
-<pre class="r"><code>###########
-# And now let&#39;s use a statistical function (dnorm) in ggplot to compare with a normal distribution:
+<pre class="r"><code># And now let&#39;s use a statistical function (dnorm) in ggplot to compare with a normal distribution:
 
 ggplot(soil.nut) +
   geom_histogram(aes(x=value, y=..density..), color=&quot;black&quot;, fill=&quot;white&quot;, bins=15) +
@@ -1027,8 +1019,7 @@ can work around it using <strong><code>stat_boxplot</code></strong>.
 functions for creating layers based on statistical properties of the
 data. Another example is <strong><code>stat_summary</code></strong>,
 which we use in the example below to add means to the boxplot.</p>
-<pre class="r"><code>#######
-# add error bars and other stat summaries (e.g., mean) to boxplot
+<pre class="r"><code># add error bars and other stat summaries (e.g., mean) to boxplot
 
 ggplot(soil, aes(x=Contour, y=pH)) +
   stat_boxplot(geom=&quot;errorbar&quot;, width=0.2) +  
@@ -1079,8 +1070,7 @@ specifically for mapping.</p>
 “possumsites” dataframe that accompanies the “possum” dataset in the
 DAAG package. The dataset contains body measurements of several possums
 in Australia. Where did they catch these possums?</p>
-<pre class="r"><code>##########
-# use leaflet for interactive mapping!
+<pre class="r"><code># use leaflet for interactive mapping! ------------
 
 leaflet(possumsites) %&gt;%
   addTiles() %&gt;% #Adds map tiles from OpenStreetMap

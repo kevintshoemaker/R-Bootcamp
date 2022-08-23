@@ -20,9 +20,12 @@ knitr::opts_chunk$set(
 
 ```{r echo=FALSE}
 
-#  R Bootcamp #1, Module 4---------------------------------------
+#  R Bootcamp #1, Module 4
 #       University of Nevada, Reno             
-#       Data wrangling!         
+#       Data wrangling!
+
+library(tidyverse)
+library(lubridate)
 
 ```
 
@@ -71,15 +74,6 @@ The following cheat sheets will be helpful in this submodule:
   * Work with and parse dates using *lubridate*
 
 
-```{r setupworkspace}
-
-# load packages ---------------------------
-
-library(tidyverse)
-library(lubridate)
-
-```
-
 ## Import sample data
 
 The next few examples use meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams. You can download this data set by clicking [here](MTMetStations.csv). Make sure you download this data set into your project directory!! 
@@ -88,7 +82,7 @@ Let's load this data into R!
 
 ```{r dataimport}
 
-#  Import data as a Tibble dataframe and take a quick glance at the data -----------------------------
+#  Import and "tidy" your data  -----------------------------
 
 # import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
 clim_data <- read_csv("MTMetStations.csv")
@@ -117,7 +111,7 @@ Let's take a close look at the climate dataset and see if there's anything we ne
 
 ```{r make data tidy}
 
-#  Use Tidyr verbs to make data 'tidy' ---------------------------
+#  Use Tidyr verbs to make data 'tidy' 
 
 # look at clim_data -- is it in tidy format? What do we need to do to get it there?
 head(clim_data)
@@ -320,7 +314,7 @@ Once dates are in date format, we can easily pull out their individual component
 
 ```{r lubridate components}
 
-#  Parsing dates with lubridate -----------------------
+#  Parsing dates with lubridate 
 
 datetime <- ymd_hms("2016-07-08 12:34:56")
 
@@ -353,7 +347,7 @@ first we convert the character string date into date format. Here we are naming 
 
 ```{r lubridate3}
 
-####  Using lubridate with dataframes and dplyr verbs
+###  Using lubridate with dataframes and dplyr verbs
 
 # going back to our tidy_clim_data dataset we see that 
 #   the date column is formatted as character, not date

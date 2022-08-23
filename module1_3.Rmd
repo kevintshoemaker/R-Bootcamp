@@ -1,6 +1,6 @@
 ---
 title: "Submodule 1.3"
-author: 'Basic plotting R (ggplot)'
+author: 'Basic plotting in R (ggplot)'
 date: "Fall 2022"
 output:
   html_document:
@@ -22,10 +22,10 @@ knitr::opts_chunk$set(
 
 ```{r echo=FALSE}
 
-#  R Bootcamp #1, Module 3  -----------------------------         
+#  R Bootcamp #1, Module 3           
 #      University of Nevada, Reno   
 
-#  Data visualization and statistics ----------------------
+#  Data visualization in ggplot 
 
 library(ggplot2)
 library(cowplot)
@@ -48,9 +48,28 @@ A good ggplot cheat sheet can be found here: [ggplot cheat sheet](https://raw.gi
 
 Let's get started with plotting in R!
 
+## ggplot basics
+
+A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying the data frame you want to use to create your visualizations. We then often define the "x" argument (defining coordinates on an x axis) and (if applicable) a "y" argument (defining coordinates on a y axis). In ggplot these are known as aesthetic mappings! That is because it is a way of conveying information in the dataset graphically! Other ways of conveying information graphically include point size, color, and symbol- all of which are also referred to as aesthetic mappings (syntax: `mapping=aes()`).
+
+You can then add geometric objects to your plot, often using functions beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and how these data should be displayed (which data should be used to represent the bar height, or the x coordinate, or the point size, etc.). **`aes()`** can also be used within the initial call to **`ggplot()`**.
+
+Here is an example of a simple **scatterplot** in ggplot:  
+
+```{r}
+
+# scatterplots ----------------------------
+
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point()
+
+```
+
 We'll start with the 'trees' dataset, which is built into R. It describes the girth, height, and volume of 31 felled black cherry trees.   
 
 ```{r}
+
+# ASIDE: explore the built-in 'trees' dataset
 
 # ?trees      # description of built in dataset  (uncomment to run)
 
@@ -64,22 +83,6 @@ summary(trees)  # Summary stats for each column
 ```
 
 
-## ggplot basics
-
-A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying the data frame you want to use to create your visualizations. We then often define the "x" argument (defining coordinates on an x axis) and (if applicable) a "y" argument (defining coordinates on a y axis). In ggplot these are known as aesthetic mappings! That is because it is a way of conveying information in the dataset graphically! Other ways of conveying information graphically include point size, color, and symbol- all of which are also referred to as aesthetic mappings (syntax: `mapping=aes()`).
-
-You can then add geometric objects to your plot, often using functions beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and how these data should be displayed (which data should be used to represent the bar height, or the x coordinate, or the point size, etc.). **`aes()`** can also be used within the initial call to **`ggplot()`**.
-
-Here is an example of a simple **scatterplot** in ggplot:  
-
-```{r}
-
-# scatterplot
-
-ggplot(trees, aes(x=Girth,y=Volume)) +
-  geom_point()
-
-```
 And some more fancy and informative scatterplots
 
 ```{r}
@@ -106,7 +109,7 @@ We can do this using the `plot_grid()` function in the cowplot package (commonly
 
 ```{r eval=FALSE}
 
-# Explore different "geoms" or plot types ----------------
+# Explore different "geoms" or plot types 
 
 plot1 <- ggplot(trees,aes(Girth,Volume)) +    # plot the relationship as a line
   geom_line()
@@ -137,7 +140,7 @@ To illustrate this, let's use the built in `iris` dataset, which gives the sepal
 
 ```{r}
 
-# Explore different aesthetic mappings ---------------------
+# Explore different aesthetic mappings 
 
 plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # shape represents species
   geom_point(aes(shape=Species))
@@ -166,7 +169,7 @@ You can see that the default plot includes a gray background with white gridline
 
 ```{r}
 
-# explore themes -----------------------------
+# explore themes 
 
 plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
   geom_point(aes(color=Species)) +
@@ -193,7 +196,7 @@ We can also add titles, axis labels, and other options to make the plots look pr
 
 ```{r}
 
-# add additional plot elements: title, axis limis, axis labels ------------------
+# add additional plot elements: title, axis limis, axis labels 
 
 plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
   geom_point(aes(color=Species)) + 
@@ -222,7 +225,7 @@ plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 
 ```{r}
 
-# bar plots and box-whisker plots -----------------------
+# bar plots, box-whisker plots, violin plots  -----------------------
 
 plot1 <- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot
   geom_boxplot() 
@@ -252,7 +255,7 @@ But what if we want to have some error bars?
 
 ```{r}
 
-# Bar plot with error bars ------------------------
+# Bar plot with error bars
 
 bar.heights <- iris %>% 
   group_by(Species) %>% 
@@ -279,7 +282,7 @@ head(ToothGrowth)
 
 ```{r}
 
-# toothgrowth plot -------------------
+# toothgrowth plot 
 
 
 ToothGrowth$dose <- as.factor(ToothGrowth$dose)
@@ -313,7 +316,7 @@ First we will need to load a few more packages. Make sure to install any package
 
 ```{r}
 
-# More complex example -----------------------------
+# More complex demo -----------------------------
 
 library(ggthemes)
 library(carData)
@@ -326,7 +329,7 @@ Now load the dataset.
 
 ```{r}
 
-# Load the example data -----------------------
+# Load the example data 
 
 soil <- carData::Soils    # load example data
 
@@ -366,7 +369,6 @@ Now let's say you wanted to examine if/how the relationship between pH and Ca va
 
 ```{r echo=FALSE}
 
-########
 # Color the points by depth
 
 ggplot(soil) +
@@ -378,7 +380,6 @@ Try playing around with applying a few graphical attributes to all the points (s
 
 ```{r echo=FALSE}
 
-##########
 # make additional alterations (outside the "aes" function)
 
 ggplot(soil) +
@@ -390,7 +391,6 @@ Now for something new: let's plot relationships between pH and several soil nutr
 
 ```{r}
 
-######
 # Plot several relationships on same graphics window
 
 ggplot(soil, aes(x=pH)) +
@@ -434,7 +434,7 @@ Let's reshape the soil dataset into the long format- which in this case treats e
 
 ```{r}
 
-# Use 'tidyverse' to reshape the data  ---------------
+# Use 'tidyverse' to reshape the data 
 
 soil.nut <- pivot_longer(soil, cols=c("Ca","Mg","Na"), names_to="nutrient",values_to = "value" )
 soil.nut
@@ -452,7 +452,6 @@ What if instead of Na, we had K as our third nutrient of interest?
 
 ```{r}
 
-######
 # or if we wanted to plot different nutrients...
 
 soil.nut2 <- pivot_longer(soil, cols=c("Ca","Mg","K"), names_to="nutrient",values_to = "value" )
@@ -476,7 +475,6 @@ We also play around with some more ggplot *themes*.
 
 ```{r fig.height=4, fig.width=8}
 
-##########
 # plot with facets, scales, and themes!
 
 ggplot(soil.nut2) +
@@ -508,7 +506,6 @@ One method is to use **`scale_fill_brewer`**, and select an already composed col
 
 ```{r fig.height=8, fig.width=6}
 
-############
 # Playing with colors in ggplot!
 
 display.brewer.all()
@@ -519,7 +516,6 @@ I'm going to pick the YlOrBr (Yellow-Orange-Brown) palette, because those seem l
 
 ```{r}
 
-#########
 # Choose a new color palette from the RColorBrewer package
 
 ggplot(soil) +
@@ -536,7 +532,6 @@ To pick out your colors, you can use the [names of colors]('http://www.stat.colu
 
 ```{r}
 
-#########
 # Choose your own palette!
 
 ggplot(soil) +
@@ -556,7 +551,6 @@ Try to reproduce the following figure using geom_smooth with `method="lm"`.
 
 ```{r fig.height=4, fig.width=8, echo=FALSE}
 
-##########
 # add trendlines
 
 ggplot(soil.nut2) +
@@ -582,7 +576,6 @@ First, a simple histogram of 3 soil nutrients.
 
 ```{r fig.height=4, fig.width=8}
 
-###########
 # Adding density/smooth curves to plots
 
    ## first produce some histograms
@@ -601,7 +594,6 @@ Here is how to add a density curve to the histogram with another **`geom`**:
 
 ```{r fig.height=4, fig.width=8}
 
-########
 # Then add density curves
 
 ggplot(soil.nut) +
@@ -621,7 +613,6 @@ And here's how we can compare our distributions to a normal distribution, using 
 
 ```{r fig.height=4, fig.width=8}
 
-###########
 # And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
 
 ggplot(soil.nut) +
@@ -644,7 +635,6 @@ First, you may have noticed that the whiskers do not have caps on them, as they 
 
 ```{r}
 
-#######
 # add error bars and other stat summaries (e.g., mean) to boxplot
 
 ggplot(soil, aes(x=Contour, y=pH)) +
@@ -675,8 +665,7 @@ Here's a quick and simple example of leaflet in action using the "possumsites" d
 
 ```{r eval=FALSE}
 
-##########
-# use leaflet for interactive mapping!
+# use leaflet for interactive mapping! ------------
 
 leaflet(possumsites) %>%
   addTiles() %>% #Adds map tiles from OpenStreetMap
@@ -730,7 +719,6 @@ ggplot(soil.nut) +
 ```
 
 ```{r}
-
 
 # CHALLENGE EXERCISES   -------------------------------------
 

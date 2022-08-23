@@ -1,14 +1,22 @@
 
-#  R Bootcamp #1, Module 3  -----------------------------         
+#  R Bootcamp #1, Module 3           
 #      University of Nevada, Reno   
 
-#  Data visualization and statistics ----------------------
+#  Data visualization in ggplot 
 
 library(ggplot2)
 library(cowplot)
 library(tidyverse)
 library(leaflet)
 
+
+# scatterplots ----------------------------
+
+ggplot(trees, aes(x=Girth,y=Volume)) +
+  geom_point()
+
+
+# ASIDE: explore the built-in 'trees' dataset
 
 # ?trees      # description of built in dataset  (uncomment to run)
 
@@ -18,12 +26,6 @@ str(trees)   # Show the structure of the trees dataframe
 head(trees)   # Show the first few observations of the trees dataframe
 
 summary(trees)  # Summary stats for each column
-
-
-# scatterplot
-
-ggplot(trees, aes(x=Girth,y=Volume)) +
-  geom_point()
 
 
     # try representing tree height using the color aesthetic
@@ -40,7 +42,7 @@ ggplot(trees, aes(x=Girth,y=Volume)) +
   geom_smooth(method="lm")
 
 
-# Explore different "geoms" or plot types ----------------
+# Explore different "geoms" or plot types 
 
 plot1 <- ggplot(trees,aes(Girth,Volume)) +    # plot the relationship as a line
   geom_line()
@@ -54,7 +56,7 @@ plot4 <- ggplot(trees,aes(Girth,Volume)) +    # plot scatterplot with smoothed r
 plot_grid(plot1,plot2,plot3,plot4,labels="auto")
 
 
-# Explore different aesthetic mappings ---------------------
+# Explore different aesthetic mappings 
 
 plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # shape represents species
   geom_point(aes(shape=Species))
@@ -71,7 +73,7 @@ plot6 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # size is same across 
 plot_grid(plot1,plot2,plot3,plot4,plot5,plot6,ncol=2)
 
 
-# explore themes -----------------------------
+# explore themes 
 
 plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
   geom_point(aes(color=Species)) +
@@ -91,7 +93,7 @@ plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 # note: many other themes are available in ggplot, cowplot and other related packages
 
 
-# add additional plot elements: title, axis limis, axis labels ------------------
+# add additional plot elements: title, axis limis, axis labels 
 
 plot1 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents species
   geom_point(aes(color=Species)) + 
@@ -115,7 +117,7 @@ plot4 <- ggplot(iris,aes(Sepal.Length,Petal.Length)) +    # color represents spe
 plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 
 
-# bar plots and box-whisker plots -----------------------
+# bar plots, box-whisker plots, violin plots  -----------------------
 
 plot1 <- ggplot(iris,aes(x=Species,y=Sepal.Length)) +    # more informative box-whisker plot
   geom_boxplot() 
@@ -140,7 +142,7 @@ plot4 <- ggplot(bar.heights, aes(Species,meanSL)) +
 plot_grid(plot1,plot2,plot3,plot4,labels = "AUTO")
 
 
-# Bar plot with error bars ------------------------
+# Bar plot with error bars
 
 bar.heights <- iris %>% 
   group_by(Species) %>% 
@@ -159,7 +161,7 @@ ggplot(bar.heights,aes(x=Species,y=meanSL)) +
 head(ToothGrowth)
 
 
-# toothgrowth plot -------------------
+# toothgrowth plot 
 
 
 ToothGrowth$dose <- as.factor(ToothGrowth$dose)
@@ -183,7 +185,7 @@ print(p)
 
 
 
-# More complex example -----------------------------
+# More complex demo -----------------------------
 
 library(ggthemes)
 library(carData)
@@ -191,7 +193,7 @@ library(DAAG)
 library(RColorBrewer)
 
 
-# Load the example data -----------------------
+# Load the example data 
 
 soil <- carData::Soils    # load example data
 
@@ -199,7 +201,6 @@ soil <- carData::Soils    # load example data
 head(soil)    # plot out the first few lines...
 
 
-######
 # Plot several relationships on same graphics window
 
 ggplot(soil, aes(x=pH)) +
@@ -208,7 +209,7 @@ ggplot(soil, aes(x=pH)) +
   geom_point(aes(y=Na), shape=21, fill="gray30", color="black", size=4, stroke=1.5)
 
 
-# Use 'tidyverse' to reshape the data  ---------------
+# Use 'tidyverse' to reshape the data 
 
 soil.nut <- pivot_longer(soil, cols=c("Ca","Mg","Na"), names_to="nutrient",values_to = "value" )
 soil.nut
@@ -216,7 +217,6 @@ ggplot(soil.nut) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
 
 
-######
 # or if we wanted to plot different nutrients...
 
 soil.nut2 <- pivot_longer(soil, cols=c("Ca","Mg","K"), names_to="nutrient",values_to = "value" )
@@ -225,7 +225,6 @@ ggplot(soil.nut2) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color="black", size=4, stroke=1.5)
 
 
-##########
 # plot with facets, scales, and themes!
 
 ggplot(soil.nut2) +
@@ -240,13 +239,11 @@ ggplot(soil.nut2) +
         strip.text = element_text(size=25, face="bold"))
     
 
-############
 # Playing with colors in ggplot!
 
 display.brewer.all()
 
 
-#########
 # Choose a new color palette from the RColorBrewer package
 
 ggplot(soil) +
@@ -256,7 +253,6 @@ ggplot(soil) +
   scale_fill_brewer(palette="YlOrBr", name="Depth (cm)")
 
 
-#########
 # Choose your own palette!
 
 ggplot(soil) +
@@ -266,7 +262,6 @@ ggplot(soil) +
   scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
 
 
-###########
 # Adding density/smooth curves to plots
 
    ## first produce some histograms
@@ -280,7 +275,6 @@ ggplot(soil.nut) +
         axis.title = element_text(size=25),
         strip.text = element_text(size=25, face="bold"))
 
-########
 # Then add density curves
 
 ggplot(soil.nut) +
@@ -295,7 +289,6 @@ ggplot(soil.nut) +
         strip.text = element_text(size=25, face="bold"))
 
 
-###########
 # And now let's use a statistical function (dnorm) in ggplot to compare with a normal distribution:
 
 ggplot(soil.nut) +
@@ -311,7 +304,6 @@ ggplot(soil.nut) +
         strip.text = element_text(size=25, face="bold"))
 
 
-#######
 # add error bars and other stat summaries (e.g., mean) to boxplot
 
 ggplot(soil, aes(x=Contour, y=pH)) +
@@ -320,14 +312,12 @@ ggplot(soil, aes(x=Contour, y=pH)) +
   stat_summary(fun=mean,geom="point",size=5, color="black")
   
 
-##########
-# use leaflet for interactive mapping!
+# use leaflet for interactive mapping! ------------
 
 leaflet(possumsites) %>%
   addTiles() %>% #Adds map tiles from OpenStreetMap
   addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
              popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
-
 
 
 # CHALLENGE EXERCISES   -------------------------------------

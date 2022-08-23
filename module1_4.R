@@ -1,16 +1,13 @@
 
-#  R Bootcamp #1, Module 4---------------------------------------
+#  R Bootcamp #1, Module 4
 #       University of Nevada, Reno             
-#       Data wrangling!         
-
-
-# load packages ---------------------------
+#       Data wrangling!
 
 library(tidyverse)
 library(lubridate)
 
 
-#  Import data as a Tibble dataframe and take a quick glance at the data -----------------------------
+#  Import and "tidy" your data  -----------------------------
 
 # import meteorological data from Hungry Horse (HH) and Polson Kerr (PK) dams as tibble dataframe using readr 
 clim_data <- read_csv("MTMetStations.csv")
@@ -22,7 +19,7 @@ clim_data
 tail(clim_data)
 
 
-#  Use Tidyr verbs to make data 'tidy' ---------------------------
+#  Use Tidyr verbs to make data 'tidy' 
 
 # look at clim_data -- is it in tidy format? What do we need to do to get it there?
 head(clim_data)
@@ -158,7 +155,7 @@ now()
 today()
 
 
-#  Parsing dates with lubridate -----------------------
+#  Parsing dates with lubridate 
 
 datetime <- ymd_hms("2016-07-08 12:34:56")
 
@@ -182,7 +179,7 @@ wday(datetime)
 wday(datetime, label = TRUE, abbr = FALSE)
 
 
-####  Using lubridate with dataframes and dplyr verbs
+###  Using lubridate with dataframes and dplyr verbs
 
 # going back to our tidy_clim_data dataset we see that 
 #   the date column is formatted as character, not date
