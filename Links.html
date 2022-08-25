@@ -9,13 +9,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="R Bootcamp 2022" />
+<meta name="author" content="Fall 2022" />
 
-<meta name="date" content="2022-01-01" />
 
-<title>Links</title>
+<title>R Links</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
@@ -65,6 +64,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -85,6 +85,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -310,12 +313,12 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">R bootcamp, Fall 2021</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2022</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -323,8 +326,8 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #1: getting started
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #1: getting started
      
     <span class="caret"></span>
   </a>
@@ -336,16 +339,16 @@ div.tocify {
       <a href="module1_2.html">Submodule 1.2: managing data</a>
     </li>
     <li>
-      <a href="module1_3.html">Submodule 1.3: plotting and basic stats</a>
+      <a href="module1_3.html">Submodule 1.3: plotting in ggplot2</a>
     </li>
     <li>
-      <a href="module1_4.html">Submodule 1.4: Programming in R</a>
+      <a href="module1_4.html">Submodule 1.4: data wrangling</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Bootcamp #2: Beyond the basics
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Workshop #2: beyond the basics
      
     <span class="caret"></span>
   </a>
@@ -354,21 +357,18 @@ div.tocify {
       <a href="module2_1.html">Submodule 2.1: R packages</a>
     </li>
     <li>
-      <a href="module2_2.html">Submodule 2.2: Using the 'tidyverse'</a>
+      <a href="module2_2.html">Submodule 2.2: Programming in R</a>
     </li>
     <li>
-      <a href="module2_3.html">Submodule 2.3: Plotting with 'ggplot'</a>
+      <a href="module2_3.html">Submodule 2.3: Stats in R</a>
     </li>
     <li>
-      <a href="module2_4.html">Submodule 2.4: Parallel computing in R</a>
-    </li>
-    <li>
-      <a href="module2_5.html">Submodule 2.5: Spatial analysis</a>
+      <a href="module2_4.html">Submodule 2.4: Spatial analysis in R</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Data sets
      
     <span class="caret"></span>
@@ -402,6 +402,9 @@ div.tocify {
       <a href="reptiles.csv">Reptile Data</a>
     </li>
     <li>
+      <a href="comm_data.txt">Comm Data</a>
+    </li>
+    <li>
       <a href="data.zip">GIS Data</a>
     </li>
   </ul>
@@ -421,14 +424,14 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Links</h1>
-<h4 class="author">R Bootcamp 2022</h4>
-<h4 class="date">2022</h4>
+<h1 class="title toc-ignore">R Links</h1>
+<h4 class="author">Fall 2022</h4>
 
 </div>
 
 
-<p>Please let me know if any of these links are down or if there are other links you think should be included on this page!</p>
+<p>Please let me know if any of these links are down or if there are
+other links you think should be included on this page!</p>
 <div id="methods-links" class="section level1">
 <h1>Methods links</h1>
 <div id="download-r" class="section level2">
@@ -438,71 +441,130 @@ div.tocify {
 <div id="download-rstudio" class="section level2">
 <h2>Download RStudio:</h2>
 <p><a href="https://www.rstudio.com/">Rstudio main site</a><br />
-<a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">R projects (useful feature of RStudio)</a><br />
-<a href="https://www.rstudio.com/online-learning/">Rstudio online learning resources</a></p>
+<a
+href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">R
+projects (useful feature of RStudio)</a><br />
+<a href="https://www.rstudio.com/online-learning/">Rstudio online
+learning resources</a></p>
 </div>
 <div id="r-introductory-tutorials-and-courses" class="section level2">
 <h2>R Introductory Tutorials and Courses</h2>
-<p><a href="https://swirlstats.com/">Swirl Stats- learn R in R</a> <a href="https://www.datacamp.com/home">Datacamp’s- “Intro to R”</a><br />
+<p><a href="https://swirlstats.com/">Swirl Stats- learn R in R</a> <a
+href="https://www.datacamp.com/home">Datacamp’s- “Intro to R”</a><br />
 <a href="https://preludeinr.com">Prelude in R</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf">R for beginners</a><br />
-<a href="http://r4ds.had.co.nz/index.html">Hadley Wickhams “R for Data Science”</a> <a href="https://ismayc.github.io/moderndiver-book/">Modern Dive</a><br />
-<a href="http://www.datacarpentry.org/semester-biology/">Data carpentry course</a> <a href="https://cran.r-project.org/other-docs.html">Many other resources</a> <a href="http://rbasicsworkshop.weebly.com/books.html">Many R Books (and other useful resources)</a><br />
-<a href="https://gsp.humboldt.edu/olm/R/Tutorials/BestFirstRTutorial.pdf">Base R tutorial- oldie but goodie</a></p>
+<a
+href="https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf">R
+for beginners</a><br />
+<a href="http://r4ds.had.co.nz/index.html">Hadley Wickhams “R for Data
+Science”</a> <a href="https://ismayc.github.io/moderndiver-book/">Modern
+Dive</a><br />
+<a href="http://www.datacarpentry.org/semester-biology/">Data carpentry
+course</a> <a href="https://cran.r-project.org/other-docs.html">Many
+other resources</a> <a
+href="http://rbasicsworkshop.weebly.com/books.html">Many R Books (and
+other useful resources)</a><br />
+<a
+href="https://gsp.humboldt.edu/olm/R/Tutorials/BestFirstRTutorial.pdf">Base
+R tutorial- oldie but goodie</a></p>
 </div>
-<div id="r-examples-some-people-learn-best-by-just-playing-with-existing-code" class="section level2">
-<h2>R Examples (some people learn best by just playing with existing code!)</h2>
+<div
+id="r-examples-some-people-learn-best-by-just-playing-with-existing-code"
+class="section level2">
+<h2>R Examples (some people learn best by just playing with existing
+code!)</h2>
 <p><a href="http://www.mayin.org/ajayshah/KB/R/">R by example</a></p>
 </div>
-<div id="r-reference-cards-print-em-out-and-hang-by-your-office-desk" class="section level2">
+<div id="r-reference-cards-print-em-out-and-hang-by-your-office-desk"
+class="section level2">
 <h2>R reference cards (print ’em out and hang by your office desk!)</h2>
-<p><a href="https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf">Base R Cheat sheet</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">Short Reference Card</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf">More comprehensive reference card</a> <a href="https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf">More advanced base R cheat sheet</a><br />
-<a href="https://www.rstudio.com/resources/cheatsheets/">RStudio cheatsheets- very useful!</a><br />
-Includes cheatsheets for R markdown, shiny, data wrangling with “dplyr” and much more!</p>
+<p><a
+href="https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf">Base
+R Cheat sheet</a><br />
+<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">Short
+Reference Card</a><br />
+<a
+href="https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf">More
+comprehensive reference card</a> <a
+href="https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf">More
+advanced base R cheat sheet</a><br />
+<a href="https://www.rstudio.com/resources/cheatsheets/">RStudio
+cheatsheets- very useful!</a><br />
+Includes cheatsheets for R markdown, shiny, data wrangling with “dplyr”
+and much more!</p>
 </div>
-<div id="r-markdown-for-publishing-and-communicating-in-r.-this-website-was-built-in-r-markdown" class="section level2">
-<h2>R Markdown (for publishing and communicating in R. This website was built in R Markdown!)</h2>
-<p><a href="http://rmarkdown.rstudio.com/authoring_pandoc_markdown.html">Guide for Pandoc Markdown</a><br />
-<a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">Website development for RMarkdown</a><br />
+<div
+id="r-markdown-for-publishing-and-communicating-in-r.-this-website-was-built-in-r-markdown"
+class="section level2">
+<h2>R Markdown (for publishing and communicating in R. This website was
+built in R Markdown!)</h2>
+<p><a
+href="http://rmarkdown.rstudio.com/authoring_pandoc_markdown.html">Guide
+for Pandoc Markdown</a><br />
+<a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">Website
+development for RMarkdown</a><br />
 <a href="http://yaml.org/">YAML: YAML Ain’t Markup Language!</a><br />
-<a href="https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html">a nice simple Markdown syntax guide</a></p>
+<a
+href="https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html">a
+nice simple Markdown syntax guide</a></p>
 </div>
-<div id="git-for-sharing-your-code-and-collaborating-with-others" class="section level2">
+<div id="git-for-sharing-your-code-and-collaborating-with-others"
+class="section level2">
 <h2>GIT (for sharing your code and collaborating with others!)</h2>
 <p><a href="https://try.github.io/">Excellent intro GIT tutorial</a></p>
 </div>
 <div id="bayesian-statistics" class="section level2">
 <h2>Bayesian Statistics</h2>
-<p><a href="http://twiecki.github.io/blog/2015/11/10/mcmc-sampling/">MCMC for Dummies…</a> (basis of MCMC lecture…)<br />
-<a href="http://www.mrc-bsu.cam.ac.uk/wp-content/uploads/manual14.pdf">BUGS online manual</a><br />
-<a href="https://people.stat.sc.edu/hansont/stat740/jags_user_manual.pdf">JAGS online manual</a> <a href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/">Bayesian Methods for Hackers!</a><br />
-<a href="https://r-nimble.org/">NIMBLE (alternative implementation of BUGS language for R)</a></p>
+<p><a
+href="http://twiecki.github.io/blog/2015/11/10/mcmc-sampling/">MCMC for
+Dummies…</a> (basis of MCMC lecture…)<br />
+<a
+href="http://www.mrc-bsu.cam.ac.uk/wp-content/uploads/manual14.pdf">BUGS
+online manual</a><br />
+<a
+href="https://people.stat.sc.edu/hansont/stat740/jags_user_manual.pdf">JAGS
+online manual</a> <a
+href="http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/">Bayesian
+Methods for Hackers!</a><br />
+<a href="https://r-nimble.org/">NIMBLE (alternative implementation of
+BUGS language for R)</a></p>
 </div>
 <div id="time-series-analysis" class="section level2">
 <h2>Time Series Analysis</h2>
-<p><a href="http://node101.psych.cornell.edu/Darlington/series/series0.htm">A regression approach to time series analysis</a> <a href="https://otexts.com/fpp2/">Forecasting online textbook</a></p>
+<p><a
+href="http://node101.psych.cornell.edu/Darlington/series/series0.htm">A
+regression approach to time series analysis</a> <a
+href="https://otexts.com/fpp2/">Forecasting online textbook</a></p>
 </div>
 <div id="ordination" class="section level2">
 <h2>Ordination</h2>
-<p><a href="http://ordination.okstate.edu/index.html">Practical guide to ordination for Ecologists</a></p>
+<p><a href="http://ordination.okstate.edu/index.html">Practical guide to
+ordination for Ecologists</a></p>
 </div>
 <div id="tree-based-machine-learning" class="section level2">
 <h2>Tree-based machine learning</h2>
-<p><a href="http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm">Breiman’s guide to Random Forest</a><br />
-<a href="https://rspatial.org/raster/sdm/">Vignette: species distribution modeling</a></p>
+<p><a
+href="http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm">Breiman’s
+guide to Random Forest</a><br />
+<a href="https://rspatial.org/raster/sdm/">Vignette: species
+distribution modeling</a></p>
 </div>
 <div id="spatial-analysis-in-r" class="section level2">
 <h2>Spatial Analysis in R</h2>
-<p><a href="https://cran.r-project.org/web/packages/raster/vignettes/Raster.pdf">“raster” package vignette</a><br />
-<a href="https://rspatial.org/">online textbook: spatial data science with R</a></p>
+<p><a
+href="https://cran.r-project.org/web/packages/raster/vignettes/Raster.pdf">“raster”
+package vignette</a><br />
+<a href="https://rspatial.org/">online textbook: spatial data science
+with R</a></p>
 </div>
 <div id="spatial-capture-recapture-secr" class="section level2">
 <h2>Spatial Capture Recapture (secr)</h2>
-<p><a href="https://groups.google.com/forum/#!forum/secrgroup">‘secr’ Google Group</a><br />
-<a href="https://mmeredith.net/blog/2013/1309_SECR_in_JAGS_patchy_habitat.htm">BUGS code for secr</a></p>
-<p><a href="https://kevintshoemaker.github.io/StatsChats/">Weekly math/bio “Stats chats”</a></p>
+<p><a href="https://groups.google.com/forum/#!forum/secrgroup">‘secr’
+Google Group</a><br />
+<a
+href="https://mmeredith.net/blog/2013/1309_SECR_in_JAGS_patchy_habitat.htm">BUGS
+code for secr</a></p>
+<p><a href="https://kevintshoemaker.github.io/StatsChats/">Weekly
+math/bio “Stats chats”</a></p>
 </div>
 </div>
 
