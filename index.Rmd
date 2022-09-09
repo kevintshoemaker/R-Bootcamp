@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
  * **When?** Saturday Sep 10 and 17, 2022
- * **Where?** UNR (DMSC 105)  
+ * **Where?** UNR (WRB 2003)  
  * **What to prepare?** Everyone should bring their own laptop computer, with R and RStudio installed prior to starting the workshop (see [links](Links.html)). 
  
 ## Facilitators
