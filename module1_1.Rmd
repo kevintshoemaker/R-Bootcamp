@@ -76,7 +76,7 @@ Objects are defined using R's **assignment operator** (Windows shortcut: Alt + -
 
 ```{r results=F}
 
-myname <- "Jim Bob"  # or use your real name.
+myname <- "batman"  # or use your real name.
 
 ```
 
