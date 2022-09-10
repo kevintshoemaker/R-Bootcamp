@@ -643,6 +643,7 @@ ggplot(soil, aes(x=Contour, y=pH)) +
   stat_summary(fun=mean,geom="point",size=5, color="black")
   
 ```
+
 Interestingly, there is generally a way to add just about any graphical element using either "stat_" or "geom_" functions. It's a good idea to play around with both! 
 
 ## Beyond ggplot

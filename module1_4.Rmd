@@ -397,6 +397,7 @@ relig_income %>%
 
 
 ```
+
 2. Use the dplyr verbs and the tidy_clim_data dataset you created above to calculate monthly average Tmin and Tmax for each station
 
 3. Using lubridate, make a date object out of a character string of your birthday and find the day of week it occurred on. Note, you can use the 'wday' function in lubridate to extract the day of the week (1 is sunday).
@@ -421,7 +422,7 @@ relig_income %>%
 
 ```{r eval=FALSE, echo=FALSE}
 
-# Module 1_2 challenge problems: answers  -------------
+# Module 1_4 challenge problems: answers  -------------
 
 
 # 1. Create a tibble dataframe using the code below (`tribble()` constructs a tibble by rows)
