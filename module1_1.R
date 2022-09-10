@@ -5,7 +5,7 @@
 #  Getting started with R: the basics 
 
 
-myname <- "Jim Bob"  # or use your real name.
+myname <- "batman"  # or use your real name.
 
 
 # R DEMO ----------------------  
