@@ -201,7 +201,37 @@ soil <- carData::Soils    # load example data
 head(soil)    # plot out the first few lines...
 
 
-# Plot several relationships on same graphics window
+# basic boxplot and violin plot
+
+plot1 <- ggplot(soil) +
+  geom_boxplot(aes(x=Contour, y=pH))
+
+plot2 <- ggplot(soil) + 
+  geom_violin(aes(x=Contour, y=pH))
+
+plot_grid(plot1,plot2,labels = "AUTO")
+
+
+
+# basic scatterplot
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca))
+
+
+# Color the points by depth
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, color=Depth))
+
+
+# make additional alterations (outside the "aes" function)
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5)
+
+
+# Plot several relationships on same plot
 
 ggplot(soil, aes(x=pH)) +
   geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
@@ -261,6 +291,22 @@ ggplot(soil) +
   ylab("Ca (mg/100g soil)") +
   scale_fill_manual(values=c("#FFF0BF","#FFC300","#BF9200","#604900"), name="Depth (cm)")
 
+
+# add trendlines
+
+ggplot(soil.nut2) +
+  geom_point(aes(x=pH, y=value, fill=nutrient), 
+             shape=21, color="black", size=4, stroke=1.5) +
+  geom_smooth(aes(x=pH, y=value), method="lm", color="black") +
+  facet_wrap(~nutrient, scales="free_y") +
+  ylab("mg / 100 g soil") +
+  theme_classic() +
+  theme(legend.position="none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        strip.text = element_text(size=16, face="bold"))
+
+    
 
 # Adding density/smooth curves to plots
 

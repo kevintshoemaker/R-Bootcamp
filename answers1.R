@@ -60,7 +60,45 @@ write_csv(turt1,"turt_test1.csv")
 
 # 3: Read in the file "turtle_data.txt". Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.
 
+turt1 <- read_table("turtle_data.txt")
+turtmale <- turt1 %>% 
+  filter(sex=="male")
+mean(turtmale$carapace_length)
+sd(turtmale$carapace_length)
 
+
+
+
+# Module 1_3 soils solutions:
+
+# basic boxplot and violin plot
+
+plot1 <- ggplot(soil) +
+  geom_boxplot(aes(x=Contour, y=pH))
+
+plot2 <- ggplot(soil) + 
+  geom_violin(aes(x=Contour, y=pH))
+
+plot_grid(plot1,plot2,labels = "AUTO")
+
+
+
+# basic scatterplot
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca))
+
+
+# Color the points by depth
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, color=Depth))
+
+
+# make additional alterations (outside the "aes" function)
+
+ggplot(soil) +
+  geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color="black", size=4, stroke=1.5)
 
 
 

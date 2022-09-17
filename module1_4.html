@@ -469,7 +469,7 @@ module)</li>
 <li>purrr, for functional programming</li>
 <li>stringr, for strings</li>
 <li>forcats, for factors</li>
-<li>lubridate, for dates (load this separately!)</li>
+<li>lubridate, for dates</li>
 </ul>
 <p>The following cheat sheets will be helpful in this submodule:</p>
 <p><a
@@ -827,7 +827,7 @@ month(datetime, label = TRUE)</code></pre>
 <pre class="r"><code># day of month
 mday(datetime)</code></pre>
 <pre><code>## [1] 8</code></pre>
-<pre class="r"><code># day of year (julian day)
+<pre class="r"><code># day of year (often incorrectly referred to as julian day)
 yday(datetime)</code></pre>
 <pre><code>## [1] 190</code></pre>
 <pre class="r"><code># day of week
@@ -948,16 +948,15 @@ other things) asked people about their religion and annual income:</li>
 ##  8 Agnostic $100-150k            109
 ##  9 Agnostic &gt;150k                 84
 ## 10 Agnostic Don&#39;t know/refused    96
-## # … with 170 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # … with 170 more rows</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Use the dplyr verbs and the tidy_clim_data dataset you created
 above to calculate monthly average Tmin and Tmax for each
 station</p></li>
 <li><p>Using lubridate, make a date object out of a character string of
-your birthday and find the day of week it occurred on. Note, you can use
-the ‘wday’ function in lubridate to extract the day of the week (1 is
-sunday).</p></li>
+your birthday (you can use a fake birthday if you want!) and find the
+day of week it occurred on. Note, you can use the ‘wday’ function in
+lubridate to extract the day of the week (1 is sunday).</p></li>
 </ol>
 <pre class="r"><code># CHALLENGE EXERCISES   -------------------------------------
 

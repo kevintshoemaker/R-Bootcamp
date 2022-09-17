@@ -52,7 +52,7 @@ Let's get started with plotting in R!
 
 A typical workflow begins with initiating plotting with the **`ggplot()`** function and specifying the data frame you want to use to create your visualizations. We then often define the "x" argument (defining coordinates on an x axis) and (if applicable) a "y" argument (defining coordinates on a y axis). In ggplot these are known as aesthetic mappings! That is because it is a way of conveying information in the dataset graphically! Other ways of conveying information graphically include point size, color, and symbol- all of which are also referred to as aesthetic mappings (syntax: `mapping=aes()`).
 
-You can then add geometric objects to your plot, often using functions beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and how these data should be displayed (which data should be used to represent the bar height, or the x coordinate, or the point size, etc.). **`aes()`** can also be used within the initial call to **`ggplot()`**.
+You can then add geometric objects (like points) to your plot, often using functions beginning with **`geom_`**, to represent your data in the form of a boxplot (**`geom_boxplot()`**), scatterplot (**`geom_point()`**), or a variety of other types of plots. The **`aes()`** function can be called within these "geoms" to specify which variables to display and how these data should be displayed (which data should be used to represent the bar height, or the x coordinate, or the point size, etc.). **`aes()`** can also be used within the initial call to **`ggplot()`**.
 
 Here is an example of a simple **scatterplot** in ggplot:  
 
@@ -310,7 +310,7 @@ print(p)
 
 ## Practice demo (with some new stuff)
 
-, let's use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
+For additional practice, let's use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
 
 First we will need to load a few more packages. Make sure to install any packages in this list you don't already have! 
 
@@ -337,9 +337,10 @@ soil <- carData::Soils    # load example data
 head(soil)    # plot out the first few lines...
 
 ```
-Staring simply, let's say we're interested in how pH, a continuous variable, varies with contour position, a categorical factor. See if you can reproduce one or both of the following plots:  
 
-```{r echo=FALSE}
+Staring simply, let's say we're interested in how pH, a continuous variable, varies with contour position, a categorical factor:  
+
+```{r}
 
 # basic boxplot and violin plot
 
@@ -354,9 +355,9 @@ plot_grid(plot1,plot2,labels = "AUTO")
 
 ```
 
-Next let's try a simple scatterplot of two continuous variables, Calcium content and pH. Try to reproduce the following plot:
+Next let's try a simple scatterplot of two continuous variables, Calcium content and pH:
 
-```{r echo=FALSE}
+```{r}
 
 # basic scatterplot
 
@@ -365,9 +366,9 @@ ggplot(soil) +
 
 ```
 
-Now let's say you wanted to examine if/how the relationship between pH and Ca varies with depth. You could go back to your scatterplot and use color to identify points from the different sampling depths. Reproduce this plot if you can!
+Now let's say you wanted to examine if/how the relationship between pH and Ca varies with depth. You could go back to your scatterplot and use color to identify points from the different sampling depths.
 
-```{r echo=FALSE}
+```{r}
 
 # Color the points by depth
 
@@ -378,7 +379,7 @@ ggplot(soil) +
 
 Try playing around with applying a few graphical attributes to all the points (specified outside the `aes()` argument). Try specifying `shape=21`, `color="black"` , `size=3` and `stroke=1`:
 
-```{r echo=FALSE}
+```{r}
 
 # make additional alterations (outside the "aes" function)
 
@@ -391,7 +392,7 @@ Now for something new: let's plot relationships between pH and several soil nutr
 
 ```{r}
 
-# Plot several relationships on same graphics window
+# Plot several relationships on same plot
 
 ggplot(soil, aes(x=pH)) +
   geom_point(aes(y=Ca), shape=21, fill="red", color="black", size=4, stroke=1.5) +
@@ -440,7 +441,7 @@ soil.nut <- pivot_longer(soil, cols=c("Ca","Mg","Na"), names_to="nutrient",value
 soil.nut
 ```
 
-This lets us plot our different nutrients as factor levels without typing each one with its specifications on its own line, and generates a legend that identifies the series (and also gives the default ggplot colors).
+This lets us plot our different nutrients as factor levels without typing each one with its specifications on its own line, and automatically generates a legend that identifies the series (and also gives the default ggplot colors).
 
 ```{r}
 ggplot(soil.nut) +
@@ -546,10 +547,9 @@ What if depth were a continuous variable, rather than a set of four discrete cat
 
 #### Trendlines
 
-Next, we might want to add a trendline to each set of points. Try it for the plot we made of different nutrient concentrations as a function of pH. Arguments in the **`geom_smooth()`** function allow us to change the confidence level, the smoothing method, and other details.
-Try to reproduce the following figure using geom_smooth with `method="lm"`. 
+Next, we might want to add a trendline to each set of points. Try it for the plot we made of different nutrient concentrations as a function of pH. Arguments in the **`geom_smooth()`** function allow us to change the confidence level, the smoothing method, and other details:
 
-```{r fig.height=4, fig.width=8, echo=FALSE}
+```{r fig.height=4, fig.width=8}
 
 # add trendlines
 
@@ -631,7 +631,7 @@ ggplot(soil.nut) +
 
 Let's go back to our basic boxplot, the default plot for visualizing continuous data against categories.
 
-First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of ~~principle~~ personal preference, but if capless whiskers look "off" to you, then you can work around it using **`stat_boxplot`**. **`stat_`** functions are another group of functions for creating layers based on statistical properties of the data. Another example is **`stat_summary`**, which we use in the example below to add means to the boxplot. 
+First, you may have noticed that the whiskers do not have caps on them, as they do in base R. This is a matter of personal preference, but if capless whiskers look "off" to you, then you can work around it using **`stat_boxplot`**. **`stat_`** functions are another group of functions for creating layers based on statistical properties of the data. Another example is **`stat_summary`**, which we use in the example below to add means to the boxplot. 
 
 ```{r}
 

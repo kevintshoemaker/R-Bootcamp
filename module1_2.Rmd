@@ -648,6 +648,11 @@ write_csv(turt1,"turt_test1.csv")
 
 # 3: Read in the file "turtle_data.txt". Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.
 
+turt1 <- read_table("turtle_data.txt")
+turtmale <- turt1 %>% 
+  filter(sex=="male")
+mean(turtmale$carapace_length)
+sd(turtmale$carapace_length)
 
 ```
 
