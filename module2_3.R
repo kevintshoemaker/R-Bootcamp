@@ -107,7 +107,7 @@ summary(mod_logtrans)
 m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
 summary(m1)
 
-m2 <- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (mean model)
+m2 <- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (null model)
 summary(m2)
 
 m3 <- lm(NUMEGGS ~ poly(FEMWT,2), data=sculpin.df)           # fit polynomial regression
@@ -135,7 +135,6 @@ AIC(m3)
 
 # which model has the lowest AIC?
 
-#########
 #  And finally, here's how you can draw a confidence interval or prediction interval around a non-linear regression relationship!
 
 plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data

@@ -210,6 +210,32 @@ which.max(apply(volcano,1,sd))
 
 
 
+# Module 2_3 challenge problems: answers  -------------
+
+# CHALLENGE EXERCISES   -------------------------------------
+
+#1. Fit a polynomial regression model with NUMEGGS as the response and `poly(FEMWT,3)` as the response. Plot the results by overlaying the regression line on a scatterplot using ggplot2.
+#
+
+m33 <- lm(NUMEGGS ~ poly(FEMWT,3), data=sculpin.df)  
+nd <- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
+NUMEGGS.confint <- predict(m33,newdata=nd,interval="confidence")             # make prediction using "predict()" function
+NUMEGGS.confint2 <- as_tibble(cbind(nd,NUMEGGS.confint))
+ggplot() %>% +
+  geom_point(data=sculpin.df,mapping=aes(FEMWT,NUMEGGS)) +
+  geom_path(data=NUMEGGS.confint2,aes(x=FEMWT,y=fit)) +
+  geom_ribbon(data=NUMEGGS.confint2,aes(x=FEMWT,ymin=lwr,ymax=upr),alpha=0.5)
+
+
+#2. Use the model you built in part 1 to predict the number of eggs for FEMWT=5. What is the 95% confidence interval around this prediction? Is this prediction biologically reasonable?
+
+nd <- data.frame(FEMWT=5)
+predict(m33,nd,interval="confidence",alpha=0.95)
+
+
+
+
+
 
 
 

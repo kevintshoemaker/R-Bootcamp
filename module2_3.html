@@ -651,7 +651,7 @@ models involves overlaying predictions from each model (using the
 m1 &lt;- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
 summary(m1)
 
-m2 &lt;- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (mean model)
+m2 &lt;- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (null model)
 summary(m2)
 
 m3 &lt;- lm(NUMEGGS ~ poly(FEMWT,2), data=sculpin.df)           # fit polynomial regression
@@ -679,7 +679,6 @@ AIC(m1)</code></pre>
 <pre><code>## [1] 87.76849</code></pre>
 <pre class="r"><code># which model has the lowest AIC?
 
-#########
 #  And finally, here&#39;s how you can draw a confidence interval or prediction interval around a non-linear regression relationship!
 
 plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
@@ -716,7 +715,7 @@ this prediction biologically reasonable?</li>
 #1. Fit a polynomial regression model with NUMEGGS as the response and `poly(FEMWT,3)` as the response. Plot the results by overlaying the regression line on a scatterplot using ggplot2.
 #
 #2. Use the model you built in part 1 to predict the number of eggs for FEMWT=5. What is the 95% confidence interval around this prediction? Is this prediction biologically reasonable?</code></pre>
-<p><a href="module2_4.html">–go to next module–</a></p>
+<p><a href="module2_4.html">–go to next submodule–</a></p>
 </div>
 
 

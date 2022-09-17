@@ -105,6 +105,7 @@ mean(newdf$Export)
 mean(newdf$Export,na.rm = TRUE)
 
 ```
+
 ### Visual exploration
 
 Plots (see beginning of module) take data exploration to the next level- we can start to discern patterns and identify outliers visually, giving us cues for further analyses we might want to perform. 
@@ -196,7 +197,7 @@ A flexible method for visualizing the fit of alternative linear models involves 
 m1 <- lm(NUMEGGS ~ FEMWT, data=sculpin.df)                  # fit linear regression model
 summary(m1)
 
-m2 <- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (mean model)
+m2 <- lm(NUMEGGS ~ 1, data=sculpin.df)                      # fit linear regression with intercept only (null model)
 summary(m2)
 
 m3 <- lm(NUMEGGS ~ poly(FEMWT,2), data=sculpin.df)           # fit polynomial regression
@@ -228,7 +229,6 @@ AIC(m3)
 
 # which model has the lowest AIC?
 
-#########
 #  And finally, here's how you can draw a confidence interval or prediction interval around a non-linear regression relationship!
 
 plot(NUMEGGS ~ FEMWT,data=sculpin.df)                      # plot data
@@ -284,7 +284,7 @@ ggplot() %>% +
 ```{r include=FALSE, eval=FALSE, echo=FALSE}
 
 
-# Module 2_2 challenge problems: answers  -------------
+# Module 2_3 challenge problems: answers  -------------
 
 # CHALLENGE EXERCISES   -------------------------------------
 
