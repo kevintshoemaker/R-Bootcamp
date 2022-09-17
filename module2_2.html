@@ -446,7 +446,7 @@ of the tidyverse. You’ll notice that we use the <code>plot()</code>
 function, which is R’s built in plotting functionality. This is less
 sophisticated than ggplot in many ways, and is much harder to use for
 quick data visualizations, but it’s still useful to know how to use
-…</p>
+it…</p>
 </div>
 <div id="functions-in-r" class="section level2">
 <h2>Functions in R</h2>
@@ -587,75 +587,63 @@ if (x &gt; 0) {
 <div id="ifelse-function" class="section level3">
 <h3>ifelse() function</h3>
 <p>Note that “if…else” only works for testing one condition at a time.
-If we have a spreadsheet with lots of data, we need something else –
+If we have a vector with lots of data, we need something else –
 something “vectorized” – like the “ifelse()” function:</p>
 <pre class="r"><code>#  ifelse()  --------------------------------
 
 ## Note if...else only works for running one logical (T/F) test at a time. If we have a spreadsheet with lots of data, we need something else.
 n.samples &lt;- 100
-set.seed(2017)     # the &#39;seed&#39; allows random number generators to give the same result every time!
 
 ## 100 samples from a binomial distribution with detection probability p = 0.7.
 y &lt;- rbinom(n = n.samples, size = 1, prob = p)
 y</code></pre>
-<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0 1 1
-##  [38] 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1 0 1 1 0
-##  [75] 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
-<pre class="r"><code>## incorrect usage
-# if (y == 1) {
-#     print(&quot;Detected&quot;)
-# } else {
-#     print(&quot;Not detected&quot;)
-# }   # PRINTS A WARNING MESSAGE!
-
-## Use ifelse instead.
-detection.history &lt;- ifelse(y == 1, print(&quot;Detected&quot;), print(&quot;Not detected&quot;))</code></pre>
-<pre><code>## [1] &quot;Detected&quot;
-## [1] &quot;Not detected&quot;</code></pre>
-<pre class="r"><code>detection.history</code></pre>
-<pre><code>##   [1] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##   [6] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+<pre><code>##   [1] 1 0 0 1 1 0 1 1 0 1 1 1 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 0 1 1 1 1 0 1 1 1
+##  [38] 1 0 1 1 0 1 0 1 1 0 1 1 0 1 1 1 1 0 1 1 1 1 0 1 1 1 1 0 1 1 1 0 1 1 1 1 1
+##  [75] 1 1 0 1 1 1 1 0 0 1 0 1 1 1 1 1 1 0 1 0 0 1 0 0 1 1</code></pre>
+<pre class="r"><code>## Use ifelse d
+detection.history &lt;- ifelse(y == 1, &quot;Detected&quot;, &quot;Not detected&quot;)
+detection.history</code></pre>
+<pre><code>##   [1] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;    
+##   [6] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
 ##  [11] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [16] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Not detected&quot;
-##  [21] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;    
-##  [26] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [31] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [36] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [41] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [46] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
-##  [51] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [56] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
-##  [61] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
-##  [66] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [71] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
-##  [76] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [81] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
+##  [16] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;    
+##  [21] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
+##  [26] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
+##  [31] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
+##  [36] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
+##  [41] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
+##  [46] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [51] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [56] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [61] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
+##  [66] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;    
+##  [71] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+##  [76] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
+##  [81] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot;
 ##  [86] &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;    
-##  [91] &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;     &quot;Detected&quot;     &quot;Not detected&quot;
-##  [96] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;</code></pre>
+##  [91] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot;
+##  [96] &quot;Detected&quot;     &quot;Not detected&quot; &quot;Not detected&quot; &quot;Detected&quot;     &quot;Detected&quot;</code></pre>
 <pre class="r"><code>## Going the other direction.
 ifelse(detection.history == &quot;Detected&quot;, 1, 0)</code></pre>
-<pre><code>##   [1] 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 0 1 1
-##  [38] 1 1 1 1 1 1 1 0 1 1 1 0 0 1 0 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1 0 1 1 0
-##  [75] 0 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1</code></pre>
+<pre><code>##   [1] 1 0 0 1 1 0 1 1 0 1 1 1 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 0 1 1 1 1 0 1 1 1
+##  [38] 1 0 1 1 0 1 0 1 1 0 1 1 0 1 1 1 1 0 1 1 1 1 0 1 1 1 1 0 1 1 1 0 1 1 1 1 1
+##  [75] 1 1 0 1 1 1 1 0 0 1 0 1 1 1 1 1 1 0 1 0 0 1 0 0 1 1</code></pre>
 <pre class="r"><code>xt  &lt;-  cbind(rbinom(10, 1, .5), rbinom(10, 1, .6))
 xt</code></pre>
 <pre><code>##       [,1] [,2]
-##  [1,]    1    1
-##  [2,]    1    1
-##  [3,]    0    0
+##  [1,]    1    0
+##  [2,]    0    1
+##  [3,]    1    1
 ##  [4,]    0    1
-##  [5,]    1    0
-##  [6,]    0    0
+##  [5,]    0    0
+##  [6,]    0    1
 ##  [7,]    0    1
 ##  [8,]    1    1
-##  [9,]    0    1
-## [10,]    0    1</code></pre>
-<pre class="r"><code>ifelse(xt[, 1] &gt; 0 &amp; xt[, 2] &gt; 0, print(&quot;Detected twice&quot;),
-       print(&quot;Not detected twice&quot;))</code></pre>
-<pre><code>## [1] &quot;Detected twice&quot;
-## [1] &quot;Not detected twice&quot;</code></pre>
-<pre><code>##  [1] &quot;Detected twice&quot;     &quot;Detected twice&quot;     &quot;Not detected twice&quot;
+##  [9,]    1    0
+## [10,]    1    0</code></pre>
+<pre class="r"><code>ifelse(xt[, 1] &gt; 0 &amp; xt[, 2] &gt; 0, &quot;Detected twice&quot;,
+       &quot;Not detected twice&quot;)</code></pre>
+<pre><code>##  [1] &quot;Not detected twice&quot; &quot;Not detected twice&quot; &quot;Detected twice&quot;    
 ##  [4] &quot;Not detected twice&quot; &quot;Not detected twice&quot; &quot;Not detected twice&quot;
 ##  [7] &quot;Not detected twice&quot; &quot;Detected twice&quot;     &quot;Not detected twice&quot;
 ## [10] &quot;Not detected twice&quot;</code></pre>
@@ -678,7 +666,6 @@ for([iteration variable] in [iteration vector of length x]){
 <p>For example…</p>
 <pre class="r"><code>#  for loops  --------------------------
 
-
 for(i in 1:10){
   print(i)
 }</code></pre>
@@ -692,18 +679,13 @@ for(i in 1:10){
 ## [1] 8
 ## [1] 9
 ## [1] 10</code></pre>
-<pre class="r"><code>for(j in c(1,2,3,4,5,6,7,8,9,10)){       # alternative
+<pre class="r"><code>for(j in c(2,4,6,8,10)){    
   print(j)
 }</code></pre>
-<pre><code>## [1] 1
-## [1] 2
-## [1] 3
+<pre><code>## [1] 2
 ## [1] 4
-## [1] 5
 ## [1] 6
-## [1] 7
 ## [1] 8
-## [1] 9
 ## [1] 10</code></pre>
 <pre class="r"><code>n.iter &lt;- 10                   # another alternative!
 count &lt;- 0
@@ -736,18 +718,6 @@ commands again. It keeps doing this until it reaches the end of the
 iteration vector, at which point it stops!</p>
 <p>It is often useful to reference the iteration variable directly
 within the FOR loop. Here are some examples:</p>
-<pre class="r"><code>## Using the iteration variable &quot;i&quot; within the for loop:
-n.iter &lt;- 5
-count &lt;- 0
-for(i in 1:n.iter){
-  count &lt;- count+i            # assign a new value of count equal to the old value of count + i
-  print(count)
-}</code></pre>
-<pre><code>## [1] 1
-## [1] 3
-## [1] 6
-## [1] 10
-## [1] 15</code></pre>
 <pre class="r"><code>## A for-loop for dependent sequence (here, the Fibonacci sequence)
 n.iter &lt;- 10
 x &lt;- rep(0, n.iter)           # set up vector of all zeros
@@ -774,9 +744,6 @@ apply(W, 1, mean)</code></pre>
 <pre class="r"><code>## For each column, calculate the mean.
 apply(W, 2, mean)</code></pre>
 <pre><code>## [1] 11.433293  8.099633</code></pre>
-<pre class="r"><code>## For each row, identify the column that has the largest value.
-apply(W, 1, which.max)</code></pre>
-<pre><code>## [1] 1 1</code></pre>
 <pre class="r"><code>## Apply your own custom function to each row in a matrix.
 MyFunc &lt;- function(x){
     2+sum(x/5)-3/2*mean(x)^2

@@ -171,7 +171,7 @@ month(datetime, label = TRUE)
 # day of month
 mday(datetime)
 
-# day of year (julian day)
+# day of year (often incorrectly referred to as julian day)
 yday(datetime)
 
 # day of week

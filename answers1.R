@@ -169,7 +169,44 @@ wday(mybday,label=T)
 
 
 
+# Module 2_2 challenge problems: answers  -------------
 
+#1: Create a custom function to calculate the predicted value y 
+#    for the equation y = beta_0 + beta_1*x for any value of 
+#    beta_0, beta_1 and x. Assume that beta_0 and 
+#    beta_1 are both scalar, whereas x is a numeric vector. 
+#    Use this function to calculate y for the values of 
+#    $x$ = 1,...,10 with $\beta_0 = 2$, and $\beta_1= -1$. 
+#    Use base R plotting (`plot()` function) to plot the results.
+
+regfunc <- function(beta0,beta1,x){
+  beta0 + beta1*x
+}
+
+plot(1:10,regfunc(2,-1,1:10),ylab="y",xlab="x",type="p")
+
+#
+#2: Write a FOR loop that takes a numeric vector as input and 
+#    computes the cumulative mean (for each element of the vector, 
+#    compute the mean of all previous elements of the vector, 
+#    including the current element). 
+
+x=c(5,4,7,3,10,2,5,4,7,6)
+cummean <- rep(0, times=length(x))
+for(i in 1:length(x)){
+  cummean[i] <- mean(x[1:i])
+}
+cummean
+
+#
+#3: Using the built-in 'volcano' dataset (a matrix of elevation data 
+#    with columns representing longitude and rows representing latitude),
+#    calculate the standard deviation of elevation as an index of
+#    'ruggedness' from the rows () of the volcano elevation data matrix.
+#    Using the "apply()" function. Which row (latitude band) of the
+#    'volcano' dataset has the most rugged terrain?
+
+which.max(apply(volcano,1,sd))
 
 
 

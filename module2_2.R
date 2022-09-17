@@ -72,21 +72,13 @@ if (x > 0) {
 
 ## Note if...else only works for running one logical (T/F) test at a time. If we have a spreadsheet with lots of data, we need something else.
 n.samples <- 100
-set.seed(2017)     # the 'seed' allows random number generators to give the same result every time!
 
 ## 100 samples from a binomial distribution with detection probability p = 0.7.
 y <- rbinom(n = n.samples, size = 1, prob = p)
 y
 
-## incorrect usage
-# if (y == 1) {
-#     print("Detected")
-# } else {
-#     print("Not detected")
-# }   # PRINTS A WARNING MESSAGE!
-
-## Use ifelse instead.
-detection.history <- ifelse(y == 1, print("Detected"), print("Not detected"))
+## Use ifelse d
+detection.history <- ifelse(y == 1, "Detected", "Not detected")
 detection.history
 
 ## Going the other direction.
@@ -94,19 +86,18 @@ ifelse(detection.history == "Detected", 1, 0)
 
 xt  <-  cbind(rbinom(10, 1, .5), rbinom(10, 1, .6))
 xt
-ifelse(xt[, 1] > 0 & xt[, 2] > 0, print("Detected twice"),
-       print("Not detected twice"))
+ifelse(xt[, 1] > 0 & xt[, 2] > 0, "Detected twice",
+       "Not detected twice")
 
 
 
 #  for loops  --------------------------
 
-
 for(i in 1:10){
   print(i)
 }
 
-for(j in c(1,2,3,4,5,6,7,8,9,10)){       # alternative
+for(j in c(2,4,6,8,10)){    
   print(j)
 }
 
@@ -122,14 +113,6 @@ for(i in 1:n.iter){
   # closer look at iteration vector:
 1:n.iter
 
-
-## Using the iteration variable "i" within the for loop:
-n.iter <- 5
-count <- 0
-for(i in 1:n.iter){
-  count <- count+i            # assign a new value of count equal to the old value of count + i
-  print(count)
-}
 
 ## A for-loop for dependent sequence (here, the Fibonacci sequence)
 n.iter <- 10
@@ -153,9 +136,6 @@ apply(W, 1, mean)
 
 ## For each column, calculate the mean.
 apply(W, 2, mean)
-
-## For each row, identify the column that has the largest value.
-apply(W, 1, which.max)
 
 ## Apply your own custom function to each row in a matrix.
 MyFunc <- function(x){
