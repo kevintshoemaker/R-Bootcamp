@@ -14,7 +14,7 @@
 
 <title>Submodule 1.1</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -145,11 +145,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -178,8 +182,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -187,16 +191,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -318,7 +315,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2022</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2023</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -426,12 +423,12 @@ div.tocify {
 
 <h1 class="title toc-ignore">Submodule 1.1</h1>
 <h4 class="author">Getting started</h4>
-<h4 class="date">Fall 2022</h4>
+<h4 class="date">Fall 2023</h4>
 
 </div>
 
 
-<p>Welcome to the 2022 UNR R workshop- let’s get started!</p>
+<p>Welcome to the 2023 UNR R workshop- let’s get started!</p>
 <div id="get-materials-for-this-module" class="section level2">
 <h2>Get materials for this module</h2>
 <p>You will be introduced to a lot of new material very quickly in this
@@ -447,8 +444,7 @@ your own!</p>
 <h3>Base R</h3>
 <p><a href="https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf">Base R
 Cheat sheet</a><br />
-<a href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">R
-reference card</a></p>
+<a href="">R reference card</a></p>
 </div>
 <div id="helpful-packages" class="section level3">
 <h3>Helpful packages</h3>
@@ -464,7 +460,7 @@ transformation</a><br />
 <a
 href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf">working
 with dates and times</a></p>
-<p>Many additional cheat sheets are available <a
+<p>Many additional ‘cheat sheets’ are available <a
 href="https://www.rstudio.com/resources/cheatsheets/">here</a></p>
 </div>
 </div>
@@ -475,7 +471,7 @@ href="https://www.rstudio.com/resources/cheatsheets/">here</a></p>
 this submodule! I recommend right-clicking (or command-clicking for
 Macs) on the link and selecting the “Save As” option from the context
 menu. Save the script to a convenient folder on your laptop (e.g., a
-folder called “Rworkshop2022”), which will serve as your <strong>working
+folder called “Rworkshop2023”), which will serve as your <strong>working
 directory</strong> for this workshop.</p></li>
 <li><p>Start a new <strong>RStudio Project</strong>. To do this, open
 RStudio and from the File menu select File&gt;&gt;New Project. In the
@@ -502,7 +498,7 @@ working directory, etc.</p></li>
 <p>Take a couple minutes to familiarize yourself with the RStudio
 environment.</p>
 <p>Let’s get started!</p>
-<p><img src="rstudio1.jpg" /></p>
+<p><img src="rstudio2.png" style="width:50.0%" /></p>
 </div>
 <div id="explore-the-r-console" class="section level2">
 <h2>Explore the R console</h2>
@@ -542,11 +538,11 @@ in your environment, called “myname”, and this object contains a single
 happens?</p>
 <p>If you enter the name of an object at the command line, R
 automatically prints the value of the object!</p>
-<p>NOTE: RStudio has a useful auto-fill feature, which can save you lots
+<p>NOTE: RStudio has a useful autofill feature, which can save you lots
 of time and headaches. After you’ve typed the first couple letters
 (e.g., “my”), RStudio will suggest “myname” (or use the “tab” key to
 trigger RStudio to give you autofill options) and you can just scroll to
-the right object/function and hit “Enter”! The auto-type feature, unlike
+the right object/function and hit “Enter”! The autofill feature, unlike
 R, is not case sensitive!</p>
 </div>
 </div>
@@ -563,11 +559,10 @@ script</strong>.</p>
 <p>If you haven’t done it already, create a new R script by clicking on
 the “blank paper” icon at the far left of the RStudio toolbar (or
 File&gt;&gt;New File&gt;&gt;R script). The top left quadrant of the
-RStudio interface (at least by default) should now contain a blank R
+RStudio interface (the “Source” window) should now contain a blank R
 script.</p>
 <p>In your blank script, let’s define a new object. For example:</p>
-<pre><code>
-my_obj &lt;- 6+11
+<pre><code>my_obj &lt;- 6+11
 </code></pre>
 <p>Now place the cursor somewhere within the line of text you just wrote
 and hit ‘Ctrl+Enter’ (or ‘Command+Enter’) to run that line of code! You
@@ -582,13 +577,14 @@ feel free to save your new script before you move on.</p>
 <h3>Load an Existing script</h3>
 <p>Remember the file you downloaded at the beginning of this submodule?
 That file is an R script (<a href="module1_1.R">“module1_1.R”</a>);
-Let’s load it up now!</p>
+Let’s load it up now! You can have multiple scripts open at the same
+time- they appear as tabs at the top of the script/source window.</p>
 <p>To do this, click on the “folder” icon on the Rstudio toolbar (or
 File &gt;&gt; Open File) and choose the script you downloaded
 earlier.</p>
 <p>The first couple lines of the script for this module are preceded by
-hashtags. As you have already seen, R ignores these lines (anything
-preceded by a hashtag is ignored)- they are called
+hash marks. As you have already seen, R ignores these lines (anything
+preceded by a hash is ignored)- they are called
 <strong>comments</strong>, and they help to keep code organized and
 understandable.</p>
 <p><em>use comments early and often- they are tremendously
@@ -784,9 +780,9 @@ ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
 <pre class="r"><code>ggplot(summarized.batters, aes(BattingAverage,col=League)) + geom_density()</code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
-<pre class="r"><code># Why does NL density plot indicate a sizeable number of players with very low batting average?
+<pre class="r"><code># Why does NL density plot indicate a sizable number of players with very low batting average?
 
-# make a new variable to indicate whether each player is a pitcher or postition player
+# make a new variable to indicate whether each player is a pitcher or position player
 
 summarized.batters = summarized.batters %&gt;% 
   mutate(Pitcher=ifelse(Position==&quot;P&quot;,&quot;Pitcher&quot;,&quot;Position Player&quot;))
@@ -806,8 +802,7 @@ ggplot(summarized.batters, aes(BattingAverage)) +
                                           sd = sd(BattingAverage[Position==&quot;P&quot;]))),
         col=&quot;pink&quot;,lwd=1.1
         )   +
-     scale_x_continuous(&quot;Batting Average&quot;) + 
-     labs(title = &quot;Histogram with Normal Curve&quot;)  </code></pre>
+     labs(x=&quot;Batting Average&quot;,title = &quot;Histogram with Normal Curve&quot;)  </code></pre>
 <p><img src="module1_1_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
 <p>This time, let’s look for some time trends by summarizing by
 year.</p>

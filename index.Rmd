@@ -1,7 +1,7 @@
 ---
-title: "Welcome to the 2022 R workshop!"
+title: "Welcome to the 2023 R workshop!"
 author: "A hopefully more-or-less painless introduction to R"
-date: "UNR, Fall 2022"
+date: "UNR, Fall 2023"
 output:
   html_document:
     theme: journal
@@ -13,16 +13,21 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
- * **When?** Saturday Sep 10 and 17, 2022
- * **Where?** UNR (WRB 2003)  
- * **What to prepare?** Everyone should bring their own laptop computer, with R and RStudio installed prior to starting the workshop (see [links](Links.html)). 
+ * **When?** Saturday Sep 16, 2023
+ * **Where?** UNR (WRB 2030)  
+ * **What to prepare?** Everyone should bring their own laptop, with R and RStudio installed prior to starting the workshop (see [links](Links.html)). 
  
-## Facilitators
+## Facilitator
 
 [Kevin Shoemaker](https://www.unr.edu/nres/people/shoemaker-kevin)		 
 Department of Natural Resources and Environmental Science       
 Office: Fleischmann Agriculture 220E					
 Email: [kevinshoemaker@unr.edu](kevinshoemaker@unr.edu)
+
+[Carlos Ramirez-Reyes](https://library.unr.edu/ramirez-reyes-carlos)		 
+UNR Data Services Coordinator       
+DeLaMare Science and Engineering Library					
+Email: [cramirezreyes@unr.edu](cramirezreyes@unr.edu)
 
 
 ## Contributors

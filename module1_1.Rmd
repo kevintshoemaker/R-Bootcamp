@@ -1,7 +1,7 @@
 ---
 title: "Submodule 1.1"
 author: "Getting started"
-date: "Fall 2022"
+date: "Fall 2023"
 output: 
   html_document: 
     theme: journal
@@ -18,11 +18,11 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 #  R Bootcamp #1, Module 1    
 #      University of Nevada, Reno             
 
-#  Getting started with R: the basics 
+#  Getting started with R: the basics  -----------------------
 
 ```
 
-Welcome to the 2022 UNR R workshop- let's get started! 
+Welcome to the 2023 UNR R workshop- let's get started! 
 
 ## Get materials for this module
 
@@ -32,7 +32,7 @@ Here are links to good R "cheatsheets":
 
 ### Base R
 [Base R Cheat sheet](https://www.i3s.unice.fr/~malapert/R/pdf/base-r.pdf)        
-[R reference card](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
+[R reference card]()
 
 ### Helpful packages
 [ggplot cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)       
@@ -40,11 +40,11 @@ Here are links to good R "cheatsheets":
 [data transformation](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)        
 [working with dates and times](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf)           
 
-Many additional cheat sheets are available [here](https://www.rstudio.com/resources/cheatsheets/)        
+Many additional 'cheat sheets' are available [here](https://www.rstudio.com/resources/cheatsheets/)        
 
 ## Load script for submodule #1.1
 
-1. Click [here](module1_1.R) to download the script for this submodule! I recommend right-clicking (or command-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called "Rworkshop2022"), which will serve as your **working directory** for this workshop. 
+1. Click [here](module1_1.R) to download the script for this submodule! I recommend right-clicking (or command-clicking for Macs) on the link and selecting the "Save As" option from the context menu. Save the script to a convenient folder on your laptop (e.g., a folder called "Rworkshop2023"), which will serve as your **working directory** for this workshop. 
 
 2. Start a new **RStudio Project**. To do this, open RStudio and from the File menu select File>>New Project. In the menu that follows, select "Existing Directory", and then navigate to the folder in which you saved the R script for this module (your working directory). Select this folder to be your **project directory**. Every time you open this project (File >> Open Project), this project directory will be the first place that R looks for data files and code, and will be the default location for saving data and code.  
 
@@ -54,7 +54,7 @@ Take a couple minutes to familiarize yourself with the RStudio environment.
 
 Let's get started!
 
-![](rstudio1.jpg)
+![](rstudio2.png){width=50%}
 
 ## Explore the R console
 
@@ -90,7 +90,7 @@ Now type `myname` into the R console and hit "Enter". What happens?
 
 If you enter the name of an object at the command line, R automatically prints the value of the object!
 
-NOTE: RStudio has a useful auto-fill feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" (or use the "tab" key to trigger RStudio to give you autofill options) and you can just scroll to the right object/function and hit "Enter"! The auto-type feature, unlike R, is not case sensitive!  
+NOTE: RStudio has a useful autofill feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" (or use the "tab" key to trigger RStudio to give you autofill options) and you can just scroll to the right object/function and hit "Enter"! The autofill feature, unlike R, is not case sensitive!  
 
 ## Graduating to R Scripts
 
@@ -98,12 +98,11 @@ You will quickly realize that although the command-line R console is nice to use
 
 ### Make a new script
 
-If you haven't done it already, create a new R script by clicking on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). The top left quadrant of the RStudio interface (at least by default) should now contain a blank R script. 
+If you haven't done it already, create a new R script by clicking on the "blank paper" icon at the far left of the RStudio toolbar (or File>>New File>>R script). The top left quadrant of the RStudio interface (the "Source" window) should now contain a blank R script. 
 
 In your blank script, let's define a new object. For example:
 
 ```
-
 my_obj <- 6+11
 
 ```
@@ -118,11 +117,11 @@ Of course, it's always a good idea to save your scripts often -- so feel free to
 
 ### Load an Existing script
 
-Remember the file you downloaded at the beginning of this submodule? That file is an R script (["module1_1.R"](module1_1.R)); Let's load it up now!  
+Remember the file you downloaded at the beginning of this submodule? That file is an R script (["module1_1.R"](module1_1.R)); Let's load it up now! You can have multiple scripts open at the same time- they appear as tabs at the top of the script/source window.  
 
 To do this, click on the "folder" icon on the Rstudio toolbar (or File >> Open File) and choose the script you downloaded earlier.
 
-The first couple lines of the script for this module are preceded by hashtags. As you have already seen, R ignores these lines (anything preceded by a hashtag is ignored)- they are called **comments**, and they help to keep code organized and understandable. 
+The first couple lines of the script for this module are preceded by hash marks. As you have already seen, R ignores these lines (anything preceded by a hash is ignored)- they are called **comments**, and they help to keep code organized and understandable. 
 
 _use comments early and often- they are tremendously valuable_.   
 
@@ -271,9 +270,9 @@ ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()
 
 ggplot(summarized.batters, aes(BattingAverage,col=League)) + geom_density()
 
-# Why does NL density plot indicate a sizeable number of players with very low batting average?
+# Why does NL density plot indicate a sizable number of players with very low batting average?
 
-# make a new variable to indicate whether each player is a pitcher or postition player
+# make a new variable to indicate whether each player is a pitcher or position player
 
 summarized.batters = summarized.batters %>% 
   mutate(Pitcher=ifelse(Position=="P","Pitcher","Position Player"))
@@ -293,8 +292,7 @@ ggplot(summarized.batters, aes(BattingAverage)) +
 		                                  sd = sd(BattingAverage[Position=="P"]))),
 		col="pink",lwd=1.1
 		)   +
-	 scale_x_continuous("Batting Average") + 
-	 labs(title = "Histogram with Normal Curve")  
+	 labs(x="Batting Average",title = "Histogram with Normal Curve")  
 
 ```
 
