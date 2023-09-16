@@ -1,7 +1,7 @@
 ---
 title: "Submodule 1.3"
-author: 'Basic plotting in R (ggplot)'
-date: "Fall 2022"
+author: 'Plotting in R (ggplot)'
+date: "Fall 2023"
 output:
   html_document:
     theme: journal
@@ -310,7 +310,7 @@ print(p)
 
 ## Practice demo (with some new stuff)
 
-For additional practice, let's use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
+For additional practice, let's use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (mounds and depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
 
 First we will need to load a few more packages. Make sure to install any packages in this list you don't already have! 
 
@@ -677,7 +677,7 @@ leaflet(possumsites) %>%
 
 ## Challenge exercises
 
-1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, fit a separate trendline for each depth category. Have the color of the trendline match the color of each cloud of points. Remove the confidence band from the trendlines. The plot should look something like this:
+1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, visualize a separate trendline for each depth category. Have the color of the trendline match the color of each cloud of points. Remove the confidence band from the trendlines. The plot should look something like this:
 
 ```{r echo=FALSE}
 

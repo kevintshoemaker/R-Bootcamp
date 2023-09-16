@@ -1,7 +1,7 @@
 ---
 title: "Submodule 1.4"
 author: "Data 'wrangling' in R"
-date: "Fall 2022"
+date: "Fall 2023"
 output: 
   html_document: 
     theme: journal
