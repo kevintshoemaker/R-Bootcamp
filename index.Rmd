@@ -164,6 +164,7 @@ rmd2rscript2("module2_2.Rmd")
 rmd2rscript2("module2_3.Rmd")
 rmd2rscript2("module2_4.Rmd")
 rmd2rscript2("module2_5.Rmd")
+rmd2rscript2("EXTRAS.Rmd")
 #rmd2rscript2("module2_6.Rmd")
 
 ## TODO: make sure there are pdf copies of all the modules... 

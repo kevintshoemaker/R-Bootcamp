@@ -15,6 +15,8 @@ navbar:
           href: module1_3.html
         - text: "Submodule 1.4: data wrangling"
           href: module1_4.html
+        - text: "Submodule 1.5: final demo"
+          href: EXTRAS.html
     - text: "Workshop #2: beyond the basics"
       menu:
         - text: "Submodule 2.1: R packages"

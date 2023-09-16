@@ -1,14 +1,33 @@
 ---
-title: "EXTRAS"
-output: html_document
-date: "2023-09-16"
+title: "FINAL EXAMPLE"
+author: ""
+date: "Fall 2023"
+output: 
+  html_document: 
+    theme: journal
+    toc: yes
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+library(tidyverse)
+library(ggplot2)
+library(zoo)
+
 ```
 
 
+## Load script for final demo
+
+1. Click [here](EXTRAS.R) to download the script! Save the script to the project directory you set up in the previous submodule.   
+
+2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top to load your script.    
 
 ## A demo of R in action
 
