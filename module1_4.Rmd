@@ -40,7 +40,7 @@ Let's get started with some data wrangling!
 
 ## The 'tidyverse' 
 
-Throughout this workshop we have been making use of the 'Tidyverse' set of packages, which were designed to facilitate everyday data management and visualization tasks in R using a consistent data structure and syntax. 
+Throughout this workshop we have been making use of the 'tidyverse' set of packages, which were designed to facilitate everyday data management and visualization tasks in R using a consistent data structure and syntax. 
 
 For a much more comprehensive introduction to data wrangling and analysis, you should definitely consider working through the online textbook, [R for Data Science](http://r4ds.had.co.nz/) by Garrett Grolemund and Hadley Wickham. 
 
@@ -58,7 +58,7 @@ The core tidyverse set of packages includes:
 * ggplot2, for data visualisation (the subject of the next module)
 * purrr, for functional programming
 * stringr, for strings
-* forcats, for factors
+* forcats, for factors (categorical variables)
 * lubridate, for dates
 
 The following cheat sheets will be helpful in this submodule:
@@ -425,8 +425,7 @@ relig_income %>%
 # Module 1_4 challenge problems: answers  -------------
 
 
-# 1. Create a tibble dataframe using the code below (`tribble()` constructs a tibble by rows)
-#      and make it tidy. Do you need to pivot_longer or pivot_wider?
+# 1. Try to put tidyr's built-in `relig_income` dataset into a tidier format. This dataset stores counts based on a survey which (among other things) asked people about their religion and annual income:
 
 relig_income %>% 
   pivot_longer(cols=!religion, names_to = "Income",values_to="count")
