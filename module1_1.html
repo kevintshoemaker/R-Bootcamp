@@ -593,338 +593,8 @@ valuable</em>.</p>
 working through the remainder of the script you just opened.</p>
 </div>
 </div>
-<div id="a-demo-of-r-in-action" class="section level2">
-<h2>A demo of R in action</h2>
-<p>Before we get into the basics, let’s just run through some of what R
-can do! Don’t worry if you don’t understand something- we will go over
-all of this in greater detail later!</p>
-<p>To get started, let’s first load some R packages that help with data
-wrangling and exploration</p>
-<p>Packages in the CRAN repository can be installed using the function
-“install.packages()”:</p>
-<pre class="r"><code># R DEMO ----------------------  
-#     don&#39;t worry if you don&#39;t understand this just yet- this is just a 
-#     taste of where we are going!
-
-
-# Install packages 
-#   NOTE you only have to do this once. If you have not already installed the packages, you can uncomment and run the following lines:
-
-# install.packages(c(&quot;ggplot2&quot;,&quot;tidyverse&quot;))</code></pre>
-<p>Alternatively, you can use the “packages” tab in Rstudio (lower
-right) and use the “install” button.</p>
-<p>Once packages are installed, you can load them into your workspace
-(so they are useable in your R session) using the “library()”
-function:</p>
-<pre class="r"><code># Load packages 
-
-library(ggplot2)
-library(tidyverse)
-library(Lahman)    # for getting baseball data</code></pre>
-<p>Next we can load in some data. To give you a sense of what R can do,
-let’s load in some relatively complex datasets. These datasets happen to
-be about baseball, but they can stand in for any complex datasets you
-might encounter in your work!</p>
-<pre class="r"><code># Read in data (from the web) 
-
-salaries &lt;- read_csv(&quot;http://dgrtwo.github.io/pages/lahman/Salaries.csv&quot;)
-
-master &lt;- read_csv(&quot;http://dgrtwo.github.io/pages/lahman/Master.csv&quot;)
-
-batting &lt;- read_csv(&quot;http://dgrtwo.github.io/pages/lahman/Batting.csv&quot;)
-
-# Read in data from package (you can read in all of these from the Lahman package!)
-
-fielding &lt;- tibble(Lahman::Fielding)</code></pre>
-<p>Let’s examine these data objects in r. Again, we will get into this
-in more detail later!</p>
-<pre class="r"><code># explore the data 
-
-salaries</code></pre>
-<pre><code>## # A tibble: 23,956 × 5
-##    yearID teamID lgID  playerID   salary
-##     &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
-##  1   1985 BAL    AL    murraed02 1472819
-##  2   1985 BAL    AL    lynnfr01  1090000
-##  3   1985 BAL    AL    ripkeca01  800000
-##  4   1985 BAL    AL    lacyle01   725000
-##  5   1985 BAL    AL    flanami01  641667
-##  6   1985 BAL    AL    boddimi01  625000
-##  7   1985 BAL    AL    stewasa01  581250
-##  8   1985 BAL    AL    martide01  560000
-##  9   1985 BAL    AL    roeniga01  558333
-## 10   1985 BAL    AL    mcgresc01  547143
-## # … with 23,946 more rows</code></pre>
-<pre class="r"><code># summary(salaries)    # summary statistics for all variables in data frame
-
-master</code></pre>
-<pre><code>## # A tibble: 18,354 × 24
-##    playerID  birthYear birthMo…¹ birth…² birth…³ birth…⁴ birth…⁵ death…⁶ death…⁷
-##    &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-##  1 aardsda01      1981        12      27 USA     CO      Denver       NA      NA
-##  2 aaronha01      1934         2       5 USA     AL      Mobile       NA      NA
-##  3 aaronto01      1939         8       5 USA     AL      Mobile     1984       8
-##  4 aasedo01       1954         9       8 USA     CA      Orange       NA      NA
-##  5 abadan01       1972         8      25 USA     FL      Palm B…      NA      NA
-##  6 abadfe01       1985        12      17 D.R.    La Rom… La Rom…      NA      NA
-##  7 abadijo01      1854        11       4 USA     PA      Philad…    1905       5
-##  8 abbated01      1877         4      15 USA     PA      Latrobe    1957       1
-##  9 abbeybe01      1869        11      11 USA     VT      Essex      1962       6
-## 10 abbeych01      1866        10      14 USA     NE      Falls …    1926       4
-## # … with 18,344 more rows, 15 more variables: deathDay &lt;dbl&gt;,
-## #   deathCountry &lt;chr&gt;, deathState &lt;chr&gt;, deathCity &lt;chr&gt;, nameFirst &lt;chr&gt;,
-## #   nameLast &lt;chr&gt;, nameGiven &lt;chr&gt;, weight &lt;dbl&gt;, height &lt;dbl&gt;, bats &lt;chr&gt;,
-## #   throws &lt;chr&gt;, debut &lt;date&gt;, finalGame &lt;date&gt;, retroID &lt;chr&gt;, bbrefID &lt;chr&gt;,
-## #   and abbreviated variable names ¹​birthMonth, ²​birthDay, ³​birthCountry,
-## #   ⁴​birthState, ⁵​birthCity, ⁶​deathYear, ⁷​deathMonth</code></pre>
-<pre class="r"><code># summary(master)
-
-batting</code></pre>
-<pre><code>## # A tibble: 97,889 × 24
-##    playe…¹ yearID stint teamID lgID      G G_bat…²    AB     R     H  `2B`  `3B`
-##    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 aardsd…   2004     1 SFN    NL       11      11     0     0     0     0     0
-##  2 aardsd…   2006     1 CHN    NL       45      43     2     0     0     0     0
-##  3 aardsd…   2007     1 CHA    AL       25       2     0     0     0     0     0
-##  4 aardsd…   2008     1 BOS    AL       47       5     1     0     0     0     0
-##  5 aardsd…   2009     1 SEA    AL       73       3     0     0     0     0     0
-##  6 aardsd…   2010     1 SEA    AL       53       4     0     0     0     0     0
-##  7 aardsd…   2012     1 NYA    AL        1      NA    NA    NA    NA    NA    NA
-##  8 aaronh…   1954     1 ML1    NL      122     122   468    58   131    27     6
-##  9 aaronh…   1955     1 ML1    NL      153     153   602   105   189    37     9
-## 10 aaronh…   1956     1 ML1    NL      153     153   609   106   200    34    14
-## # … with 97,879 more rows, 12 more variables: HR &lt;dbl&gt;, RBI &lt;dbl&gt;, SB &lt;dbl&gt;,
-## #   CS &lt;dbl&gt;, BB &lt;dbl&gt;, SO &lt;dbl&gt;, IBB &lt;dbl&gt;, HBP &lt;dbl&gt;, SH &lt;dbl&gt;, SF &lt;dbl&gt;,
-## #   GIDP &lt;dbl&gt;, G_old &lt;dbl&gt;, and abbreviated variable names ¹​playerID,
-## #   ²​G_batting</code></pre>
-<pre class="r"><code># summary(batting)
-
-fielding</code></pre>
-<pre><code>## # A tibble: 147,080 × 18
-##    playe…¹ yearID stint teamID lgID  POS       G    GS InnOuts    PO     A     E
-##    &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;fct&gt;  &lt;fct&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-##  1 abercd…   1871     1 TRO    NA    SS        1     1      24     1     3     2
-##  2 addybo…   1871     1 RC1    NA    2B       22    22     606    67    72    42
-##  3 addybo…   1871     1 RC1    NA    SS        3     3      96     8    14     7
-##  4 allisa…   1871     1 CL1    NA    2B        2     0      18     1     4     0
-##  5 allisa…   1871     1 CL1    NA    OF       29    29     729    51     3     7
-##  6 allisd…   1871     1 WS3    NA    C        27    27     681    68    15    20
-##  7 ansonc…   1871     1 RC1    NA    1B        1     0      15     7     0     0
-##  8 ansonc…   1871     1 RC1    NA    2B        2     1      30     3     4     1
-##  9 ansonc…   1871     1 RC1    NA    3B       20    19     555    38    52    28
-## 10 ansonc…   1871     1 RC1    NA    C         5     4      93    10     0     8
-## # … with 147,070 more rows, 6 more variables: DP &lt;int&gt;, PB &lt;int&gt;, WP &lt;int&gt;,
-## #   SB &lt;int&gt;, CS &lt;int&gt;, ZR &lt;int&gt;, and abbreviated variable name ¹​playerID</code></pre>
-<pre class="r"><code># summary(fielding)</code></pre>
-<p>Before we can do much with these data, we need to “wrangle” these
-data into a format that can be visualized and analyzed effectively.</p>
-<p>Let’s begin by merging these datasets into a single master
-dataset…</p>
-<pre class="r"><code># Do some wrangling! 
-
- # merge the batting and salaries data frames
-merged.batting = left_join(batting, salaries, by=c(&quot;playerID&quot;, &quot;yearID&quot;, &quot;teamID&quot;, &quot;lgID&quot;))
-
- # merge the &quot;master&quot; dataset (player biographical info)
-merged.bio = inner_join(merged.batting, master, by=&quot;playerID&quot;)
-
- # summarize fielding data by year and player- prepare to merge with other data
-fielding.temp = fielding %&gt;% 
-  group_by(playerID,yearID,teamID,lgID) %&gt;%     # 
-  summarize(position = first(modeest::mfv(POS)),
-            games = sum(G))</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;rmutil&#39;:
-##   method         from
-##   print.response httr</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;playerID&#39;, &#39;yearID&#39;, &#39;teamID&#39;. You can
-## override using the `.groups` argument.</code></pre>
-<pre class="r"><code>merged.all = inner_join(merged.bio,fielding.temp,by=c(&quot;playerID&quot;, &quot;yearID&quot;, &quot;teamID&quot;, &quot;lgID&quot;))
-merged.all = merged.all %&gt;%    # remove all rows with no at-bats... 
-  filter( AB &gt; 0 )
-
-# range(merged.all$AB)
-
-merged.all = merged.all %&gt;%     # make a new column with the full name
-  mutate(name=paste(nameFirst, nameLast))</code></pre>
-<p>Now let’s summarize the data by player and start to get a sense for
-what patterns we can detect.</p>
-<pre class="r"><code># summarize by player 
-
-summarized.batters = merged.all %&gt;% 
-  group_by(playerID) %&gt;% 
-  summarise(name=first(name),
-            League=first(modeest::mfv(lgID)),
-            Position=first(modeest::mfv(position)),
-            First.yr=min(yearID),
-            Total.HR=sum(HR),
-            Total.R=sum(R),
-            Total.H=sum(H),
-            AB=sum(AB),
-            BattingAverage=sum(H) / sum(AB) ) %&gt;% 
-  arrange(desc(Total.HR))
-
-
-# visualize the data 
-
-  # visualize correlation between hits and runs
-ggplot(summarized.batters, aes(Total.H, Total.R)) + geom_point()</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>  # visualize histogram of batting average
-ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
-<pre class="r"><code>  # remove &quot;outliers&quot; and try again
-summarized.batters = summarized.batters %&gt;% 
-  filter(AB&gt;100&amp;First.yr&gt;1920)
-
-ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
-<pre class="r"><code>ggplot(summarized.batters, aes(BattingAverage,col=League)) + geom_density()</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
-<pre class="r"><code># Why does NL density plot indicate a sizable number of players with very low batting average?
-
-# make a new variable to indicate whether each player is a pitcher or position player
-
-summarized.batters = summarized.batters %&gt;% 
-  mutate(Pitcher=ifelse(Position==&quot;P&quot;,&quot;Pitcher&quot;,&quot;Position Player&quot;))
-
-ggplot(summarized.batters, aes(BattingAverage)) + 
-    geom_histogram(aes(y = ..density..,group=Pitcher)) + 
-  geom_density(aes(col=Pitcher),lwd=1.5) +
-    stat_function(
-        fun = dnorm, 
-        args = with(summarized.batters, c(mean = mean(BattingAverage[Position!=&quot;P&quot;]), 
-                                          sd = sd(BattingAverage[Position!=&quot;P&quot;]))),
-        col=&quot;lightblue&quot;,lwd=1.1
-        )   + 
-   stat_function(
-        fun = dnorm, 
-        args = with(summarized.batters, c(mean = mean(BattingAverage[Position==&quot;P&quot;]), 
-                                          sd = sd(BattingAverage[Position==&quot;P&quot;]))),
-        col=&quot;pink&quot;,lwd=1.1
-        )   +
-     labs(x=&quot;Batting Average&quot;,title = &quot;Histogram with Normal Curve&quot;)  </code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
-<p>This time, let’s look for some time trends by summarizing by
-year.</p>
-<pre class="r"><code># Summmarize by time (and league) 
-
-summarized.year = merged.all %&gt;% 
-  filter(yearID&gt;1920) %&gt;%
-  group_by(yearID,lgID) %&gt;% 
-  summarise(Total.HR=sum(HR),
-            Total.R=sum(R),
-            Total.H=sum(H),
-            AB=sum(AB),
-            BattingAverage=sum(H) / sum(AB) ) %&gt;% 
-  arrange(yearID, lgID)
-
-
-summarized.year</code></pre>
-<pre><code>## # A tibble: 186 × 7
-## # Groups:   yearID [93]
-##    yearID lgID  Total.HR Total.R Total.H    AB BattingAverage
-##     &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;
-##  1   1921 AL         477    6290   12509 42762          0.293
-##  2   1921 NL         460    5631   12266 42367          0.290
-##  3   1922 AL         525    5863   12034 42292          0.285
-##  4   1922 NL         530    6190   12576 43041          0.292
-##  5   1923 AL         442    5884   11870 42002          0.283
-##  6   1923 NL         538    5984   12346 43203          0.286
-##  7   1924 AL         397    6132   12261 42215          0.290
-##  8   1924 NL         498    5577   12004 42430          0.283
-##  9   1925 AL         533    6397   12419 42567          0.292
-## 10   1925 NL         636    6193   12492 42845          0.292
-## # … with 176 more rows</code></pre>
-<pre class="r"><code># visualize the data 
-
-  # visualize trend in home runs
-ggplot(summarized.year, aes(yearID, Total.HR, col=lgID)) + 
-  geom_line()</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<pre class="r"><code>  # visualize trend in batting average
-ggplot(summarized.year, aes(yearID, BattingAverage, col=lgID)) + 
-  geom_line()</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
-<p>Finally let’s do some more complex visualizations and run some
-statistics…</p>
-<pre class="r"><code># Summarize by time and team
-
-summarized.teams.year = merged.all %&gt;%
-  filter(yearID&gt;1920) %&gt;%
-  group_by(yearID,teamID) %&gt;% 
-  summarise(League = first(lgID),
-            Total.HR=sum(HR),
-            Total.R=sum(R),
-            Total.H=sum(H),
-            AB=sum(AB),
-            BattingAverage=sum(H) / sum(AB) ) %&gt;% 
-  arrange(desc(Total.HR))</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;yearID&#39;. You can override using the
-## `.groups` argument.</code></pre>
-<pre class="r"><code>summarized.teams.year</code></pre>
-<pre><code>## # A tibble: 2,026 × 8
-## # Groups:   yearID [93]
-##    yearID teamID League Total.HR Total.R Total.H    AB BattingAverage
-##     &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;
-##  1   1997 SEA    AL          264     924    1574  5614          0.280
-##  2   2005 TEX    AL          260     865    1528  5716          0.267
-##  3   2010 TOR    AL          257     755    1364  5495          0.248
-##  4   2000 HOU    NL          249     938    1547  5566          0.278
-##  5   1996 BAL    AL          247     913    1498  5459          0.274
-##  6   2001 TEX    AL          246     890    1566  5685          0.275
-##  7   1996 SEA    AL          245     993    1625  5663          0.287
-##  8   2012 NYA    AL          245     804    1462  5524          0.265
-##  9   1999 SEA    AL          244     859    1499  5572          0.269
-## 10   2000 TOR    AL          244     861    1562  5677          0.275
-## # … with 2,016 more rows</code></pre>
-<pre class="r"><code># visualize the data 
-
-  # visualize correlation between home runs and year
-ggplot(summarized.teams.year, aes(yearID, Total.HR)) + 
-  geom_point(show.legend = FALSE) +
-  geom_smooth() +
-  facet_wrap(&#39;League&#39;)</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Let’s run a statistical analysis to see if the increasing home run
-trend is “real”.</p>
-<pre class="r"><code>ggplot(summarized.teams.year,aes(yearID,Total.HR))+
-  geom_point() +
-  geom_smooth(method=&quot;lm&quot;)</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre class="r"><code>model1 &lt;- lm(Total.HR~yearID,summarized.teams.year)  # linear regression analysis
-summary(model1)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Total.HR ~ yearID, data = summarized.teams.year)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -102.388  -26.357   -3.177   22.578  127.902 
-## 
-## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -2.073e+03  6.058e+01  -34.23   &lt;2e-16 ***
-## yearID       1.114e+00  3.069e-02   36.31   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 36.61 on 2024 degrees of freedom
-## Multiple R-squared:  0.3945, Adjusted R-squared:  0.3942 
-## F-statistic:  1318 on 1 and 2024 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>Then we can perform some diagnostic tests to make sure the data meet
-the assumptions of the analysis:</p>
-<pre class="r"><code># test key assumptions visually
-
-layout(matrix(1:4,nrow=2,byrow=T))  # set up graphics window
-plot(model1)  # run diagnostic plots for our regression</code></pre>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>With just minor changes to the above code, we could look at many
-additional questions!</p>
-</div>
-<div id="back-to-basics-r-objects" class="section level2">
-<h2>Back to basics: R Objects</h2>
+<div id="r-objects" class="section level2">
+<h2>R Objects</h2>
 <p>Okay, let’s step back and learn a little bit about R as a
 data-oriented programming language.</p>
 <p>R has many different kinds of objects that you can define and store
@@ -957,14 +627,27 @@ parentheses!</p>
 
 sum(1, 2, 3, 10)    # returns: 15
 
-c(1, 2, 3, 10)   # combine four numbers into a single data object (a vector!)
+c(1, 2, 3, 10)   # combine four numbers into a single data object (construct a vector!)
 
 floor(67.8)  # removes the decimal component of a number
-round(67.8)  # rounds a number
+round(67.8)  # rounds a number to the nearest integer</code></pre>
+<pre class="r"><code>near(0.01,0,tol=0.2)  # returns TRUE if argument 1 is near to argument 2 within a certain tolerance level</code></pre>
+<p>Oops, that last one is not part of base R. It’s actually part of an R
+package called ‘dplyr’- one of the most commonly used packages in R
+ecosystem! A package is basically a set of functions that expand the
+capabilities of base R. Let’s load ‘dplyr’, along with a whole bunch of
+packages known as the ‘tidyverse’. We will also load a commonly used
+plotting package called ‘ggplot2’.</p>
+<pre class="r"><code>  # load &#39;tidyverse&#39;  and &#39;ggplot&#39;
+library(ggplot2) 
+library(tidyverse)</code></pre>
+<pre class="r"><code>near    # oops, forgot the parentheses!
 
-near(0.01,0,tol=0.2)  # returns TRUE if argument 1 is near to argument 2 within a certain tolerance level
+near(1,1.1)
+near(1,1.01)
+near(1,1.000000001)
 
-near    # oops, forgot the parentheses!</code></pre>
+?near  # get some help</code></pre>
 <p>It’s easy to get some help if you forget how a function works:</p>
 <pre class="r"><code>help(round)  # a function for getting help with functions!!</code></pre>
 <pre><code>## starting httpd help server ... done</code></pre>
@@ -1007,8 +690,7 @@ numeric.</p>
 </div>
 <div id="vectors" class="section level4">
 <h4>Vectors</h4>
-<p>Vectors can combine multiple scalars in a single data object. In
-fact, a scalar in R is really just a vector of length 1.</p>
+<p>Vectors can combine multiple scalars in a single data object.</p>
 <p>First let’s create some vectors. In the code below we use a function
 called <code>c()</code>. You can think of it as the ‘combine’ function-
 it takes several smaller data objects and combines them together into a
@@ -1141,9 +823,9 @@ df1</code></pre>
 <p>Now we have a data frame with three observation units and two
 measurements (variables).</p>
 <p>A <strong>tibble</strong> is the same thing as a data frame, just
-with a few tweaks to make it work better in the tidyverse. We will
-primarily work with tibble data frames in this workshop. For our
-purposes right now, tibbles and data frames are the same thing.</p>
+with a few tweaks to make it work better in the tidyverse. We will work
+with both tibbles and data frames in this workshop. For our purposes,
+tibbles and data frames are the same thing.</p>
 </div>
 </div>
 </div>
@@ -1177,21 +859,21 @@ R’s built in <strong>random number generators</strong>:</p>
 <pre class="r"><code># Random numbers 
 
 rnorm(10)                     # 10 samples from std. normal</code></pre>
-<pre><code>##  [1]  1.6603479  0.8944701  0.1321728 -1.2993650  0.5006127  0.5980192
-##  [7]  0.1134621  1.8719101 -0.3307061 -0.9835096</code></pre>
+<pre><code>##  [1]  1.4840099 -0.8456497 -0.3525833 -0.8339947  0.3742508  0.5104690
+##  [7] -0.5302224 -0.1094022  0.2782298  1.5666697</code></pre>
 <pre class="r"><code>rnorm(10,mean=-2,sd=4)        # 10 samples from Normal(-2,4^2)</code></pre>
-<pre><code>##  [1] -2.889591 -2.321176  2.220551  2.141924 -1.612882 -5.504331  1.907792
-##  [8] -5.419351 -1.622560 -3.429506</code></pre>
+<pre><code>##  [1] -2.4476166 -8.9229279 -4.0041964 -0.2981955 -2.1307039  1.4239915
+##  [7]  3.2449314 -4.7166154 -8.7700724 -7.6257005</code></pre>
 <pre class="r"><code>rbinom(5,size=3,prob=.5)      # 5 samples from Binom(3,0.5)</code></pre>
-<pre><code>## [1] 1 1 1 3 1</code></pre>
+<pre><code>## [1] 1 2 2 2 0</code></pre>
 <pre class="r"><code>rbinom(5,3,.1)                # 5 samples from Binom(3,0.1)</code></pre>
-<pre><code>## [1] 0 1 0 1 0</code></pre>
+<pre><code>## [1] 0 0 0 0 1</code></pre>
 <pre class="r"><code>runif(10)                     # 10 standard uniform random numbers</code></pre>
-<pre><code>##  [1] 0.5655247 0.6238065 0.2244214 0.8783187 0.3847452 0.2927396 0.9114053
-##  [8] 0.4550282 0.6021124 0.2194957</code></pre>
+<pre><code>##  [1] 0.91141263 0.83880848 0.53668722 0.80222440 0.93919183 0.06224971
+##  [7] 0.42784331 0.33243458 0.12319128 0.31343949</code></pre>
 <pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random numbers from [-1,1]</code></pre>
-<pre><code>##  [1] -0.76709783 -0.85628316  0.88077532  0.96181180 -0.32780927  0.07864404
-##  [7]  0.23972995 -0.08209653 -0.12029378  0.26073800</code></pre>
+<pre><code>##  [1]  0.3851233 -0.8604569  0.7120470  0.8087717  0.1052444  0.5969606
+##  [7] -0.5533044  0.7603707  0.2594884 -0.8422224</code></pre>
 <p>And finally, we can make up a fake data frame (or tibble) using some
 of the tricks we just learned!</p>
 <pre class="r"><code># Make up an entire fake data frame!
@@ -1207,48 +889,47 @@ my.data</code></pre>
 <pre><code>## # A tibble: 100 × 5
 ##    Obs.Id Treatment Block Germination AvgHeight
 ##     &lt;int&gt; &lt;chr&gt;     &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt;
-##  1      1 A             1           0      9.07
-##  2      2 A             2           0     12.4 
-##  3      3 A             3           0     10.2 
-##  4      4 A             4           0     11.8 
-##  5      5 A             5           0      8.25
-##  6      6 A             6           0      8.05
-##  7      7 A             7           1     10.9 
-##  8      8 A             8           0      8.44
-##  9      9 A             9           0     10.2 
-## 10     10 A            10           2      9.89
-## # … with 90 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+##  1      1 A             1           2     10.1 
+##  2      2 A             2           1     10.4 
+##  3      3 A             3           0     10.5 
+##  4      4 A             4           0     11.6 
+##  5      5 A             5           1     10.7 
+##  6      6 A             6           1      8.95
+##  7      7 A             7           1     10.6 
+##  8      8 A             8           2      9.32
+##  9      9 A             9           3      7.47
+## 10     10 A            10           1      9.00
+## # ℹ 90 more rows</code></pre>
 <pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
 <pre><code>##      Obs.Id        Treatment             Block        Germination   
 ##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   : 0.00  
 ##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.: 1.00  
 ##  Median : 50.50   Mode  :character   Median :10.50   Median : 3.00  
-##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.46  
-##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 6.00  
+##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.35  
+##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 5.00  
 ##  Max.   :100.00                      Max.   :20.00   Max.   :10.00  
-##    AvgHeight    
-##  Min.   : 8.05  
-##  1st Qu.:24.63  
-##  Median :29.70  
-##  Mean   :26.39  
-##  3rd Qu.:32.10  
-##  Max.   :37.16</code></pre>
+##    AvgHeight     
+##  Min.   : 7.467  
+##  1st Qu.:23.964  
+##  Median :29.767  
+##  Mean   :26.126  
+##  3rd Qu.:31.697  
+##  Max.   :37.195</code></pre>
 <pre class="r"><code>mydf=my.data[21:30,]  # extract rows 21 to 30 and store as a new data frame
 mydf</code></pre>
 <pre><code>## # A tibble: 10 × 5
 ##    Obs.Id Treatment Block Germination AvgHeight
 ##     &lt;int&gt; &lt;chr&gt;     &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt;
-##  1     21 B             1           7      30.1
-##  2     22 B             2           8      29.3
-##  3     23 B             3           7      28.6
-##  4     24 B             4           9      30.4
-##  5     25 B             5           4      32.4
-##  6     26 B             6           2      28.3
-##  7     27 B             7           4      29.4
-##  8     28 B             8           2      30.3
-##  9     29 B             9           3      29.1
-## 10     30 B            10           5      30.4</code></pre>
+##  1     21 B             1           6      32.9
+##  2     22 B             2           9      29.3
+##  3     23 B             3           4      30.4
+##  4     24 B             4           6      30.4
+##  5     25 B             5           7      27.6
+##  6     26 B             6           6      29.3
+##  7     27 B             7           9      29.9
+##  8     28 B             8           4      29.5
+##  9     29 B             9           2      29.6
+## 10     30 B            10           7      29.9</code></pre>
 <pre class="r"><code>mydf$Treatment    # access a column of the data frame by name</code></pre>
 <pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
 <p>Here are some useful R functions for exploring data objects:</p>
@@ -1285,16 +966,16 @@ to coerce a data frame into a matrix.</li>
 </ol>
 <p>Your result should look like this:</p>
 <pre><code>##       Block Germination AvgHeight
-##  [1,]     1           7  30.11009
-##  [2,]     2           8  29.32077
-##  [3,]     3           7  28.62151
-##  [4,]     4           9  30.43346
-##  [5,]     5           4  32.35144
-##  [6,]     6           2  28.30959
-##  [7,]     7           4  29.41184
-##  [8,]     8           2  30.26950
-##  [9,]     9           3  29.10932
-## [10,]    10           5  30.41413</code></pre>
+##  [1,]     1           6  32.93976
+##  [2,]     2           9  29.28651
+##  [3,]     3           4  30.44880
+##  [4,]     4           6  30.44811
+##  [5,]     5           7  27.56735
+##  [6,]     6           6  29.25965
+##  [7,]     7           9  29.90413
+##  [8,]     8           4  29.51714
+##  [9,]     9           2  29.64098
+## [10,]    10           7  29.88297</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Create a list named ‘mylist’ that is composed of a vector: 1:3, a
 matrix: matrix(1:6,nrow=3,ncol=2), and a data frame:
@@ -1316,23 +997,21 @@ data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c(“a”,“a”,“b”)).</li>
 ## 2 2 FALSE a
 ## 3 3  TRUE b</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>Extract the first and third observation from the 2nd column of the
-data frame in ‘mylist’ (the list created in challenge 6 above).</li>
-</ol>
-<p>Your result should look like this:</p>
-<ol start="5" style="list-style-type: decimal">
-<li>(optional- extra challenging!) Create a data frame (or tibble) named
-‘df_spatial’ that contains 25 spatial locations, with ‘long’ and ‘lat’
-as the column names (25 rows/observations, 2 columns/variables). These
-locations should describe a 5 by 5 regular grid with extent long: [-1,1]
-and lat: [-1,1].</li>
+<li><p>Extract the first and third observation from the 2nd column of
+the data frame in ‘mylist’ (the list created in challenge 6
+above).</p></li>
+<li><p>(optional- extra challenging!) Create a data frame (or tibble)
+named ‘df_spatial’ that contains 25 spatial locations, with ‘long’ and
+‘lat’ as the column names (25 rows/observations, 2 columns/variables).
+These locations should describe a 5 by 5 regular grid with extent long:
+[-1,1] and lat: [-1,1].</p></li>
 </ol>
 <p>HINT: you don’t need to type each location in by hand! Use the
 ‘rep()’ and ‘seq()’ functions instead.</p>
 <p>To make sure you got it right, use the visualization code provided
 below:</p>
 <p>It should look something like this:</p>
-<p><img src="module1_1_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="module1_1_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <pre class="r"><code># CHALLENGE EXERCISES -------------------------
 
 

@@ -1,0 +1,272 @@
+---
+title: "EXTRAS"
+output: html_document
+date: "2023-09-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## A demo of R in action
+
+Before we get into the basics, let's just run through some of what R can do! Don't worry if you don't understand something- we will go over all of this in greater detail later!
+
+To get started, let's first load some R packages that help with data wrangling and exploration    
+
+Packages in the CRAN repository can be installed using the function "install.packages()":
+
+```{r}
+
+# R DEMO ----------------------  
+#     don't worry if you don't understand this just yet- this is just a 
+#     taste of where we are going!
+
+
+# Install packages 
+#   NOTE you only have to do this once. If you have not already installed the packages, you can uncomment and run the following lines:
+
+# install.packages(c("ggplot2","tidyverse"))
+
+```
+
+Alternatively, you can use the "packages" tab in Rstudio (lower right) and use the "install" button. 
+
+Once packages are installed, you can load them into your workspace (so they are useable in your R session) using the "library()" function:
+
+```{r message=FALSE, warning=FALSE}
+
+# Load packages 
+
+library(ggplot2)
+library(tidyverse)
+library(Lahman)    # for getting baseball data
+
+```
+
+Next we can load in some data. To give you a sense of what R can do, let's load in some relatively complex datasets. These datasets happen to be about baseball, but they can stand in for any complex datasets you might encounter in your work!  
+
+```{r message=FALSE, warning=FALSE}
+
+# Read in data (from the web) 
+
+salaries <- read_csv("http://dgrtwo.github.io/pages/lahman/Salaries.csv")
+
+master <- read_csv("http://dgrtwo.github.io/pages/lahman/Master.csv")
+
+batting <- read_csv("http://dgrtwo.github.io/pages/lahman/Batting.csv")
+
+# Read in data from package (you can read in all of these from the Lahman package!)
+
+fielding <- tibble(Lahman::Fielding)
+
+```
+
+Let's examine these data objects in r. Again, we will get into this in more detail later!
+
+```{r}
+
+# explore the data 
+
+salaries
+# summary(salaries)    # summary statistics for all variables in data frame
+
+master
+# summary(master)
+
+batting
+# summary(batting)
+
+fielding
+# summary(fielding)
+
+```
+
+
+Before we can do much with these data, we need to "wrangle" these data into a format that can be visualized and analyzed effectively.
+
+Let's begin by merging these datasets into a single master dataset...
+
+```{r}
+
+# Do some wrangling! 
+
+ # merge the batting and salaries data frames
+merged.batting = left_join(batting, salaries, by=c("playerID", "yearID", "teamID", "lgID"))
+
+ # merge the "master" dataset (player biographical info)
+merged.bio = inner_join(merged.batting, master, by="playerID")
+
+ # summarize fielding data by year and player- prepare to merge with other data
+fielding.temp = fielding %>% 
+  group_by(playerID,yearID,teamID,lgID) %>%     # 
+  summarize(position = first(modeest::mfv(POS)),
+            games = sum(G))
+
+merged.all = inner_join(merged.bio,fielding.temp,by=c("playerID", "yearID", "teamID", "lgID"))
+merged.all = merged.all %>%    # remove all rows with no at-bats... 
+  filter( AB > 0 )
+
+# range(merged.all$AB)
+
+merged.all = merged.all %>%     # make a new column with the full name
+  mutate(name=paste(nameFirst, nameLast))
+
+```
+
+
+Now let's summarize the data by player and start to get a sense for what patterns we can detect.
+
+```{r message=FALSE, warning=FALSE}
+
+# summarize by player 
+
+summarized.batters = merged.all %>% 
+  group_by(playerID) %>% 
+  summarise(name=first(name),
+            League=first(modeest::mfv(lgID)),
+            Position=first(modeest::mfv(position)),
+            First.yr=min(yearID),
+            Total.HR=sum(HR),
+            Total.R=sum(R),
+            Total.H=sum(H),
+            AB=sum(AB),
+            BattingAverage=sum(H) / sum(AB) ) %>% 
+  arrange(desc(Total.HR))
+
+
+# visualize the data 
+
+  # visualize correlation between hits and runs
+ggplot(summarized.batters, aes(Total.H, Total.R)) + geom_point()
+
+  # visualize histogram of batting average
+ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()
+
+  # remove "outliers" and try again
+summarized.batters = summarized.batters %>% 
+  filter(AB>100&First.yr>1920)
+
+ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()
+
+ggplot(summarized.batters, aes(BattingAverage,col=League)) + geom_density()
+
+# Why does NL density plot indicate a sizable number of players with very low batting average?
+
+# make a new variable to indicate whether each player is a pitcher or position player
+
+summarized.batters = summarized.batters %>% 
+  mutate(Pitcher=ifelse(Position=="P","Pitcher","Position Player"))
+
+ggplot(summarized.batters, aes(BattingAverage)) + 
+	geom_histogram(aes(y = ..density..,group=Pitcher)) + 
+  geom_density(aes(col=Pitcher),lwd=1.5) +
+	stat_function(
+		fun = dnorm, 
+		args = with(summarized.batters, c(mean = mean(BattingAverage[Position!="P"]), 
+		                                  sd = sd(BattingAverage[Position!="P"]))),
+		col="lightblue",lwd=1.1
+		)   + 
+   stat_function(
+		fun = dnorm, 
+		args = with(summarized.batters, c(mean = mean(BattingAverage[Position=="P"]), 
+		                                  sd = sd(BattingAverage[Position=="P"]))),
+		col="pink",lwd=1.1
+		)   +
+	 labs(x="Batting Average",title = "Histogram with Normal Curve")  
+
+```
+
+This time, let's look for some time trends by summarizing by year.
+
+```{r message=FALSE, warning=FALSE}
+
+# Summmarize by time (and league) 
+
+summarized.year = merged.all %>% 
+  filter(yearID>1920) %>%
+  group_by(yearID,lgID) %>% 
+  summarise(Total.HR=sum(HR),
+            Total.R=sum(R),
+            Total.H=sum(H),
+            AB=sum(AB),
+            BattingAverage=sum(H) / sum(AB) ) %>% 
+  arrange(yearID, lgID)
+
+
+summarized.year
+
+# visualize the data 
+
+  # visualize trend in home runs
+ggplot(summarized.year, aes(yearID, Total.HR, col=lgID)) + 
+  geom_line()
+
+  # visualize trend in batting average
+ggplot(summarized.year, aes(yearID, BattingAverage, col=lgID)) + 
+  geom_line()
+
+
+```
+
+Finally let's do some more complex visualizations and run some statistics...
+
+```{r}
+
+# Summarize by time and team
+
+summarized.teams.year = merged.all %>%
+  filter(yearID>1920) %>%
+  group_by(yearID,teamID) %>% 
+  summarise(League = first(lgID),
+            Total.HR=sum(HR),
+            Total.R=sum(R),
+            Total.H=sum(H),
+            AB=sum(AB),
+            BattingAverage=sum(H) / sum(AB) ) %>% 
+  arrange(desc(Total.HR))
+
+
+summarized.teams.year
+
+# visualize the data 
+
+  # visualize correlation between home runs and year
+ggplot(summarized.teams.year, aes(yearID, Total.HR)) + 
+  geom_point(show.legend = FALSE) +
+  geom_smooth() +
+  facet_wrap('League')
+
+
+```
+
+Let's run a statistical analysis to see if the increasing home run trend is "real".
+
+```{r}
+
+ggplot(summarized.teams.year,aes(yearID,Total.HR))+
+  geom_point() +
+  geom_smooth(method="lm")
+
+model1 <- lm(Total.HR~yearID,summarized.teams.year)  # linear regression analysis
+summary(model1)
+
+```
+
+Then we can perform some diagnostic tests to make sure the data meet the assumptions of the analysis:
+
+```{r}
+
+# test key assumptions visually
+
+layout(matrix(1:4,nrow=2,byrow=T))  # set up graphics window
+plot(model1)  # run diagnostic plots for our regression
+
+```
+
+With just minor changes to the above code, we could look at many additional questions!
+
+
+

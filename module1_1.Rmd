@@ -127,266 +127,7 @@ _use comments early and often- they are tremendously valuable_.
 
 Now you know the basics of how to use R scripts! Now, let's keep working through the remainder of the script you just opened. 
 
-## A demo of R in action
-
-Before we get into the basics, let's just run through some of what R can do! Don't worry if you don't understand something- we will go over all of this in greater detail later!
-
-To get started, let's first load some R packages that help with data wrangling and exploration    
-
-Packages in the CRAN repository can be installed using the function "install.packages()":
-
-```{r}
-
-# R DEMO ----------------------  
-#     don't worry if you don't understand this just yet- this is just a 
-#     taste of where we are going!
-
-
-# Install packages 
-#   NOTE you only have to do this once. If you have not already installed the packages, you can uncomment and run the following lines:
-
-# install.packages(c("ggplot2","tidyverse"))
-
-```
-
-Alternatively, you can use the "packages" tab in Rstudio (lower right) and use the "install" button. 
-
-Once packages are installed, you can load them into your workspace (so they are useable in your R session) using the "library()" function:
-
-```{r message=FALSE, warning=FALSE}
-
-# Load packages 
-
-library(ggplot2)
-library(tidyverse)
-library(Lahman)    # for getting baseball data
-
-```
-
-Next we can load in some data. To give you a sense of what R can do, let's load in some relatively complex datasets. These datasets happen to be about baseball, but they can stand in for any complex datasets you might encounter in your work!  
-
-```{r message=FALSE, warning=FALSE}
-
-# Read in data (from the web) 
-
-salaries <- read_csv("http://dgrtwo.github.io/pages/lahman/Salaries.csv")
-
-master <- read_csv("http://dgrtwo.github.io/pages/lahman/Master.csv")
-
-batting <- read_csv("http://dgrtwo.github.io/pages/lahman/Batting.csv")
-
-# Read in data from package (you can read in all of these from the Lahman package!)
-
-fielding <- tibble(Lahman::Fielding)
-
-```
-
-Let's examine these data objects in r. Again, we will get into this in more detail later!
-
-```{r}
-
-# explore the data 
-
-salaries
-# summary(salaries)    # summary statistics for all variables in data frame
-
-master
-# summary(master)
-
-batting
-# summary(batting)
-
-fielding
-# summary(fielding)
-
-```
-
-
-Before we can do much with these data, we need to "wrangle" these data into a format that can be visualized and analyzed effectively.
-
-Let's begin by merging these datasets into a single master dataset...
-
-```{r}
-
-# Do some wrangling! 
-
- # merge the batting and salaries data frames
-merged.batting = left_join(batting, salaries, by=c("playerID", "yearID", "teamID", "lgID"))
-
- # merge the "master" dataset (player biographical info)
-merged.bio = inner_join(merged.batting, master, by="playerID")
-
- # summarize fielding data by year and player- prepare to merge with other data
-fielding.temp = fielding %>% 
-  group_by(playerID,yearID,teamID,lgID) %>%     # 
-  summarize(position = first(modeest::mfv(POS)),
-            games = sum(G))
-
-merged.all = inner_join(merged.bio,fielding.temp,by=c("playerID", "yearID", "teamID", "lgID"))
-merged.all = merged.all %>%    # remove all rows with no at-bats... 
-  filter( AB > 0 )
-
-# range(merged.all$AB)
-
-merged.all = merged.all %>%     # make a new column with the full name
-  mutate(name=paste(nameFirst, nameLast))
-
-```
-
-
-Now let's summarize the data by player and start to get a sense for what patterns we can detect.
-
-```{r message=FALSE, warning=FALSE}
-
-# summarize by player 
-
-summarized.batters = merged.all %>% 
-  group_by(playerID) %>% 
-  summarise(name=first(name),
-            League=first(modeest::mfv(lgID)),
-            Position=first(modeest::mfv(position)),
-            First.yr=min(yearID),
-            Total.HR=sum(HR),
-            Total.R=sum(R),
-            Total.H=sum(H),
-            AB=sum(AB),
-            BattingAverage=sum(H) / sum(AB) ) %>% 
-  arrange(desc(Total.HR))
-
-
-# visualize the data 
-
-  # visualize correlation between hits and runs
-ggplot(summarized.batters, aes(Total.H, Total.R)) + geom_point()
-
-  # visualize histogram of batting average
-ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()
-
-  # remove "outliers" and try again
-summarized.batters = summarized.batters %>% 
-  filter(AB>100&First.yr>1920)
-
-ggplot(summarized.batters, aes(BattingAverage)) + geom_histogram()
-
-ggplot(summarized.batters, aes(BattingAverage,col=League)) + geom_density()
-
-# Why does NL density plot indicate a sizable number of players with very low batting average?
-
-# make a new variable to indicate whether each player is a pitcher or position player
-
-summarized.batters = summarized.batters %>% 
-  mutate(Pitcher=ifelse(Position=="P","Pitcher","Position Player"))
-
-ggplot(summarized.batters, aes(BattingAverage)) + 
-	geom_histogram(aes(y = ..density..,group=Pitcher)) + 
-  geom_density(aes(col=Pitcher),lwd=1.5) +
-	stat_function(
-		fun = dnorm, 
-		args = with(summarized.batters, c(mean = mean(BattingAverage[Position!="P"]), 
-		                                  sd = sd(BattingAverage[Position!="P"]))),
-		col="lightblue",lwd=1.1
-		)   + 
-   stat_function(
-		fun = dnorm, 
-		args = with(summarized.batters, c(mean = mean(BattingAverage[Position=="P"]), 
-		                                  sd = sd(BattingAverage[Position=="P"]))),
-		col="pink",lwd=1.1
-		)   +
-	 labs(x="Batting Average",title = "Histogram with Normal Curve")  
-
-```
-
-This time, let's look for some time trends by summarizing by year.
-
-```{r message=FALSE, warning=FALSE}
-
-# Summmarize by time (and league) 
-
-summarized.year = merged.all %>% 
-  filter(yearID>1920) %>%
-  group_by(yearID,lgID) %>% 
-  summarise(Total.HR=sum(HR),
-            Total.R=sum(R),
-            Total.H=sum(H),
-            AB=sum(AB),
-            BattingAverage=sum(H) / sum(AB) ) %>% 
-  arrange(yearID, lgID)
-
-
-summarized.year
-
-# visualize the data 
-
-  # visualize trend in home runs
-ggplot(summarized.year, aes(yearID, Total.HR, col=lgID)) + 
-  geom_line()
-
-  # visualize trend in batting average
-ggplot(summarized.year, aes(yearID, BattingAverage, col=lgID)) + 
-  geom_line()
-
-
-```
-
-Finally let's do some more complex visualizations and run some statistics...
-
-```{r}
-
-# Summarize by time and team
-
-summarized.teams.year = merged.all %>%
-  filter(yearID>1920) %>%
-  group_by(yearID,teamID) %>% 
-  summarise(League = first(lgID),
-            Total.HR=sum(HR),
-            Total.R=sum(R),
-            Total.H=sum(H),
-            AB=sum(AB),
-            BattingAverage=sum(H) / sum(AB) ) %>% 
-  arrange(desc(Total.HR))
-
-
-summarized.teams.year
-
-# visualize the data 
-
-  # visualize correlation between home runs and year
-ggplot(summarized.teams.year, aes(yearID, Total.HR)) + 
-  geom_point(show.legend = FALSE) +
-  geom_smooth() +
-  facet_wrap('League')
-
-
-```
-
-Let's run a statistical analysis to see if the increasing home run trend is "real".
-
-```{r}
-
-ggplot(summarized.teams.year,aes(yearID,Total.HR))+
-  geom_point() +
-  geom_smooth(method="lm")
-
-model1 <- lm(Total.HR~yearID,summarized.teams.year)  # linear regression analysis
-summary(model1)
-
-```
-
-Then we can perform some diagnostic tests to make sure the data meet the assumptions of the analysis:
-
-```{r}
-
-# test key assumptions visually
-
-layout(matrix(1:4,nrow=2,byrow=T))  # set up graphics window
-plot(model1)  # run diagnostic plots for our regression
-
-```
-
-With just minor changes to the above code, we could look at many additional questions!
-
-
-## Back to basics: R Objects
+## R Objects
 
 Okay, let's step back and learn a little bit about R as a data-oriented programming language. 
 
@@ -421,14 +162,35 @@ Here are some examples of how functions are used. Note the parentheses!
 
 sum(1, 2, 3, 10)    # returns: 15
 
-c(1, 2, 3, 10)   # combine four numbers into a single data object (a vector!)
+c(1, 2, 3, 10)   # combine four numbers into a single data object (construct a vector!)
 
 floor(67.8)  # removes the decimal component of a number
-round(67.8)  # rounds a number
+round(67.8)  # rounds a number to the nearest integer
+```
+
+```{r eval=F}
 
 near(0.01,0,tol=0.2)  # returns TRUE if argument 1 is near to argument 2 within a certain tolerance level
+```
+
+Oops, that last one is not part of base R. It's actually part of an R package called 'dplyr'- one of the most commonly used packages in R ecosystem! A package is basically a set of functions that expand the capabilities of base R. Let's load 'dplyr', along with a whole bunch of packages known as the 'tidyverse'. We will also load a commonly used plotting package called 'ggplot2'. 
+
+```{r message=FALSE, warning=FALSE}
+
+  # load 'tidyverse'  and 'ggplot'
+library(ggplot2) 
+library(tidyverse)
+```
+
+```{r eval=F}
 
 near    # oops, forgot the parentheses!
+
+near(1,1.1)
+near(1,1.01)
+near(1,1.000000001)
+
+?near  # get some help
 
 ```
 
@@ -480,7 +242,7 @@ Scalars can store information of any type [^typeof]. In the example above, `scal
 
 #### Vectors
 
-Vectors can combine multiple scalars in a single data object. In fact, a scalar in R is really just a vector of length 1.
+Vectors can combine multiple scalars in a single data object. 
 
 First let's create some vectors. In the code below we use a function called `c()`. You can think of it as the 'combine' function- it takes several smaller data objects and combines them together into a single object. 
 
@@ -602,7 +364,7 @@ df1$col2     # extract the second column by name (alternatively, df1[["col2"]])
 
 Now we have a data frame with three observation units and two measurements (variables).
 
-A **tibble** is the same thing as a data frame, just with a few tweaks to make it work better in the tidyverse. We will primarily work with tibble data frames in this workshop. For our purposes right now, tibbles and data frames are the same thing.
+A **tibble** is the same thing as a data frame, just with a few tweaks to make it work better in the tidyverse. We will work with both tibbles and data frames in this workshop. For our purposes, tibbles and data frames are the same thing.
 
 ## Making up data!
 
@@ -719,7 +481,6 @@ c(3,6)
 
 ```
 
-
 2. Create a new matrix called 'mymat2' that includes all the data from columns 3 to 5 of data frame mydf. HINT: use the "as.matrix()" function to coerce a data frame into a matrix. 
 
 Your result should look like this:
@@ -746,8 +507,6 @@ mylist
 ```
 
 4. Extract the first and third observation from the 2nd column of the data frame in 'mylist' (the list created in challenge 6 above). 
-
-Your result should look like this:
 
 5. (optional- extra challenging!) Create a data frame (or tibble) named 'df_spatial' that contains 25 spatial locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
 
@@ -840,6 +599,12 @@ abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
 
 ```
 
+
+
+```{r echo=FALSE,results=FALSE, eval=FALSE}
+
+
+```
 
 
 [--go to next submodule--](module1_2.html)
