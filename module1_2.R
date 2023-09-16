@@ -34,7 +34,7 @@ data.txt.df <- read_delim("data.txt")
 data.df <- read_csv("data.csv")
 names(data.df) 
 
-# Remove redundant objects from memory
+# Remove redundant objects from your workspace
 rm(data.txt.df)
 
 
@@ -208,7 +208,15 @@ unique(turtles.df$sex)  # note the two ways of representing females...
 
 turtles.df$sex[turtles.df$sex=="fem"] <- "female"  # correct the error
 
-# or alternatively using more tidyverse-y syntax
+# or alternatively
+turtles.df = turtles.df %>% 
+  mutate(
+    sex= fct_collapse(sex,
+             female=c("fem","female"),
+             male=c("male")))
+  
+
+# or alternatively
 turtles.df = turtles.df %>% 
   mutate(sex = replace(sex,sex=="fem","female"))
 
@@ -234,7 +242,7 @@ turtles.df = turtles.df %>%
 
 turtles.df = turtles.df %>% 
   mutate(across(c("sex","carapace_length","head_width","weight"),
-                ~replace(.x,tag_number%in%bad.tags,NA)))
+                ~replace(.,tag_number%in%bad.tags,NA)))
 
 # or use the following non-tidyverse syntax... which still seems easier to me!
 
@@ -249,7 +257,7 @@ turtles.df = turtles.df %>%
     weight < 3 ~ "juvenile",
     weight > 6 ~ "adult",
     is.na(weight) ~ NA_character_,
-    TRUE  ~ "subadult"
+    .default = "subadult"
   ))
 
 turtles.df$size.class

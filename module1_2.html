@@ -14,7 +14,7 @@
 
 <title>Submodule 1.2</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -145,11 +145,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -178,8 +182,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -187,16 +191,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -318,7 +315,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2022</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2023</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -426,7 +423,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Submodule 1.2</h1>
 <h4 class="author">Getting started: managing data</h4>
-<h4 class="date">Fall 2022</h4>
+<h4 class="date">Fall 2023</h4>
 
 </div>
 
@@ -546,7 +543,7 @@ data.txt.df &lt;- read_delim(&quot;data.txt&quot;)
 data.df &lt;- read_csv(&quot;data.csv&quot;)
 names(data.df) 
 
-# Remove redundant objects from memory
+# Remove redundant objects from your workspace
 rm(data.txt.df)</code></pre>
 <div id="using-rs-built-in-data" class="section level3">
 <h3>Using R’s built in data</h3>
@@ -617,8 +614,8 @@ str(mtcars)</code></pre>
 <pre class="r"><code>names(diamonds)</code></pre>
 <pre><code>##  [1] &quot;carat&quot;   &quot;cut&quot;     &quot;color&quot;   &quot;clarity&quot; &quot;depth&quot;   &quot;table&quot;   &quot;price&quot;  
 ##  [8] &quot;x&quot;       &quot;y&quot;       &quot;z&quot;</code></pre>
-<p>And we can use the “summary()” function to get a brief summary of
-what’s in our data frame:</p>
+<p>And we can use the “summary()” function to get a brief summary of the
+contents of each column in our data frame:</p>
 <pre class="r"><code>summary(data.df)</code></pre>
 <pre><code>##    Country              Import         Export        Product         
 ##  Length:20          Min.   :35.0   Min.   : 0.00   Length:20         
@@ -911,7 +908,15 @@ the turtle dataset.</p>
 <pre><code>## [1] &quot;male&quot;   &quot;female&quot; NA       &quot;fem&quot;</code></pre>
 <pre class="r"><code>turtles.df$sex[turtles.df$sex==&quot;fem&quot;] &lt;- &quot;female&quot;  # correct the error
 
-# or alternatively using more tidyverse-y syntax
+# or alternatively
+turtles.df = turtles.df %&gt;% 
+  mutate(
+    sex= fct_collapse(sex,
+             female=c(&quot;fem&quot;,&quot;female&quot;),
+             male=c(&quot;male&quot;)))
+  
+
+# or alternatively
 turtles.df = turtles.df %&gt;% 
   mutate(sex = replace(sex,sex==&quot;fem&quot;,&quot;female&quot;))
 
@@ -920,7 +925,7 @@ turtles.df %&gt;%          # summarize weight by sex (check that it&#39;s fixed)
   summarize(meanwt = mean(weight))</code></pre>
 <pre><code>## # A tibble: 3 × 2
 ##   sex    meanwt
-##   &lt;chr&gt;   &lt;dbl&gt;
+##   &lt;fct&gt;   &lt;dbl&gt;
 ## 1 female   9.55
 ## 2 male     7.29
 ## 3 &lt;NA&gt;     2.35</code></pre>
@@ -946,7 +951,7 @@ turtles.df = turtles.df %&gt;%
 
 turtles.df = turtles.df %&gt;% 
   mutate(across(c(&quot;sex&quot;,&quot;carapace_length&quot;,&quot;head_width&quot;,&quot;weight&quot;),
-                ~replace(.x,tag_number%in%bad.tags,NA)))
+                ~replace(.,tag_number%in%bad.tags,NA)))
 
 # or use the following non-tidyverse syntax... which still seems easier to me!
 
@@ -955,7 +960,7 @@ turtles.df[turtles.df$tag_number%in%bad.tags,c(&quot;sex&quot;,&quot;carapace_le
 turtles.df</code></pre>
 <pre><code>## # A tibble: 21 × 5
 ##    tag_number sex    carapace_length head_width weight
-##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
 ##  1         10 male              41         7.15   7.6 
 ##  2         11 female            46.4       8.18  11   
 ##  3          2 &lt;NA&gt;              24.3       4.42   1.65
@@ -966,7 +971,7 @@ turtles.df</code></pre>
 ##  8          5 female            45         8.05  10.9 
 ##  9         12 female            44         7.55   8.9 
 ## 10         13 &lt;NA&gt;              NA        NA     NA   
-## # … with 11 more rows</code></pre>
+## # ℹ 11 more rows</code></pre>
 <pre class="r"><code> # make a new variable &quot;size.class&quot; based on the &quot;weight&quot; variable
 
 turtles.df = turtles.df %&gt;% 
@@ -974,7 +979,7 @@ turtles.df = turtles.df %&gt;%
     weight &lt; 3 ~ &quot;juvenile&quot;,
     weight &gt; 6 ~ &quot;adult&quot;,
     is.na(weight) ~ NA_character_,
-    TRUE  ~ &quot;subadult&quot;
+    .default = &quot;subadult&quot;
   ))
 
 turtles.df$size.class</code></pre>
