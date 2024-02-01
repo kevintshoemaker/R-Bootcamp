@@ -315,7 +315,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2023</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Spring 2024</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -426,12 +426,11 @@ div.tocify {
 
 <h1 class="title toc-ignore">Submodule 1.1</h1>
 <h4 class="author">Getting started</h4>
-<h4 class="date">Fall 2023</h4>
+<h4 class="date">Spring 2024</h4>
 
 </div>
 
 
-<p>Welcome to the 2023 UNR R workshop- let’s get started!</p>
 <div id="get-materials-for-this-module" class="section level2">
 <h2>Get materials for this module</h2>
 <p>You will be introduced to a lot of new material very quickly in this
@@ -529,9 +528,9 @@ shortly.</p></li>
 (Windows shortcut: Alt + -)(Mac: replace Alt with Option), which looks
 like a left arrow (<code>&lt;-</code>). Type the following statement
 directly into the console:</p>
-<pre class="r"><code>myname &lt;- &quot;batman&quot;  # or use your real name.</code></pre>
+<pre class="r"><code>myname &lt;- &quot;batman&quot;  # or use your real name. Or maybe that IS your real name...</code></pre>
 <p>Then hit “Enter”. What does R return?</p>
-<p>NOTHING!</p>
+<p>NOTHING! At least, nothing directly shows up in the console.</p>
 <p>BUT…. check the <strong>Environment</strong> window (top right of
 RStudio interface- list of all the objects you’ve defined in this
 session). You should see that you now have a new <strong>object</strong>
@@ -541,12 +540,12 @@ in your environment, called “myname”, and this object contains a single
 happens?</p>
 <p>If you enter the name of an object at the command line, R
 automatically prints the value of the object!</p>
-<p>NOTE: RStudio has a useful autofill feature, which can save you lots
-of time and headaches. After you’ve typed the first couple letters
-(e.g., “my”), RStudio will suggest “myname” (or use the “tab” key to
-trigger RStudio to give you autofill options) and you can just scroll to
-the right object/function and hit “Enter”! The autofill feature, unlike
-R, is not case sensitive!</p>
+<p>NOTE: RStudio has a useful <em>autofill</em> feature, which can save
+you lots of time and headaches. After you’ve typed the first couple
+letters (e.g., “my”), RStudio will suggest “myname” (or use the “tab”
+key to trigger RStudio to give you autofill options) and you can just
+scroll to the right object/function and hit “Enter”! The autofill
+feature, unlike R, is not case sensitive!</p>
 </div>
 </div>
 <div id="graduating-to-r-scripts" class="section level2">
@@ -554,9 +553,9 @@ R, is not case sensitive!</p>
 <p>You will quickly realize that although the command-line R console is
 nice to use for some things (e.g., quick things that don’t need to be
 saved), there is a much better way to develop R code. That is by storing
-a sequential set of commands as a text file. This text file (the
-standard is to use the “.R” extension) is called an <strong>R
-script</strong>.</p>
+a sequential set of commands as a text file.</p>
+<p>This text file (the standard is to use the “.R” extension) is called
+an <strong>R script</strong>.</p>
 <div id="make-a-new-script" class="section level3">
 <h3>Make a new script</h3>
 <p>If you haven’t done it already, create a new R script by clicking on
@@ -641,6 +640,10 @@ ecosystem! A package is basically a set of functions that expand the
 capabilities of base R. Let’s load ‘dplyr’, along with a whole bunch of
 packages known as the ‘tidyverse’. We will also load a commonly used
 plotting package called ‘ggplot2’.</p>
+<p>Using packages involved 2 steps:<br />
+1. Install the package (you only need to do this once)<br />
+2. Load the package (use the ‘library()’ function (you need to do this
+every time you start a new R session).</p>
 <pre class="r"><code>  # load &#39;tidyverse&#39;  and &#39;ggplot&#39;
 library(ggplot2) 
 library(tidyverse)</code></pre>
@@ -650,7 +653,7 @@ near(1,1.1)
 near(1,1.01)
 near(1,1.000000001)
 
-?near  # get some help</code></pre>
+?near  # get some help on this function</code></pre>
 <p>It’s easy to get some help if you forget how a function works:</p>
 <pre class="r"><code>help(round)  # a function for getting help with functions!!</code></pre>
 <pre><code>## starting httpd help server ... done</code></pre>
@@ -671,8 +674,15 @@ functions) in the “Programming” submodule.</p>
 </li>
 <li>“factor” (categorical)</li>
 </ul>
-<p>Data of each of these types can be represented as scalars, vectors,
-matrices, lists, and data frames</p>
+<p>Data of each of these types can be stored in several different types
+of objects. We will go through them in this order:</p>
+<ul>
+<li>scalars</li>
+<li>vectors</li>
+<li>matrices</li>
+<li>lists</li>
+<li>data frames</li>
+</ul>
 </div>
 <div id="scalars" class="section level4">
 <h4>Scalars</h4>
@@ -714,7 +724,9 @@ d3 &lt;- d1+d2           # elementwise addition
 length(d1)            # number of elements in a vector
 sum(d3)               # sum of all elements in a vector
 
-d2[2]                 # extract the second element in the vector</code></pre>
+d2[2]                 # extract the second element in the vector
+
+d2[2] &lt;- 5            # change the second element in the vector</code></pre>
 <p>NOTE: strictly speaking, there are no true scalars in R- scalars are
 just vectors with 1 element!</p>
 </div>
@@ -761,7 +773,11 @@ mymat[3,2]    # extract the element in the 3rd row, 2nd column</code></pre>
 <pre><code>## [1] 1 2 3</code></pre>
 <pre class="r"><code># X[a,b]       access row a, column b element of matrix/data frame X
 # X[,b]        access all rows of column b of matrix/data frame X
-# X[a,]        access row a of matrix/data frame X</code></pre>
+# X[a,]        access row a of matrix/data frame X
+
+mymat[2,1] &lt;- 10    # re-assign a new value to an element in a matrix
+
+mymat[2,]  &lt;- 5   # change all elements in a row!</code></pre>
 </div>
 <div id="lists" class="section level4">
 <h4>Lists</h4>
@@ -793,8 +809,9 @@ mylist</code></pre>
 
 mylist[[2]]    # extract the second list element</code></pre>
 <pre><code>## [1] &quot;foo&quot; &quot;bar&quot;</code></pre>
-<pre class="r"><code>mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list !   </code></pre>
+<pre class="r"><code>mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list ! </code></pre>
 <pre><code>## [1] 3</code></pre>
+<pre class="r"><code>mylist[[3]][1,2]  &lt;- 10  # re-assign a new value to an element of a matrix within a list!</code></pre>
 <div id="data-frames-and-tibbles" class="section level5">
 <h5>Data frames and tibbles</h5>
 <p><strong>Data frame</strong> objects are the basic data storage object
@@ -823,6 +840,9 @@ df1</code></pre>
 <pre><code>## [1] &quot;A&quot;</code></pre>
 <pre class="r"><code>df1$col2     # extract the second column by name (alternatively, df1[[&quot;col2&quot;]])</code></pre>
 <pre><code>## [1] &quot;A&quot; &quot;A&quot; &quot;B&quot;</code></pre>
+<pre class="r"><code>df1$col2[2]  &lt;- 5   # reassign an element of a column of the data frame
+
+df1$col2 &lt;- 5   # reassign a whole column!</code></pre>
 <p>Now we have a data frame with three observation units and two
 measurements (variables).</p>
 <p>A <strong>tibble</strong> is the same thing as a data frame, just

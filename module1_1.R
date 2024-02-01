@@ -5,7 +5,7 @@
 #  Getting started with R: the basics  -----------------------
 
 
-myname <- "batman"  # or use your real name.
+myname <- "batman"  # or use your real name. Or maybe that IS your real name...
 
 
 # BACK TO BASICS -------------------
@@ -31,7 +31,7 @@ near(1,1.1)
 near(1,1.01)
 near(1,1.000000001)
 
-?near  # get some help
+?near  # get some help on this function
 
 
 help(round)  # a function for getting help with functions!!
@@ -64,6 +64,8 @@ sum(d3)               # sum of all elements in a vector
 
 d2[2]                 # extract the second element in the vector
 
+d2[2] <- 5            # change the second element in the vector
+
 
 # MATRICES 
 
@@ -90,6 +92,10 @@ mymat[,1]     # extract the entire first column
 # X[,b]        access all rows of column b of matrix/data frame X
 # X[a,]        access row a of matrix/data frame X
 
+mymat[2,1] <- 10    # re-assign a new value to an element in a matrix
+
+mymat[2,]  <- 5   # change all elements in a row!
+ 
 
 # LISTS 
 
@@ -103,7 +109,9 @@ mylist
 
 mylist[[2]]    # extract the second list element
 
-mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list !   
+mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list ! 
+
+mylist[[3]][1,2]  <- 10  # re-assign a new value to an element of a matrix within a list!
 
 
 # DATA FRAMES 
@@ -113,6 +121,10 @@ df1
 
 df1[1,2]     # extract the first element in the second column
 df1$col2     # extract the second column by name (alternatively, df1[["col2"]])
+
+df1$col2[2]  <- 5   # reassign an element of a column of the data frame
+
+df1$col2 <- 5   # reassign a whole column!
 
 
 # MAKING UP DATA!  ----------------------------------

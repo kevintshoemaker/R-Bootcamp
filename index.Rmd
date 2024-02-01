@@ -1,7 +1,7 @@
 ---
 title: "Welcome to the 2023 R workshop!"
 author: "A hopefully more-or-less painless introduction to R"
-date: "UNR, Fall 2023"
+date: "Spring 2024"
 output:
   html_document:
     theme: journal
@@ -13,22 +13,13 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
- * **When?** Saturday Sep 16, 2023
- * **Where?** UNR (WRB 2030)  
- * **What to prepare?** Everyone should bring their own laptop, with R and RStudio installed prior to starting the workshop (see [links](Links.html)). 
- 
+
 ## Facilitator
 
 [Kevin Shoemaker](https://www.unr.edu/nres/people/shoemaker-kevin)		 
 Department of Natural Resources and Environmental Science       
 Office: Fleischmann Agriculture 220E					
 Email: [kevinshoemaker@unr.edu](kevinshoemaker@unr.edu)
-
-[Carlos Ramirez-Reyes](https://library.unr.edu/ramirez-reyes-carlos)		 
-UNR Data Services Coordinator       
-DeLaMare Science and Engineering Library					
-Email: [cramirezreyes@unr.edu](cramirezreyes@unr.edu)
-
 
 ## Contributors
 
@@ -68,14 +59,19 @@ Email: knussear(at)unr(dot)edu
 [Paul Hurtado](http://pauljhurtado.com/)  
 Department of Mathematics and Statistics     
 Office: Davidson Math and Science Center 220  
-Email: [phurtado@unr.edu](phurtado@unr.edu)    
+Email: [phurtado@unr.edu](phurtado@unr.edu)  
+
+[Carlos Ramirez-Reyes](https://library.unr.edu/ramirez-reyes-carlos)		 
+UNR Data Services Coordinator       
+DeLaMare Science and Engineering Library					
+Email: [cramirezreyes@unr.edu](cramirezreyes@unr.edu)
 
 
 ## About
 
-The statistical programming software 'R' is one of the fundamental tools for modern data exploration and analysis, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of high-quality figures) will make upcoming classes, research, and graduate school less intimidating and more productive (and fun!).
+The statistical programming software 'R' is one of the most widely used tools for data exploration and analysis, and a basic ability to use R (for data processing, statistical analysis, simulation modeling and production of high-quality figures) will make upcoming research projects less intimidating and more productive (and fun!).
 
-This workshop consists of a series of short(ish) submodules, each of which covers a particular aspect of working with data (e.g., read and writing data to/from files, making exploratory plots). Each submodule will consist of a set of lectures and demos (worked examples), followed by hands-on activities. The main goal of this workshop will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. 
+This workshop consists of a series of short(ish) modules, each of which covers a particular aspect of working with data (e.g., read and writing data to/from files, making exploratory plots). Each module will consist of a set of lectures and demos (worked examples), followed by hands-on activities. The main goal of this workshop will be to ensure participants have enough proficiency and confidence with data operations and programming in R to engage in productive, self-directed learning and problem-solving. 
 
 The workshop is primarily intended for students with little prior experience with R. The first modules will focus on R syntax, data management (loading data, writing to file), data visualizations, and data "wrangling". The second set of modules will focus on R packages (loading, getting help), programming operations (loops, functions, debugging etc.), statistics, and spatial analyses.   
 
@@ -87,7 +83,6 @@ Before we dig in and get started with the modules, you should have installed R a
 
 [Download and install R](https://cran.r-project.org/)          
 [Download and install RStudio](https://www.rstudio.com/products/rstudio/download/)    (use free version!)         
-
 
 Okay, now we're ready to go!
 

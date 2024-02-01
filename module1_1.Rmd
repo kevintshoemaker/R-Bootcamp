@@ -1,7 +1,7 @@
 ---
 title: "Submodule 1.1"
 author: "Getting started"
-date: "Fall 2023"
+date: "Spring 2024"
 output: 
   html_document: 
     theme: journal
@@ -22,7 +22,6 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
-Welcome to the 2023 UNR R workshop- let's get started! 
 
 ## Get materials for this module
 
@@ -76,13 +75,13 @@ Objects are defined using R's **assignment operator** (Windows shortcut: Alt + -
 
 ```{r results=F}
 
-myname <- "batman"  # or use your real name.
+myname <- "batman"  # or use your real name. Or maybe that IS your real name...
 
 ```
 
 Then hit "Enter". What does R return? 
 
-NOTHING!
+NOTHING! At least, nothing directly shows up in the console.
 
 BUT.... check the **Environment** window (top right of RStudio interface- list of all the objects you've defined in this session). You should see that you now have a new **object** in your environment, called "myname", and this object contains a single **text string**. 
       
@@ -90,11 +89,13 @@ Now type `myname` into the R console and hit "Enter". What happens?
 
 If you enter the name of an object at the command line, R automatically prints the value of the object!
 
-NOTE: RStudio has a useful autofill feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" (or use the "tab" key to trigger RStudio to give you autofill options) and you can just scroll to the right object/function and hit "Enter"! The autofill feature, unlike R, is not case sensitive!  
+NOTE: RStudio has a useful *autofill* feature, which can save you lots of time and headaches. After you've typed the first couple letters (e.g., "my"), RStudio will suggest "myname" (or use the "tab" key to trigger RStudio to give you autofill options) and you can just scroll to the right object/function and hit "Enter"! The autofill feature, unlike R, is not case sensitive!  
 
 ## Graduating to R Scripts
 
-You will quickly realize that although the command-line R console is nice to use for some things (e.g., quick things that don't need to be saved), there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. This text file (the standard is to use the ".R" extension) is called an **R script**. 
+You will quickly realize that although the command-line R console is nice to use for some things (e.g., quick things that don't need to be saved), there is a much better way to develop R code. That is by storing a sequential set of commands as a text file. 
+
+This text file (the standard is to use the ".R" extension) is called an **R script**. 
 
 ### Make a new script
 
@@ -175,6 +176,10 @@ near(0.01,0,tol=0.2)  # returns TRUE if argument 1 is near to argument 2 within 
 
 Oops, that last one is not part of base R. It's actually part of an R package called 'dplyr'- one of the most commonly used packages in R ecosystem! A package is basically a set of functions that expand the capabilities of base R. Let's load 'dplyr', along with a whole bunch of packages known as the 'tidyverse'. We will also load a commonly used plotting package called 'ggplot2'. 
 
+Using packages involved 2 steps:     
+1. Install the package (you only need to do this once)    
+2. Load the package (use the 'library()' function (you need to do this every time you start a new R session). 
+
 ```{r message=FALSE, warning=FALSE}
 
   # load 'tidyverse'  and 'ggplot'
@@ -190,7 +195,7 @@ near(1,1.1)
 near(1,1.01)
 near(1,1.000000001)
 
-?near  # get some help
+?near  # get some help on this function
 
 ```
 
@@ -216,7 +221,13 @@ The basic data types in R are:
 + "logical" (TRUE/FALSE)    
 + "factor" (categorical) 
 
-Data of each of these types can be represented as scalars, vectors, matrices, lists, and data frames
+Data of each of these types can be stored in several different types of objects. We will go through them in this order:
+
++ scalars
++ vectors
++ matrices
++ lists
++ data frames
 
 #### Scalars
 
@@ -270,6 +281,8 @@ sum(d3)               # sum of all elements in a vector
 
 d2[2]                 # extract the second element in the vector
 
+d2[2] <- 5            # change the second element in the vector
+
 ```
 
 NOTE: strictly speaking, there are no true scalars in R- scalars are just vectors with 1 element!   
@@ -313,6 +326,10 @@ mymat[,1]     # extract the entire first column
 # X[,b]        access all rows of column b of matrix/data frame X
 # X[a,]        access row a of matrix/data frame X
 
+mymat[2,1] <- 10    # re-assign a new value to an element in a matrix
+
+mymat[2,]  <- 5   # change all elements in a row!
+ 
 ```
 
 
@@ -336,7 +353,9 @@ mylist
 
 mylist[[2]]    # extract the second list element
 
-mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list !   
+mylist[[3]][1,2]   # extract the first row, second column from the matrix that is embedded as the third element in this list ! 
+
+mylist[[3]][1,2]  <- 10  # re-assign a new value to an element of a matrix within a list!
 
 ```
 
@@ -359,6 +378,10 @@ df1
 
 df1[1,2]     # extract the first element in the second column
 df1$col2     # extract the second column by name (alternatively, df1[["col2"]])
+
+df1$col2[2]  <- 5   # reassign an element of a column of the data frame
+
+df1$col2 <- 5   # reassign a whole column!
 
 ```
 

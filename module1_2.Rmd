@@ -1,7 +1,7 @@
 ---
 title: "Submodule 1.2"
 author: "Getting started: managing data"
-date: "Fall 2023"
+date: "Spring 2024"
 output: 
   html_document: 
     theme: journal
@@ -37,7 +37,7 @@ library(zoo)
 
 ## Load script for submodule #1.2
 
-1. Click [here](module1_2.R) to download the script! Save the script to the project directory you set up in the previous submodule.   
+1. Click [here](module1_2.R) to download the script! Save the script to the project directory you set up in the previous module.   
 
 2. Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top to load your script.    
 
