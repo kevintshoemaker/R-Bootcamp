@@ -1,12 +1,5 @@
-carData
-car
-rgl
-modeest
-remotes
-deSolve
-ggplot2
-gg3D
 tidyverse
+ggplot2
 tibble
 tidyr
 readr
@@ -14,4 +7,11 @@ purrr
 dplyr
 stringr
 forcats
-plotly
+lubridate
+zoo
+carData
+car
+rgl
+modeest
+remotes
+deSolve

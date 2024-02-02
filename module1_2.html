@@ -315,7 +315,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2023</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Spring 2024</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -426,7 +426,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Submodule 1.2</h1>
 <h4 class="author">Getting started: managing data</h4>
-<h4 class="date">Fall 2023</h4>
+<h4 class="date">Spring 2024</h4>
 
 </div>
 
@@ -436,7 +436,7 @@ div.tocify {
 <ol style="list-style-type: decimal">
 <li><p>Click <a href="module1_2.R">here</a> to download the script! Save
 the script to the project directory you set up in the previous
-submodule.</p></li>
+module.</p></li>
 <li><p>Load your script in RStudio. To do this, open RStudio and click
 on the folder icon in the toolbar at the top to load your
 script.</p></li>
@@ -514,12 +514,16 @@ delimited etc.), you can specify which format (very general)<br />
 </ul></li>
 <li>read.csv or read_csv
 <ul>
-<li>fields are separated by a comma (this is still probably the most
-common way to read in data)</li>
+<li>fields are separated by a comma (this is the most common way to read
+in data)</li>
 </ul></li>
 </ul>
 <p>Before we can read data in, we need to put some data files in our
 working directory!</p>
+<p>NOTE: you can also read data from Excel (.xlsx files) directly using
+the <a
+href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-import.pdf">‘readxl’
+package</a>.</p>
 <ol style="list-style-type: decimal">
 <li><p>Download the following data files and store them in your working
 directory (i.e., the folder where your scripts are already!)</p>
@@ -537,11 +541,6 @@ inside.</p>
 <p>Now let’s read them into R!!</p>
 <pre class="r"><code>#  Import/Export data files into R----------------------
 
-# ?read_delim    # some useful functions for reading in data
-
-# read_delim to import textfile (if no delim specified, it will try to guess!)
-data.txt.df &lt;- read_delim(&quot;data.txt&quot;)  
-
 # read_csv to import textfile with columns separated by commas
 data.df &lt;- read_csv(&quot;data.csv&quot;)
 names(data.df) 
@@ -552,11 +551,11 @@ rm(data.txt.df)</code></pre>
 <h3>Using R’s built in data</h3>
 <p>R has many useful built-in data sets that come pre-loaded. You can
 explore these datasets with the following command:</p>
-<pre class="r"><code># Built-in data files
+<pre class="r"><code># Built-in data files  -----------------------
 data()   </code></pre>
 <p>Let’s read in one of these datasets!</p>
-<pre class="r"><code># read built-in data on car road tests performed by Motor Trend
-data(mtcars)   
+<pre class="r"><code>data(mtcars)   # read built-in data on car road tests performed by Motor Trend
+
 head(mtcars)    # inspect the first few lines
 
 # ?mtcars        # learn more about this built-in data set</code></pre>
@@ -576,15 +575,14 @@ ggplot2 comes with the “diamonds” package:</p>
 ##  8  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
 ##  9  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
 ## 10  0.23 Very Good H     VS1      59.4    61   338  4     4.05  2.39
-## # … with 53,930 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # ℹ 53,930 more rows</code></pre>
 </div>
 </div>
 <div id="basic-data-checking" class="section level2">
 <h2>Basic data checking</h2>
 <p>To learn more about the ‘internals’ of any data object in R, we can
 use the “str()” (structure) function:</p>
-<pre class="r"><code># Check/explore data objects
+<pre class="r"><code># Check/explore data objects --------------------------
 
 # ?str: displays the internal structure of the data object
 str(mtcars)</code></pre>
@@ -601,7 +599,7 @@ str(mtcars)</code></pre>
 ##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
 ##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
 <pre class="r"><code>str(data.df)</code></pre>
-<pre><code>## spec_tbl_df [20 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+<pre><code>## spc_tbl_ [20 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
 ##  $ Country: chr [1:20] &quot;Bolivia&quot; &quot;Brazil&quot; &quot;Chile&quot; &quot;Colombia&quot; ...
 ##  $ Import : num [1:20] 46 74 89 77 84 89 68 70 60 55 ...
 ##  $ Export : num [1:20] 0 0 16 16 21 15 14 6 13 9 ...
@@ -641,11 +639,14 @@ basics!</p>
 <pre class="r"><code># Exporting data (save to hard drive as data file)
 
 # ?write_csv: writes a CSV file to the working directory
+
+newdf &lt;- data.df[,c(&quot;Country&quot;,&quot;Product&quot;)]
    
-write_csv(data.df[,c(&quot;Country&quot;,&quot;Product&quot;)], file=&quot;data_export.csv&quot;)   # export a subset of the data we just read in.</code></pre>
+write_csv(newdf, file=&quot;data_export.csv&quot;)   # export a subset of the data we just read in.</code></pre>
 </div>
-<div id="saving-and-loading-data" class="section level3">
-<h3>Saving (and loading) data</h3>
+<div id="saving-and-loading-r-data-objects-binary"
+class="section level3">
+<h3>Saving (and loading) R data objects (binary)</h3>
 <p>The data loaded in your <strong>R environment</strong> are stored in
 your computer’s memory as <strong>binary</strong> representations that
 are efficient but not human-readable (this is how computers store and
@@ -665,13 +666,14 @@ load data we can use the “readRDS()” and “load()” functions:</p>
 a &lt;- 1
 b &lt;- data.df$Product
 
-saveRDS(b, &quot;Myobject1.rds&quot;)
-save(a,b,file=&quot;Myworkspace.RData&quot;)
+saveRDS(b, &quot;Myobject1.rds&quot;)    # use saveRDS to save individual R objects
+save(a,b,file=&quot;Myobjects1.RData&quot;)    # use &#39;save&#39; to save sets of objects
+save.image(&quot;Myworkspace.RData&quot;)      # use &#39;save.image&#39; to save your entire workspace
 
 rm(a,b)   # remove these objects from the environment
 
 new_b &lt;- readRDS(&quot;Myobject1.rds&quot;)
-load(&quot;Module1_2.RData&quot;)   # load these objects back in with the same names!</code></pre>
+load(&quot;Myworkspace.RData&quot;)   # load these objects back in with the same names!</code></pre>
 </div>
 <div id="clearing-the-environment" class="section level3">
 <h3>Clearing the environment</h3>
@@ -705,11 +707,14 @@ sign (“==”), which is a Boolean operator:</p>
 # &lt;- assignment operator
 # =  alternative assignment operator
 
-a &lt;- 3     # assign the value &quot;3&quot; to the object named &quot;a&quot;
-a = 3      # assign the value &quot;3&quot; to the object named &quot;a&quot; (alternative)
+a &lt;- 3     # assign the value 3 to the object named &quot;a&quot;
+b = 5      # assign the value 5 to the object named &quot;b&quot; 
 a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quot;3&quot;? </code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>#  Boolean operations
+<pre class="r"><code>a == b</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code># what happens if you accidentally typed &#39;a = b&#39;?</code></pre>
+<pre><code>#  Boolean operations
 
 # Basic operators
 
@@ -719,31 +724,35 @@ a == 3     # answer the question: &quot;does the object &quot;a&quot; equal &quo
 # &gt;=   greater than or equal to
 # ==   equal to
 # !=   not equal to
-# %in% matches one of a specified group of possibilities
+# %in% belongs to a set
 
 # Combining multiple conditions
 
 # &amp;    must meet both conditions (AND operator)
 # |    must meet one of two conditions (OR operator)
+</code></pre>
+<pre class="r"><code># explore Boolean operators -----------------------
 
-Y &lt;- 4
+
+Y &lt;- 4   # first define a couple new objects
 Z &lt;- 6
 
-Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
-Y &lt; Z
+Y == Z  # is Y equal to Z?  (T/F)
+Y &lt; Z   # is Y less than Z?
 
 !(Y &lt; Z)  # the exclamation point reverses any boolean object (read &quot;NOT&quot;)
 
-# Wrong!
-data.df[,2]=74     # sets entire second column equal to 74! OOPS WE GOOFED UP!!!
+data.df[,2]=74     # (for each element in the second column of data.df) is it equal to 74? 
+
+# OOPS! sets entire second column equal to 74! OOPS WE GOOFED UP!!!
 
 data.df &lt;- read.csv(&quot;data.csv&quot;)  ## correct our mistake in the previous line (revert to the original data)!
 
-# Right
+# Let&#39;s do it right this time
 data.df[,2]==74    # tests each element of column to see whether it is equal to 74
 
-data.df[,2]&lt;74|data.df[,2]==91   # use the logical OR operator</code></pre>
-<p>This image from Wickham and Grolemund’s excellent <a
+data.df[,2]&lt;74|data.df[,2]==91   # combine two questions using the logical OR operator</code></pre>
+<p>This image from Wickham and Grolemund’s <a
 href="https://r4ds.had.co.nz/index.html">R for Data Science</a> book can
 help conceptualize the combination operators:</p>
 <p><img src="transform-logical.png" style="width:50.0%" /></p>
@@ -751,8 +760,8 @@ help conceptualize the combination operators:</p>
 <div id="data-subsetting-using-boolean-logic" class="section level3">
 <h3>Data subsetting using boolean logic</h3>
 <p>Boolean operations are great for subsetting data - that is, we can
-select only those rows/observations that meet a certain condition (where
-[some condition] is TRUE).</p>
+select only those rows/observations that meet a certain condition (e.g.,
+where [some condition] is TRUE).</p>
 <pre class="r"><code>#  Subsetting data 
 
 data.df[data.df[,&quot;Import&quot;]&lt;74,]    # select those rows of data for which second column is less than 74</code></pre>
@@ -768,10 +777,10 @@ data.df[data.df[,&quot;Import&quot;]&lt;74,]    # select those rows of data for 
 ## 7 Honduras         51      7 A      
 ## 8 Nicaragua        68      0 A      
 ## 9 Peru             73      0 N</code></pre>
-<pre class="r"><code>#  or alternatively, using tidyverse syntax:
+<pre class="r"><code>#  or alternatively, using tidyverse syntax (and the pipe operator):
 
 data.df %&gt;% 
-  filter(Import&lt;74)</code></pre>
+  filter(Import&lt;74)    # use &quot;filter&quot; verb from &#39;dplyr&#39; package</code></pre>
 <pre><code>## # A tibble: 9 × 4
 ##   Country      Import Export Product
 ##   &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
@@ -787,7 +796,7 @@ data.df %&gt;%
 <pre class="r"><code>sub.countries&lt;-c(&quot;Chile&quot;,&quot;Colombia&quot;,&quot;Mexico&quot;)    # create vector of character strings
 
 data.df %&gt;% 
-  filter(Country %in% sub.countries)   # subset just those rows that match the list of countries</code></pre>
+  filter(Country %in% sub.countries)   # subset the dataset for only that subset of countries we&#39;re interested in</code></pre>
 <pre><code>## # A tibble: 3 × 4
 ##   Country  Import Export Product
 ##   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  
@@ -795,55 +804,9 @@ data.df %&gt;%
 ## 2 Colombia     77     16 A      
 ## 3 Mexico       83      4 N</code></pre>
 </div>
-<div id="aside-the-pipe-operator" class="section level3">
-<h3>Aside: the pipe operator (%&gt;%)</h3>
-<p>The ‘tidyverse’ set of packages takes advantage of the pipe operator
-<code>%&gt;%</code>, which provides a clean and intuitive way to
-structure code and perform sequential operations in R.</p>
-<p><img src="magritte.jpg" style="width:25.0%" /></p>
-<p>Key advantages include:</p>
-<ul>
-<li><p>code is more readable and intuitive – reads left to right, rather
-than inside out as is the case for nested function</p></li>
-<li><p>perform multiple operations without creating a bunch of
-intermediate (temporary) datasets</p></li>
-</ul>
-<p>This operator comes from the <em>magrittr</em> package, which is
-included in the installation of all of the tidyverse packages. The
-shortcut for the pipe operator is ctrl-shift-m (‘m’ is for Magritte).
-When reading code out loud, use ‘then’ for the pipe. For example the
-command here:</p>
-<pre><code>
-x %&gt;% log() %&gt;% round(digits=2)
-</code></pre>
-<p>can be interpreted as follows:</p>
-<blockquote>
-<p>Take “x”, THEN take its natural logarithm, THEN round the resulting
-value to 2 decimal places</p>
-</blockquote>
-<p>The structure is simple. Start with the object you want to
-manipulate, and apply actions (e.g., functions) to that object in the
-order in which you want to apply them.</p>
-<p>Here is a quick example.</p>
-<pre class="r"><code>#  ASIDE: using the pipe operator %&gt;% (ctrl-shift-m) in R 
-
-# start with a simple example
-x &lt;- 3
-
-# calculate the log of x
-log(x) # form f(x) is equivalent to</code></pre>
-<pre><code>## [1] 1.098612</code></pre>
-<pre class="r"><code>x %&gt;% log() # form x %&gt;% f</code></pre>
-<pre><code>## [1] 1.098612</code></pre>
-<pre class="r"><code># example of multiple steps in pipe
-round(log(x), digits=2) # form g(f(x)) is equivalent to</code></pre>
-<pre><code>## [1] 1.1</code></pre>
-<pre class="r"><code>x %&gt;% log() %&gt;% round(digits=2) </code></pre>
-<pre><code>## [1] 1.1</code></pre>
 </div>
-</div>
-<div id="more-data-processing" class="section level2">
-<h2>More data processing!</h2>
+<div id="practice-data-processing" class="section level2">
+<h2>Practice data processing!</h2>
 <p>Let’s switch to a different data file. Download the <a
 href="turtle_data.txt">Turtle Data</a> and save to your project
 directory.</p>
@@ -870,7 +833,7 @@ turtles.df</code></pre>
 ##  8          5 female            45         8.05  10.9 
 ##  9         12 female            44         7.55   8.9 
 ## 10         13 &lt;NA&gt;              28         4.85   1.97
-## # … with 11 more rows</code></pre>
+## # ℹ 11 more rows</code></pre>
 <pre class="r"><code># Subset for turtles that weigh greater than or equal to 10g
 
 subset.turtles.df &lt;- turtles.df %&gt;% 
@@ -905,6 +868,9 @@ turtles.df %&gt;%
 ## 3 male     7.29
 ## 4 &lt;NA&gt;     2.35</code></pre>
 <pre class="r"><code># OOPS, looks like we just caught an error!</code></pre>
+</div>
+<div id="fixing-data-using-subsetting" class="section level3">
+<h3>Fixing data using subsetting</h3>
 <p>Let’s fix the error we just noticed in the way sex was represented in
 the turtle dataset.</p>
 <pre class="r"><code>unique(turtles.df$sex)  # note the two ways of representing females...</code></pre>
@@ -933,64 +899,6 @@ turtles.df %&gt;%          # summarize weight by sex (check that it&#39;s fixed)
 ## 2 male     7.29
 ## 3 &lt;NA&gt;     2.35</code></pre>
 </div>
-<div id="fixing-data-using-subsetting" class="section level3">
-<h3>Fixing data using subsetting</h3>
-<p>Like we saw in the previous example (correcting the ‘sex’ variable)
-we can use subsetting operations to correct or alter data:</p>
-<pre class="r"><code>#  Data Manipulation using subsetting 
-
-# list of tags we do not trust the data for
-bad.tags &lt;- c(13,105)
-
-turtles.df = turtles.df %&gt;% 
-  mutate(
-    sex = replace(sex,tag_number%in%bad.tags,NA),
-    carapace_length = replace(carapace_length,tag_number%in%bad.tags,NA),
-    head_width = replace(head_width,tag_number%in%bad.tags,NA),
-    weight = replace(weight,tag_number%in%bad.tags,NA)
-  )
-
-# or... use some more tidyverse helper functions and tricks!
-
-turtles.df = turtles.df %&gt;% 
-  mutate(across(c(&quot;sex&quot;,&quot;carapace_length&quot;,&quot;head_width&quot;,&quot;weight&quot;),
-                ~replace(.,tag_number%in%bad.tags,NA)))
-
-# or use the following non-tidyverse syntax... which still seems easier to me!
-
-turtles.df[turtles.df$tag_number%in%bad.tags,c(&quot;sex&quot;,&quot;carapace_length&quot;,&quot;head_width&quot;,&quot;weight&quot;)]  &lt;- NA
-
-turtles.df</code></pre>
-<pre><code>## # A tibble: 21 × 5
-##    tag_number sex    carapace_length head_width weight
-##         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
-##  1         10 male              41         7.15   7.6 
-##  2         11 female            46.4       8.18  11   
-##  3          2 &lt;NA&gt;              24.3       4.42   1.65
-##  4         15 &lt;NA&gt;              28.7       4.89   2.18
-##  5         16 &lt;NA&gt;              32         5.37   3   
-##  6          3 female            42.8       7.32   8.6 
-##  7          4 male              40         6.6    6.5 
-##  8          5 female            45         8.05  10.9 
-##  9         12 female            44         7.55   8.9 
-## 10         13 &lt;NA&gt;              NA        NA     NA   
-## # ℹ 11 more rows</code></pre>
-<pre class="r"><code> # make a new variable &quot;size.class&quot; based on the &quot;weight&quot; variable
-
-turtles.df = turtles.df %&gt;% 
-  mutate(size.class = case_when(
-    weight &lt; 3 ~ &quot;juvenile&quot;,
-    weight &gt; 6 ~ &quot;adult&quot;,
-    is.na(weight) ~ NA_character_,
-    .default = &quot;subadult&quot;
-  ))
-
-turtles.df$size.class</code></pre>
-<pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;juvenile&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;   
-##  [7] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    NA         &quot;adult&quot;    &quot;juvenile&quot;
-## [13] &quot;subadult&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    NA         &quot;adult&quot;   
-## [19] &quot;adult&quot;    &quot;juvenile&quot; &quot;adult&quot;</code></pre>
-</div>
 <div id="selecting-and-renaming-columns" class="section level3">
 <h3>Selecting and renaming columns</h3>
 <p>Sometimes we only want to work with a small subset of columns from a
@@ -1008,7 +916,11 @@ diamonds2 &lt;- diamonds[,c(&quot;x&quot;,&quot;y&quot;,&quot;z&quot;)]
 
 names(diamonds2)  # extract the column names</code></pre>
 <pre><code>## [1] &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
-<pre class="r"><code>names(diamonds2)  &lt;- c(&quot;length&quot;, &quot;width&quot;,&quot;depth&quot;)</code></pre>
+<pre class="r"><code>names(diamonds2)  &lt;- c(&quot;length&quot;, &quot;width&quot;,&quot;depth&quot;)
+
+# or rename specific variables using &#39;dplyr&#39; from the &#39;tidyverse;
+
+diamonds2 &lt;- rename(diamonds2, len = length)</code></pre>
 </div>
 <div id="sortingordering-data" class="section level3">
 <h3>Sorting/ordering data</h3>
@@ -1017,84 +929,133 @@ helps to visualize and organize data. In R, sorting is typically
 accomplished using the “order()” function:</p>
 <p>*order()** returns the indices of the original (unsorted) vector in
 the order that they would appear if properly sorted (increasing, by
-default) – i.e., “10,3,22” becomes “2,1,3”.</p>
+default) – i.e., “10,3,22” becomes “2,1,3” (i.e., to sort this vector in
+increasing order, you would need to take the second element, then the
+first, and then the third).</p>
 <p>In the ‘tidyverse’ we can use the “arrange” verb to do this!</p>
 <pre class="r"><code>#  Sorting  
 
-# The &#39;order&#39; function returns the indices of the original (unsorted) vector in the order that they would appear if properly sorted  
+# The &#39;order&#39; function returns the indices of the original (unsorted) vector in the order that would sort the vector from lowest to highest...   
 order(turtles.df$carapace_length)</code></pre>
-<pre><code>##  [1]  3  4 20  5 12 13 14  7 11  1 15  6 18  9 21  8  2 19 16 10 17</code></pre>
+<pre><code>##  [1]  3 10  4 20  5 12 13 14  7 11  1 15  6 18  9 17 21  8  2 19 16</code></pre>
 <pre class="r"><code># To sort a data frame by one vector, you can use &quot;order()&quot;
 turtles.df[order(turtles.df$tag_number),]</code></pre>
-<pre><code>## # A tibble: 21 × 6
-##    tag_number sex    carapace_length head_width weight size.class
-##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
-##  1          1 &lt;NA&gt;              29.2       5.1    2.38 juvenile  
-##  2          2 &lt;NA&gt;              24.3       4.42   1.65 juvenile  
-##  3          3 female            42.8       7.32   8.6  adult     
-##  4          4 male              40         6.6    6.5  adult     
-##  5          5 female            45         8.05  10.9  adult     
-##  6          6 female            40         6.53   6.2  adult     
-##  7          7 female            48         8.67  13.5  adult     
-##  8          8 &lt;NA&gt;              32         5.35   2.9  juvenile  
-##  9          9 male              35         5.74   3.9  subadult  
-## 10         10 male              41         7.15   7.6  adult     
-## # … with 11 more rows</code></pre>
-<pre class="r"><code># or we can use the &quot;arrange&quot; verb:
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1          1 &lt;NA&gt;              29.2       5.1    2.38
+##  2          2 &lt;NA&gt;              24.3       4.42   1.65
+##  3          3 female            42.8       7.32   8.6 
+##  4          4 male              40         6.6    6.5 
+##  5          5 female            45         8.05  10.9 
+##  6          6 female            40         6.53   6.2 
+##  7          7 female            48         8.67  13.5 
+##  8          8 &lt;NA&gt;              32         5.35   2.9 
+##  9          9 male              35         5.74   3.9 
+## 10         10 male              41         7.15   7.6 
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># And in decreasing order:
+
+turtles.df[order(turtles.df$tag_number,decreasing=T),]</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1        105 male              44         7.1    9   
+##  2        104 male              44         7.35   9   
+##  3         22 female            48.1       8.55  12.8 
+##  4         19 male              42.3       6.77   7.8 
+##  5         17 female            35.1       6.04   4.5 
+##  6         16 &lt;NA&gt;              32         5.37   3   
+##  7         15 &lt;NA&gt;              28.7       4.89   2.18
+##  8         14 male              43         6.6    7.2 
+##  9         13 &lt;NA&gt;              28         4.85   1.97
+## 10         12 female            44         7.55   8.9 
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code># or we can use the &quot;arrange&quot; verb in the &#39;tidyverse&#39;:
 turtles.df %&gt;% 
   arrange(carapace_length)</code></pre>
-<pre><code>## # A tibble: 21 × 6
-##    tag_number sex    carapace_length head_width weight size.class
-##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
-##  1          2 &lt;NA&gt;              24.3       4.42   1.65 juvenile  
-##  2         15 &lt;NA&gt;              28.7       4.89   2.18 juvenile  
-##  3          1 &lt;NA&gt;              29.2       5.1    2.38 juvenile  
-##  4         16 &lt;NA&gt;              32         5.37   3    subadult  
-##  5          8 &lt;NA&gt;              32         5.35   2.9  juvenile  
-##  6          9 male              35         5.74   3.9  subadult  
-##  7         17 female            35.1       6.04   4.5  subadult  
-##  8          4 male              40         6.6    6.5  adult     
-##  9          6 female            40         6.53   6.2  adult     
-## 10         10 male              41         7.15   7.6  adult     
-## # … with 11 more rows</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1          2 &lt;NA&gt;              24.3       4.42   1.65
+##  2         13 &lt;NA&gt;              28         4.85   1.97
+##  3         15 &lt;NA&gt;              28.7       4.89   2.18
+##  4          1 &lt;NA&gt;              29.2       5.1    2.38
+##  5         16 &lt;NA&gt;              32         5.37   3   
+##  6          8 &lt;NA&gt;              32         5.35   2.9 
+##  7          9 male              35         5.74   3.9 
+##  8         17 female            35.1       6.04   4.5 
+##  9          4 male              40         6.6    6.5 
+## 10          6 female            40         6.53   6.2 
+## # ℹ 11 more rows</code></pre>
 <pre class="r"><code># or if we want in descending order...
 
 turtles.df %&gt;% 
   arrange(desc(carapace_length))</code></pre>
-<pre><code>## # A tibble: 21 × 6
-##    tag_number sex    carapace_length head_width weight size.class
-##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
-##  1         22 female            48.1       8.55   12.8 adult     
-##  2          7 female            48         8.67   13.5 adult     
-##  3         11 female            46.4       8.18   11   adult     
-##  4          5 female            45         8.05   10.9 adult     
-##  5         12 female            44         7.55    8.9 adult     
-##  6        104 male              44         7.35    9   adult     
-##  7         14 male              43         6.6     7.2 adult     
-##  8          3 female            42.8       7.32    8.6 adult     
-##  9         19 male              42.3       6.77    7.8 adult     
-## 10         10 male              41         7.15    7.6 adult     
-## # … with 11 more rows</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1         22 female            48.1       8.55   12.8
+##  2          7 female            48         8.67   13.5
+##  3         11 female            46.4       8.18   11  
+##  4          5 female            45         8.05   10.9
+##  5         12 female            44         7.55    8.9
+##  6        105 male              44         7.1     9  
+##  7        104 male              44         7.35    9  
+##  8         14 male              43         6.6     7.2
+##  9          3 female            42.8       7.32    8.6
+## 10         19 male              42.3       6.77    7.8
+## # ℹ 11 more rows</code></pre>
 <pre class="r"><code># Sorting by 2 columns
 turtles.df %&gt;% 
   arrange(sex,weight)</code></pre>
-<pre><code>## # A tibble: 21 × 6
-##    tag_number sex    carapace_length head_width weight size.class
-##         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     
-##  1         17 female            35.1       6.04    4.5 subadult  
-##  2          6 female            40         6.53    6.2 adult     
-##  3          3 female            42.8       7.32    8.6 adult     
-##  4         12 female            44         7.55    8.9 adult     
-##  5          5 female            45         8.05   10.9 adult     
-##  6         11 female            46.4       8.18   11   adult     
-##  7         22 female            48.1       8.55   12.8 adult     
-##  8          7 female            48         8.67   13.5 adult     
-##  9          9 male              35         5.74    3.9 subadult  
-## 10          4 male              40         6.6     6.5 adult     
-## # … with 11 more rows</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1         17 female            35.1       6.04    4.5
+##  2          6 female            40         6.53    6.2
+##  3          3 female            42.8       7.32    8.6
+##  4         12 female            44         7.55    8.9
+##  5          5 female            45         8.05   10.9
+##  6         11 female            46.4       8.18   11  
+##  7         22 female            48.1       8.55   12.8
+##  8          7 female            48         8.67   13.5
+##  9          9 male              35         5.74    3.9
+## 10          4 male              40         6.6     6.5
+## # ℹ 11 more rows</code></pre>
 </div>
-<div id="dealing-with-missing-data" class="section level3">
-<h3>Dealing with missing data</h3>
+</div>
+<div id="challenge-exercises" class="section level2">
+<h2>Challenge exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>Save the <a href="comm_data.txt">“comm_data.txt”</a> file to your
+working directory. Read this file in as a data frame. Select only the
+following columns: Hab_class, C_DWN, C_UPS (discard the remaining
+columns). Finally, rename these columns as: “Class”,“Downstream”, and
+“Upstream” respectively. [hint 1: use read_table to read in the file as
+a data frame] [hint 2: use the “select” verb to select the columns you
+want] [hint 3: use the names() function to rename the columns]</p></li>
+<li><p>Read in the file <a href="turtle_data.txt">“turtle_data.txt”</a>.
+Create a new version of this data frame with all missing data removed
+(discard all rows with one or more missing data). Save this new data
+frame to your project directory as a comma delimited text file. [hint 1:
+use the “na.omit()” function to remove rows with NAs] [hint 2: use the
+write_csv function to write to your working directory]</p></li>
+<li><p>Read in the file <a href="turtle_data.txt">“turtle_data.txt”</a>.
+Create a new data frame with only male turtles. Use this subsetted data
+set to compute the mean and standard deviation for carapace length of
+male turtles.</p></li>
+</ol>
+<pre class="r"><code># CHALLENGE EXERCISES   -------------------------------------
+
+# 1: Save the &quot;comm_data.txt&quot; file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: &quot;Class&quot;,&quot;Downstream&quot;, and &quot;Upstream&quot; respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the &quot;select&quot; verb to select the columns you want] [hint 3: use the names() function to rename the columns]
+# 
+# 2: Read in the file &quot;turtle_data.txt&quot;. Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the &quot;na.omit()&quot; function to remove rows with NAs] [hint 2: use the write_csv function to write to your working directory] 
+#   
+# 3: Read in the file &quot;turtle_data.txt&quot;. Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.</code></pre>
+<p><a href="module1_3.html">–go to next submodule–</a></p>
+<div id="bonus-dealing-with-missing-data" class="section level3">
+<h3>Bonus: dealing with missing data</h3>
 <p>In many real-world datasets, observations are incomplete in some way-
 they are missing information.</p>
 <p>In R, the code “NA” (not available) stands in for elements of a
@@ -1246,36 +1207,110 @@ missing.df %&gt;%
 ## 19 TrinidadTobago   84     15   A      
 ## 20 Venezuela        70.5    7   N</code></pre>
 </div>
-</div>
-<div id="challenge-exercises" class="section level2">
-<h2>Challenge exercises</h2>
-<ol style="list-style-type: decimal">
-<li><p>Save the <a href="comm_data.txt">“comm_data.txt”</a> file to your
-working directory. Read this file in as a data frame. Select only the
-following columns: Hab_class, C_DWN, C_UPS (discard the remaining
-columns). Finally, rename these columns as: “Class”,“Downstream”, and
-“Upstream” respectively. [hint 1: use read_table to read in the file as
-a data frame] [hint 2: use the “select” verb to select the columns you
-want] [hint 3: use the names() function to rename the columns]</p></li>
-<li><p>Read in the file <a href="turtle_data.txt">“turtle_data.txt”</a>.
-Create a new version of this data frame with all missing data removed
-(discard all rows with one or more missing data). Save this new data
-frame to your project directory as a comma delimited text file. [hint 1:
-use the “na.omit()” function to remove rows with NAs] [hint 2: use the
-write_csv function to write to your working directory]</p></li>
-<li><p>Read in the file <a href="turtle_data.txt">“turtle_data.txt”</a>.
-Create a new data frame with only male turtles. Use this subsetted data
-set to compute the mean and standard deviation for carapace length of
-male turtles.</p></li>
-</ol>
-<pre class="r"><code># CHALLENGE EXERCISES   -------------------------------------
+<div id="aside-the-pipe-operator" class="section level3">
+<h3>Aside: the pipe operator (%&gt;%)</h3>
+<p>The ‘tidyverse’ set of packages takes advantage of the pipe operator
+<code>%&gt;%</code>, which provides a clean and intuitive way to
+structure code and perform sequential operations in R.</p>
+<p><img src="magritte.jpg" style="width:25.0%" /></p>
+<p>Key advantages include:</p>
+<ul>
+<li><p>code is more readable and intuitive – reads left to right, rather
+than inside out as is the case for nested function</p></li>
+<li><p>perform multiple operations without creating a bunch of
+intermediate (temporary) datasets</p></li>
+</ul>
+<p>This operator comes from the <em>magrittr</em> package, which is
+included in the installation of all of the tidyverse packages. The
+shortcut for the pipe operator is ctrl-shift-m (‘m’ is for Magritte).
+When reading code out loud, use ‘then’ for the pipe. For example the
+command here:</p>
+<pre><code>
+x %&gt;% log() %&gt;% round(digits=2)
+</code></pre>
+<p>can be interpreted as follows:</p>
+<blockquote>
+<p>Take “x”, THEN take its natural logarithm, THEN round the resulting
+value to 2 decimal places</p>
+</blockquote>
+<p>The structure is simple. Start with the object you want to
+manipulate, and apply actions (e.g., functions) to that object in the
+order in which you want to apply them.</p>
+<p>Here is a quick example.</p>
+<pre class="r"><code>#  ASIDE: using the pipe operator %&gt;% (ctrl-shift-m) in R 
 
-# 1: Save the &quot;comm_data.txt&quot; file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: &quot;Class&quot;,&quot;Downstream&quot;, and &quot;Upstream&quot; respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the &quot;select&quot; verb to select the columns you want] [hint 3: use the names() function to rename the columns]
-# 
-# 2: Read in the file &quot;turtle_data.txt&quot;. Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the &quot;na.omit()&quot; function to remove rows with NAs] [hint 2: use the write_csv function to write to your working directory] 
-#   
-# 3: Read in the file &quot;turtle_data.txt&quot;. Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.</code></pre>
-<p><a href="module1_3.html">–go to next submodule–</a></p>
+# start with a simple example
+x &lt;- 3
+
+# calculate the log of x
+log(x) # form f(x) is equivalent to</code></pre>
+<pre><code>## [1] 1.098612</code></pre>
+<pre class="r"><code>x %&gt;% log() # form x %&gt;% f</code></pre>
+<pre><code>## [1] 1.098612</code></pre>
+<pre class="r"><code># example of multiple steps in pipe
+round(log(x), digits=2) # form g(f(x)) is equivalent to</code></pre>
+<pre><code>## [1] 1.1</code></pre>
+<pre class="r"><code>x %&gt;% log() %&gt;% round(digits=2) </code></pre>
+<pre><code>## [1] 1.1</code></pre>
+</div>
+<div id="some-more-subsetting-practice" class="section level3">
+<h3>Some more subsetting practice:</h3>
+<p>Returning to the turtle example, we can use subsetting operations to
+correct or alter data:</p>
+<pre class="r"><code>#  Data Manipulation using subsetting 
+
+# list of tags we do not trust the data for
+bad.tags &lt;- c(13,105)
+
+turtles.df = turtles.df %&gt;% 
+  mutate(
+    sex = replace(sex,tag_number%in%bad.tags,NA),
+    carapace_length = replace(carapace_length,tag_number%in%bad.tags,NA),
+    head_width = replace(head_width,tag_number%in%bad.tags,NA),
+    weight = replace(weight,tag_number%in%bad.tags,NA)
+  )
+
+# or... use some more tidyverse helper functions and tricks!
+
+turtles.df = turtles.df %&gt;% 
+  mutate(across(c(&quot;sex&quot;,&quot;carapace_length&quot;,&quot;head_width&quot;,&quot;weight&quot;),
+                ~replace(.,tag_number%in%bad.tags,NA)))
+
+# or use the following non-tidyverse syntax... which still seems easier to me!
+
+turtles.df[turtles.df$tag_number%in%bad.tags,c(&quot;sex&quot;,&quot;carapace_length&quot;,&quot;head_width&quot;,&quot;weight&quot;)]  &lt;- NA
+
+turtles.df</code></pre>
+<pre><code>## # A tibble: 21 × 5
+##    tag_number sex    carapace_length head_width weight
+##         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+##  1         10 male              41         7.15   7.6 
+##  2         11 female            46.4       8.18  11   
+##  3          2 &lt;NA&gt;              24.3       4.42   1.65
+##  4         15 &lt;NA&gt;              28.7       4.89   2.18
+##  5         16 &lt;NA&gt;              32         5.37   3   
+##  6          3 female            42.8       7.32   8.6 
+##  7          4 male              40         6.6    6.5 
+##  8          5 female            45         8.05  10.9 
+##  9         12 female            44         7.55   8.9 
+## 10         13 &lt;NA&gt;              NA        NA     NA   
+## # ℹ 11 more rows</code></pre>
+<pre class="r"><code> # make a new variable &quot;size.class&quot; based on the &quot;weight&quot; variable
+
+turtles.df = turtles.df %&gt;% 
+  mutate(size.class = case_when(
+    weight &lt; 3 ~ &quot;juvenile&quot;,
+    weight &gt; 6 ~ &quot;adult&quot;,
+    is.na(weight) ~ NA_character_,
+    .default = &quot;subadult&quot;
+  ))
+
+turtles.df$size.class</code></pre>
+<pre><code>##  [1] &quot;adult&quot;    &quot;adult&quot;    &quot;juvenile&quot; &quot;juvenile&quot; &quot;subadult&quot; &quot;adult&quot;   
+##  [7] &quot;adult&quot;    &quot;adult&quot;    &quot;adult&quot;    NA         &quot;adult&quot;    &quot;juvenile&quot;
+## [13] &quot;subadult&quot; &quot;subadult&quot; &quot;adult&quot;    &quot;adult&quot;    NA         &quot;adult&quot;   
+## [19] &quot;adult&quot;    &quot;juvenile&quot; &quot;adult&quot;</code></pre>
+</div>
 </div>
 
 

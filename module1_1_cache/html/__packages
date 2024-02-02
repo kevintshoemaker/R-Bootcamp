@@ -7,6 +7,4 @@ purrr
 dplyr
 stringr
 forcats
-Lahman
-cowplot
 lubridate

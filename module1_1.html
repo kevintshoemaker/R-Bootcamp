@@ -882,21 +882,21 @@ R’s built in <strong>random number generators</strong>:</p>
 <pre class="r"><code># Random numbers 
 
 rnorm(10)                     # 10 samples from std. normal</code></pre>
-<pre><code>##  [1]  1.4840099 -0.8456497 -0.3525833 -0.8339947  0.3742508  0.5104690
-##  [7] -0.5302224 -0.1094022  0.2782298  1.5666697</code></pre>
+<pre><code>##  [1]  2.62210923  0.43504596 -2.44506961 -1.06929609 -1.02425498 -0.83039892
+##  [7] -0.14397913  0.37943229 -0.24450319  0.09509297</code></pre>
 <pre class="r"><code>rnorm(10,mean=-2,sd=4)        # 10 samples from Normal(-2,4^2)</code></pre>
-<pre><code>##  [1] -2.4476166 -8.9229279 -4.0041964 -0.2981955 -2.1307039  1.4239915
-##  [7]  3.2449314 -4.7166154 -8.7700724 -7.6257005</code></pre>
+<pre><code>##  [1]  0.7755803 -6.7688437 -1.9656430  0.6877746 -7.1268305  2.0898039
+##  [7]  0.6375658 -8.3530845 -3.7269587 -1.9444130</code></pre>
 <pre class="r"><code>rbinom(5,size=3,prob=.5)      # 5 samples from Binom(3,0.5)</code></pre>
-<pre><code>## [1] 1 2 2 2 0</code></pre>
+<pre><code>## [1] 2 2 1 2 1</code></pre>
 <pre class="r"><code>rbinom(5,3,.1)                # 5 samples from Binom(3,0.1)</code></pre>
-<pre><code>## [1] 0 0 0 0 1</code></pre>
+<pre><code>## [1] 0 0 1 0 0</code></pre>
 <pre class="r"><code>runif(10)                     # 10 standard uniform random numbers</code></pre>
-<pre><code>##  [1] 0.91141263 0.83880848 0.53668722 0.80222440 0.93919183 0.06224971
-##  [7] 0.42784331 0.33243458 0.12319128 0.31343949</code></pre>
+<pre><code>##  [1] 0.3438716 0.7816983 0.8827020 0.4098154 0.8340670 0.5895559 0.1858751
+##  [8] 0.7337372 0.7468234 0.4335352</code></pre>
 <pre class="r"><code>runif(10,min=-1,max=1)        # 10 uniform random numbers from [-1,1]</code></pre>
-<pre><code>##  [1]  0.3851233 -0.8604569  0.7120470  0.8087717  0.1052444  0.5969606
-##  [7] -0.5533044  0.7603707  0.2594884 -0.8422224</code></pre>
+<pre><code>##  [1]  0.77267758  0.43115601  0.59635734  0.81048974  0.01898856  0.85865446
+##  [7] -0.85327263 -0.15918442 -0.13523707  0.09192420</code></pre>
 <p>And finally, we can make up a fake data frame (or tibble) using some
 of the tricks we just learned!</p>
 <pre class="r"><code># Make up an entire fake data frame!
@@ -912,47 +912,47 @@ my.data</code></pre>
 <pre><code>## # A tibble: 100 × 5
 ##    Obs.Id Treatment Block Germination AvgHeight
 ##     &lt;int&gt; &lt;chr&gt;     &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt;
-##  1      1 A             1           2     10.1 
-##  2      2 A             2           1     10.4 
-##  3      3 A             3           0     10.5 
-##  4      4 A             4           0     11.6 
-##  5      5 A             5           1     10.7 
-##  6      6 A             6           1      8.95
-##  7      7 A             7           1     10.6 
-##  8      8 A             8           2      9.32
-##  9      9 A             9           3      7.47
-## 10     10 A            10           1      9.00
+##  1      1 A             1           3      8.39
+##  2      2 A             2           0     10.3 
+##  3      3 A             3           1      9.87
+##  4      4 A             4           1     10.1 
+##  5      5 A             5           1     10.2 
+##  6      6 A             6           0      8.35
+##  7      7 A             7           1     10.4 
+##  8      8 A             8           2     10.9 
+##  9      9 A             9           0      9.48
+## 10     10 A            10           1      9.44
 ## # ℹ 90 more rows</code></pre>
 <pre class="r"><code>summary(my.data)    # Use the &quot;summary()&quot; function to summarize each column in the data frame.</code></pre>
 <pre><code>##      Obs.Id        Treatment             Block        Germination   
 ##  Min.   :  1.00   Length:100         Min.   : 1.00   Min.   : 0.00  
 ##  1st Qu.: 25.75   Class :character   1st Qu.: 5.75   1st Qu.: 1.00  
 ##  Median : 50.50   Mode  :character   Median :10.50   Median : 3.00  
-##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.35  
+##  Mean   : 50.50                      Mean   :10.50   Mean   : 3.63  
 ##  3rd Qu.: 75.25                      3rd Qu.:15.25   3rd Qu.: 5.00  
-##  Max.   :100.00                      Max.   :20.00   Max.   :10.00  
+##  Max.   :100.00                      Max.   :20.00   Max.   :13.00  
 ##    AvgHeight     
-##  Min.   : 7.467  
-##  1st Qu.:23.964  
-##  Median :29.767  
-##  Mean   :26.126  
-##  3rd Qu.:31.697  
-##  Max.   :37.195</code></pre>
+##  Min.   : 8.345  
+##  1st Qu.:24.854  
+##  Median :29.739  
+##  Mean   :26.245  
+##  3rd Qu.:31.685  
+##  Max.   :36.029</code></pre>
 <pre class="r"><code>mydf=my.data[21:30,]  # extract rows 21 to 30 and store as a new data frame
 mydf</code></pre>
 <pre><code>## # A tibble: 10 × 5
 ##    Obs.Id Treatment Block Germination AvgHeight
 ##     &lt;int&gt; &lt;chr&gt;     &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt;
-##  1     21 B             1           6      32.9
-##  2     22 B             2           9      29.3
-##  3     23 B             3           4      30.4
-##  4     24 B             4           6      30.4
-##  5     25 B             5           7      27.6
-##  6     26 B             6           6      29.3
-##  7     27 B             7           9      29.9
-##  8     28 B             8           4      29.5
-##  9     29 B             9           2      29.6
-## 10     30 B            10           7      29.9</code></pre>
+##  1     21 B             1           4      30.8
+##  2     22 B             2           1      29.9
+##  3     23 B             3           4      30.3
+##  4     24 B             4           5      29.5
+##  5     25 B             5           3      30.6
+##  6     26 B             6           6      29.7
+##  7     27 B             7           3      29.6
+##  8     28 B             8           4      31.9
+##  9     29 B             9           2      29.3
+## 10     30 B            10           4      30.1</code></pre>
 <pre class="r"><code>mydf$Treatment    # access a column of the data frame by name</code></pre>
 <pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot;</code></pre>
 <p>Here are some useful R functions for exploring data objects:</p>
@@ -989,16 +989,16 @@ to coerce a data frame into a matrix.</li>
 </ol>
 <p>Your result should look like this:</p>
 <pre><code>##       Block Germination AvgHeight
-##  [1,]     1           6  32.93976
-##  [2,]     2           9  29.28651
-##  [3,]     3           4  30.44880
-##  [4,]     4           6  30.44811
-##  [5,]     5           7  27.56735
-##  [6,]     6           6  29.25965
-##  [7,]     7           9  29.90413
-##  [8,]     8           4  29.51714
-##  [9,]     9           2  29.64098
-## [10,]    10           7  29.88297</code></pre>
+##  [1,]     1           4  30.76077
+##  [2,]     2           1  29.90424
+##  [3,]     3           4  30.33732
+##  [4,]     4           5  29.49256
+##  [5,]     5           3  30.62297
+##  [6,]     6           6  29.68407
+##  [7,]     7           3  29.55401
+##  [8,]     8           4  31.89363
+##  [9,]     9           2  29.26619
+## [10,]    10           4  30.09393</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Create a list named ‘mylist’ that is composed of a vector: 1:3, a
 matrix: matrix(1:6,nrow=3,ncol=2), and a data frame:
