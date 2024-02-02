@@ -1,7 +1,7 @@
 ---
-title: "Submodule 2.2"
+title: "Module 2.2"
 author: "Basic programming in R"
-date: "Fall 2023"
+date: "Spring 2024"
 output: 
   html_document: 
     theme: journal
@@ -15,14 +15,14 @@ knitr::opts_chunk$set(echo = TRUE, cache = TRUE, warning = FALSE, message = FALS
 
 ```{r echo=FALSE}
 
-#  R Bootcamp #1, submodule 2.2 ---------------------------
+#  R Bootcamp #1, module 2.2 ---------------------------
 #    University of Nevada, Reno         
 #    PROGRAMMING: FUNCTIONS AND MORE         
 
 ```
 
 
-## Load script for submodule #2.2
+## Load script for module #2.2
 
 1. Click [here](module2_2.R) to download the script! Save the script to your working directory (R Project directory).
 

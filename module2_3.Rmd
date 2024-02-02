@@ -1,7 +1,7 @@
 ---
-title: "Submodule 2.3"
+title: "Module 2.3"
 author: "Statistics"
-date: "Fall 2023"
+date: "Spring 2024"
 output: 
   html_document: 
     theme: journal
@@ -20,13 +20,13 @@ knitr::opts_chunk$set(
 
 ```{r echo=FALSE}
 
-#  R Bootcamp #2, submodule 2.3 -----------------------------              
+#  R Bootcamp #2, module 2.3 -----------------------------              
 #     University of Nevada, Reno             
 #     Topic: basic statistics 
 
 ```
 
-## Load script for submodule #2.3
+## Load script for module #2.3
 
 1. Click [here](module2_3.R) to download the script! Save the script to your working directory (R Project directory).
 

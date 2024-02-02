@@ -1,5 +1,5 @@
 
-#  R Bootcamp #1, submodule 2.2 ---------------------------
+#  R Bootcamp #1, module 2.2 ---------------------------
 #    University of Nevada, Reno         
 #    PROGRAMMING: FUNCTIONS AND MORE         
 

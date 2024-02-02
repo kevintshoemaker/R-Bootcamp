@@ -1,5 +1,5 @@
 
-#  R Bootcamp #2, submodule 2.3 -----------------------------              
+#  R Bootcamp #2, module 2.3 -----------------------------              
 #     University of Nevada, Reno             
 #     Topic: basic statistics 
 
