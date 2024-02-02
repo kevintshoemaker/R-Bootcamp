@@ -315,7 +315,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2023</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Spring 2024</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -426,7 +426,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Submodule 1.4</h1>
 <h4 class="author">Data ‘wrangling’ in R</h4>
-<h4 class="date">Fall 2023</h4>
+<h4 class="date">Spring 2024</h4>
 
 </div>
 
@@ -471,7 +471,7 @@ module)</li>
 <li>forcats, for factors (categorical variables)</li>
 <li>lubridate, for dates</li>
 </ul>
-<p>The following cheat sheets will be helpful in this submodule:</p>
+<p>The following cheat sheets will be helpful in this module:</p>
 <p><a
 href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf">data
 ‘tidying’</a> <a
@@ -517,7 +517,7 @@ clim_data</code></pre>
 ##  8 1/8/2013        39       32      0.04       36       25      0.32
 ##  9 1/9/2013        44       31      0.07       39       30      0.1 
 ## 10 1/10/2013       39       27      0.22       46       32      0.1 
-## # … with 1,724 more rows</code></pre>
+## # ℹ 1,724 more rows</code></pre>
 <pre class="r"><code> # display the last few lines of the data frame (often useful to check!)
 tail(clim_data)</code></pre>
 <pre><code>## # A tibble: 6 × 7
@@ -533,8 +533,8 @@ tail(clim_data)</code></pre>
 <div id="making-data-tidy" class="section level2">
 <h2>Making data tidy!</h2>
 <p>The <em>tidyr</em> package has several functions to help you get your
-data into this format. We have already seen <code>pivot_longer()</code>
-and <code>pivot_wider()</code>.</p>
+data into this format. The most important ones are
+<code>pivot_longer()</code> and <code>pivot_wider()</code>.</p>
 <p><img src="tidy-9.png" /></p>
 <p><img src="tidy-8.png" /></p>
 <p>Use <code>separate()</code> to separate a single column into two
@@ -593,8 +593,7 @@ clim_vars_longer</code></pre>
 ##  8 1/2/2013 PK.TMinF           22
 ##  9 1/2/2013 PK.PrcpIN           0
 ## 10 1/2/2013 HH.TMaxF           27
-## # … with 10,394 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # ℹ 10,394 more rows</code></pre>
 <p>In the second step, we separate the station and climate variable
 labels into two different columns:</p>
 <pre class="r"><code># step 2: separate the climvar_station column into two separate columns that identify the climate variable and the station
@@ -617,8 +616,7 @@ clim_vars_separate</code></pre>
 ##  8 1/2/2013 PK      TMinF      22
 ##  9 1/2/2013 PK      PrcpIN      0
 ## 10 1/2/2013 HH      TMaxF      27
-## # … with 10,394 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # ℹ 10,394 more rows</code></pre>
 <p>Finally, let’s put climate measurements from a single station on the
 same row:</p>
 <pre class="r"><code># step 3: pivot_wider distributes the clim_var column into separate columns, with the data values from the &#39;value&#39; column
@@ -642,8 +640,7 @@ tidy_clim_data</code></pre>
 ##  8 1/4/2013 HH         22    13      0
 ##  9 1/5/2013 PK         29    20      0
 ## 10 1/5/2013 HH         24    13      0
-## # … with 3,458 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # ℹ 3,458 more rows</code></pre>
 <p>Note: we can do all of these tidying steps at once using the pipe
 operator:</p>
 <pre class="r"><code># repeat above as single pipe series without creation of intermediate datasets
@@ -671,8 +668,7 @@ tidy_clim_data</code></pre>
 ##  8 1/4/2013 HH         22    13      0
 ##  9 1/5/2013 PK         29    20      0
 ## 10 1/5/2013 HH         24    13      0
-## # … with 3,458 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # ℹ 3,458 more rows</code></pre>
 </div>
 <div id="using-dplyr-the-data-wrangling-workhorse"
 class="section level1">
@@ -680,8 +676,7 @@ class="section level1">
 <p>dplyr is by far one of the most useful packages in all of the
 tidyverse as it allows you to quickly and easily summarize and
 manipulate your data once you have it in tidy form.</p>
-<p>We have already worked with dplyr without really knowing it. The
-basic dplyr verbs include:</p>
+<p>We have already worked with dplyr. The basic dplyr verbs include:</p>
 <pre><code>  * grouping data with *group_by()*
   * filtering rows with *filter()*
   * creating new variables with *mutate()*
@@ -711,11 +706,11 @@ station_mean1 &lt;- tidy_clim_data %&gt;%
   
 station_mean1</code></pre>
 <pre><code>## # A tibble: 2 × 7
-##   Station mean.precip.in mean.TMax.F mean.TMin.F mean.precip.mm mean.T…¹ mean.…²
-##   &lt;chr&gt;            &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
-## 1 HH              0.0972        56.0        36.3           2.47     13.3    2.36
-## 2 PK              0.0442        57.8        36.5           1.12     14.3    2.48
-## # … with abbreviated variable names ¹​mean.TMax.C, ²​mean.TMin.C</code></pre>
+##   Station mean.precip.in mean.TMax.F mean.TMin.F mean.precip.mm mean.TMax.C
+##   &lt;chr&gt;            &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;       &lt;dbl&gt;
+## 1 HH              0.0972        56.0        36.3           2.47        13.3
+## 2 PK              0.0442        57.8        36.5           1.12        14.3
+## # ℹ 1 more variable: mean.TMin.C &lt;dbl&gt;</code></pre>
 <p>There are several tricks that tidyverse provides that allow you to
 write as compact code as possible (avoiding re-typing the same
 code).</p>
@@ -802,9 +797,9 @@ ymd_hms(&quot;2017-01-31 20:11:59&quot;)</code></pre>
 <pre class="r"><code># we can also have R tell us the current time or date
 
 now()</code></pre>
-<pre><code>## [1] &quot;2022-08-19 19:51:40 PDT&quot;</code></pre>
+<pre><code>## [1] &quot;2024-02-01 20:45:38 PST&quot;</code></pre>
 <pre class="r"><code>today()</code></pre>
-<pre><code>## [1] &quot;2022-08-19&quot;</code></pre>
+<pre><code>## [1] &quot;2024-02-01&quot;</code></pre>
 <div id="working-with-dates-with-lubridate---parsing-dates"
 class="section level3">
 <h3>Working with Dates with lubridate - Parsing Dates</h3>
@@ -877,7 +872,7 @@ tidy_clim_data</code></pre>
 ##  8 2013-01-04 HH         22    13      0
 ##  9 2013-01-05 PK         29    20      0
 ## 10 2013-01-05 HH         24    13      0
-## # … with 3,458 more rows</code></pre>
+## # ℹ 3,458 more rows</code></pre>
 <p>Now we can use mutate to create individual columns for the date
 components</p>
 <pre class="r"><code># parse date into year, month, day, and day of year columns
@@ -903,8 +898,7 @@ tidy_clim_data</code></pre>
 ##  8 2013-01-04 HH         22    13      0  2013     1     4     4
 ##  9 2013-01-05 PK         29    20      0  2013     1     5     5
 ## 10 2013-01-05 HH         24    13      0  2013     1     5     5
-## # … with 3,458 more rows
-## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+## # ℹ 3,458 more rows</code></pre>
 <pre class="r"><code># calculate total annual precipitation by station and year
 annual_sum_precip_by_station &lt;- tidy_clim_data %&gt;%
   group_by(Station, Year) %&gt;%
@@ -948,7 +942,7 @@ other things) asked people about their religion and annual income:</li>
 ##  8 Agnostic $100-150k            109
 ##  9 Agnostic &gt;150k                 84
 ## 10 Agnostic Don&#39;t know/refused    96
-## # … with 170 more rows</code></pre>
+## # ℹ 170 more rows</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Use the dplyr verbs and the tidy_clim_data dataset you created
 above to calculate monthly average Tmin and Tmax for each
@@ -969,7 +963,8 @@ lubridate to extract the day of the week (1 is sunday).</p></li>
 
 # 3. Using lubridate, make a date object out of a character string of your 
 #        birthday and find the day of week it occurred on. Note, you 
-#        can use the &#39;wday&#39; function in lubridate to extract the day of the #         week (1 is sunday).</code></pre>
+#        can use the &#39;wday&#39; function in lubridate to extract the day of the 
+#         week (1 is sunday).</code></pre>
 <p><a href="module2_1.html">–go to next submodule–</a></p>
 </div>
 </div>

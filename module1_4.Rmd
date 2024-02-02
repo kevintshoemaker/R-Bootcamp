@@ -61,7 +61,7 @@ The core tidyverse set of packages includes:
 * forcats, for factors (categorical variables)
 * lubridate, for dates
 
-The following cheat sheets will be helpful in this submodule:
+The following cheat sheets will be helpful in this module:
 
 [data 'tidying'](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
 [data transformation](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
@@ -72,7 +72,6 @@ The following cheat sheets will be helpful in this submodule:
   * Get more comfortable with *tidyverse* grammar (e.g., piping) and data structures to perform basic data manipulation tasks 
   * Use *tidyr* and *dplyr* data transformation 'verbs' to wrangle data
   * Work with and parse dates using *lubridate*
-
 
 ## Import sample data
 
@@ -97,7 +96,7 @@ tail(clim_data)
 
 ##  Making data tidy!
 
-The *tidyr* package has several functions to help you get your data into this format. We have already seen `pivot_longer()` and `pivot_wider()`.
+The *tidyr* package has several functions to help you get your data into this format. The most important ones are `pivot_longer()` and `pivot_wider()`.
 
 ![](tidy-9.png)
 
@@ -195,7 +194,7 @@ tidy_clim_data
 
 dplyr is by far one of the most useful packages in all of the tidyverse as it allows you to quickly and easily summarize and manipulate your data once you have it in tidy form. 
 
-We have already worked with dplyr without really knowing it. The basic dplyr verbs include:
+We have already worked with dplyr. The basic dplyr verbs include:
 
       * grouping data with *group_by()*
       * filtering rows with *filter()*
@@ -415,7 +414,8 @@ relig_income %>%
 
 # 3. Using lubridate, make a date object out of a character string of your 
 #        birthday and find the day of week it occurred on. Note, you 
-#        can use the 'wday' function in lubridate to extract the day of the #         week (1 is sunday).
+#        can use the 'wday' function in lubridate to extract the day of the 
+#         week (1 is sunday).
 
 
 ```
@@ -439,7 +439,8 @@ tidy_clim_data %>%
 
 # 3. Using lubridate, make a date object out of a character string of your 
 #        birthday and find the day of week it occurred on. Note, you 
-#        can use the 'wday' function in lubridate to extract the day of the #         week (1 is sunday).
+#        can use the 'wday' function in lubridate to extract the day of the 
+#         week (1 is sunday).
 
 mybday <- "12/12/1977"
 mybday <- mdy(mybday)

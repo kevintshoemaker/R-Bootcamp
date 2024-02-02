@@ -220,6 +220,7 @@ annual_sum_precip_by_station
 
 # 3. Using lubridate, make a date object out of a character string of your 
 #        birthday and find the day of week it occurred on. Note, you 
-#        can use the 'wday' function in lubridate to extract the day of the #         week (1 is sunday).
+#        can use the 'wday' function in lubridate to extract the day of the 
+#         week (1 is sunday).
 
 
