@@ -759,7 +759,3 @@ Several analytical packages come with their own plotting functions that produce 
 
 
 
-
-
-
-
