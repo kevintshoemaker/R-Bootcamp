@@ -1,5 +1,5 @@
 ---
-title: "Submodule 1.1"
+title: "Module 1.1"
 author: "Getting started"
 date: "Spring 2024"
 output: 

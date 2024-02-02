@@ -1,5 +1,5 @@
 ---
-title: "Submodule 1.2"
+title: "Module 1.2"
 author: "Getting started: managing data"
 date: "Spring 2024"
 output: 
@@ -35,7 +35,7 @@ library(zoo)
 ```
 
 
-## Load script for submodule #1.2
+## Load script for module #1.2
 
 1. Click [here](module1_2.R) to download the script! Save the script to the project directory you set up in the previous module.   
 

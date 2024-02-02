@@ -1,7 +1,7 @@
 ---
-title: "Submodule 2.1"
+title: "Module 2.1"
 author: "R packages: expanding your skill set"
-date: "Fall 2023"
+date: "Spring 2024"
 output: 
   html_document: 
     theme: journal
@@ -131,7 +131,7 @@ Let's load the packages:
 library(tidyverse)
 library(deSolve)
 library(ggplot2)
-library(gg3D) 
+library(plotly) 
 
 ```
 
@@ -154,28 +154,11 @@ dogbarks <- tibble(
 ```
 
 
-Now let's make our plot. The package we installed, `gg3d`, extends ggplot2 to make 3d plots. 
+Let's use the `plotly` package:
 
 ```{r}
 
-ggplot(dogbarks, aes(x=Cars, y=Food, z=Bark)) +
-  axes_3D() +
-  stat_3D() +
-  labs(title="Dog barks plot") +
-  theme_void()
-
-# Save plot as PDF
-ggsave(last_plot(), filename="bad_3dplot.pdf")
-
-```
-
-Okay, so this first attempt was not so great. Let's try a different package. This time we will try the `plotly` package:
-
-```{r}
-
-# try plotly package
-
-library(plotly)   # install if needed...
+# plotly package to make 3d plot
 
 plot_ly(x=dogbarks$Cars, y=dogbarks$Food, z=dogbarks$Bark, type="scatter3d", mode="markers", color="lightblue")
 
@@ -281,6 +264,7 @@ citation()    # and here's the citation for R in general- useful for when you us
 
 
 #### Online forums
+
 In some cases you may run into issues with a particular package that you just can't seem to solve. It's still likely that others have had this problem! If you use some appropriate keywords in a google search you may find a link to an online forum (like [stackoverflow](https://stackoverflow.com/)) where someone has answered a similar question. It's amazing how many knowledgeable people are answering questions on these forums - they are a tremendously valuable resource!
 
 And of course, if you still can't find an answer to your question, you can ask your question on [one of these online forums](https://r-dir.com/community/forums.html). The best ones are probably [Stack Overflow](https://stackoverflow.com/), and [Cross Validated](https://stats.stackexchange.com/questions/tagged/r). 

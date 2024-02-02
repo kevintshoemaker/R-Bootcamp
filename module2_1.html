@@ -12,7 +12,7 @@
 <meta name="author" content="R packages: expanding your skill set" />
 
 
-<title>Submodule 2.1</title>
+<title>Module 2.1</title>
 
 <script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -36,13 +36,13 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.2/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -322,7 +322,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2023</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Spring 2024</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -431,9 +431,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Submodule 2.1</h1>
+<h1 class="title toc-ignore">Module 2.1</h1>
 <h4 class="author">R packages: expanding your skill set</h4>
-<h4 class="date">Fall 2023</h4>
+<h4 class="date">Spring 2024</h4>
 
 </div>
 
@@ -554,7 +554,7 @@ github to make a 3d scatterplot!</p>
 library(tidyverse)
 library(deSolve)
 library(ggplot2)
-library(gg3D) </code></pre>
+library(plotly) </code></pre>
 <p>Here is a data set that represents the number of times a dog barks in
 a day, and two potential explanatory factors: food given (in lbs) and
 cars passing by the house.</p>
@@ -570,25 +570,12 @@ dogbarks &lt;- tibble(
   Bark=c(15, 14, 6, 12, 8, 1, 9, 8, 1, 12, 14, 9, 8, 1, 19, 8, 13, 9,
        15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
 )</code></pre>
-<p>Now let’s make our plot. The package we installed, <code>gg3d</code>,
-extends ggplot2 to make 3d plots.</p>
-<pre class="r"><code>ggplot(dogbarks, aes(x=Cars, y=Food, z=Bark)) +
-  axes_3D() +
-  stat_3D() +
-  labs(title=&quot;Dog barks plot&quot;) +
-  theme_void()</code></pre>
-<p><img src="module2_1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code># Save plot as PDF
-ggsave(last_plot(), filename=&quot;bad_3dplot.pdf&quot;)</code></pre>
-<p>Okay, so this first attempt was not so great. Let’s try a different
-package. This time we will try the <code>plotly</code> package:</p>
-<pre class="r"><code># try plotly package
-
-library(plotly)   # install if needed...
+<p>Let’s use the <code>plotly</code> package:</p>
+<pre class="r"><code># plotly package to make 3d plot
 
 plot_ly(x=dogbarks$Cars, y=dogbarks$Food, z=dogbarks$Bark, type=&quot;scatter3d&quot;, mode=&quot;markers&quot;, color=&quot;lightblue&quot;)</code></pre>
-<div id="htmlwidget-8076aca71e9316bcc373" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8076aca71e9316bcc373">{"x":{"visdat":{"43687324080":["function () ","plotlyVisDat"]},"cur_data":"43687324080","attrs":{"43687324080":{"x":[32,28,9,41,23,26,26,31,12,25,32,13,19,19,38,36,43,26,21,15,17,12,7,41,38,33,31,9,40,21],"y":[0.328,0.213,0.344,0.339,0.44,0.335,0.167,0.44,0.328,0.1,0.381,0.175,0.238,0.36,0.146,0.43,0.446,0.345,0.199,0.301,0.417,0.409,0.142,0.301,0.305,0.23,0.118,0.272,0.098,0.415],"z":[15,14,6,12,8,1,9,8,1,12,14,9,8,1,19,8,13,9,15,11,8,7,8,16,15,10,15,4,17,0],"mode":"markers","color":"lightblue","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":[]},"yaxis":{"title":[]},"zaxis":{"title":[]}},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[32,28,9,41,23,26,26,31,12,25,32,13,19,19,38,36,43,26,21,15,17,12,7,41,38,33,31,9,40,21],"y":[0.328,0.213,0.344,0.339,0.44,0.335,0.167,0.44,0.328,0.1,0.381,0.175,0.238,0.36,0.146,0.43,0.446,0.345,0.199,0.301,0.417,0.409,0.142,0.301,0.305,0.23,0.118,0.272,0.098,0.415],"z":[15,14,6,12,8,1,9,8,1,12,14,9,8,1,19,8,13,9,15,11,8,7,8,16,15,10,15,4,17,0],"mode":"markers","type":"scatter3d","name":"lightblue","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"line":{"color":"rgba(252,141,98,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f9d781d767b6bd234093" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-f9d781d767b6bd234093">{"x":{"visdat":{"19344b072630":["function () ","plotlyVisDat"]},"cur_data":"19344b072630","attrs":{"19344b072630":{"x":[32,28,9,41,23,26,26,31,12,25,32,13,19,19,38,36,43,26,21,15,17,12,7,41,38,33,31,9,40,21],"y":[0.32800000000000001,0.21299999999999999,0.34399999999999997,0.33900000000000002,0.44,0.33500000000000002,0.16700000000000001,0.44,0.32800000000000001,0.10000000000000001,0.38100000000000001,0.17499999999999999,0.23799999999999999,0.35999999999999999,0.14599999999999999,0.42999999999999999,0.44600000000000001,0.34499999999999997,0.19900000000000001,0.30099999999999999,0.41699999999999998,0.40899999999999997,0.14199999999999999,0.30099999999999999,0.30499999999999999,0.23000000000000001,0.11799999999999999,0.27200000000000002,0.098000000000000004,0.41499999999999998],"z":[15,14,6,12,8,1,9,8,1,12,14,9,8,1,19,8,13,9,15,11,8,7,8,16,15,10,15,4,17,0],"mode":"markers","color":"lightblue","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":[]},"yaxis":{"title":[]},"zaxis":{"title":[]}},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[32,28,9,41,23,26,26,31,12,25,32,13,19,19,38,36,43,26,21,15,17,12,7,41,38,33,31,9,40,21],"y":[0.32800000000000001,0.21299999999999999,0.34399999999999997,0.33900000000000002,0.44,0.33500000000000002,0.16700000000000001,0.44,0.32800000000000001,0.10000000000000001,0.38100000000000001,0.17499999999999999,0.23799999999999999,0.35999999999999999,0.14599999999999999,0.42999999999999999,0.44600000000000001,0.34499999999999997,0.19900000000000001,0.30099999999999999,0.41699999999999998,0.40899999999999997,0.14199999999999999,0.30099999999999999,0.30499999999999999,0.23000000000000001,0.11799999999999999,0.27200000000000002,0.098000000000000004,0.41499999999999998],"z":[15,14,6,12,8,1,9,8,1,12,14,9,8,1,19,8,13,9,15,11,8,7,8,16,15,10,15,4,17,0],"mode":"markers","type":"scatter3d","name":"lightblue","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"line":{"color":"rgba(252,141,98,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>Plotly specializes in interactive plots- try changing the view angle
 by clicking and dragging. Or zooming in and out!</p>
 </div>
@@ -678,12 +665,11 @@ find these citations using the “citation()” function:</p>
 <pre class="r"><code># package citations 
 
 citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
-<pre><code>## 
-## To cite the car package in publications use:
+<pre><code>## To cite the car package in publications use:
 ## 
-##   John Fox and Sanford Weisberg (2019). An {R} Companion to Applied
-##   Regression, Third Edition. Thousand Oaks CA: Sage. URL:
-##   https://socialsciences.mcmaster.ca/jfox/Books/Companion/
+##   Fox J, Weisberg S (2019). _An R Companion to Applied Regression_,
+##   Third edition. Sage, Thousand Oaks CA.
+##   &lt;https://socialsciences.mcmaster.ca/jfox/Books/Companion/&gt;.
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
@@ -697,12 +683,11 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 ##     url = {https://socialsciences.mcmaster.ca/jfox/Books/Companion/},
 ##   }</code></pre>
 <pre class="r"><code>citation()    # and here&#39;s the citation for R in general- useful for when you use R for manuscripts</code></pre>
-<pre><code>## 
-## To cite R in publications use:
+<pre><code>## To cite R in publications use:
 ## 
-##   R Core Team (2022). R: A language and environment for statistical
-##   computing. R Foundation for Statistical Computing, Vienna, Austria.
-##   URL https://www.R-project.org/.
+##   R Core Team (2023). _R: A Language and Environment for Statistical
+##   Computing_. R Foundation for Statistical Computing, Vienna, Austria.
+##   &lt;https://www.R-project.org/&gt;.
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
@@ -711,7 +696,7 @@ citation(&#39;car&#39;)   # citation for the &#39;car&#39; package</code></pre>
 ##     author = {{R Core Team}},
 ##     organization = {R Foundation for Statistical Computing},
 ##     address = {Vienna, Austria},
-##     year = {2022},
+##     year = {2023},
 ##     url = {https://www.R-project.org/},
 ##   }
 ## 

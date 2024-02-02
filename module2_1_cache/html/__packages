@@ -8,6 +8,6 @@ purrr
 dplyr
 stringr
 forcats
+lubridate
 deSolve
-gg3D
 plotly

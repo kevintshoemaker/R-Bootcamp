@@ -1,5 +1,5 @@
 ---
-title: "Submodule 1.4"
+title: "Module 1.4"
 author: "Data 'wrangling' in R"
 date: "Spring 2024"
 output: 
@@ -30,7 +30,7 @@ library(lubridate)
 ```
 
 
-## Load script for submodule #1.4
+## Load script for Module #1.4
 
 1. Click [here](module1_4.R) to download the script! Save the script to your working directory (R Project directory).
 

@@ -40,7 +40,7 @@ remotes::install_github("AckerDWM/gg3D")  # install a package from GitHub!
 library(tidyverse)
 library(deSolve)
 library(ggplot2)
-library(gg3D) 
+library(plotly) 
 
 
 # Data: dog barks per day (and two explanatory variables)
@@ -56,19 +56,7 @@ dogbarks <- tibble(
        15, 11, 8, 7, 8, 16, 15, 10, 15, 4, 17, 0)
 )
 
-ggplot(dogbarks, aes(x=Cars, y=Food, z=Bark)) +
-  axes_3D() +
-  stat_3D() +
-  labs(title="Dog barks plot") +
-  theme_void()
-
-# Save plot as PDF
-ggsave(last_plot(), filename="bad_3dplot.pdf")
-
-
-# try plotly package
-
-library(plotly)   # install if needed...
+# plotly package to make 3d plot
 
 plot_ly(x=dogbarks$Cars, y=dogbarks$Food, z=dogbarks$Bark, type="scatter3d", mode="markers", color="lightblue")
 
