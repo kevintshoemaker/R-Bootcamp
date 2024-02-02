@@ -315,7 +315,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">UNR R workshop, Fall 2023</a>
+      <a class="navbar-brand" href="index.html">UNR R workshop, Spring 2024</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -426,7 +426,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Submodule 1.3</h1>
 <h4 class="author">Plotting in R (ggplot)</h4>
-<h4 class="date">Fall 2023</h4>
+<h4 class="date">Spring 2024</h4>
 
 </div>
 
@@ -716,8 +716,71 @@ p&lt;- ggplot(sumTC, aes(x=dose, y=mean, fill=supp)) +
 print(p)</code></pre>
 <p><img src="module1_3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
-<div id="practice-demo-with-some-new-stuff" class="section level2">
-<h2>Practice demo (with some new stuff)</h2>
+<div id="beyond-ggplot" class="section level2">
+<h2>Beyond ggplot</h2>
+<p>ggplot contains an incredibly rich and powerful set of tools for
+visualizing data. But ggplot and base R are not your only options! A
+variety of packages exist for visualization, including:</p>
+<div id="ggplot-extensions" class="section level3">
+<h3>ggplot extensions</h3>
+<p>Several packages have been created that build off of ggplot’s syntax
+with additional functions. You can find a list of them <a
+href="https://exts.ggplot2.tidyverse.org/gallery/">here</a>.</p>
+<div id="interactive-plots-leaflet-and-plotly" class="section level5">
+<h5>Interactive plots: leaflet and plotly</h5>
+<p>Increasingly, scientific journals are providing platforms for
+interactive graphics on their websites to accompany published articles.
+Interactive plots are also popular for personal, lab, and organizational
+websites, and they can provide another option for your own data
+exploration. Two of the most popular in R are <a
+href="https://plot.ly/r/">plotly</a>, which offers a huge variety of 2D
+and 3D plots, and <a
+href="https://rstudio.github.io/leaflet/">leaflet</a>, which is
+specifically for mapping.</p>
+<p>Here’s a quick and simple example of leaflet in action using the
+“possumsites” dataframe that accompanies the “possum” dataset in the
+DAAG package. The dataset contains body measurements of several possums
+in Australia. Where did they catch these possums?</p>
+<pre class="r"><code># use leaflet for interactive mapping! ------------
+
+leaflet(possumsites) %&gt;%
+  addTiles() %&gt;% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites</code></pre>
+</div>
+</div>
+</div>
+<div id="challenge-exercises" class="section level2">
+<h2>Challenge exercises</h2>
+<ol style="list-style-type: decimal">
+<li>Using the built in ‘mtcars’ dataset, make a scatterplot of ‘mpg’ as
+a function of ‘disp’. Color the points according to the ‘cyl’ variable,
+and make the size of points vary depending on the ‘hp’ variable. Try to
+code the ‘cyl’ variable as a categorical variable (factor). The plot
+should look something like this:</li>
+</ol>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Again using the ‘mtcars’ data, make a scatterplot of ‘mpg’ as a
+function of ‘disp’. Color the points according to the ‘cyl’ variable,
+and make a separate trendline for each unique value of the ‘cyl’
+variable (with trendlines also indicating the ‘cyl’ variable with the
+appropriate color).</li>
+</ol>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code># CHALLENGE EXERCISES   -------------------------------------
+
+# 1. Using the built in &#39;mtcars&#39; dataset, make a scatterplot of &#39;mpg&#39; as a function of &#39;disp&#39;. Color the points
+# according to the &#39;cyl&#39; variable, and make the size of points vary depending on the &#39;hp&#39; variable. Try to code
+# the &#39;cyl&#39; variable as a categorical variable (factor). The plot should look something like this:
+#
+# 2. Again using the &#39;mtcars&#39; data, make a scatterplot of &#39;mpg&#39; as a function of &#39;disp&#39;. Color the points
+# according to the &#39;cyl&#39; variable, and make a separate trendline for each unique value of the &#39;cyl&#39; variable (with
+# trendlines also indicating the &#39;cyl&#39; variable with the appropriate color). </code></pre>
+<p><a href="module1_4.html">–go to next submodule–</a></p>
+</div>
+<div id="more-advanced-ggplot-demo-optional" class="section level2">
+<h2>More advanced GGplot demo (optional!)</h2>
 <p>For additional practice, let’s use the Soils dataset from the
 ‘carData’ package, which contains soil attributes from a gilgai
 landscape (mounds and depressions caused by shrinking and swelling of
@@ -755,14 +818,14 @@ plot2 &lt;- ggplot(soil) +
   geom_violin(aes(x=Contour, y=pH))
 
 plot_grid(plot1,plot2,labels = &quot;AUTO&quot;)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>Next let’s try a simple scatterplot of two continuous variables,
 Calcium content and pH:</p>
 <pre class="r"><code># basic scatterplot
 
 ggplot(soil) +
   geom_point(aes(x=pH, y=Ca))</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Now let’s say you wanted to examine if/how the relationship between
 pH and Ca varies with depth. You could go back to your scatterplot and
 use color to identify points from the different sampling depths.</p>
@@ -770,7 +833,7 @@ use color to identify points from the different sampling depths.</p>
 
 ggplot(soil) +
   geom_point(aes(x=pH, y=Ca, color=Depth))</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Try playing around with applying a few graphical attributes to all
 the points (specified outside the <code>aes()</code> argument). Try
 specifying <code>shape=21</code>, <code>color="black"</code> ,
@@ -779,7 +842,7 @@ specifying <code>shape=21</code>, <code>color="black"</code> ,
 
 ggplot(soil) +
   geom_point(aes(x=pH, y=Ca, fill=Depth), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Now for something new: let’s plot relationships between pH and
 several soil nutrients on the same graph. Notice that the y axis label
 defaults to the first set of points (Ca), and we’d need to modify it.
@@ -791,7 +854,7 @@ ggplot(soil, aes(x=pH)) +
   geom_point(aes(y=Ca), shape=21, fill=&quot;red&quot;, color=&quot;black&quot;, size=4, stroke=1.5) +
   geom_point(aes(y=Mg), shape=21, fill=&quot;blue&quot;, color=&quot;black&quot;, size=4, stroke=1.5) +
   geom_point(aes(y=Na), shape=21, fill=&quot;gray30&quot;, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>There’s a better way to do it. But first we need to ‘reshape’ our
 soils data with the tidyverse function `pivot_longer().</p>
 <div id="aside-tidy-data-and-reshaping-functions"
@@ -840,14 +903,15 @@ soil.nut</code></pre>
 ##  8 1     Top     0-10  T0    3      5.14 0.26   0.95   300  0.68   1.41 Mg      
 ##  9 1     Top     0-10  T0    3      5.14 0.26   0.95   300  0.68   1.41 Na      
 ## 10 1     Top     0-10  T0    4      5.14 0.169  1.1    248  1.09   1.64 Ca      
-## # … with 134 more rows, and 1 more variable: value &lt;dbl&gt;</code></pre>
+## # ℹ 134 more rows
+## # ℹ 1 more variable: value &lt;dbl&gt;</code></pre>
 <p>This lets us plot our different nutrients as factor levels without
 typing each one with its specifications on its own line, and
 automatically generates a legend that identifies the series (and also
 gives the default ggplot colors).</p>
 <pre class="r"><code>ggplot(soil.nut) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>What if instead of Na, we had K as our third nutrient of
 interest?</p>
 <pre class="r"><code># or if we wanted to plot different nutrients...
@@ -856,7 +920,7 @@ soil.nut2 &lt;- pivot_longer(soil, cols=c(&quot;Ca&quot;,&quot;Mg&quot;,&quot;K&
 
 ggplot(soil.nut2) +
   geom_point(aes(x=pH, y=value, fill=nutrient), shape=21, color=&quot;black&quot;, size=4, stroke=1.5)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>The problem here is that K occurs at natural concentrations that
 differ from the other nutrients by an order of magnitude, so it’s
 difficult to examine them all on the same scale. One approach we can
@@ -885,7 +949,7 @@ ggplot(soil.nut2) +
         axis.text = element_text(size=20),
         axis.title = element_text(size=25),
         strip.text = element_text(size=25, face=&quot;bold&quot;))</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-22-1.png" width="768" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-27-1.png" width="768" /></p>
 <p>In this plot, we’ve kept the different colors for each nutrient, but
 suppressed the legend that is auto-generated by ggplot, because this
 information is now redundant with the headers of the three facets. In
@@ -932,7 +996,7 @@ palettes.</p>
 <pre class="r"><code># Playing with colors in ggplot!
 
 display.brewer.all()</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-23-1.png" width="576" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-28-1.png" width="576" /></p>
 <p>I’m going to pick the YlOrBr (Yellow-Orange-Brown) palette, because
 those seem like good soil-y colors. Notice that because
 <strong><code>fill</code></strong> is mapped to the values of the data,
@@ -945,7 +1009,7 @@ ggplot(soil) +
   theme_classic() +
   labs(y=&quot;Ca (mg/100g soil)&quot;) +
   scale_fill_brewer(palette=&quot;YlOrBr&quot;, name=&quot;Depth (cm)&quot;)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>Another method is to use
 <strong><code>scale_fill_manual</code></strong>, with which you define
 your own palette. To pick out your colors, you can use the <a
@@ -960,7 +1024,7 @@ ggplot(soil) +
   theme_bw() +
   ylab(&quot;Ca (mg/100g soil)&quot;) +
   scale_fill_manual(values=c(&quot;#FFF0BF&quot;,&quot;#FFC300&quot;,&quot;#BF9200&quot;,&quot;#604900&quot;), name=&quot;Depth (cm)&quot;)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>What if depth were a continuous variable, rather than a set of four
 discrete categories? We could use
 <strong><code>scale_fill_gradient</code></strong>, supply the hues we
@@ -986,7 +1050,7 @@ ggplot(soil.nut2) +
         axis.text = element_text(size=14),
         axis.title = element_text(size=16),
         strip.text = element_text(size=16, face=&quot;bold&quot;))</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-26-1.png" width="768" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-31-1.png" width="768" /></p>
 </div>
 </div>
 <div id="density-curves-and-error-bars" class="section level3">
@@ -1008,7 +1072,7 @@ ggplot(soil.nut) +
   theme(axis.text = element_text(size=20),
         axis.title = element_text(size=25),
         strip.text = element_text(size=25, face=&quot;bold&quot;))</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-27-1.png" width="768" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-32-1.png" width="768" /></p>
 <p>Here is how to add a density curve to the histogram with another
 <strong><code>geom</code></strong>:</p>
 <pre class="r"><code># Then add density curves
@@ -1023,7 +1087,7 @@ ggplot(soil.nut) +
         axis.text = element_text(size=20),
         axis.title = element_text(size=25),
         strip.text = element_text(size=25, face=&quot;bold&quot;))</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-28-1.png" width="768" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-33-1.png" width="768" /></p>
 <p>And here’s how we can compare our distributions to a normal
 distribution, using a <strong><code>stat</code></strong> function:</p>
 <pre class="r"><code># And now let&#39;s use a statistical function (dnorm) in ggplot to compare with a normal distribution:
@@ -1039,7 +1103,7 @@ ggplot(soil.nut) +
         axis.text = element_text(size=20),
         axis.title = element_text(size=25),
         strip.text = element_text(size=25, face=&quot;bold&quot;))</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-29-1.png" width="768" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-34-1.png" width="768" /></p>
 <p>Let’s go back to our basic boxplot, the default plot for visualizing
 continuous data against categories.</p>
 <p>First, you may have noticed that the whiskers do not have caps on
@@ -1056,22 +1120,10 @@ ggplot(soil, aes(x=Contour, y=pH)) +
   stat_boxplot(geom=&quot;errorbar&quot;, width=0.2) +  
   stat_boxplot() +
   stat_summary(fun=mean,geom=&quot;point&quot;,size=5, color=&quot;black&quot;)</code></pre>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="module1_3_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <p>Interestingly, there is generally a way to add just about any
 graphical element using either “stat_” or “geom_” functions. It’s a good
 idea to play around with both!</p>
-</div>
-</div>
-<div id="beyond-ggplot" class="section level2">
-<h2>Beyond ggplot</h2>
-<p>ggplot contains an incredibly rich and powerful set of tools for
-visualizing data. But ggplot and base R are not your only options! A
-variety of packages exist for visualization, including:</p>
-<div id="ggplot-extensions" class="section level3">
-<h3>ggplot extensions</h3>
-<p>Several packages have been created that build off of ggplot’s syntax
-with additional functions. You can find a list of them <a
-href="https://exts.ggplot2.tidyverse.org/gallery/">here</a>.</p>
 </div>
 <div id="technique-specific-plotting-libraries" class="section level3">
 <h3>Technique-specific plotting libraries</h3>
@@ -1086,66 +1138,7 @@ href="http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlatio
 for graphical presentation of correlation matrices, and <a
 href="https://cran.r-project.org/web/packages/rpart.plot/index.html">rpart.plot</a>
 as a companion to the decision tree package rpart.</p>
-<div id="interactive-plots-leaflet-and-plotly" class="section level5">
-<h5>Interactive plots: leaflet and plotly</h5>
-<p>Increasingly, scientific journals are providing platforms for
-interactive graphics on their websites to accompany published articles.
-Interactive plots are also popular for personal, lab, and organizational
-websites, and they can provide another option for your own data
-exploration. Two of the most popular in R are <a
-href="https://plot.ly/r/">plotly</a>, which offers a huge variety of 2D
-and 3D plots, and <a
-href="https://rstudio.github.io/leaflet/">leaflet</a>, which is
-specifically for mapping.</p>
-<p>Here’s a quick and simple example of leaflet in action using the
-“possumsites” dataframe that accompanies the “possum” dataset in the
-DAAG package. The dataset contains body measurements of several possums
-in Australia. Where did they catch these possums?</p>
-<pre class="r"><code># use leaflet for interactive mapping! ------------
-
-leaflet(possumsites) %&gt;%
-  addTiles() %&gt;% #Adds map tiles from OpenStreetMap
-  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
-             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites</code></pre>
 </div>
-</div>
-</div>
-<div id="challenge-exercises" class="section level2">
-<h2>Challenge exercises</h2>
-<ol style="list-style-type: decimal">
-<li>Using our scatterplot of calcium by pH, in which points were colored
-according to which depth they represent, visualize a separate trendline
-for each depth category. Have the color of the trendline match the color
-of each cloud of points. Remove the confidence band from the trendlines.
-The plot should look something like this:</li>
-</ol>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
-<ol start="2" style="list-style-type: decimal">
-<li>Create a boxplot that shows the values of Ca, Mg, and Na across all
-3 contour positions, with no faceting (all on one plot). Add a diamond
-symbol indicating the mean value across all 3 contour positions for each
-nutrient. The plot should look something like this:</li>
-</ol>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Plot the density curves of Ca, Mg, and Na atop each other with fixed
-y and x axes. Make them transparent in color (use
-<code>alpha=0.5</code>) in order to see overlapping areas. The plot
-should look like this (uses <code>theme_dark()</code>):</li>
-</ol>
-<p><img src="module1_3_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
-<pre class="r"><code># CHALLENGE EXERCISES   -------------------------------------
-
-# 1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, 
-#     fit a separate trendline for each depth category. Have the color of the trendline match the color of each 
-#     cloud of points. Remove the confidence band from the trendlines. 
-#
-# 2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). 
-#     Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
-#
-# 3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color 
-#     (use `alpha=0.5`) in order to see overlapping areas.</code></pre>
-<p><a href="module1_4.html">–go to next submodule–</a></p>
 </div>
 
 

@@ -185,6 +185,25 @@ print(p)
 
 
 
+# use leaflet for interactive mapping! ------------
+
+leaflet(possumsites) %>%
+  addTiles() %>% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
+
+
+# CHALLENGE EXERCISES   -------------------------------------
+
+# 1. Using the built in 'mtcars' dataset, make a scatterplot of 'mpg' as a function of 'disp'. Color the points
+# according to the 'cyl' variable, and make the size of points vary depending on the 'hp' variable. Try to code
+# the 'cyl' variable as a categorical variable (factor). The plot should look something like this:
+#
+# 2. Again using the 'mtcars' data, make a scatterplot of 'mpg' as a function of 'disp'. Color the points
+# according to the 'cyl' variable, and make a separate trendline for each unique value of the 'cyl' variable (with
+# trendlines also indicating the 'cyl' variable with the appropriate color). 
+
+
 # More complex demo -----------------------------
 
 library(ggthemes)
@@ -357,25 +376,3 @@ ggplot(soil, aes(x=Contour, y=pH)) +
   stat_boxplot() +
   stat_summary(fun=mean,geom="point",size=5, color="black")
   
-
-# use leaflet for interactive mapping! ------------
-
-leaflet(possumsites) %>%
-  addTiles() %>% #Adds map tiles from OpenStreetMap
-  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
-             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
-
-
-# CHALLENGE EXERCISES   -------------------------------------
-
-# 1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, 
-#     fit a separate trendline for each depth category. Have the color of the trendline match the color of each 
-#     cloud of points. Remove the confidence band from the trendlines. 
-#
-# 2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). 
-#     Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
-#
-# 3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color 
-#     (use `alpha=0.5`) in order to see overlapping areas.
-
-

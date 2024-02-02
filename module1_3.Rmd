@@ -308,7 +308,113 @@ print(p)
 ```
 
 
-## Practice demo (with some new stuff)
+
+## Beyond ggplot
+
+ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:
+
+### ggplot extensions
+
+Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](https://exts.ggplot2.tidyverse.org/gallery/). 
+
+##### Interactive plots: leaflet and plotly
+
+Increasingly, scientific journals are providing platforms for interactive graphics on their websites to accompany published articles. Interactive plots are also popular for personal, lab, and organizational websites, and they can provide another option for your own data exploration. Two of the most popular in R are [plotly](https://plot.ly/r/), which offers a huge variety of 2D and 3D plots, and [leaflet](https://rstudio.github.io/leaflet/), which is specifically for mapping.
+
+Here's a quick and simple example of leaflet in action using the "possumsites" dataframe that accompanies the "possum" dataset in the DAAG package. The dataset contains body measurements of several possums in Australia. Where did they catch these possums?
+
+```{r eval=FALSE}
+
+# use leaflet for interactive mapping! ------------
+
+leaflet(possumsites) %>%
+  addTiles() %>% #Adds map tiles from OpenStreetMap
+  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
+             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
+
+```
+
+
+## Challenge exercises
+
+1. Using the built in 'mtcars' dataset, make a scatterplot of 'mpg' as a function of 'disp'. Color the points according to the 'cyl' variable, and make the size of points vary depending on the 'hp' variable. Try to code the 'cyl' variable as a categorical variable (factor). The plot should look something like this:
+
+```{r echo=FALSE}
+
+mtcars$cyl <- as.factor(mtcars$cyl)
+ggplot(mtcars) +
+  geom_point(aes(disp, mpg, size=hp, color=cyl), shape=20) +
+  theme_classic() +
+  labs(y='MPG',x="Displacement")
+
+```
+
+
+2. Again using the 'mtcars' data, make a scatterplot of 'mpg' as a function of 'disp'. Color the points according to the 'cyl' variable, and make a separate trendline for each unique value of the 'cyl' variable (with trendlines also indicating the 'cyl' variable with the appropriate color). 
+
+
+```{r echo=FALSE}
+
+ggplot(mtcars) +
+  geom_point(aes(disp, mpg, color=cyl), shape=20) +
+  geom_smooth(method='lm', aes(disp, mpg, color=cyl), se=TRUE) +
+  theme_classic() +
+  labs(y='MPG',x="Displacement")
+
+
+```
+
+```{r}
+
+# CHALLENGE EXERCISES   -------------------------------------
+
+# 1. Using the built in 'mtcars' dataset, make a scatterplot of 'mpg' as a function of 'disp'. Color the points
+# according to the 'cyl' variable, and make the size of points vary depending on the 'hp' variable. Try to code
+# the 'cyl' variable as a categorical variable (factor). The plot should look something like this:
+#
+# 2. Again using the 'mtcars' data, make a scatterplot of 'mpg' as a function of 'disp'. Color the points
+# according to the 'cyl' variable, and make a separate trendline for each unique value of the 'cyl' variable (with
+# trendlines also indicating the 'cyl' variable with the appropriate color). 
+
+```
+
+
+```{r include=FALSE, eval=FALSE, echo=FALSE}
+
+
+# Module 1_3 challenge problems: answers  -------------
+
+
+# 1. Using the built in 'mtcars' dataset, make a scatterplot of 'mpg' as a function of 'disp'. Color the points
+# according to the 'cyl' variable, and make the size of points vary depending on the 'hp' variable. Try to code
+# the 'cyl' variable as a categorical variable (factor). The plot should look something like this:
+
+mtcars$cyl <- as.factor(mtcars$cyl)
+ggplot(mtcars) +
+  geom_point(aes(disp, mpg, size=hp, color=cyl), shape=20) +
+  theme_classic() +
+  labs(y='MPG',x="Displacement")
+
+#
+# 2. Again using the 'mtcars' data, make a scatterplot of 'mpg' as a function of 'disp'. Color the points
+# according to the 'cyl' variable, and make a separate trendline for each unique value of the 'cyl' variable (with
+# trendlines also indicating the 'cyl' variable with the appropriate color). 
+
+ggplot(mtcars) +
+  geom_point(aes(disp, mpg, color=cyl), shape=20) +
+  geom_smooth(method='lm', aes(disp, mpg, color=cyl), se=TRUE) +
+  theme_classic() +
+  labs(y='MPG',x="Displacement")
+
+
+```
+
+
+[--go to next submodule--](module1_4.html)
+
+
+
+## More advanced GGplot demo (optional!)
 
 For additional practice, let's use the Soils dataset from the 'carData' package, which contains soil attributes from a gilgai landscape (mounds and depressions caused by shrinking and swelling of clays during dry and wet seasons) in Australia.
 
@@ -646,144 +752,10 @@ ggplot(soil, aes(x=Contour, y=pH)) +
 
 Interestingly, there is generally a way to add just about any graphical element using either "stat_" or "geom_" functions. It's a good idea to play around with both! 
 
-## Beyond ggplot
-
-ggplot contains an incredibly rich and powerful set of tools for visualizing data. But ggplot and base R are not your only options! A variety of packages exist for visualization, including:
-
-### ggplot extensions
-
-Several packages have been created that build off of ggplot's syntax with additional functions. You can find a list of them [here](https://exts.ggplot2.tidyverse.org/gallery/). 
 
 ### Technique-specific plotting libraries
 
 Several analytical packages come with their own plotting functions that produce some very nice visualizations. There are dozens out there, but a few of them are [visreg](https://cran.r-project.org/web/packages/visreg/visreg.pdf) for regression plots, [corrplot](https://cran.r-project.org/web/packages/corrplot/index.html) (and its ggplot counterpart, [ggcorrplot](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2)) for graphical presentation of correlation matrices, and [rpart.plot](https://cran.r-project.org/web/packages/rpart.plot/index.html) as a companion to the decision tree package rpart.
-
-##### Interactive plots: leaflet and plotly
-
-Increasingly, scientific journals are providing platforms for interactive graphics on their websites to accompany published articles. Interactive plots are also popular for personal, lab, and organizational websites, and they can provide another option for your own data exploration. Two of the most popular in R are [plotly](https://plot.ly/r/), which offers a huge variety of 2D and 3D plots, and [leaflet](https://rstudio.github.io/leaflet/), which is specifically for mapping.
-
-Here's a quick and simple example of leaflet in action using the "possumsites" dataframe that accompanies the "possum" dataset in the DAAG package. The dataset contains body measurements of several possums in Australia. Where did they catch these possums?
-
-```{r eval=FALSE}
-
-# use leaflet for interactive mapping! ------------
-
-leaflet(possumsites) %>%
-  addTiles() %>% #Adds map tiles from OpenStreetMap
-  addMarkers(lng=c(possumsites$Longitude), lat=c(possumsites$Latitude), 
-             popup=c(as.character(possumsites$altitude))) #Adds markers for the sites
-
-```
-
-## Challenge exercises
-
-1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, visualize a separate trendline for each depth category. Have the color of the trendline match the color of each cloud of points. Remove the confidence band from the trendlines. The plot should look something like this:
-
-```{r echo=FALSE}
-
-ggplot(soil) +
-  geom_point(aes(pH, Ca, fill=Depth), shape=21, color='black', size=4, stroke=1.5) +
-  geom_smooth(method='lm', aes(pH, Ca, color=Depth), se=FALSE) +
-  theme_bw() +
-  ylab('Ca (mg/100g soil)') +
-  scale_fill_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'), name='Depth (cm)') +
-  scale_color_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'))
-
-```
-
-
-2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient. The plot should look something like this:
-
-```{r echo=FALSE}
-
-ggplot(soil.nut) +
-  geom_boxplot(aes(nutrient, value, fill=Contour)) +
-  stat_summary(aes(nutrient, value), 
-               fun=mean, geom="point", shape=18, size=4, color='black')
-
-
-```
-
-3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color (use `alpha=0.5`) in order to see overlapping areas. The plot should look like this (uses `theme_dark()`):
-
-```{r echo=FALSE}
-
-ggplot(soil.nut) +
-  geom_density(aes(x=value, fill=nutrient), color="black", alpha=0.5) +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-
-```
-
-```{r}
-
-# CHALLENGE EXERCISES   -------------------------------------
-
-# 1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, 
-#     fit a separate trendline for each depth category. Have the color of the trendline match the color of each 
-#     cloud of points. Remove the confidence band from the trendlines. 
-#
-# 2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). 
-#     Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
-#
-# 3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color 
-#     (use `alpha=0.5`) in order to see overlapping areas.
-
-
-```
-
-
-```{r include=FALSE, eval=FALSE, echo=FALSE}
-
-
-# Module 1_3 challenge problems: answers  -------------
-
-
-# 1. Using our scatterplot of calcium by pH, in which points were colored according to which depth they represent, 
-#     fit a separate trendline for each depth category. Have the color of the trendline match the color of each 
-#     cloud of points. Remove the confidence band from the trendlines. 
-
-ggplot(soil) +
-  geom_point(aes(pH, Ca, fill=Depth), shape=21, color='black', size=4, stroke=1.5) +
-  geom_smooth(method='lm', aes(pH, Ca, color=Depth), se=FALSE) +
-  theme_bw() +
-  ylab('Ca (mg/100g soil)') +
-  scale_fill_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'), name='Depth (cm)') +
-  scale_color_manual(values=c('#FFF0BF','#FFC300','#BF9200','#604900'))
-
-#
-# 2. Create a boxplot that shows the values of Ca, Mg, and Na across all 3 contour positions, with no faceting (all on one plot). 
-#     Add a diamond symbol indicating the mean value across all 3 contour positions for each nutrient.
-#
-
-ggplot(soil.nut) +
-  geom_boxplot(aes(nutrient, value, fill=Contour)) +
-  stat_summary(aes(nutrient, value), 
-               fun=mean, geom="point", shape=18, size=4, color='black')
-
-# 3. Plot the density curves of Ca, Mg, and Na atop each other with fixed y and x axes. Make them transparent in color 
-#     (use `alpha=0.5`) in order to see overlapping areas.
-
-ggplot(soil.nut) +
-  geom_density(aes(x=value, fill=nutrient), color="black", alpha=0.5) +
-  xlab("mg / 100g soil") +
-  theme_dark() +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        strip.text = element_text(size=16, face="bold"))
-
-
-```
-
-
-
-[--go to next submodule--](module1_4.html)
-
-
 
 
 
