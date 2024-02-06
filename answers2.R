@@ -1,0 +1,189 @@
+# answers2
+
+# Module 1_1 challenge problems: answers  -------------
+
+
+### Challenge 1: Create a 3 row by 2 column matrix named "mymat". Use the "rbind()" function to bind the following three rows together using these three vectors as rows:
+
+mymat <- rbind(
+  c(1,4),
+  c(2,5),
+  c(3,6)
+)
+
+### Challenge 2: Create a new matrix called 'mymat2' that includes all the data from columns 3 to 5 of data frame mydf. HINT: use the "as.matrix()" function to coerce a data frame into a matrix.
+
+mymat2 <- as.matrix(mydf[,3:5])
+
+### Challenge 3: Create a list named 'mylist' that is composed of a vector: 1:3, a matrix: matrix(1:6,nrow=3,ncol=2), and a data frame: data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c("a","a","b")).
+
+mylist <- list()
+mylist[[1]] <- 1:3
+mylist[[2]] <- matrix(1:6,nrow=3,ncol=2)
+mylist[[3]] <- data.frame(x=c(1,2,3),y=c(TRUE,FALSE,TRUE),z=c("a","a","b"))
+
+### Challenge 4: Extract the first and third observation from the 2nd column of the data frame in 'mylist' (the list created in challenge 6 above).
+
+mylist[[3]][[2]][c(1,3)]
+
+
+### Challenge 5: (optional, extra challenging!) Create a data frame named 'df_spatial' that contains 25 spatial locations, with 'long' and 'lat' as the column names (25 rows/observations, 2 columns/variables). These locations should describe a 5 by 5 regular grid with extent long: [-1,1] and lat: [-1,1]. 
+
+# challenge 5
+
+x <- rep(seq(-1,1,length=5),each=5)
+y <- rep(seq(-1,1,length=5),times=5)
+df_spatial <- data.frame(long=x,lat=y)
+plot(x=df_spatial$long, y=df_spatial$lat, main="Regular grid",xlab="long",ylab="lat",xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),pch=20,cex=2)
+abline(v=c(-1,1),h=c(-1,1),col="green",lwd=1)
+
+
+# Module 1_2 challenge problems: answers  -------------
+
+
+# 1: Save the "comm_data.txt" file to your working directory. Read this file in as a data frame. Select only only the following columns: Hab_class, C_DWN, C_UPS (discard the remaining columns). Finally, rename these columns as: "Class","Downstream", and "Upstream" respectively. [hint 1: use read_table to read in the file as a data frame] [hint 2: use the "select" verb to select the columns you want] [hint 3: use the names() function to rename the columns]
+
+comdat <- read_table("comm_data.txt")
+comdat <- comdat %>% 
+  select(Hab_class,C_DWN,C_UPS)
+names(comdat) <- c("Class","Downstream", "Upstream")
+
+# 2: Read in the file "turtle_data.txt". Create a new version of this data frame with all missing data removed (discard all rows with one or more missing data). Save this new data frame to your project directory as a comma delimited text file. [hint 1: use the "na.omit()" function to remove rows with NAs] [hint 2: use the 'write_csv()' function to write to your working directory] 
+
+turt1 <- read_table("turtle_data.txt")
+turt1 <- na.omit(turt1)
+write_csv(turt1,"turt_test1.csv")
+
+# 3: Read in the file "turtle_data.txt". Create a new data frame with only male turtles. Use this subsetted data set to compute the mean and standard deviation for carapace length of male turtles.
+
+turt1 <- read_table("turtle_data.txt")
+turtmale <- turt1 %>% 
+  filter(sex=="male")
+mean(turtmale$carapace_length)
+sd(turtmale$carapace_length)
+
+
+
+# Module 1_3 challenge problems: answers  -------------
+
+
+# 1. Using the built in 'mtcars' dataset, make a scatterplot of 'mpg' as a function of 'disp'. Color the points
+# according to the 'cyl' variable, and make the size of points vary depending on the 'hp' variable. Try to code
+# the 'cyl' variable as a categorical variable (factor). The plot should look something like this:
+
+mtcars$cyl <- as.factor(mtcars$cyl)
+ggplot(mtcars) +
+  geom_point(aes(disp, mpg, size=hp, color=cyl), shape=20) +
+  theme_classic() +
+  labs(y='MPG',x="Displacement")
+
+#
+# 2. Again using the 'mtcars' data, make a scatterplot of 'mpg' as a function of 'disp'. Color the points
+# according to the 'cyl' variable, and make a separate trendline for each unique value of the 'cyl' variable (with
+# trendlines also indicating the 'cyl' variable with the appropriate color). 
+
+ggplot(mtcars) +
+  geom_point(aes(disp, mpg, color=cyl), shape=20) +
+  geom_smooth(method='lm', aes(disp, mpg, color=cyl), se=TRUE) +
+  theme_classic() +
+  labs(y='MPG',x="Displacement")
+
+
+# Module 1_4 challenge problems: answers  -------------
+
+
+# Module 1_4 challenge problems: answers  -------------
+
+
+# 1. Try to put tidyr's built-in `relig_income` dataset into a tidier format. This dataset stores counts based on a survey which (among other things) asked people about their religion and annual income:
+
+relig_income %>% 
+  pivot_longer(cols=!religion, names_to = "Income",values_to="count")
+
+# 2. Use the dplyr verbs and the tidy_clim_data dataset you created above 
+#       to calculate monthly average Tmin and Tmax (in Fahrenheit is okay) for each station
+
+tidy_clim_data %>% 
+  group_by(Station,Month) %>% 
+  summarize(across(c(TMinF,TMaxF),mean))
+
+# 3. Using lubridate, make a date object out of a character string of your 
+#        birthday and find the day of week it occurred on. Note, you 
+#        can use the 'wday' function in lubridate to extract the day of the 
+#         week (1 is sunday).
+
+mybday <- "12/12/1977"
+mybday <- mdy(mybday)
+wday(mybday,label=T)
+
+
+# Module 2_2 challenge problems: answers  -------------
+
+#1: Create a custom function to calculate the predicted value y 
+#    for the equation y = beta_0 + beta_1*x for any value of 
+#    beta_0, beta_1 and x. Assume that beta_0 and 
+#    beta_1 are both scalar, whereas x is a numeric vector. 
+#    Use this function to calculate y for the values of 
+#    $x$ = 1,...,10 with $\beta_0 = 2$, and $\beta_1= -1$. 
+#    Use base R plotting (`plot()` function) to plot the results.
+
+regfunc <- function(beta0,beta1,x){
+  beta0 + beta1*x
+}
+
+plot(1:10,regfunc(2,-1,1:10),ylab="y",xlab="x",type="p")
+
+#
+#2: Write a FOR loop that takes a numeric vector as input and 
+#    computes the cumulative mean (for each element of the vector, 
+#    compute the mean of all previous elements of the vector, 
+#    including the current element). 
+
+x=c(5,4,7,3,10,2,5,4,7,6)
+cummean <- rep(0, times=length(x))
+for(i in 1:length(x)){
+  cummean[i] <- mean(x[1:i])
+}
+cummean
+
+#
+#3: Using the built-in 'volcano' dataset (a matrix of elevation data 
+#    with columns representing longitude and rows representing latitude),
+#    calculate the standard deviation of elevation as an index of
+#    'ruggedness' from the rows () of the volcano elevation data matrix.
+#    Using the "apply()" function. Which row (latitude band) of the
+#    'volcano' dataset has the most rugged terrain?
+
+which.max(apply(volcano,1,sd))
+
+
+
+# Module 2_3 challenge problems: answers  -------------
+
+# CHALLENGE EXERCISES   -------------------------------------
+
+#1. Fit a polynomial regression model with NUMEGGS as the response and `poly(FEMWT,3)` as the response. Plot the results by overlaying the regression line on a scatterplot using ggplot2.
+#
+
+m33 <- lm(NUMEGGS ~ poly(FEMWT,3), data=sculpin.df)  
+nd <- data.frame(FEMWT = seq(10,45,by=0.1))        # create new data frame to predict number of eggs from FEMWT of 10 to 45 by increments of 0.1
+NUMEGGS.confint <- predict(m33,newdata=nd,interval="confidence")             # make prediction using "predict()" function
+NUMEGGS.confint2 <- as_tibble(cbind(nd,NUMEGGS.confint))
+ggplot() %>% +
+  geom_point(data=sculpin.df,mapping=aes(FEMWT,NUMEGGS)) +
+  geom_path(data=NUMEGGS.confint2,aes(x=FEMWT,y=fit)) +
+  geom_ribbon(data=NUMEGGS.confint2,aes(x=FEMWT,ymin=lwr,ymax=upr),alpha=0.5)
+
+
+#2. Use the model you built in part 1 to predict the number of eggs for FEMWT=5. What is the 95% confidence interval around this prediction? Is this prediction biologically reasonable?
+
+nd <- data.frame(FEMWT=5)
+predict(m33,nd,interval="confidence",alpha=0.95)
+
+
+
+
+
+
+
+
