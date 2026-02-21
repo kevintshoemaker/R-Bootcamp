@@ -1,7 +1,7 @@
 ---
-title: "Welcome to the 2023 R workshop!"
+title: "Welcome to the 2026 R workshop!"
 author: "A hopefully more-or-less painless introduction to R"
-date: "Spring 2024"
+date: "Spring 2026"
 output:
   html_document:
     theme: journal

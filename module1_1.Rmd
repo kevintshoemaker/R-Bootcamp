@@ -1,7 +1,7 @@
 ---
 title: "Module 1.1"
 author: "Getting started"
-date: "Spring 2024"
+date: "Spring 2026"
 output: 
   html_document: 
     theme: journal
