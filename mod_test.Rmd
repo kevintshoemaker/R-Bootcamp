@@ -1,0 +1,927 @@
+---
+title: "R Crash Course"
+author: "Marissa A. Dyck, Kevin T. Shoemaker, Andrew F. Barnas, Viorel D. Popescu"
+subtitle: 'Module 4: Working with data'
+output:
+  html_document:
+    code_folding: show
+    theme: journal
+    toc: true
+    toc_float: true
+  pdf_document:
+    toc: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+library(tidyverse)
+library(ggplot2)
+library(zoo)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#  R Crash Course                
+
+#  Module 4: Working with data
+
+library(tidyverse)
+
+```
+
+# Materials
+
+## R project  
+
+Make sure you have opened RStudio through your R project so your working directory is set. Instead of clicking the RStudio application to open RStudio, navigate to your course folder, click on the .Rproj file you just created and that will open RStudio with the correct working directory automatically. 
+
+
+## Script
+
+We will be using the **mod_4_data.R** script 
+
+Load your script in RStudio. To do this, open RStudio and click on the folder icon in the toolbar at the top, click on the 'scripts' folder and select the **mod_4_data.R** file to load your script into RStudio.    
+
+
+## Cheat sheets
+
+Make sure to save these to your cheatsheets folder
+
+[Tidyverse cheat sheet link](https://www.datacamp.com/cheat-sheet/tidyverse-cheat-sheet-for-beginners)     
+[readr cheat sheet link](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_data-import.pdf)    
+[tidyr and dplyr cheat sheets link](https://www.rstudio.com/resources/cheatsheets/)  Scroll down to data tidying with tidyr **&** data transformation with dplyr
+
+
+# Basics of data in R
+
+## Importing data into R
+
+There are many ways data can be imported into R. Many types of files can be imported (e.g., text files, csv, shapefiles). And there are many different functions to read in each of these file types. But here are the basics.   
+
+- read.table or read_delim      
+     - reads a data file in any major text format (comma-delimited, space delimited etc.), you can specify which format (very general)       
+- read.csv or read_csv        
+     - fields are separated by a comma (this is still probably the most common way to read in data)        
+
+
+Let's ensure we have data to work with for this module. <span style="color: blue;"> In RStudio using the Files window navigate to your data/raw folder and check that you have the following data files 
+
+  - data.txt      
+  - data.csv   
+  
+> Quick data organization tip: these are incredibly poorly names files. It is poor practice in data analytics to name your files 'data' or 'data1', 'data2' etc. file names should be brief and not contain spaces or any special characters so they are easy to type without errors, but also descriptive enough that you AND other users can easily discern what they might contain. As these are solely for practie purposes we won't change the names, but do remember this when naming your own data files!
+
+Now let's read them into R!
+
+```{r message=FALSE, warning=FALSE, results=TRUE}
+
+#  Import/Export data files into R with base R functions----------------------
+
+# read.table to import text file (if no delim specified, it will try to guess!)
+data.txt.df <- read.table("data/raw/data.txt")  
+
+
+```
+
+It is always useful to check what the data look like after they are read in. Can you recall one of the ways to view an object in R?  <span style="color: blue;">View the data.txt.df object</span>
+
+```{r class.source = 'fold-hide'}
+
+# Look at data by printing it in the console
+# You can also look at data by using the View() function
+# Or you can click on the object (data.txt.df) in your environment to view it
+data.txt.df
+
+```
+
+Data will often be saved as a .csv file (or separated by commas) we can load this data using read.csv
+```{r message=FALSE, warning=FALSE, results=TRUE}
+
+# read.csv to import textfile with columns separated by commas
+data.df <- read.csv("data/raw/data.csv")
+
+#print data
+data.df
+
+```
+
+
+## Removing objects from the environment
+Since both of these files contain the same data just in different formats let's delete one of the from the environment so we don't get confused. We can use the  `rm()` function for this.
+
+```{r message=FALSE, warning=FALSE, results=TRUE}
+# Remove redundant objects from memory
+rm(data.txt.df)
+
+```
+
+## Built-in data
+R has many useful built-in data sets that come pre-loaded. You can explore these datasets with the following command:
+
+```{r eval=FALSE}
+
+  # Using Rs built-in data----------------------
+
+# Look at all built-in data files
+data()   
+
+```
+
+Let's read in one of these datasets!
+
+```{r results=FALSE}
+
+# read built-in data on car road tests performed by Motor Trend
+data(mtcars) 
+
+# inspect the first few lines
+head(mtcars)   
+
+# learn more about this built-in data set
+# ?mtcars        
+
+```
+
+
+## Basic data checking
+
+To learn more about the 'internals' of any data object in R, we can use the `str()` (structure) function:
+
+```{r}
+
+  # Basic data checking ----------------------
+
+# ?str: displays the internal structure of the data object
+str(mtcars)
+str(data.df)
+
+
+```
+
+And we can use the `summary()` function to get a brief summary of what's in our data frame:
+
+```{r}
+
+# get summary of the variables (columns) of a data object
+summary(data.df)
+
+```
+
+If we want to look at data for a specific column in our dataset we use the `$` argument to specify which column
+
+
+```{r}
+
+# get summary info for a specific variable
+summary(data.df$Import)
+
+```
+
+## Exporting/saving data
+
+Reading in data is one thing, but you will probably also want to write data to your hard drive as well. There are countless reasons for this- you might want to use an external program to plot your data, you might want to archive some simulation results, you may have reformatted or made some changes to your raw data and you **NEVER** want to overwrite the originals, etc..
+
+Similarly to reading data in, there are many ways to write data to a file. Here are the basics using **base R**
+
+```{r}
+
+# Exporting data (save to hard drive as data file)
+
+# ?write.csv: writes a CSV file to the working directory
+
+# to save an entire data frame to your hard drive you would use the format below
+# write.csv(data name in R, file = 'data name to save as.csv')
+
+# however if we did this for data.df we would just be making a copy, instead we can export a subset of the data we just ran in
+write.csv(data.df[, c("Country","Product")], # this tells R to save all rows for the 'Country' and 'Product' columns
+          file = "data/processed/data_export.csv")   
+
+```
+
+
+# Working with data (base R)
+
+Now let's start seeing what we can do with data in R. Even without doing any statistical analyses, R is very a powerful environment for doing data transformations and performing mathematical operations. 
+
+## Boolean operations
+
+Boolean operations refer to TRUE/FALSE tests. That is, we can ask a question about the data to a Boolean operator and the operator will return a TRUE or a FALSE (logical) result. 
+
+First, let's meet the boolean operators. 
+
+NOTE: don't get confused between the equals sign (`=`), which is an *assignment operator* (same as `<-`), and the double equals sign (`==`), which is a Boolean operator:
+
+```{r}
+
+# Working with data in R ------------------------
+
+  # Assigning objects ----------------------
+
+# <- assignment operator
+# =  alternative assignment operator *avoid using this to assign objects to the environment
+
+a <- 3     # assign the value "3" to the object named "a"
+a = 3      # assign the value "3" to the object named "a" (alternative)
+a == 3     # answer the question: "does the object "a" equal "3"? 
+
+```
+
+
+```{r eval=FALSE}
+
+  # Boolean operations ----------------------
+
+# Basic operators
+
+# <    less than
+# >    greater than
+# <=   less than or equal to
+# >=   greater than or equal to
+# ==   equal to
+# !=   not equal to
+# %in% matches one of a specified group of possibilities
+
+# Combining multiple conditions
+
+# &    must meet both conditions (AND operator)
+# |    must meet one of two conditions (OR operator)
+
+Y <- 4
+Z <- 6
+
+Y == Z  #I am asking if Y is equal to Z, and it will return FALSE
+Y < Z
+
+!(Y < Z)  # the exclamation point reverses any boolean object (read "NOT")
+
+# Wrong!
+data.df[, 2] = 74     # sets entire second column equal to 74! OOPS WE GOOFED UP!!!
+
+data.df <- read.csv("data/raw/data.csv")  ## correct our mistake in the previous line (revert to the original data)!
+
+# Right
+data.df[, 2] == 74    # tests each element of column to see whether it is equal to 74
+
+data.df[, 2] < 74 | data.df[, 2] == 91   # use the logical OR operator
+
+```
+
+This image from Wickham and Grolemund's excellent [R for Data Science](https://r4ds.had.co.nz/index.html) book can help conceptualize the combination operators:
+
+![](images/transform_logical.png){width=70%}
+
+## Data subsetting using boolean logic
+
+You probably won't us boolean operations that often to return TRUE/FALSE results but they are great for subsetting, filtering, and reformatting data.
+
+Let's use them to subset data - select only those rows/observations that meet a certain condition (where [some condition] is TRUE). 
+
+
+```{r}
+
+  # Sub-setting data base R----------------------
+
+# select those rows of data for which second column is less than 74
+data.df[data.df[, "Import"] < 74, ]  
+
+# select rows of data for which second column is greater than 25 AND less than 75
+
+data.df[data.df[, 'Import'] > 25 & 
+          data.df[, 'Import'] <75, ]
+
+```
+
+# Summary statistics
+We can also use **base R** functions to get summary statistics for our data. Let's use the **functions** `mean()` and `sd()` to calculate the mean and standard deviation for one of the columns in our data frame.
+
+```{r}
+  # Summary statistics with base R ----------------------
+
+mean(data.df$Import)
+sd(data.df$Import)
+
+```
+However, if we wanted to calculate the mean and sd for many columns in our dataset this would take a lot of lines of repetitive code using **base R**. We will go over a much more efficient way using the **tidyverse package**.
+
+
+# Packages
+**Packages** are an incredibly useful to for R users. These are extensions of the R programming language which contain a vast array of **functions**, code, sample data etc. A few rules for using **packages**;
+
+1. Have to be installed (*once* but you may need to re-install the latest version as the packages are updated)
+
+2. Loaded into your **library** (*every time you start a new R session*). The **library** is simply the directory where the **packages** are stored.
+
+## Installing packages
+Let's install some **packages** that we will use for this module. There are a few ways to do this
+
+1. Use the **packages** panel>>install>>type the package you want
+
+2. Use the `install.packages()` **function**. 
+
+```{r message=FALSE, warning=FALSE, results=FALSE}
+
+  # Packages----------------------
+
+# Install packages 
+
+# install.packages("tidyverse")
+
+```
+*Notice that the package name is enclosed with quotations (" "). If you do not use the quotations the package will not be installed.
+
+## Loading packages to library
+Each time you open a new R session you need to load the **packages** you want to use into your **library**. To do this use the `library()` **function**, however in this instance since the package is already installed you don't need "".
+
+```{r message=FALSE, warning=FALSE, results=FALSE}
+
+# Load packages to library 
+
+library(tidyverse)
+
+```
+
+## Built-in datasets
+Many **packages** come with built-in data sets as well. For, instance, ggplot2 comes with the "diamonds" data:
+
+```{r}
+
+  # Package datasets ----------------------
+
+ggplot2::diamonds   # note the use of the package name followed by two colons- this is a way to make sure you are using a function (or data set or other object) from a particular package... (sometimes several packages have functions with the same name...)
+
+
+```
+
+# Tidyverse
+
+The tidyverse is a collection of packages introduced by Hadley and Wickham that all work together using a similar design, syntax, and data structure (**tidy data**) for data science. It will be useful to have your [tidyverse cheat sheet](https://www.datacamp.com/cheat-sheet/tidyverse-cheat-sheet-for-beginners), [reader cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_data-import.pdf), and [tidyr & dplyr cheat sheets](https://www.rstudio.com/resources/cheatsheets/) during the rest of this module.
+
+# What is tidy data
+All of the tidyverse set of packages are designed to work with *Tidy* formatted data.
+
+This means:
+
+  - Each variable must have its own column.
+  - Each observation must have its own row.
+  - Each value must have its own cell.
+ 
+This is what it looks like:
+  
+![](images/tidy_1.png)
+We will start by working with data that is already 'tidy' but later we will cover several **functions** to help you get your data into this format.
+
+## Base R vs tidyverse
+We didn't spend a lot of time going over data exploration, manipulation, or visualization in **base R** because the **tidyverse** provides a much more efficient and intuitive way to do these things. I will provide a few examples as we continue to compare **base R** to the **tidyverse** to illustrate this point.
+
+## Importing tidy data (tibbles)
+We already covered a few ways to read in data with **base R** but since we will primarily be using the **tidyverse** for this course let's cover the tidy **functions** to read in data. The **function** to read in .txt files as tidy data is `read_delim()` in the *readr* **package**.
+
+```{r}
+
+
+  # Read in tidy data ----------------------
+
+tidy_data.txt <- read_delim('data/raw/data.txt')
+
+# print data
+tidy_data.txt
+
+```
+Notice the tidy way did a slightly better job reading in this data (e.g., we don't have those weird variable labels at the top of our columns), and when it prints it also tells us what data type it has read the columns in as
+
+You'll also notice the object type has change to a **tibble**
+```{r}
+
+# check the object type of data
+
+class(tidy_data.txt)
+
+```
+We aren't going to get much into the weeds of the difference between a tibble and a data frame, they function similarly but tibbles tend to work better with tidyverse functions.
+
+The **function** to read in .csv files as tidy data is `read_csv()` in the *readr* **package**
+
+```{r}
+
+tidy_data.csv <- read_csv('data/raw/data.csv')
+
+# print the first few rows of data
+head(tidy_data.csv)
+
+```
+We have now imported multiple versions of the same data with similar names. Let's remove all but one from our **environment** to avoid confusion later on. Recall the command to remove objects from your **environment**?  <span style="color: blue;">using the **console** remove 'tidy_data.txt' and 'data.df' from your **environment**</span>.
+
+```{r class.source = 'fold-hide'}
+
+# in the console type
+# rm(tidy_data.txt)
+# rm(data.df)
+
+```
+
+## Exporting tidy data
+The **function** to save tidy data as .csv files is `write_csv()` in the *readr* **package**
+
+
+```{r}
+  # Export tidy data ----------------------
+
+# ?write_csv
+
+# write_csv(data, 'data_name_to_save.csv')
+```
+
+> Check your data import (readr) cheat sheet for more **functions** to import and export tidy data*
+
+## The pipe operator (%>%)
+
+The **tidyverse** set of **packages** takes advantage of the **pipe operator** `%>%`, which provides a clean and intuitive way to structure code and perform sequential operations in R.
+
+![](images/magritte.jpg){width=25%} %>% 
+
+Key advantages include:
+
+* code is more readable and intuitive --  reads left to right, rather than inside out as is the case for nested function
+
+* perform multiple operations without creating a bunch of intermediate (temporary) datasets
+
+This operator comes from the *magrittr* package, which is included in the installation of all of the tidyverse packages. The shortcut for the pipe operator is ctrl + shift + m ('m' is for Magritte) for Windows and command + shift + m for Mac. When reading code out loud, use 'then' for the pipe. For example the command here:
+
+``` 
+
+x %>% 
+log() %>% 
+round(digits = 2)
+
+```
+
+can be interpreted as follows:
+
+> Take "x", THEN take its natural logarithm, THEN round the resulting value to 2 decimal places 
+
+The structure is simple. Start with the object you want to manipulate, and apply actions (e.g., functions) to that object in the order in which you want to apply them. 
+
+Here is a quick example of dplyr in action
+
+```{r piping1}
+
+  # The pipe operator ----------------------
+
+# start by assigning a value to x
+x <- 3
+
+# call the variable x followed by %>% ('then')
+x %>% 
+  
+  # calculate the log of x, 'then'
+  log() %>% 
+  
+  # round the log of x to 2 digits
+  round(digits = 2) 
+
+```
+
+For the above code to be applied in **base R** you would have to nest your functions which can get very confusing to read **or** assign many objects to your **environment** that you only need temporarily. For example,
+
+``` {r}
+ x <- 3
+
+# nested code
+round(log(x), digits=2) 
+
+# assigning multiple objects
+log_x <- log(x)
+
+round_log_x <- round(x, digits = 2)
+
+```
+The nested code may seem simpler at first but you can imagine as operation get more complex this can become quite difficult to interpret.
+
+*Note: you may occasionally find code using this `|>` syntax for the pipe operator instead of `%>%`*   
+
+
+# Data exploration (tidyverse)
+
+Let's switch to a different data file. <span style="color: blue;">Make sure you have the turtle_data.txt file in your data/raw folder.</span>
+
+Let's use this data set to review some data processing operations we have learned- and learn a few new things along the way:
+
+First we need to read the data in to R. Using the *reader* **package**, <span style="color: blue;">read the turtle_data.txt in to R and assign it to the environment as turtles.df</span>
+
+```{r class.source = 'fold-hide'}
+
+# Data exploration with tidyverse ----------------------
+
+# read turtle_data.txt in to R using readr
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t') # specify tab-delimited file
+
+
+```
+
+## Check data
+It is always good coding practice to view your data and check the internal structure before proceeding with any processing, analyses, or visualization. <span style="color: blue;"> View the turtles, check the internal structure and then look at a summary of the columns</span>. Below are the outputs you should see in the **console**.
+
+```{r class.source = 'fold-hide', echo = FALSE}
+
+# View(turtles.df)
+
+# check internal structure
+str(turtles.df)
+
+# look at column summary
+summary(turtles.df)
+
+
+```
+
+## Renaming columns
+Notice the column names are capitalized in this data set. Data are often entered this way, but this can lead to mistakes in your code if you forget to capitalize a variable. I prefer to keep everything lowercase when working in R to avoid this and extra keystrokes. There's an easy way to do this using the *dplyr* **package**.
+
+```{r}
+
+# Renaming columns ----------------------
+
+# check names of turtles data before changing
+names(turtles.df)
+
+turtles.df %>% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %>%  # the period here is a placeholder for the data it tells R to use the element before the last pipe (e.g., turtles.df)
+      tolower()) 
+
+# check the names of turtles data
+names(turtles.df)
+```
+
+Alternatively a more efficient way to do this would be to change the names in the same code chunk that we read in the data. Let's check this, <span style="color: blue;"> remove the turtles data from your **environment**</span>.
+
+```{r class.source = 'fold-hide'}
+
+rm(turtles.df)
+
+```
+
+Now let's read in the data and change the column names to lowercase in the same code chunk.
+```{r}
+
+# read turtle_data.txt in to R using readr
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t') %>% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) 
+
+summary(turtles.df)
+```
+
+
+Sometimes we have column names that are not informative or don't make sense to us, and rather than just changing them to lowercase we may want to rename some of them. Let's go through how to rename columns using the `names()` **function**. Let's make some shorter names for the turtles dataset.
+
+```{r}
+
+# extract the column names for turtle data
+names(turtles.df)
+
+# to change the column names, use the "names()" function
+names(turtles.df)  <- c("tag", "sex","c_length", "h_width", "weight")
+
+# let's check
+head(turtles.df)
+```
+
+We can also do this more efficiently in the *dplyr* pipe when we read in the data using the `rename()` **function**.
+
+```{r}
+
+# read turtle_data.txt in to R using readr
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t') %>% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
+
+summary(turtles.df)
+```
+
+## Summary statistics
+Remember earlier we calculated the mean and standard deviation for a column in our dataset? <span style="color: blue;"> Calculate the mean and sd for carapace length, head width, and weight</span> in the turtles data.
+
+```{r class.source = 'fold-hide'}
+
+# Summary stats the tidyverse way ----------------------
+
+# calculate the mean and sd for three columns in the turtles data using base R
+
+# carapace length
+mean(turtles.df$c_length)
+sd (turtles.df$c_length)
+
+# head width
+mean(turtles.df$h_width)
+sd(turtles.df$h_width)
+
+# weight
+mean(turtles.df$weight)
+sd(turtles.df$weight)
+
+```
+We had to type a lot to do these simple calculations across multiple columns, and there is a lot of repetition in our code which we should try to avoid. And what if we wanted a simple table with the meand and sd for all three columns so we could easily compare. This would involved a lot more coding. Luckily, the **tidyverse** *dplyr* **package** allows for a much more efficient way to do this using the `summarise()` **function**.
+
+```{r}
+# calculate the mean and sd for three columns in the turtles data using dplyr
+
+turtles.df %>% 
+  
+  # use summarise function to get mean and sd for multiple columns
+  summarise(cl_mean = mean(c_length),
+            cl_sd = sd(c_length),
+            hw_mean = mean(h_width),
+            hw_sd = sd(h_width),
+            w_mean = mean(weight),
+            w_sd = sd(weight)
+  )
+
+```
+Using dplyr we only have to reference the data once which saves us typing and our output is a nice tibble data frame that is easy to read or save and use later for plotting etc. However, there's still a more efficient way to do this in *dplyr* let's try the `summarise_all()` **function**.
+
+```{r}
+
+turtles.df %>% 
+summarise_all(.funs = list(mean, sd))
+
+```
+
+This worked but since a few of our variables are not **numeric** R cannot calculate a mean and sd for them and we get NAs. Let's try `summarise_if()` instead and specify only to run the **functions** if the variables are **numeric**.
+
+```{r}
+
+turtles.df %>% 
+summarise_if(is.numeric,
+             .funs = list(mean, sd))
+
+```
+This worked better but the column names for our new **tibble** aren't very informative if we had a lot of functions to run it would be hard to remember which is which. Let's try adding names. Let's practice using the **help** window to see if we can figure out how to name our **functions**. <span style="color: blue;"> Use the **console** to access the **R documentation** for `summarise_if()`</span>.
+
+```{r class.source = 'fold-hide'}
+
+# ?summarise_if()
+
+```
+
+Let's work through the **R documentation** together. It looks like there is a 'naming' section for this **function** that explains exactly how the columns are named based on the arguments/input you provide in the **function**, but I don't see how to specify the column names... Let's see if some of the examples help us. It looks like the very last one provides names for each function in the `list()` argument. Let's copy this code to the **console** and run it to check if the output is what we want. 
+
+```{r}
+by_species <- iris %>%
+  group_by(Species)
+
+by_species %>%
+  summarise(across(everything(), list(min = min, max = max)))
+```
+
+Looks good! Let's try this with our data. Using our code from earlier and the example above, <span style="color: blue;"> get the mean and sd for all numeric variables in the turtle data and specify the names of the **functions** '*mean*' and '*sd*'</span>.
+
+
+```{r}
+
+turtles.df %>% 
+summarise_if(is.numeric,
+             .funs = list(mean = mean, 
+                          sd = sd))
+```
+
+This is much better! And you just practiced using the **help** window and **R documentation** to learn about a new **function**
+
+## Change variable type
+In the last example we specified to only calculate summary statistics for variables that were **numeric**. But what if R doesn't properly read the variables types and we want to change them? This happens quite frequent, let's look at how to do this in *dplyr* using the `mutate()` **function**. This **function** creates new columns using existing variables and can also modify existing columns by settting the new column name the same as a previous column name, as in this example below.
+
+```{r}
+# Change variable type ----------------------
+
+# Change sex to factor
+turtles.df %>% 
+  mutate(sex = as.factor(sex)) # we use the same name for our 'new' column so that it modifies the old column instead of creating a new one
+
+# check structure
+str(turtles.df) # sex is still a character, why?
+```
+
+You'll notice it works within your pipe but when we re-check the structure of our data it hasn't changed. This is because we didn't save the changes to the actual object, to do this we need to use the **assignment operator** to save the altered turtles.df data to the **environment**. Using the *same name for the turtles data and the assignment operator* and code above <span style="color: blue;">assign the altered data to the **environment** as turtles.df</span>. Check the structure of the data when you are done to ensure it worked.
+
+```{r}
+
+# Change sex to factor as save changes to data
+turtles.df <-  turtles.df %>% 
+  mutate(sex = as.factor(sex))
+
+# check structure
+str(turtles.df) 
+```
+
+This worked! But, you guessed it. There is a more efficient way to do this right when we read in the data. Using the code below, <span style="color: blue;"> add the mutate function to the *dplyr* pipe to mutate sex to a factor</span>.
+
+```{r}
+# INSERT YOUR CODE HERE ----------------------
+
+# Use the code below to read in the data and make changes we covered in the sections above, then in your script add a pipe and use the mutate function to change sex to a factor variable 
+
+
+# read turtle_data.txt in to R using readr
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t') %>% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
+```
+
+```{r echo = FALSE, class.source = 'fold-hide'}
+
+# read turtle_data.txt in to R using readr
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t') %>% 
+  
+   # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width) %>% 
+  
+  # change sex to factor
+  mutate(sex = as.factor(sex))
+
+
+```
+
+BUT WAIT! There is even a better (sometimes) way to do this
+
+With tidyverse you can specify how you want the columns read in without using the mutate function
+
+```{r}
+# in this example we will specify how we want ALL of the data in the turtle_data.txt file to read in 
+
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t',
+                         
+                         # specify variable types 
+                         col_types = cols(Tag_number = col_number(),
+                                          Sex = col_factor(),
+                                          Carapace_length = col_number(),
+                                          Head_width = col_number(),
+                                          Weight = col_number())
+) %>% 
+  
+  # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
+
+# or even less coding
+
+turtles.df <- read_delim('data/raw/turtle_data.txt',
+                         delim = '\t',
+                         
+                         # specify variable types 
+                         col_types = cols(Sex = col_factor(),
+                                          .default = col_number()) # this sets every variable not specified above to this type
+)%>% 
+  
+  # set column names to lowercase
+  set_names(
+    names(.) %>%  
+      tolower()) %>% 
+  
+  # rename columns to shorter names
+  rename(tag = tag_number,
+         c_length = carapace_length,
+         h_width = head_width)
+```
+
+
+
+
+Similar to the `summarise()` **function** we can also perform mutations on all the columns (`mutate_all()`) or multiple columns that fit a criteria (`mutat_if()`). <span style="color: blue;"> Without assigning the object to the **environment** to mutate all the **numeric** columns to **characters** </span> in the turtles data. HINT: Look at the **R Documentation** examples.
+```{r class.source = 'fold-hide'}
+
+# read turtle_data.txt in to R using readr
+turtles.df %>% 
+  mutate_if(is.numeric, as.character)
+
+```
+
+## Subsetting data with tidyr
+Just like in base R we can use **functions** from the tidyverse **packages** to subset our data. 
+
+### Filter
+For example, if we are only interested in the male data we can use the `filter()` **function** to do this with Boolean operations. Filter applies criteria to the rows and returns only the rows that match the criteria.
+
+```{r}
+  # Subsetting data with tidyr ----------------------
+
+  # Filter ----------------------
+
+# subset turtles data
+turtles.df %>% 
+  
+  # return data for males only
+  filter(sex == 'male')
+
+turtles.df %>% 
+  
+  # return data for males only that are larger than 5 (grams?)
+  filter(sex == 'male' &
+           weight > 5)
+
+```
+
+### Select
+If we only want to work with specific columns we can also subset the data using the `select()` **function**. We don't need Boolean operations here, instead we can just refer to the column names.
+
+```{r}
+  # Select ----------------------
+
+turtles.df %>% 
+  
+  # return data for tag and weight only
+  select(tag, weight)
+```
+
+We can also combine these **functions** to subset the columns and rows in one code chunk.
+```{r}
+turtles.df %>%
+  
+  # return data for males only with weight greater than 5
+  filter(sex == 'male' &
+           weight > 5) %>% 
+
+# return data for tag and weight only
+  select(tag, weight)
+```
+
+And we can assign the altered data to the **environment** to save for later or to export to our hard drive if we want.
+```{r}
+turtles_males_lg <- turtles.df %>% 
+    # return data for males only with weight greater than 5
+  filter(sex == 'male' &
+           weight > 5) %>% 
+
+# return data for tag and weight only
+  select(tag, weight)
+```
+
+### Group by
+`group_by()` is a useful **function** to get summary statistics for various groups such as different treatments, sexes, etc. You simply supply the column name in the `group_by()` **function** and anything after will be applied to each group separately. For example:
+
+
+```{r}
+  # Group by ----------------------
+
+turtles.df %>% 
+  
+  # group by sex
+  group_by(sex) %>% 
+  
+  summarise(mean = mean(weight))
+
+ 
+```
+
+You might notice a problem with the way the data are entered here. We will fix that in the next module.
+
+
+
+
+
